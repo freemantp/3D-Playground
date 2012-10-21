@@ -10,7 +10,6 @@ public:
 	~TestCamera(void);
 
 	virtual void init(void);
-	virtual void apply(void);
 
 
 };

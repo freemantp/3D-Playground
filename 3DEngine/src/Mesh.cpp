@@ -1,9 +1,25 @@
 #include "stdafx.h"
 #include "Mesh.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 Mesh::Mesh(void) : numIndices(0), Shape() 
 {
+	// Create and set-up the vertex array object
+    glGenVertexArrays( 1, &vaoHandle );
 
+	worldTransform = glm::translate(worldTransform, glm::vec3(0.0f,0.0f,-1.0f));
+	worldTransform = glm::rotate(worldTransform,60.0f,glm::vec3(1.0f,0.0f,0.0f));
+	worldTransform = glm::rotate(worldTransform,20.0f,glm::vec3(0.0f,0.0f,1.0f));
+
+	string vertexShaderSource = GLSLProgram::loadSource("../data/shader/basic.vert");
+	string fragmentShaderSource = GLSLProgram::loadSource("../data/shader/basic.frag");
+
+	/*shaderProgram = new GLSLProgram();
+
+	bool success = shaderProgram->compileShaderFromString(vertexShaderSource, GLSLShader::VERTEX);
+	success = shaderProgram->compileShaderFromString(fragmentShaderSource, GLSLShader::FRAGMENT);
+	success = shaderProgram->link();*/
+    
 }
 
 Mesh::~Mesh(void)
@@ -17,9 +33,7 @@ void Mesh::initBuffers(const std::vector<float>& positions,
 {
 	enum {Position, Color, Index};
 
-	// Create and set-up the vertex array object
-    glGenVertexArrays( 1, &vaoHandle );
-    glBindVertexArray(vaoHandle);
+	glBindVertexArray(vaoHandle);
 
 	// Create and populate the buffer objects
     GLuint bufferHandles[3];
@@ -47,9 +61,20 @@ void Mesh::initBuffers(const std::vector<float>& positions,
 	glBindVertexArray(0);
 }
 
-void Mesh::render(Camera* cam) 
+void Mesh::render(const Camera& cam) 
 {
+	glm::mat4 mvp = cam.getViewProjectionTransform() * worldTransform;
+
+	if(NULL != shaderProgram) 
+	{	
+		shaderProgram->use();
+		shaderProgram->setUniform("mvp", mvp);		
+	}
+	
 	glBindVertexArray(vaoHandle);
 	glDrawElements(GL_TRIANGLES,(GLsizei)numIndices,GL_UNSIGNED_INT, (GLvoid*)NULL);
 	glBindVertexArray(0);
+
+	if(NULL != shaderProgram)
+		shaderProgram->unuse();
 }

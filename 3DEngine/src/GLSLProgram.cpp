@@ -120,12 +120,17 @@ bool GLSLProgram::link()
     }
 }
 
-GLuint GLSLProgram::getProgramHandle() 
+bool GLSLProgram::isLinked() const
+{
+	return linked;
+}
+
+GLuint GLSLProgram::getProgramHandle() const
 { 
 	return programHandle; 
 };
 
-string GLSLProgram::log()
+string GLSLProgram::log() const
 {
     return logString;
 }
@@ -153,7 +158,7 @@ void GLSLProgram::setUniform(const GLchar *name, float value)
 	else 
 	{
 #if _DEBUG
-		fprintf(stderr, "Error setting parameter '%s'\n", name);
+		Error(string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
@@ -286,7 +291,7 @@ void GLSLProgram::bindTexture(const GLchar *name, GLuint tex, GLenum target, GLi
 		glActiveTexture(GL_TEXTURE0);
 	} else {
 #if _DEBUG
-		fprintf(stderr, "Error binding texture '%s'\n", name);
+		Error(string("Error binding texture  '") + name + "'");
 #endif
 	}
 }
@@ -336,6 +341,16 @@ std::vector<std::string> GLSLProgram::getUniformAttributes()
 	delete[] currentAttrib;
 	return attribNames;
 
+}
+
+void GLSLProgram::bindAttribLocation( GLuint location, const char * name)
+{
+    glBindAttribLocation(programHandle, location, name);
+}
+
+void GLSLProgram::bindFragDataLocation( GLuint location, const char * name )
+{
+    glBindFragDataLocation(programHandle, location, name);
 }
 
 ///// FILE utils

@@ -8,7 +8,7 @@ public:
 	Mesh(void);
 	~Mesh(void);
 
-	virtual void render(Camera* cam);
+	virtual void render(const Camera& cam);
 
 protected:
 

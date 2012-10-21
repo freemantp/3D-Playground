@@ -7,9 +7,8 @@ class Camera
 {
 public:
 	virtual void init(void) = 0;
-	virtual void apply(void) = 0;
 
-	mat4 getViewProjectionTransform() 
+	mat4 getViewProjectionTransform() const
 	{
 		return projectionMatrix * viewMatrix;
 	}

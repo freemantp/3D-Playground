@@ -33,8 +33,8 @@ public:
 
 	bool compileShaderFromString( const string & source, GLSLShader::GLSLShaderType type );
 	bool link();
-	bool isLinked();
-	string log();
+	bool isLinked() const;
+	string log() const;
 
 	void use();
 	void unuse();
@@ -52,10 +52,13 @@ public:
 
 	static const char* loadSource(char* filename);
 
-	GLuint getProgramHandle();
+	GLuint getProgramHandle() const;
 
 	std::vector<std::string>  getVertexAttributes();
 	std::vector<std::string>  getUniformAttributes();
+
+	void bindAttribLocation( GLuint location, const char * name);
+    void bindFragDataLocation( GLuint location, const char * name );
 	
 protected:
 

@@ -4,7 +4,6 @@
 #include "Triangle.h"
 #include "TestCamera.h"
 #include "GLSLProgram.h"
-#include <glm/gtc/matrix_transform.hpp>
 
 #define WINDOW_TITLE_PREFIX "Box"
 
@@ -36,6 +35,7 @@ GLfloat light_position[] = {1.0, 1.0, 1.0, 0.0};  /* Infinite light location. */
 Triangle* tri;
 Box* box;
 Camera* cam;
+GLSLProgram* p;
 
 bool light = false;
 
@@ -61,38 +61,39 @@ void initGL(void)
 	/* Use depth buffering for hidden surface elimination. */
 	glEnable(GL_DEPTH_TEST);
 
+}
+
+void initContent(void)
+{
 	cam = new TestCamera();
 	cam->init();
 
+	p = new GLSLProgram();
+
+	string vertexShaderSource = GLSLProgram::loadSource("../data/shader/basic.vert");
+	string fragmentShaderSource = GLSLProgram::loadSource("../data/shader/basic.frag");
+
+	bool success = p->compileShaderFromString(vertexShaderSource, GLSLShader::VERTEX);
+	success = p->compileShaderFromString(fragmentShaderSource, GLSLShader::FRAGMENT);
+	success = p->link();
+
 	tri = new Triangle();
 	box = new Box();
+
 	tri->init();
 	box->init();
 
+	tri->setShader(p);
 }
-
-GLSLProgram* p;
 
 void Initialize(int argc, char* argv[])
 {
 
 	InitWindow(argc, argv);
 	initGL();
+	initContent();
 
-	fprintf(
-		stdout,
-		"INFO: OpenGL Version: %s\n",
-		glGetString(GL_VERSION)
-		);
-
-	string vertexShaderSource = GLSLProgram::loadSource("../data/shader/basic.vert");
-	string fragmentShaderSource = GLSLProgram::loadSource("../data/shader/basic.frag");
-	
-	p = new GLSLProgram();
-
-	bool success = p->compileShaderFromString(vertexShaderSource, GLSLShader::VERTEX);
-	success = p->compileShaderFromString(fragmentShaderSource, GLSLShader::FRAGMENT);
-	success = p->link();
+	fprintf( stdout, "INFO: OpenGL Version: %s\n", glGetString(GL_VERSION) );
 
 }
 
@@ -115,12 +116,11 @@ void InitWindow(int argc, char* argv[])
 
 	WindowHandle = glutCreateWindow(WINDOW_TITLE_PREFIX);
 
-	if(WindowHandle < 1) {
+	if(WindowHandle < 1) 
+	{
 
-		fprintf(
-			stderr,
-			"ERROR: Could not create a new rendering window.\n"
-			);
+		Error("ERROR: Could not create a new rendering window");
+
 		exit(EXIT_FAILURE);
 	}
 
@@ -136,27 +136,11 @@ void ResizeFunction(int Width, int Height)
 	glViewport(0, 0, CurrentWidth, CurrentHeight);
 }
 
-
-
 void RenderFunction(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//cam->apply();
-
-	/*glm::mat4 ident = glm::mat4(1.0f);
-	glm::mat4 world = glm::translate(ident, glm::vec3(0.0f,0.0f,-1.0f));
-	world = glm::rotate(world,60.0f,glm::vec3(1.0f,0.0f,0.0f));
-	world = glm::rotate(world,20.0f,glm::vec3(0.0f,0.0f,1.0f));
-
-	glm::mat4 mvp = cam->getViewProjectionTransform() * world;*/
-
-	glBindAttribLocation(p->getProgramHandle(), 0, "VertexPosition");
-	glBindAttribLocation(p->getProgramHandle(), 1, "VertexColor");
-
-	p->use();
-	tri->render(cam);
-	p->unuse();
+	tri->render(*(const Camera*)cam);
 
 	glutSwapBuffers();
 	glutPostRedisplay();
