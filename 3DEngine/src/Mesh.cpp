@@ -47,9 +47,9 @@ void Mesh::initBuffers(const std::vector<float>& positions,
 	glBindVertexArray(0);
 }
 
-void Mesh::render(void) 
+void Mesh::render(Camera* cam) 
 {
 	glBindVertexArray(vaoHandle);
-	glDrawElements(GL_TRIANGLES,numIndices,GL_UNSIGNED_INT, (GLvoid*)NULL);
+	glDrawElements(GL_TRIANGLES,(GLsizei)numIndices,GL_UNSIGNED_INT, (GLvoid*)NULL);
 	glBindVertexArray(0);
 }

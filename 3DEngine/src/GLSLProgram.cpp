@@ -14,113 +14,247 @@
 #include <cstdlib>
 #include <string>
 
-GLSLProgram::GLSLProgram(const char *vsource, const char *fsource)
-{
-	program = compileProgram(vsource, 0, fsource);
-}
-
-GLSLProgram::GLSLProgram(const char *vsource, const char *gsource, const char *fsource,
-						 GLenum gsInput, GLenum gsOutput)
-{
-	program = compileProgram(vsource, gsource, fsource, gsInput, gsOutput);
-}
+GLSLProgram::GLSLProgram() : programHandle(0), linked(false) { }
 
 GLSLProgram::~GLSLProgram()
 {
-	if (program) {
-		glDeleteProgram(program);
+	if ( programHandle > 0 ) {
+		glDeleteProgram(programHandle);
 	}
 }
 
-void GLSLProgram::enable()
+bool GLSLProgram::compileShaderFromString( const string & source, GLSLShader::GLSLShaderType type )
 {
-	glUseProgram(program);
+    if( programHandle <= 0 ) 
+	{
+        programHandle = glCreateProgram();
+        if( programHandle == 0) 
+		{
+            logString = "Unable to create shader program.";
+            return false;
+        }
+    }
+
+    GLuint shaderHandle = 0;
+
+	switch( type ) 
+	{
+		case GLSLShader::VERTEX:
+			shaderHandle = glCreateShader(GL_VERTEX_SHADER);
+			break;
+		case GLSLShader::FRAGMENT:
+			shaderHandle = glCreateShader(GL_FRAGMENT_SHADER);
+			break;
+		case GLSLShader::GEOMETRY:
+			shaderHandle = glCreateShader(GL_GEOMETRY_SHADER);
+			break;
+		case GLSLShader::TESS_CONTROL:
+			shaderHandle = glCreateShader(GL_TESS_CONTROL_SHADER);
+			break;
+		case GLSLShader::TESS_EVALUATION:
+			shaderHandle = glCreateShader(GL_TESS_EVALUATION_SHADER);
+			break;
+		default:
+			return false;
+	}
+
+    const GLchar * c_code = source.c_str();
+    glShaderSource( shaderHandle, 1, &c_code, NULL );
+
+    // Compile the shader
+    glCompileShader(shaderHandle );
+
+    // Check for errors
+    GLint result;
+    glGetShaderiv( shaderHandle, GL_COMPILE_STATUS, &result );
+
+    if( GL_FALSE == result ) {
+        // Compile failed, store log and return false
+        int length = 0;
+        logString = "";
+        glGetShaderiv(shaderHandle, GL_INFO_LOG_LENGTH, &length );
+        if( length > 0 ) {
+            char * c_log = new char[length];
+            int written = 0;
+            glGetShaderInfoLog(shaderHandle, length, &written, c_log);
+            logString = c_log;
+            delete [] c_log;
+        }
+
+        return false;
+    } else {
+        // Compile succeeded, attach shader and return true
+		glAttachShader(programHandle, shaderHandle);
+        return true;
+    }
 }
 
-void GLSLProgram::disable()
+bool GLSLProgram::link()
+{
+    if( linked ) return true;
+	if( programHandle <= 0 ) return false;
+
+    glLinkProgram(programHandle);
+
+    int status = 0;
+    glGetProgramiv( programHandle, GL_LINK_STATUS, &status);
+    if( GL_FALSE == status ) {
+        // Store log and return false
+        int length = 0;
+        logString = "";
+
+        glGetProgramiv(programHandle, GL_INFO_LOG_LENGTH, &length );
+
+        if( length > 0 ) {
+            GLchar * c_log = new GLchar[length];
+            GLsizei written = 0;
+            glGetProgramInfoLog(programHandle, length, &written, c_log);
+            logString = c_log;
+            delete[] c_log;
+        }
+
+        return false;
+    } else {
+        linked = true;
+        return linked;
+    }
+}
+
+GLuint GLSLProgram::getProgramHandle() 
+{ 
+	return programHandle; 
+};
+
+string GLSLProgram::log()
+{
+    return logString;
+}
+
+void GLSLProgram::use()
+{
+	if( programHandle <= 0 || (! linked) ) 
+		return;
+
+	glUseProgram(programHandle);
+}
+
+void GLSLProgram::unuse()
 {
 	glUseProgram(0);
 }
 
-void GLSLProgram::setUniform1f(const char *name, float value)
+void GLSLProgram::setUniform(const GLchar *name, float value)
 {
-	GLint loc = glGetUniformLocation(program, name);
-	if (loc >= 0) {
+	GLint loc = glGetUniformLocation(programHandle, name);
+	if (loc >= 0) 
+	{
 		glUniform1f(loc, value);
-	} else {
+	} 
+	else 
+	{
 #if _DEBUG
 		fprintf(stderr, "Error setting parameter '%s'\n", name);
 #endif
 	}
 }
 
-void
-	GLSLProgram::setUniform1i(const GLchar *name, GLint value)
+void GLSLProgram::setUniform(const GLchar *name, int value)
 {
-	GLint loc = glGetUniformLocation(program, name);
-	if (loc >= 0) {
+	GLint loc = glGetUniformLocation(programHandle, name);
+	if (loc >= 0) 
+	{
 		glUniform1i(loc, value);
-	} else {
+	} 
+	else 
+	{
 #if _DEBUG
-		fprintf(stderr, "Error setting parameter '%s'\n", name);
+		Error(string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
 
-void GLSLProgram::setUniform2f(const char *name, float x, float y)
+void GLSLProgram::setUniform(const GLchar *name, const vec2& v)
 {
-	GLint loc = glGetUniformLocation(program, name);
-	if (loc >= 0) {
-		glUniform2f(loc, x, y);
-	} else {
+	GLint loc = glGetUniformLocation(programHandle, name);
+	if (loc >= 0) 
+	{
+		glUniform2f(loc, v.x, v.y);
+	} 
+	else 
+	{
 #if _DEBUG
-		fprintf(stderr, "Error setting parameter '%s'\n", name);
+		Error(string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
 
-void GLSLProgram::setUniform3f(const char *name, float x, float y, float z)
+void GLSLProgram::setUniform(const GLchar *name, const vec3& v)
 {
-	GLint loc = glGetUniformLocation(program, name);
-	if (loc >= 0) {
-		glUniform3f(loc, x, y, z);
-	} else {
+	GLint loc = glGetUniformLocation(programHandle, name);
+	if (loc >= 0) 
+	{
+		glUniform3f(loc, v.x, v.y, v.z);
+	} 
+	else 
+	{
 #if _DEBUG
-		fprintf(stderr, "Error setting parameter '%s'\n", name);
+		Error(string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
 
-void GLSLProgram::setUniform4f(const char *name, float x, float y, float z, float w)
+void GLSLProgram::setUniform(const char *name,  const vec4& v)
 {
-	GLint loc = glGetUniformLocation(program, name);
-	if (loc >= 0) {
-		glUniform4f(loc, x, y, z, w);
-	} else {
+	GLint loc = glGetUniformLocation(programHandle, name);
+	if (loc >= 0) 
+	{
+		glUniform4f(loc, v.x, v.y, v.z, v.w);
+	} 
+	else 
+	{
 #if _DEBUG
-		fprintf(stderr, "Error setting parameter '%s'\n", name);
+		Error(string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
 
-void GLSLProgram::setUniformMatrix4fv(const GLchar *name, GLfloat *m, bool transpose)
+void GLSLProgram::setUniform(const GLchar *name, const mat3& m)
 {
-	GLint loc = glGetUniformLocation(program, name);
-	if (loc >= 0) {
-		glUniformMatrix4fv(loc, 1, transpose, m);
-	} else {
+	GLint loc = glGetUniformLocation(programHandle, name);
+	if (loc >= 0) 
+	{
+		glUniformMatrix3fv(loc, 1, GL_FALSE, &m[0][0]);
+	} 
+	else 
+	{
 #if _DEBUG
-		fprintf(stderr, "Error setting parameter '%s'\n", name);
+		Error(string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
 
-void GLSLProgram::setUniformfv(const GLchar *name, GLfloat *v, int elementSize, int count)
+void GLSLProgram::setUniform(const GLchar *name, const mat4& m)
 {
-	GLint loc = glGetUniformLocation(program, name);
-	if (loc == -1) {
-#ifdef _DEBUG
-		fprintf(stderr, "Error setting parameter '%s'\n", name);
+	GLint loc = glGetUniformLocation(programHandle, name);
+	if (loc >= 0) 
+	{
+		glUniformMatrix4fv(loc, 1, GL_FALSE, &m[0][0]);
+	} 
+	else 
+	{
+#if _DEBUG
+		Error(string("Error setting parameter '") + name + "'");
+#endif
+	}
+}
+
+void GLSLProgram::setUniformArray(const GLchar *name, GLfloat *v, int elementSize, int count)
+{
+	GLint loc = glGetUniformLocation(programHandle, name);
+	if (loc == -1) 
+	{
+#if _DEBUG
+		Error(string("Error setting parameter '") + name + "'");
 #endif
 		return;
 	}
@@ -141,13 +275,13 @@ void GLSLProgram::setUniformfv(const GLchar *name, GLfloat *v, int elementSize, 
 	}
 }
 
-void GLSLProgram::bindTexture(const char *name, GLuint tex, GLenum target, GLint unit)
+void GLSLProgram::bindTexture(const GLchar *name, GLuint tex, GLenum target, GLint unit)
 {
-	GLint loc = glGetUniformLocation(program, name);
+	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) {
 		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(target, tex);
-		glUseProgram(program);
+		glUseProgram(programHandle);
 		glUniform1i(loc, unit);
 		glActiveTexture(GL_TEXTURE0);
 	} else {
@@ -158,125 +292,53 @@ void GLSLProgram::bindTexture(const char *name, GLuint tex, GLenum target, GLint
 }
 
 
-GLboolean GLSLProgram::checkCompileStatus(GLuint shader, GLint *status)
+std::vector<std::string> GLSLProgram::getVertexAttributes()
 {
-	glGetShaderiv(shader, GL_COMPILE_STATUS, status);
-	if (!(*status)) {
-		/*char log[2048];
-		int len;
-		glGetShaderInfoLog(shader, 2048, (GLsizei*)&len, log);
-		printf("Error: shader(%04d), Info log: %s\n", (int)shader, log);
-		glDeleteShader(shader);*/
-		return GL_FALSE;
-	}
-	return GL_TRUE;
-}
+	GLint nAttribs, maxLength, charsWritten, size;
+	GLenum type;
 
-std::string GLSLProgram::getErrorLog(GLint id, bool isShader = true)
-{
-	GLsizei logLength;
-	glGetShaderiv(id, GL_INFO_LOG_LENGTH, &logLength);
+	glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTES,&nAttribs);
+	glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH,&maxLength);
 
-	if(logLength > 0)
+	GLchar* currentAttrib = new GLchar[maxLength];
+
+	std::vector<std::string> attribNames(nAttribs);
+
+	for (int i = 0; i < nAttribs; i++)
 	{
-		
-		GLchar* errorMsg = new GLchar[logLength];
-		GLsizei writtenLength;
-		if(isShader)
-			glGetShaderInfoLog(id,logLength,&writtenLength,errorMsg);
-		else
-			glGetProgramInfoLog(id,logLength,&writtenLength,errorMsg);
-
-		std::string s(errorMsg);
-		delete[] errorMsg;
-
-		return s;
+		glGetActiveAttrib(programHandle, i, maxLength, &charsWritten, &size, &type, currentAttrib);
+		attribNames.push_back(std::string(currentAttrib));
 	}
 
-	return std::string();
+	delete[] currentAttrib;
+	return attribNames;
+
 }
 
-
-GLuint GLSLProgram::compileProgram(const GLchar *vsource, const GLchar *gsource, const GLchar *fsource,
-								   GLenum gsInput, GLenum gsOutput)
+std::vector<std::string> GLSLProgram::getUniformAttributes()
 {
-	GLuint vertexShader   = glCreateShader(GL_VERTEX_SHADER);
-	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	GLint nAttribs, maxLength, charsWritten, size;
+	GLenum type;
 
-	GLint compiled = 0;
+	glGetProgramiv(programHandle, GL_ACTIVE_UNIFORMS,&nAttribs);
+	glGetProgramiv(programHandle, GL_ACTIVE_UNIFORM_MAX_LENGTH,&maxLength);
 
-	glShaderSource(vertexShader, 1, &vsource, NULL);
-	glShaderSource(fragmentShader, 1, &fsource, NULL);
+	GLchar* currentAttrib = new GLchar[maxLength];
 
-	glCompileShader(vertexShader);
-	if (checkCompileStatus(vertexShader, &compiled) == GL_FALSE) {
-		
-		std::string errorMsg = getErrorLog(vertexShader);
-		std::cerr << "<compileProgram compilation error with vertexShader>:\n"  << errorMsg << std::endl; 
-		return 0;
+	std::vector<std::string> attribNames(nAttribs);
+
+	for (int i = 0; i < nAttribs; i++)
+	{
+		glGetActiveUniform(programHandle, i, maxLength, &charsWritten, &size, &type, currentAttrib);
+		attribNames.push_back(std::string(currentAttrib));
 	}
 
-	glCompileShader(fragmentShader);
-	if (checkCompileStatus(fragmentShader, &compiled) == GL_FALSE) {
+	delete[] currentAttrib;
+	return attribNames;
 
-		std::string errorMsg = getErrorLog(fragmentShader);
-		std::cerr << "<compileProgram compilation error with fragmentShader>:\n" << errorMsg << std::endl; 
-
-		return 0;
-	}
-
-	GLuint program = glCreateProgram();
-
-	glAttachShader(program, vertexShader);
-	glAttachShader(program, fragmentShader);
-
-	GLuint geomShader;
-	bool useGeomShader = (gsource != NULL);
-
-	if (useGeomShader) {
-		geomShader = glCreateShader(GL_GEOMETRY_SHADER_EXT);
-		glShaderSource(geomShader, 1, &gsource, 0);
-		glCompileShader(geomShader);
-		glGetShaderiv(geomShader, GL_COMPILE_STATUS, (GLint*)&compiled);
-
-		if (checkCompileStatus(geomShader, &compiled) == GL_FALSE) {
-			
-			std::string errorMsg = getErrorLog(geomShader);			
-			std::cerr << "<compileProgram compilation error with geomShader>:\n" << errorMsg << std::endl; 
-
-			return 0;
-		}
-
-		glAttachShader(program, geomShader);
-
-		glProgramParameteriEXT(program, GL_GEOMETRY_INPUT_TYPE_EXT, gsInput);
-		glProgramParameteriEXT(program, GL_GEOMETRY_OUTPUT_TYPE_EXT, gsOutput); 
-		glProgramParameteriEXT(program, GL_GEOMETRY_VERTICES_OUT_EXT, 4); 
-	}
-
-	glLinkProgram(program);
-
-	// check if program linked
-	GLint success = 0;
-	glGetProgramiv(program, GL_LINK_STATUS, &success);
-
-	if (!success) {
-			
-		std::string errorMsg = getErrorLog(program,false);			
-		std::cerr << "<Failed to link program>:\n" << errorMsg << std::endl; 
-
-		glDeleteProgram(program);
-		glDeleteShader(vertexShader);
-		glDeleteShader(fragmentShader);
-
-		if(useGeomShader)
-			glDeleteShader(geomShader);
-
-		program = 0;
-	}
-
-	return program;
 }
+
+///// FILE utils
 
 unsigned long GLSLProgram::getFileLength(std::ifstream& file)
 {
@@ -289,6 +351,8 @@ unsigned long GLSLProgram::getFileLength(std::ifstream& file)
 
 	return len;
 }
+
+
 
 const char* GLSLProgram::loadSource(char* filename)
 {
@@ -322,5 +386,3 @@ const char* GLSLProgram::loadSource(char* filename)
 
 	return (const char*)ShaderSource;
 }
-
-

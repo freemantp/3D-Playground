@@ -85,7 +85,14 @@ void Initialize(int argc, char* argv[])
 		glGetString(GL_VERSION)
 		);
 
-	p = new GLSLProgram(GLSLProgram::loadSource("../data/shader/basic.vert"),GLSLProgram::loadSource("../data/shader/basic.frag"));
+	string vertexShaderSource = GLSLProgram::loadSource("../data/shader/basic.vert");
+	string fragmentShaderSource = GLSLProgram::loadSource("../data/shader/basic.frag");
+	
+	p = new GLSLProgram();
+
+	bool success = p->compileShaderFromString(vertexShaderSource, GLSLShader::VERTEX);
+	success = p->compileShaderFromString(fragmentShaderSource, GLSLShader::FRAGMENT);
+	success = p->link();
 
 }
 
@@ -147,8 +154,9 @@ void RenderFunction(void)
 	glBindAttribLocation(p->getProgramHandle(), 0, "VertexPosition");
 	glBindAttribLocation(p->getProgramHandle(), 1, "VertexColor");
 
-	p->enable();
+	p->use();
 	tri->render(cam);
+	p->unuse();
 
 	glutSwapBuffers();
 	glutPostRedisplay();

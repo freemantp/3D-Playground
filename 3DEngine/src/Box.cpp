@@ -7,31 +7,83 @@ void Box::init(void) {
 
 	enum {Position, Color, Index};
 
-	GLfloat n[6][3] = {  /* Normals for the 6 faces of a cube. */
-		{-1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {1.0, 0.0, 0.0},
-		{0.0, -1.0, 0.0}, {0.0, 0.0, 1.0}, {0.0, 0.0, -1.0} };
-	GLint faces[6][4] = {  /* Vertex indices for the 6 faces of a cube. */
-		{0, 1, 2, 3}, {3, 2, 6, 7}, {7, 6, 5, 4},
-		{4, 5, 1, 0}, {5, 6, 2, 1}, {7, 4, 0, 3} };
+	/**
+	 * These are vertex coordinates. 3 subsequent values form a vertex
+	 */
+	float s = 0.5f;
+	float vertexData[] = {	
+		-s,-s, s,
+		s,-s, s,
+		s, s, s,
+		-s, s, s,		
 
-	GLfloat v[8][3];  /* Will be filled in with X,Y,Z vertexes. */
+		s,-s, s,
+		s,-s,-s,
+		s, s,-s,
+		s, s, s,
 
-	/* Setup cube vertex data. */
-	v[0][0] = v[1][0] = v[2][0] = v[3][0] = -0.5f;
-	v[4][0] = v[5][0] = v[6][0] = v[7][0] = 0.5f;
-	v[0][1] = v[1][1] = v[4][1] = v[5][1] = -0.5f;
-	v[2][1] = v[3][1] = v[6][1] = v[7][1] = 0.5f;
-	v[0][2] = v[3][2] = v[4][2] = v[7][2] = 0.5f;
-	v[1][2] = v[2][2] = v[5][2] = v[6][2] = -0.5f;
+		s,-s,-s,
+		-s,-s,-s,
+		-s, s,-s,
+		s, s,-s,
 
-	GLfloat c[8][3];  /* Will be filled in with X,Y,Z vertexes. */
+		-s,-s,-s,
+		-s,-s, s,
+		-s, s, s,
+		-s, s,-s,
 
-	c[0][0] = c[1][0] = c[2][0] = c[3][0] = 1.0f;
-	c[4][0] = c[5][0] = c[6][0] = c[7][0] = 0.5f;
-	c[0][1] = c[1][1] = c[4][1] = c[5][1] = 0.0f;
-	c[2][1] = c[3][1] = c[6][1] = c[7][1] = 0.5f;
-	c[0][2] = c[3][2] = c[4][2] = c[7][2] = 0.5f;
-	c[1][2] = c[2][2] = c[5][2] = c[6][2] = 1.0f;
+		-s, s, s,
+		s, s, s,
+		s, s,-s,
+		-s, s,-s, 
+
+		-s,-s, s,
+		s,-s, s,
+		s,-s,-s,
+		-s,-s,-s 
+	};
+
+	/**
+	* Texture coordinates in [0,1]. 2 values form a coord
+	*/
+	float textureData[] = { 0, 0,	1, 0,	1, 1,	0, 1,
+		0, 0,	1, 0,	1, 1,	0, 1,
+		0, 0,	1, 0,	1, 1,	0, 1,
+		0, 0,	1, 0,	1, 1,	0, 1,
+		0, 0,	1, 0,	1, 1,	0, 1,
+		0, 0,	1, 0,	1, 1,	0, 1,
+
+	};
+
+	/**
+	* Face indices, 3 values form a triangle face. The numbers reference
+	* values in the vertexData array
+	*/
+	int indexData[] = 	 {	0,1,2,
+		0,2,3,
+
+		4,5,6,
+		4,6,7,
+
+		8,9,10,
+		8,10,11,
+
+		12,13,14,
+		12,14,15,
+
+		16,17,18,
+		16,18,19,
+
+		20,21,22,
+		20,22,23		
+	};
+
+
+	std::vector<float> pos(vertexData, vertexData+72);
+	std::vector<float> col(textureData, textureData+48);
+	std::vector<int> idx(indexData, indexData+36);
+
+	initBuffers(pos,col,idx);
 
 }
 
@@ -48,7 +100,7 @@ void Box::render(Camera* cam) {
 	glLoadMatrixf(&mvp[0][0]);*/
 
     glBindVertexArray(vaoHandle);
-	glDrawElements(GL_QUADS,24,GL_UNSIGNED_INT, (GLvoid*)NULL);
+	glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_INT, (GLvoid*)NULL);
                 
 	glBindVertexArray(0);
 

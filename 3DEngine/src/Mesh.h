@@ -8,7 +8,7 @@ public:
 	Mesh(void);
 	~Mesh(void);
 
-	virtual void render(void);
+	virtual void render(Camera* cam);
 
 protected:
 
@@ -17,6 +17,6 @@ protected:
 					 const std::vector<int>& indices);
 
 	GLuint vaoHandle;
-	int numIndices;
+	size_t numIndices;
 };
 
