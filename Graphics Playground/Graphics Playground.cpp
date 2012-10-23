@@ -4,6 +4,7 @@
 #include "Triangle.h"
 #include "TestCamera.h"
 #include "GLSLProgram.h"
+#include "Util.h"
 
 #define WINDOW_TITLE_PREFIX "Box"
 
@@ -63,19 +64,45 @@ void initGL(void)
 
 }
 
+bool getShader()
+{
+	p = new GLSLProgram();
+
+	string vertexShaderSource = Util::loadTextFile("../data/shader/basic.vert");
+	string fragmentShaderSource = Util::loadTextFile("../data/shader/basic.frag");
+
+	if (!p->compileShaderFromString(vertexShaderSource, GLSLShader::VERTEX))  
+	{
+		Error("--- Vertex Shader ---\n" + p->log());
+		return false;
+	}
+
+	if (!p->compileShaderFromString(fragmentShaderSource, GLSLShader::FRAGMENT)) 
+	{
+		Error("--- Fragment Shader ---\n" + p->log());
+		return false;
+	}
+
+	if (!p->link()) {
+		Error("--- Linker ---\n" + p->log());
+		return false;
+	}
+
+	int pos =  glGetAttribLocation(p->getProgramHandle(),"vertexPosition");
+	int norm = glGetAttribLocation(p->getProgramHandle(),"vertexNormal");
+	int col =  glGetAttribLocation(p->getProgramHandle(),"vertexColor");
+
+	Util::printStrings(p->getVertexAttributes());
+	Util::printStrings(p->getUniformAttributes());
+	return true;
+}
+
 void initContent(void)
 {
 	cam = new TestCamera();
 	cam->init();
 
-	p = new GLSLProgram();
-
-	string vertexShaderSource = GLSLProgram::loadSource("../data/shader/basic.vert");
-	string fragmentShaderSource = GLSLProgram::loadSource("../data/shader/basic.frag");
-
-	bool success = p->compileShaderFromString(vertexShaderSource, GLSLShader::VERTEX);
-	success = p->compileShaderFromString(fragmentShaderSource, GLSLShader::FRAGMENT);
-	success = p->link();
+	bool shaderSet = getShader();
 
 	tri = new Triangle();
 	box = new Box();
@@ -83,7 +110,10 @@ void initContent(void)
 	tri->init();
 	box->init();
 
-	tri->setShader(p);
+	if(shaderSet)
+		tri->setShader(p);
+	else
+		Error("Shader was not loaded");
 }
 
 void Initialize(int argc, char* argv[])
@@ -91,9 +121,14 @@ void Initialize(int argc, char* argv[])
 
 	InitWindow(argc, argv);
 	initGL();
-	initContent();
+	
 
 	fprintf( stdout, "INFO: OpenGL Version: %s\n", glGetString(GL_VERSION) );
+
+	GLint num;
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &num);
+
+	initContent();
 
 }
 

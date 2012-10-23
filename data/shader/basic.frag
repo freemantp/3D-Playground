@@ -1,9 +1,14 @@
 #version 400
 
-in vec3 Color;
-out vec4 FragColor;
+in vec3 color;
+in vec3 normal;
+
+out vec4 fragColor;
 
 void main()
 {
-	FragColor = vec4(Color, 1.0);
+	
+	vec3 n = normalize(normal);
+
+	fragColor = vec4(color * n, 1.0);
 }

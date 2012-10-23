@@ -1,20 +1,17 @@
-/*
-* Copyright 1993-2010 NVIDIA Corporation.  All rights reserved.
-*
-* Please refer to the NVIDIA end user license agreement (EULA) associated
-* with this source code for terms and conditions that govern your use of
-* this software. Any use, reproduction, disclosure, or distribution of
-* this software and related documentation outside the terms of the EULA
-* is strictly prohibited.
-*
-*/
-
 #include "stdafx.h"
 #include "GLSLProgram.h"
-#include <cstdlib>
 #include <string>
 
-GLSLProgram::GLSLProgram() : programHandle(0), linked(false) { }
+GLSLProgram::GLSLProgram() : programHandle(0), linked(false) 
+{
+    programHandle = glCreateProgram();
+
+    if( programHandle == 0) 
+	{
+        logString = "Unable to create shader program.";
+    }
+    
+}
 
 GLSLProgram::~GLSLProgram()
 {
@@ -25,16 +22,6 @@ GLSLProgram::~GLSLProgram()
 
 bool GLSLProgram::compileShaderFromString( const string & source, GLSLShader::GLSLShaderType type )
 {
-    if( programHandle <= 0 ) 
-	{
-        programHandle = glCreateProgram();
-        if( programHandle == 0) 
-		{
-            logString = "Unable to create shader program.";
-            return false;
-        }
-    }
-
     GLuint shaderHandle = 0;
 
 	switch( type ) 
@@ -68,21 +55,13 @@ bool GLSLProgram::compileShaderFromString( const string & source, GLSLShader::GL
     GLint result;
     glGetShaderiv( shaderHandle, GL_COMPILE_STATUS, &result );
 
-    if( GL_FALSE == result ) {
-        // Compile failed, store log and return false
-        int length = 0;
-        logString = "";
-        glGetShaderiv(shaderHandle, GL_INFO_LOG_LENGTH, &length );
-        if( length > 0 ) {
-            char * c_log = new char[length];
-            int written = 0;
-            glGetShaderInfoLog(shaderHandle, length, &written, c_log);
-            logString = c_log;
-            delete [] c_log;
-        }
-
-        return false;
-    } else {
+	if( GL_FALSE == result ) 
+	{       
+		logString = getInfoLog(shaderHandle);
+		return false;
+	} 
+	else 
+	{
         // Compile succeeded, attach shader and return true
 		glAttachShader(programHandle, shaderHandle);
         return true;
@@ -91,29 +70,23 @@ bool GLSLProgram::compileShaderFromString( const string & source, GLSLShader::GL
 
 bool GLSLProgram::link()
 {
-    if( linked ) return true;
-	if( programHandle <= 0 ) return false;
+    if( linked ) 
+		return true;
+
+	if( programHandle <= 0 ) 
+	{
+		logString = "Invalid program handle";
+		return false;
+	}
 
     glLinkProgram(programHandle);
 
     int status = 0;
     glGetProgramiv( programHandle, GL_LINK_STATUS, &status);
-    if( GL_FALSE == status ) {
-        // Store log and return false
-        int length = 0;
-        logString = "";
-
-        glGetProgramiv(programHandle, GL_INFO_LOG_LENGTH, &length );
-
-        if( length > 0 ) {
-            GLchar * c_log = new GLchar[length];
-            GLsizei written = 0;
-            glGetProgramInfoLog(programHandle, length, &written, c_log);
-            logString = c_log;
-            delete[] c_log;
-        }
-
-        return false;
+    if( GL_TRUE != status ) 
+	{
+		logString = getInfoLog(programHandle);
+		return false;
     } else {
         linked = true;
         return linked;
@@ -343,61 +316,53 @@ std::vector<std::string> GLSLProgram::getUniformAttributes()
 
 }
 
-void GLSLProgram::bindAttribLocation( GLuint location, const char * name)
+bool GLSLProgram::bindAttribLocation( GLuint location, const char * name)
 {
-    glBindAttribLocation(programHandle, location, name);
+	if(linked) 
+		return false;
+	
+	glBindAttribLocation(programHandle, location, name);
+	return true;
+
 }
 
-void GLSLProgram::bindFragDataLocation( GLuint location, const char * name )
+bool GLSLProgram::bindFragDataLocation( GLuint location, const char * name )
 {
-    glBindFragDataLocation(programHandle, location, name);
+    if(linked) 
+		return false;
+	
+	glBindFragDataLocation(programHandle, location, name);
+	return true;
+	
 }
 
-///// FILE utils
-
-unsigned long GLSLProgram::getFileLength(std::ifstream& file)
+string GLSLProgram::getInfoLog(GLuint handle) 
 {
-	if(!file.good()) return 0;
 
-	unsigned long pos=(unsigned long)file.tellg();
-	file.seekg(0,std::ios::end);
-	unsigned long len = (unsigned long)file.tellg();
-	file.seekg(std::ios::beg);
+	bool isShader = glIsShader(handle) ;
 
-	return len;
-}
+	// Compile failed, store log and return false
+	int length = 0;
+	string  logString = "";
+
+	if(isShader)
+		glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &length );
+	else
+		glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &length );
+
+	if(length > 0 ) {
+		GLchar * c_log = new GLchar[length];
+		int written = 0;
+
+		if(isShader)
+			glGetShaderInfoLog(handle, length, &written, c_log);
+		else
+			glGetProgramInfoLog(handle, length, &written, c_log);
 
 
-
-const char* GLSLProgram::loadSource(char* filename)
-{
-	std::ifstream file;
-	file.open(filename, std::ios::in);
-	/*if(!file) 
-	return -1;*/
-
-	unsigned long len = getFileLength(file);
-
-	/*if (len==0) 
-	return -2;   // "Empty File" */
-
-	GLubyte* ShaderSource = (GLubyte*) new char[len+1];
-	/*if (ShaderSource == 0) 
-	return -3;   // can't reserve memory*/
-
-	ShaderSource[len] = 0;  // len isn't always strlen cause some characters are stripped in ascii read...
-	// it is important to 0-terminate the real length later, len is just max possible value...
-	unsigned int i=0;
-	while (file.good())
-	{
-		ShaderSource[i] = file.get();       // get character from file.
-		if (!file.eof())
-			i++;
+		logString = c_log;
+		delete [] c_log;
 	}
 
-	ShaderSource[i] = 0;  // 0 terminate it.
-
-	file.close();
-
-	return (const char*)ShaderSource;
+	return logString;
 }

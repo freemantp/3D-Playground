@@ -18,6 +18,11 @@ void Triangle::init(void) {
          0.8f, -0.8f, 0.0f,
          0.0f,  0.8f, 0.0f };
 
+	float normalData[] = {
+         0.0f,  0.0f, 1.0f,
+         0.0f,  0.0f, 1.0f,
+         0.0f,  0.0f, 1.0f };
+
     float colorData[] = {
         1.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f,
@@ -26,9 +31,13 @@ void Triangle::init(void) {
 	int indices[] = { 0, 1, 2};
 
 	std::vector<float> pos(positionData, positionData+9);
+	std::vector<float> norm(normalData, normalData+9);
 	std::vector<float> col(colorData, colorData+9);
 	std::vector<int> idx(indices, indices+3);
 
-	initBuffers(pos,col,idx);
+	
+	setPositions(pos,idx);
+	setNormals(norm);
+	setColors(col);
 
 }

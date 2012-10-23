@@ -37,6 +37,12 @@
     <Filter Include="Source Files\shaders">
       <UniqueIdentifier>{64af6127-b2d8-460e-ac70-eb551538cd76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{5e104c5f-1d2a-4848-9988-b04bfa383fbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{70a0c7ef-f91b-488a-81cd-736423dd5069}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -78,6 +84,9 @@
     <ClInclude Include="src\Mesh.h">
       <Filter>Header Files\shapes</Filter>
     </ClInclude>
+    <ClInclude Include="src\Util.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
@@ -106,6 +115,9 @@
     </ClCompile>
     <ClCompile Include="src\Mesh.cpp">
       <Filter>Source Files\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Util.cpp">
+      <Filter>Source Files\util</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

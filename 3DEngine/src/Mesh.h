@@ -10,13 +10,23 @@ public:
 
 	virtual void render(const Camera& cam);
 
+	bool setPositions(const std::vector<float>& positions, const std::vector<int>& indices);
+	bool setNormals(const std::vector<float>& normals);
+	bool setTextureCoordinates(const std::vector<float>& texCoords);
+	bool setColors(const std::vector<float>& colors);
+
 protected:
 
-	void initBuffers(const std::vector<float>& positions, 
-					 const std::vector<float>& colors, 
-					 const std::vector<int>& indices);
+	enum {Position, Index, Normal, Color, Texture} ;
 
 	GLuint vaoHandle;
 	size_t numIndices;
+	GLuint* bufferObjects;
+
+	static const int vertPosAttribIdx = 0;
+	static const int vertColorAttribIdx = 1;
+	static const int vertNormalAttribIdx = 2;
+	static const int vertTexAttribIdx = 3;
+
 };
 

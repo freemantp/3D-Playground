@@ -83,7 +83,8 @@ void Box::init(void) {
 	std::vector<float> col(textureData, textureData+48);
 	std::vector<int> idx(indexData, indexData+36);
 
-	initBuffers(pos,col,idx);
+	setPositions(pos,idx);
+	setColors(col);
 
 }
 

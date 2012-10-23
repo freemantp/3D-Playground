@@ -1,14 +1,17 @@
 #version 400
 
-in vec3 VertexPosition;
-in vec3 VertexColor;
+in vec3 vertexPosition;
+in vec3 vertexColor;
+in vec3 vertexNormal;
+
+out vec3 color;
+out vec3 normal;
 
 uniform mat4 mvp;
 
-out vec3 Color;
-
 void main()
 {
-  Color = VertexColor;
-  gl_Position = mvp * vec4( VertexPosition, 1.0 );
+    color = vertexColor;
+	normal = vertexNormal;
+    gl_Position = mvp * vec4( vertexPosition, 1.0 );
 }

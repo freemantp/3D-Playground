@@ -2,9 +2,6 @@
 #pragma once
 
 #include "stdafx.h"
-
-#include <iostream>
-#include <fstream>
 #include <vector>
 #include <string>
 
@@ -50,23 +47,22 @@ public:
 	void setUniformArray(const GLchar *name, float *v, int elementSize, int count=1);
 	void bindTexture(const char *name, GLuint tex, GLenum target, GLint unit);
 
-	static const char* loadSource(char* filename);
-
 	GLuint getProgramHandle() const;
 
 	std::vector<std::string>  getVertexAttributes();
 	std::vector<std::string>  getUniformAttributes();
 
-	void bindAttribLocation( GLuint location, const char * name);
-    void bindFragDataLocation( GLuint location, const char * name );
+	bool bindAttribLocation( GLuint location, const char * name);
+    bool bindFragDataLocation( GLuint location, const char * name );
 	
 protected:
+
+	string getInfoLog(GLuint shaderHandle);
 
 	GLuint programHandle;
 	string logString;
 	bool linked;
 
-	static unsigned long getFileLength(std::ifstream& file);
 };
 
 
