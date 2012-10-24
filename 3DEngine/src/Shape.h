@@ -11,13 +11,11 @@ class Shape
 {
 public:
 
-	Shape() : shaderProgram(NULL)
-	{ 
-		worldTransform = glm::mat4(1.0f);
-	};
+	Shape(void);
+	~Shape(void);
 
 	virtual void init(void) = 0;
-	virtual void render(const Camera& cam) = 0;
+	virtual void render(const Camera& cam) const = 0;
 
 	void setShader(GLSLProgram* shader)
 	{

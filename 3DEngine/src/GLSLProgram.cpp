@@ -216,7 +216,7 @@ void GLSLProgram::setUniform(const GLchar *name, const mat4& m)
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) 
 	{
-		glUniformMatrix4fv(loc, 1, GL_FALSE, &m[0][0]);
+		glUniformMatrix4fv(loc, 1, GL_TRUE, &m[0][0]);
 	} 
 	else 
 	{
@@ -339,13 +339,13 @@ bool GLSLProgram::bindFragDataLocation( GLuint location, const char * name )
 string GLSLProgram::getInfoLog(GLuint handle) 
 {
 
-	bool isShader = glIsShader(handle) ;
+	GLboolean isShader = glIsShader(handle) ;
 
 	// Compile failed, store log and return false
 	int length = 0;
 	string  logString = "";
 
-	if(isShader)
+	if(isShader == GL_TRUE)
 		glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &length );
 	else
 		glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &length );

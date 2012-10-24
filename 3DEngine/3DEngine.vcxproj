@@ -26,6 +26,7 @@
     <ClInclude Include="src\GLSLProgram.h" />
     <ClInclude Include="src\Matrix4x4.h" />
     <ClInclude Include="src\Mesh.h" />
+    <ClInclude Include="src\ObjLoader.h" />
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\Shape.h" />
     <ClInclude Include="src\stdafx.h" />
@@ -39,10 +40,13 @@
     <ClCompile Include="src\GLSLProgram.cpp" />
     <ClCompile Include="src\Matrix4x4.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
+    <ClCompile Include="src\ObjLoader.cpp" />
     <ClCompile Include="src\Point.cpp" />
+    <ClCompile Include="src\Shape.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Transform.cpp" />
     <ClCompile Include="src\Triangle.cpp" />
@@ -103,6 +107,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <SourcePath>${ProjectDir}\src;$(SourcePath)</SourcePath>
     <IncludePath>C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;$(IncludePath)</IncludePath>
+    <SourcePath>${ProjectDir}\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

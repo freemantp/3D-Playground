@@ -11,7 +11,9 @@ Triangle::~Triangle(void)
 {
 }
 
-void Triangle::init(void) {
+void Triangle::init(void)  {
+
+	Mesh::init();
 
 	float positionData[] = {
         -0.8f, -0.8f, 0.0f,

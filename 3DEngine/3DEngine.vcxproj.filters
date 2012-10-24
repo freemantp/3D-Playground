@@ -87,6 +87,9 @@
     <ClInclude Include="src\Util.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="src\ObjLoader.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
@@ -118,6 +121,12 @@
     </ClCompile>
     <ClCompile Include="src\Util.cpp">
       <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ObjLoader.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shape.cpp">
+      <Filter>Source Files\shapes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

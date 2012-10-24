@@ -12,18 +12,17 @@ TestCamera::TestCamera(void)
 
 TestCamera::~TestCamera(void)
 {
-}
 
+}
 
 void TestCamera::init(void) 
 {
+	vec3 position =  vec3(0.0f, 0.0f, 10.0f);
+	vec3 center =    vec3(0.0f, 0.0f, 0.0f);
+	vec3 up =        vec3(0.0f, 1.0f, 0.0f);
 
-	vec4 position =  vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	viewMatrix = glm::lookAt( position, center, up);
 
-	viewMatrix = glm::lookAt( vec3(0.0f, 0.0f, 5.0f),
-							  vec3(0.0f, 0.0f, 0.0f),
-							  vec3(0.0f, 1.0f, 0.0f));
-
-	projectionMatrix  = glm::perspective(40.0f, 1.0f, 1.0f, 10.0f);
+	projectionMatrix  = glm::perspective(60.0f, 1.0f, 1.0f, 10.0f);
 
 }

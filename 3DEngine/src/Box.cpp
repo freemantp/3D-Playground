@@ -5,6 +5,8 @@
 
 void Box::init(void) {
 
+	Mesh::init();
+
 	enum {Position, Color, Index};
 
 	/**
@@ -88,7 +90,7 @@ void Box::init(void) {
 
 }
 
-void Box::render(const Camera& cam)  {
+void Box::render(const Camera& cam) const {
 
 	/*glm::mat4 ident = glm::mat4(1.0f);
 	glm::mat4 world = glm::translate(ident, glm::vec3(0.0f,0.0f,-1.0f));

@@ -6,6 +6,6 @@ class Box : public Mesh
 public:
 
 	virtual void init(void);
-	virtual void render(const Camera& cam);
+	virtual void render(const Camera& cam) const;
 };
 

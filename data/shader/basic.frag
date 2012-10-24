@@ -9,6 +9,5 @@ void main()
 {
 	
 	vec3 n = normalize(normal);
-
-	fragColor = vec4(color * n, 1.0);
+	fragColor = vec4(1,0,0, 1.0);
 }

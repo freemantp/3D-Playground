@@ -6,6 +6,10 @@
 #include "GLSLProgram.h"
 #include "Util.h"
 
+#include <objLoader.h>
+#include <ctime>
+
+
 #define WINDOW_TITLE_PREFIX "Box"
 
 int CurrentWidth = 800,
@@ -20,10 +24,19 @@ void RenderFunction(void);
 
 int main(int argc, char* argv[])
 {
-	Initialize(argc, argv);
+	
+	ObjLoader oj;
+
+	clock_t begin = clock();
+	oj.loadObjFile("../data/models/cube.obj");
+	clock_t end = clock();
+	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC * 1000;
+	std::cout << "time [msec]: " << elapsed_secs << std::endl;
+
+	/*Initialize(argc, argv);
 
 
-	glutMainLoop();
+	glutMainLoop();*/
 
 	getchar();
 
@@ -35,8 +48,10 @@ GLfloat light_position[] = {1.0, 1.0, 1.0, 0.0};  /* Infinite light location. */
 
 Triangle* tri;
 Box* box;
+Mesh* cow;
 Camera* cam;
 GLSLProgram* p;
+//objLoader* objData;
 
 bool light = false;
 
@@ -104,14 +119,69 @@ void initContent(void)
 
 	bool shaderSet = getShader();
 
+	/*char* path = "../data/models/cube.obj";
+
+	//Load Alias Wavefront obj file	
+	objData = new objLoader();
+
+	cout << "Loading "<< path << " ";
+	if(objData->load(path) == 1) {
+
+		//Check for presence of vertex normals
+		if(objData->vertexCount == objData->normalCount) {
+			cout << "succeeded " << "(" << objData->vertexCount << " vertices/normals, " << objData->faceCount << " faces)" << endl;
+		}
+		else {
+			cerr << "failed: missing vertex normals" << endl;
+		}
+	} else {
+		cerr << "failed: Obj file could not be loaded" << endl;
+	}
+
+	vector<float> positions;
+	vector<float> normals;
+	vector<int> indices;
+
+	positions.reserve(objData->vertexCount * 3);
+	normals.reserve(objData->normalCount * 3);
+	indices.reserve(objData->faceCount * 3);
+
+	//Iterate over faces
+	for(int i=0; i < objData->vertexCount; i++) 
+	{            
+		obj_vector* v = objData->vertexList[i];
+		positions.push_back((float)v->e[0]);
+		positions.push_back((float)v->e[1]);
+		positions.push_back((float)v->e[2]);
+		
+		obj_vector* n = objData->normalList[i];	
+		normals.push_back((float)n->e[0]);
+		normals.push_back((float)n->e[1]);
+		normals.push_back((float)n->e[2]);
+	}
+
+	for(int i=0; i < objData->faceCount; i++) 
+	{
+		obj_face *f  = objData->faceList[i];
+		indices.push_back(f->vertex_index[0]);
+		indices.push_back(f->vertex_index[1]);
+		indices.push_back(f->vertex_index[2]);
+	}
+	
+	cow = new Mesh();
+	cow->setPositions(positions,indices);
+	cow->setNormals(normals);*/
+
 	tri = new Triangle();
 	box = new Box();
 
 	tri->init();
 	box->init();
 
-	if(shaderSet)
+	if(shaderSet) {
 		tri->setShader(p);
+		cow->setShader(p);
+	}
 	else
 		Error("Shader was not loaded");
 }

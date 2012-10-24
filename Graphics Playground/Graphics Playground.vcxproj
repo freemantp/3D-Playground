@@ -79,6 +79,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)\3DEngine\src;C:\Development\Freeglut\include;C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;$(SolutionDir)\ObjLoader;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\x64\Release;C:\Development\Freeglut\lib\x64\Release;C:\Development\glew-1.9.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -135,6 +137,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>3DEngine.lib;freeglut.lib;glew32.lib;ObjLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
