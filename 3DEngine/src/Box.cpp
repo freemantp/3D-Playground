@@ -12,99 +12,67 @@ void Box::init(void) {
 	/**
 	 * These are vertex coordinates. 3 subsequent values form a vertex
 	 */
-	float s = 0.5f;
+	
 	float vertexData[] = {	
-		-s,-s, s,
-		s,-s, s,
-		s, s, s,
-		-s, s, s,		
-
-		s,-s, s,
-		s,-s,-s,
-		s, s,-s,
-		s, s, s,
-
-		s,-s,-s,
-		-s,-s,-s,
-		-s, s,-s,
-		s, s,-s,
-
-		-s,-s,-s,
-		-s,-s, s,
-		-s, s, s,
-		-s, s,-s,
-
-		-s, s, s,
-		s, s, s,
-		s, s,-s,
-		-s, s,-s, 
-
-		-s,-s, s,
-		s,-s, s,
-		s,-s,-s,
-		-s,-s,-s 
-	};
-
-	/**
-	* Texture coordinates in [0,1]. 2 values form a coord
-	*/
-	float textureData[] = { 0, 0,	1, 0,	1, 1,	0, 1,
-		0, 0,	1, 0,	1, 1,	0, 1,
-		0, 0,	1, 0,	1, 1,	0, 1,
-		0, 0,	1, 0,	1, 1,	0, 1,
-		0, 0,	1, 0,	1, 1,	0, 1,
-		0, 0,	1, 0,	1, 1,	0, 1,
-
+		0.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 1.0f,
+		1.0f, 0.0f, 0.0f,
+		1.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, 0.0f,
+		1.0f, 1.0f, 1.0f,
 	};
 
 	/**
 	* Face indices, 3 values form a triangle face. The numbers reference
 	* values in the vertexData array
 	*/
-	int indexData[] = 	 {	0,1,2,
-		0,2,3,
+	int indexData[] = 	 {	
+		0, 6, 4,
+		0, 2, 6,
+		0, 3, 2,
 
-		4,5,6,
-		4,6,7,
+		0, 1, 3,
+		2, 7, 6,
+		2, 3, 7,
 
-		8,9,10,
-		8,10,11,
+		4, 6, 7,
+		4, 7, 5,
+		0, 4, 5,
 
-		12,13,14,
-		12,14,15,
-
-		16,17,18,
-		16,18,19,
-
-		20,21,22,
-		20,22,23		
+		0, 5, 1,
+		1, 5, 7,
+		1, 7, 3,
 	};
 
 
-	std::vector<float> pos(vertexData, vertexData+72);
-	std::vector<float> col(textureData, textureData+48);
+	std::vector<float> pos(vertexData, vertexData+32);
 	std::vector<int> idx(indexData, indexData+36);
 
 	setPositions(pos,idx);
-	setColors(col);
 
 }
 
 void Box::render(const Camera& cam) const {
 
-	/*glm::mat4 ident = glm::mat4(1.0f);
-	glm::mat4 world = glm::translate(ident, glm::vec3(0.0f,0.0f,-1.0f));
-	world = glm::rotate(world,60.0f,glm::vec3(1.0f,0.0f,0.0f));
-	world = glm::rotate(world,20.0f,glm::vec3(0.0f,0.0f,1.0f));
+	glm::mat4 mvp = cam.getViewProjectionTransform() * worldTransform;
 
-	glm::mat4 mvp = cam->getViewProjectionTransform() * world;
-
-
-	glLoadMatrixf(&mvp[0][0]);*/
+	if(NULL != shaderProgram) 
+	{	
+		shaderProgram->use();
+		shaderProgram->setUniform("mvp", mvp);		
+	}
+	
 
     glBindVertexArray(vaoHandle);
-	glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_INT, (GLvoid*)NULL);
+	glDrawElements(GL_TRIANGLES,12,GL_UNSIGNED_INT, (GLvoid*)NULL);
                 
 	glBindVertexArray(0);
+
+	if(NULL != shaderProgram)
+	{
+		shaderProgram->unuse();
+	}
 
 }

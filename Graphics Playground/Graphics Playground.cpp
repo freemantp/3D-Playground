@@ -25,18 +25,10 @@ void RenderFunction(void);
 int main(int argc, char* argv[])
 {
 	
-	ObjLoader oj;
-
-	clock_t begin = clock();
-	oj.loadObjFile("../data/models/cube.obj");
-	clock_t end = clock();
-	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC * 1000;
-	std::cout << "time [msec]: " << elapsed_secs << std::endl;
-
-	/*Initialize(argc, argv);
+	Initialize(argc, argv);
 
 
-	glutMainLoop();*/
+	glutMainLoop();
 
 	getchar();
 
@@ -119,58 +111,26 @@ void initContent(void)
 
 	bool shaderSet = getShader();
 
-	/*char* path = "../data/models/cube.obj";
 
-	//Load Alias Wavefront obj file	
-	objData = new objLoader();
+	ObjLoader oj;
 
-	cout << "Loading "<< path << " ";
-	if(objData->load(path) == 1) {
+	clock_t begin = clock();
+	oj.loadObjFile("../data/models/cube.obj");
+	oj.computeNormals();
+	clock_t end = clock();
+	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC * 1000;
+	std::cout << "time [msec]: " << elapsed_secs << std::endl;
 
-		//Check for presence of vertex normals
-		if(objData->vertexCount == objData->normalCount) {
-			cout << "succeeded " << "(" << objData->vertexCount << " vertices/normals, " << objData->faceCount << " faces)" << endl;
-		}
-		else {
-			cerr << "failed: missing vertex normals" << endl;
-		}
-	} else {
-		cerr << "failed: Obj file could not be loaded" << endl;
-	}
+	vector<float> vertexArray, normalArray;
+	vector<int> indexArray;
 
-	vector<float> positions;
-	vector<float> normals;
-	vector<int> indices;
+	oj.getVertexArray(vertexArray);
+	oj.getIndexArray(indexArray);
+	oj.getNormalArray(normalArray);
 
-	positions.reserve(objData->vertexCount * 3);
-	normals.reserve(objData->normalCount * 3);
-	indices.reserve(objData->faceCount * 3);
-
-	//Iterate over faces
-	for(int i=0; i < objData->vertexCount; i++) 
-	{            
-		obj_vector* v = objData->vertexList[i];
-		positions.push_back((float)v->e[0]);
-		positions.push_back((float)v->e[1]);
-		positions.push_back((float)v->e[2]);
-		
-		obj_vector* n = objData->normalList[i];	
-		normals.push_back((float)n->e[0]);
-		normals.push_back((float)n->e[1]);
-		normals.push_back((float)n->e[2]);
-	}
-
-	for(int i=0; i < objData->faceCount; i++) 
-	{
-		obj_face *f  = objData->faceList[i];
-		indices.push_back(f->vertex_index[0]);
-		indices.push_back(f->vertex_index[1]);
-		indices.push_back(f->vertex_index[2]);
-	}
-	
 	cow = new Mesh();
-	cow->setPositions(positions,indices);
-	cow->setNormals(normals);*/
+	cow->setPositions(vertexArray,indexArray);
+	cow->setNormals(normalArray);
 
 	tri = new Triangle();
 	box = new Box();
@@ -180,6 +140,7 @@ void initContent(void)
 
 	if(shaderSet) {
 		tri->setShader(p);
+		box->setShader(p);
 		cow->setShader(p);
 	}
 	else
@@ -241,11 +202,16 @@ void ResizeFunction(int Width, int Height)
 	glViewport(0, 0, CurrentWidth, CurrentHeight);
 }
 
+#include <glm/gtc/matrix_transform.hpp>
+
 void RenderFunction(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	tri->render(*(const Camera*)cam);
+	Shape* s = cow;
+
+	s->render(*(const Camera*)cam);
+	s->worldTransform = glm::rotate(s->worldTransform,1.0f,glm::vec3(1.0f,1.0f,1.0f));   
 
 	glutSwapBuffers();
 	glutPostRedisplay();

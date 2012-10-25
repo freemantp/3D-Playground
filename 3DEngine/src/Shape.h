@@ -27,7 +27,6 @@ public:
 		worldTransform = transf;
 	}
 
-	Transform transform;
 	GLSLProgram* shaderProgram;
 	mat4 worldTransform;
 

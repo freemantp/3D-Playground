@@ -216,7 +216,7 @@ void GLSLProgram::setUniform(const GLchar *name, const mat4& m)
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) 
 	{
-		glUniformMatrix4fv(loc, 1, GL_TRUE, &m[0][0]);
+		glUniformMatrix4fv(loc, 1, GL_FALSE, &m[0][0]);
 	} 
 	else 
 	{

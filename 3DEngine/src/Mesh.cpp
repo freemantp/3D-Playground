@@ -7,10 +7,10 @@ Mesh::Mesh(void) : numIndices(0), initialized(false), Shape()
 	// Create and set-up the vertex array object
     glGenVertexArrays( 1, &vaoHandle );
 
-	worldTransform = glm::scale(worldTransform, vec3(0.2,0.2,0.2));
-	worldTransform = glm::translate(worldTransform, glm::vec3(0.0f,0.0f,-1.0f));
+	//worldTransform = glm::scale(worldTransform, vec3(0.2,0.2,0.2));
+	//worldTransform = glm::translate(worldTransform, glm::vec3(0.0f,0.0f,-1.0f));
 	//worldTransform = glm::rotate(worldTransform,60.0f,glm::vec3(1.0f,0.0f,0.0f));
-	//worldTransform = glm::rotate(worldTransform,20.0f,glm::vec3(0.0f,0.0f,1.0f));   
+	//worldTransform = glm::rotate(worldTransform,90.0f,glm::vec3(1.0f,0.0f,1.0f));   
 
 	int numBuffers = 5;
 

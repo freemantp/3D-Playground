@@ -17,10 +17,20 @@ public:
 	void loadObjFile(const std::string& path);
 	void loadObj(std::istream& istr);
 
+	bool computeNormals();
+	
+	void getIndexArray  (std::vector<int>& indexArray);
+	void getVertexArray  (std::vector<float>& vertexArray);
+	void getNormalArray  (std::vector<float>& normalArray);
+	void getTexCoordArray(std::vector<float>& texCoordArray);
+
+	bool hasNormals();
+	bool hasTexCoords();
+
 private:
 
+	void processVertex(const ivec3& v, bool copyNormals, bool copyTexCoords);
 	void parseIdx(std::string& s,ivec3& indices);
-	void prepareOpenGLarrays(void);
 
 	struct Tri {
 
@@ -31,9 +41,7 @@ private:
 		ivec3 v3;
 	};
 
-	
-
-	std::vector<float> vertices;
+	std::vector<vec3> vertices;
 	std::vector<vec3> normals;
 	std::vector<vec2> texCoords;
 	std::vector<Tri> triangles;
