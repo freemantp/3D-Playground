@@ -1,7 +1,12 @@
 #include "stdafx.h"
 #include "Mesh.h"
 
-Mesh::Mesh(void) : numIndices(0), initialized(false), Shape() 
+using namespace GLSLShader;
+
+Mesh::Mesh(void) 
+	: numIndices(0)
+	, initialized(false)
+	, Shape() 
 {
 	// Create and set-up the vertex array object
     glGenVertexArrays( 1, &vaoHandle );
@@ -11,11 +16,66 @@ Mesh::Mesh(void) : numIndices(0), initialized(false), Shape()
 	//Init buffer names
 	bufferObjects = new GLuint[numBuffers];
 	memset(bufferObjects,0, numBuffers * sizeof(GLuint) );
+
+	vAttribData = new VertexAttribData[numBuffers];
+
+	vAttribData[Position].channel = 0;
+	vAttribData[Position].size = 3;
+
+	vAttribData[Normal].channel = 1;
+	vAttribData[Normal].size = 3;
+
+	vAttribData[Color].channel = 2;
+	vAttribData[Color].size = 3;
+
+	vAttribData[TextureCoord].channel = 3;
+	vAttribData[TextureCoord].size = 3;
+
+	vAttribData[Index].channel = 999; //unused
+	vAttribData[Index].size = 3;
+
 }
 
 Mesh::~Mesh(void) 
 {
 	delete[] bufferObjects;
+	delete[] vAttribData;
+}
+
+bool Mesh::mapVertexAttribute(VertexAttribute attrib, GLuint channel)
+{
+	if ( attrib == Index) //Indices are NOT a vertex attribute!
+		return false;
+
+	GLuint currentChannel = vAttribData[attrib].channel;
+
+	if( GL_TRUE == glIsBuffer(bufferObjects[attrib]) )
+	{		
+		
+		//bind array & buffer
+		glBindVertexArray(vaoHandle);	
+		glBindBuffer(GL_ARRAY_BUFFER, bufferObjects[attrib]);
+
+		glDisableVertexAttribArray(currentChannel);
+
+		glEnableVertexAttribArray(channel);
+
+		vAttribData[attrib].channel = channel;
+		setAttribPointer(attrib);
+
+		//unbind array & buffer
+		glBindBuffer(GL_ARRAY_BUFFER,0);
+		glBindVertexArray(0);
+	}
+	
+	return true;
+}
+
+void Mesh::setAttribPointer(const VertexAttribute& attrib)
+{
+	GLuint channel = vAttribData[attrib].channel;
+	GLint size = vAttribData[attrib].size;
+	glVertexAttribPointer( channel, size,  GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL );
 }
 
 bool Mesh::setPositions(const std::vector<float>& positions, const std::vector<int>& indices)
@@ -32,11 +92,11 @@ bool Mesh::setPositions(const std::vector<float>& positions, const std::vector<i
 
 	if(glIsBuffer(bufferObjects[Position]) && glIsBuffer(bufferObjects[Index]))
 	{		
-		glEnableVertexAttribArray(vertPosAttribIdx);  
+		glEnableVertexAttribArray(vAttribData[Position].channel);  
 		
 		// Vertex position
 		glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(float), &positions[0], GL_STATIC_DRAW);
-		glVertexAttribPointer( vertPosAttribIdx, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL );
+		setAttribPointer(Position);
 
 		// Indices
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(int), &indices[0], GL_STATIC_DRAW);
@@ -65,10 +125,11 @@ bool Mesh::setNormals(const std::vector<float>& normals)
 
 	if( glIsBuffer(bufferObjects[Normal]) )
 	{	
-		glEnableVertexAttribArray(vertNormalAttribIdx);  // Vertex normal
+		glEnableVertexAttribArray(vAttribData[Normal].channel);  // Vertex normal
 		
 		glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(float), &normals[0], GL_STATIC_DRAW);
-		glVertexAttribPointer( vertNormalAttribIdx, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL );
+
+		setAttribPointer(Normal);
 		success =  true;
 	} 
 	else
@@ -83,19 +144,20 @@ bool Mesh::setNormals(const std::vector<float>& normals)
 bool Mesh::setTextureCoordinates(const std::vector<float>& texCoords)
 {
 	glBindVertexArray(vaoHandle);
-	glGenBuffers(1, &bufferObjects[Texture]);
+	glGenBuffers(1, &bufferObjects[TextureCoord]);
 	bool success = false;
 
-	if( glIsBuffer(bufferObjects[Texture]) )
+	if( glIsBuffer(bufferObjects[TextureCoord]) )
 	{	
-		glEnableVertexAttribArray(vertTexAttribIdx);  // texture coord
+		glEnableVertexAttribArray(vAttribData[TextureCoord].channel);  // texture coord
 		glBufferData(GL_ARRAY_BUFFER, texCoords.size() * sizeof(float), &texCoords[0], GL_STATIC_DRAW);
-		glVertexAttribPointer( vertTexAttribIdx, 2, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL );
+
+		setAttribPointer(TextureCoord);
 		success =  true;
 	} 
 	else
 	{
-		glDeleteBuffers(1, &bufferObjects[Texture]);
+		glDeleteBuffers(1, &bufferObjects[TextureCoord]);
 	}
 
 	glBindVertexArray(0);
@@ -111,12 +173,11 @@ bool Mesh::setColors(const std::vector<float>& colors)
 	glBindBuffer(GL_ARRAY_BUFFER, bufferObjects[Color]);
 
 	if( glIsBuffer(bufferObjects[Color]) )
-	{	
-		
-		glEnableVertexAttribArray(vertColorAttribIdx);  // Vertex color
-		
+	{		
+		glEnableVertexAttribArray(vAttribData[Color].channel);  // Vertex color		
 		glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(float), &colors[0], GL_STATIC_DRAW);
-		glVertexAttribPointer( vertColorAttribIdx, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL );
+
+		setAttribPointer(Color);
 		success =  true;
 	} 
 	else
@@ -136,12 +197,16 @@ void Mesh::init(void)
 
 void Mesh::render(const Camera& cam) const
 {
-	glm::mat4 mvp = cam.getViewProjectionTransform() * worldTransform;
+	glm::mat4 modelViewMatrix = cam.viewMatrix * worldTransform;
+	
+	glm::mat4 mvp = cam.projectionMatrix * modelViewMatrix;
+	glm::mat3 normalMatrix	= glm::transpose(glm::inverse(glm::mat3(modelViewMatrix)));
 
 	if(NULL != shaderProgram) 
 	{	
 		shaderProgram->use();
-		shaderProgram->setUniform("mvp", mvp);		
+		shaderProgram->setUniform("MVP", mvp);
+		shaderProgram->setUniform("N", normalMatrix);		
 	}
 	
 	glBindVertexArray(vaoHandle);
@@ -153,4 +218,22 @@ void Mesh::render(const Camera& cam) const
 	{
 		shaderProgram->unuse();
 	}
+}
+
+void Mesh::setShader(GLSLProgram* shader)
+{
+	Shape::setShader(shader);
+
+	GLint channel = shader->getAttributeChannel(GLSLShader::Position);
+	mapVertexAttribute(GLSLShader::Position, channel );
+
+	channel = shader->getAttributeChannel(GLSLShader::Normal);
+	mapVertexAttribute(GLSLShader::Normal, channel );
+
+	channel = shader->getAttributeChannel(GLSLShader::Color);
+	mapVertexAttribute(GLSLShader::Color, channel );
+
+	channel = shader->getAttributeChannel(GLSLShader::TextureCoord);
+	mapVertexAttribute(GLSLShader::TextureCoord, channel );
+
 }

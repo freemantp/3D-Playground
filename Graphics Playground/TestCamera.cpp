@@ -6,9 +6,13 @@
 using glm::vec4;
 using glm::vec3;
 
-TestCamera::TestCamera(void)
+TestCamera::TestCamera(void) 
+	: fov(50.0f)
+	, aspectRatio(1.0f)
+	, nearP(1.0f)
+	, farP(10.0f)
 {
-
+	updateProjectioMatrix();
 }
 
 TestCamera::~TestCamera(void)
@@ -24,6 +28,35 @@ void TestCamera::init(void)
 
 	viewMatrix = glm::lookAt( position, center, up);
 
-	projectionMatrix  = glm::perspective(50.0f, 1.0f, 1.0f, 100.0f);
+	updateProjectioMatrix();
 
+}
+
+void TestCamera::updateProjectioMatrix(void)
+{
+	projectionMatrix  = glm::perspective(fov, aspectRatio, nearP, farP);
+}
+
+void TestCamera::setAspectRatio(float aspectRatio)
+{
+	this->aspectRatio = aspectRatio;
+	updateProjectioMatrix();
+}
+
+void TestCamera::setFov(float fov)
+{
+	this->fov = fov;
+	updateProjectioMatrix();
+}
+
+void TestCamera::setNearPlane(float nearP)
+{
+	this->nearP = nearP;
+	updateProjectioMatrix();
+}
+
+void TestCamera::setFarPlane(float farP)
+{
+	this->farP = farP;
+	updateProjectioMatrix();
 }

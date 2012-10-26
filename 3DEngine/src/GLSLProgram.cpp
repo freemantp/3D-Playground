@@ -2,15 +2,16 @@
 #include "GLSLProgram.h"
 #include <string>
 
-GLSLProgram::GLSLProgram() : programHandle(0), linked(false) 
+GLSLProgram::GLSLProgram() 
+	: programHandle(0)
+	, linked(false) 
 {
     programHandle = glCreateProgram();
 
     if( programHandle == 0) 
 	{
         logString = "Unable to create shader program.";
-    }
-    
+    }   
 }
 
 GLSLProgram::~GLSLProgram()
@@ -20,7 +21,7 @@ GLSLProgram::~GLSLProgram()
 	}
 }
 
-bool GLSLProgram::compileShaderFromString( const string & source, GLSLShader::GLSLShaderType type )
+bool GLSLProgram::compileShaderFromString( const string& source, GLSLShader::GLSLShaderType type )
 {
     GLuint shaderHandle = 0;
 
@@ -316,6 +317,28 @@ std::vector<std::string> GLSLProgram::getUniformAttributes()
 
 }
 
+GLint GLSLProgram::getAttributeChannel(GLSLShader::VertexAttribute attribute)
+{
+	
+	switch(attribute)
+	{
+	case GLSLShader::Position:
+		return glGetAttribLocation(programHandle, "vertexPosition");
+		break;
+	case GLSLShader::Normal:
+		return  glGetAttribLocation(programHandle, "vertexNormal");
+		break;
+	case GLSLShader::Color:
+		return glGetAttribLocation(programHandle, "vertexColor");
+		break;
+	case GLSLShader::TextureCoord:
+		return glGetAttribLocation(programHandle, "vertexTexCoord");
+		break;
+	default:
+		return -1;
+	}
+}
+
 bool GLSLProgram::bindAttribLocation( GLuint location, const char * name)
 {
 	if(linked) 
@@ -366,3 +389,27 @@ string GLSLProgram::getInfoLog(GLuint handle)
 
 	return logString;
 }
+
+ GLSLProgram* GLSLProgram::createShader(const string& vertexSource, const string& fragmentSource)
+ {
+	 GLSLProgram* shader = new GLSLProgram();
+
+	if (!shader->compileShaderFromString(vertexSource, GLSLShader::VERTEX))  
+	{
+		Error("--- Vertex Shader ---\n" + shader->log());
+		return NULL;
+	}
+
+	if (!shader->compileShaderFromString(fragmentSource, GLSLShader::FRAGMENT)) 
+	{
+		Error("--- Fragment Shader ---\n" + shader->log());
+		return NULL;
+	}
+
+	if (!shader->link()) {
+		Error("--- Linker ---\n" + shader->log());
+		return NULL;
+	}
+
+	return shader;
+ }

@@ -22,6 +22,7 @@
     <ClInclude Include="src\Box.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\common.h" />
+    <ClInclude Include="src\enums.h" />
     <ClInclude Include="src\error.h" />
     <ClInclude Include="src\GLSLProgram.h" />
     <ClInclude Include="src\Matrix4x4.h" />

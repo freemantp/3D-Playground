@@ -43,6 +43,9 @@
     <Filter Include="Source Files\util">
       <UniqueIdentifier>{70a0c7ef-f91b-488a-81cd-736423dd5069}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\core">
+      <UniqueIdentifier>{30d20ed6-5b6e-4b3c-bc63-46458e28da9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -89,6 +92,9 @@
     </ClInclude>
     <ClInclude Include="src\ObjLoader.h">
       <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\enums.h">
+      <Filter>Header Files\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

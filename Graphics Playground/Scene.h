@@ -11,6 +11,7 @@ public:
 	~Scene(void);
 
 	void render(void);
+	void resize(float aspectRatio);
 
 protected:
 
@@ -19,6 +20,6 @@ protected:
 
 	GLSLProgram* shader;
 	std::vector<Shape*> objects;
-	Camera* cam;
+	TestCamera* cam;
 };
 

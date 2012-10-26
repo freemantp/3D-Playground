@@ -14,11 +14,7 @@ public:
 
 	virtual void init(void) = 0;
 	virtual void render(const Camera& cam) const = 0;
-
-	void setShader(GLSLProgram* shader)
-	{
-		shaderProgram = shader;
-	}
+	virtual void setShader(GLSLProgram* shader);
 
 	GLSLProgram* getShader(void)
 	{

@@ -12,8 +12,6 @@ Scene::Scene(void)
 	cam = new TestCamera();
 	cam->init();
 
-	shader = getShader();
-
 	initContent();
 }
 
@@ -29,12 +27,12 @@ Scene::~Scene(void)
 	}
 }
 
-void Scene::initContent(void)
+
+Mesh* loadModel(const string& path)
 {
 	ObjLoader oj;
-
 	clock_t begin = clock();
-	oj.loadObjFile("../data/models/horse.obj");
+	oj.loadObjFile(path);
 	oj.computeNormals();
 	clock_t end = clock();
 	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC * 1000;
@@ -47,12 +45,34 @@ void Scene::initContent(void)
 	oj.getIndexArray(indexArray);
 	oj.getNormalArray(normalArray);
 
-	Mesh* cow = new Mesh();;
-	cow->setPositions(vertexArray,indexArray);
-	cow->setNormals(normalArray);
+	Mesh* mesh = new Mesh();;
+	mesh->setPositions(vertexArray,indexArray);
+	mesh->setNormals(normalArray);
 	//cow->setColors(vertexArray);
 
-	cow->worldTransform = glm::translate(cow->worldTransform,glm::vec3(0,-0.3f,0));
+	return mesh;
+}
+
+Mesh* getDragon()
+{
+	Mesh* model = loadModel("../data/models/dragon.obj");
+	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.75f,0));
+	model->worldTransform = glm::scale(model->worldTransform,glm::vec3(8,8,8));
+	return model;
+}
+
+Mesh* getHorse()
+{
+	Mesh* model = loadModel("../data/models/horse.obj");
+	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.3f,0));
+	return model;
+}
+
+
+void Scene::initContent(void)
+{
+	
+	shader = getShader();
 
 	//Triangle* tri = new Triangle();
 	//Box *box = new Box();
@@ -60,53 +80,35 @@ void Scene::initContent(void)
 	//tri->init();
 	//box->init();
 
+	Mesh* model = getHorse();
+
 	if(shader != NULL) {
 		//tri->setShader(shader);
 		//box->setShader(shader);
-		cow->setShader(shader);
+		model->setShader(shader);
 	}
 	else
 		Error("Shader was not loaded");
 
-	objects.push_back(cow);
+	objects.push_back(model);
 }
 
 GLSLProgram* Scene::getShader()
 {
-	GLSLProgram* p = new GLSLProgram();
 
 	string vertexShaderSource = Util::loadTextFile("../data/shader/basic.vert");
 	string fragmentShaderSource = Util::loadTextFile("../data/shader/basic.frag");
 
-	if (!p->compileShaderFromString(vertexShaderSource, GLSLShader::VERTEX))  
-	{
-		Error("--- Vertex Shader ---\n" + p->log());
-		return false;
-	}
+	GLSLProgram* sh = GLSLProgram::createShader(vertexShaderSource, fragmentShaderSource);
 
-	if (!p->compileShaderFromString(fragmentShaderSource, GLSLShader::FRAGMENT)) 
-	{
-		Error("--- Fragment Shader ---\n" + p->log());
-		return false;
-	}
+	Util::printStrings(sh->getVertexAttributes());
+	Util::printStrings(sh->getUniformAttributes());
 
-	if (!p->link()) {
-		Error("--- Linker ---\n" + p->log());
-		return false;
-	}
-
-	int pos =  glGetAttribLocation(p->getProgramHandle(),"vertexPosition");
-	int norm = glGetAttribLocation(p->getProgramHandle(),"vertexNormal");
-	int col =  glGetAttribLocation(p->getProgramHandle(),"vertexColor");
-
-	Util::printStrings(p->getVertexAttributes());
-	Util::printStrings(p->getUniformAttributes());
-	return p;
+	return sh;
 }
 
 void Scene::render(void)
-{
-		
+{		
 	std::vector<Shape*>::iterator objIt;
 	for(objIt = objects.begin(); objIt != objects.end(); objIt++)
 	{
@@ -115,5 +117,9 @@ void Scene::render(void)
 		s->worldTransform = glm::rotate(s->worldTransform,1.0f,glm::vec3(0.0f,1.0f,0.0f));
 
 	}
+}
 
+void Scene::resize(float aspectRatio)
+{
+	cam->setAspectRatio(aspectRatio);
 }

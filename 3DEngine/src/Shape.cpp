@@ -10,3 +10,8 @@ Shape::Shape(void): shaderProgram(NULL)
 Shape::~Shape(void)
 {
 }
+
+void Shape::setShader(GLSLProgram* shader)
+{
+	shaderProgram = shader;
+}

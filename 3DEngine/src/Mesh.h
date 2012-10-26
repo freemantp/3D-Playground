@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Shape.h"
+#include "enums.h"
 
 class Mesh : public Shape
 {
@@ -15,23 +16,27 @@ public:
 	bool setNormals(const std::vector<float>& normals);
 	bool setTextureCoordinates(const std::vector<float>& texCoords);
 	bool setColors(const std::vector<float>& colors);
+
+	virtual void setShader(GLSLProgram* shader);
+
 	bool isInitialized(void) { return initialized; };
+	bool mapVertexAttribute(GLSLShader::VertexAttribute attrib, GLuint channel);
 
 protected:
 
-	enum {Position, Index, Normal, Color, Texture} ;
+	struct VertexAttribData {
+		GLuint channel;
+		GLint  size;
+	};
+
+	inline void setAttribPointer(const GLSLShader::VertexAttribute& attrib);
 
 	GLuint vaoHandle;
 	size_t numIndices;
 	GLuint* bufferObjects;
+	VertexAttribData* vAttribData;
 
 	bool initialized;
-
-	//Defines vertex attribte indices for different mesh aspects
-	static const int vertPosAttribIdx = 0;
-	static const int vertColorAttribIdx = 1;
-	static const int vertNormalAttribIdx = 2;
-	static const int vertTexAttribIdx = 3;
 
 };
 

@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <vector>
 #include <string>
+#include "enums.h"
 
 using std::string;
 using glm::vec2;
@@ -47,15 +48,18 @@ public:
 	void setUniformArray(const GLchar *name, float *v, int elementSize, int count=1);
 	void bindTexture(const char *name, GLuint tex, GLenum target, GLint unit);
 
-	GLuint getProgramHandle() const;
-
 	std::vector<std::string>  getVertexAttributes();
 	std::vector<std::string>  getUniformAttributes();
+	GLint getAttributeChannel(GLSLShader::VertexAttribute attribute);
 
 	bool bindAttribLocation( GLuint location, const char * name);
     bool bindFragDataLocation( GLuint location, const char * name );
+
+	static GLSLProgram* createShader(const string& vertexSource, const string& fragmentSource);
 	
 protected:
+
+	GLuint getProgramHandle() const;
 
 	string getInfoLog(GLuint shaderHandle);
 
