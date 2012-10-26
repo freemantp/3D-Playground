@@ -8,6 +8,7 @@
 
 #include <objLoader.h>
 #include <ctime>
+#include <glm/gtc/matrix_transform.hpp>
 
 
 #define WINDOW_TITLE_PREFIX "Box"
@@ -30,7 +31,7 @@ int main(int argc, char* argv[])
 
 	glutMainLoop();
 
-	getchar();
+	//getchar();
 
 	exit(EXIT_SUCCESS);
 }
@@ -115,7 +116,7 @@ void initContent(void)
 	ObjLoader oj;
 
 	clock_t begin = clock();
-	oj.loadObjFile("../data/models/cube.obj");
+	oj.loadObjFile("../data/models/horse.obj");
 	oj.computeNormals();
 	clock_t end = clock();
 	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC * 1000;
@@ -131,6 +132,9 @@ void initContent(void)
 	cow = new Mesh();
 	cow->setPositions(vertexArray,indexArray);
 	cow->setNormals(normalArray);
+	//cow->setColors(vertexArray);
+
+	cow->worldTransform = glm::translate(cow->worldTransform,glm::vec3(0,-0.3f,0));
 
 	tri = new Triangle();
 	box = new Box();
@@ -202,7 +206,7 @@ void ResizeFunction(int Width, int Height)
 	glViewport(0, 0, CurrentWidth, CurrentHeight);
 }
 
-#include <glm/gtc/matrix_transform.hpp>
+
 
 void RenderFunction(void)
 {
@@ -211,7 +215,7 @@ void RenderFunction(void)
 	Shape* s = cow;
 
 	s->render(*(const Camera*)cam);
-	s->worldTransform = glm::rotate(s->worldTransform,1.0f,glm::vec3(1.0f,1.0f,1.0f));   
+	s->worldTransform = glm::rotate(s->worldTransform,1.0f,glm::vec3(0.0f,1.0f,0.0f));   
 
 	glutSwapBuffers();
 	glutPostRedisplay();

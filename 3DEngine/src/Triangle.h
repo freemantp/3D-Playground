@@ -4,7 +4,7 @@ class Triangle : public Mesh
 {
 public:
 	Triangle(void);
-	~Triangle(void);
+	virtual ~Triangle(void);
 
 	virtual void init(void);
 };

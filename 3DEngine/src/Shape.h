@@ -2,17 +2,15 @@
 
 #include "Transform.h"
 #include "Camera.h"
-#include <vector>
 #include "GLSLProgram.h"
-
-using glm::mat4;
+#include <glm/glm.hpp>
 
 class Shape
 {
 public:
 
 	Shape(void);
-	~Shape(void);
+	virtual ~Shape(void);
 
 	virtual void init(void) = 0;
 	virtual void render(const Camera& cam) const = 0;
@@ -22,15 +20,19 @@ public:
 		shaderProgram = shader;
 	}
 
-	void setWorldTransform(mat4 transf)
+	GLSLProgram* getShader(void)
+	{
+		return shaderProgram;
+	}
+
+	void setWorldTransform(glm::mat4 transf)
 	{
 		worldTransform = transf;
 	}
-
-	GLSLProgram* shaderProgram;
+	
 	mat4 worldTransform;
 
 protected:
-
+	GLSLProgram* shaderProgram;
 };
 

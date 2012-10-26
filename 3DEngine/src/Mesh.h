@@ -6,7 +6,7 @@ class Mesh : public Shape
 {
 public:
 	Mesh(void);
-	~Mesh(void);
+	virtual ~Mesh(void);
 
 	virtual void render(const Camera& cam) const;
 	virtual void init(void); 

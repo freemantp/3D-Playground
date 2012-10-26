@@ -4,10 +4,8 @@
 
 Shape::Shape(void): shaderProgram(NULL)
 { 
-	worldTransform = glm::mat4(1.0f);
+
 }
-
-
 
 Shape::~Shape(void)
 {

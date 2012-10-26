@@ -2,7 +2,6 @@
 #include "Box.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-
 void Box::init(void) {
 
 	Mesh::init();
@@ -46,33 +45,9 @@ void Box::init(void) {
 		1, 7, 3,
 	};
 
-
 	std::vector<float> pos(vertexData, vertexData+32);
 	std::vector<int> idx(indexData, indexData+36);
 
 	setPositions(pos,idx);
-
-}
-
-void Box::render(const Camera& cam) const {
-
-	glm::mat4 mvp = cam.getViewProjectionTransform() * worldTransform;
-
-	if(NULL != shaderProgram) 
-	{	
-		shaderProgram->use();
-		shaderProgram->setUniform("mvp", mvp);		
-	}
-	
-
-    glBindVertexArray(vaoHandle);
-	glDrawElements(GL_TRIANGLES,12,GL_UNSIGNED_INT, (GLvoid*)NULL);
-                
-	glBindVertexArray(0);
-
-	if(NULL != shaderProgram)
-	{
-		shaderProgram->unuse();
-	}
 
 }
