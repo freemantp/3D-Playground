@@ -8,6 +8,7 @@ using glm::vec3;
 
 TestCamera::TestCamera(void)
 {
+
 }
 
 TestCamera::~TestCamera(void)

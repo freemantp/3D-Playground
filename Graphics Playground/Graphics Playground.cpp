@@ -1,17 +1,8 @@
 #include "stdafx.h"
-
-#include "Box.h"
-#include "Triangle.h"
-#include "TestCamera.h"
-#include "GLSLProgram.h"
-#include "Util.h"
-
-#include <objLoader.h>
 #include <ctime>
-#include <glm/gtc/matrix_transform.hpp>
+#include "Scene.h"
 
-
-#define WINDOW_TITLE_PREFIX "Box"
+#define WINDOW_TITLE_PREFIX "OpenGL Playground"
 
 int CurrentWidth = 800,
 	CurrentHeight = 800,
@@ -24,29 +15,20 @@ void RenderFunction(void);
 
 
 int main(int argc, char* argv[])
-{
-	
+{	
 	Initialize(argc, argv);
-
 
 	glutMainLoop();
 
 	//getchar();
-
 	exit(EXIT_SUCCESS);
 }
 
 GLfloat light_diffuse[] = {1.0, 0.0, 0.0, 1.0};  /* Red diffuse light. */
 GLfloat light_position[] = {1.0, 1.0, 1.0, 0.0};  /* Infinite light location. */
 
-Triangle* tri;
-Box* box;
-Mesh* cow;
-Camera* cam;
-GLSLProgram* p;
-//objLoader* objData;
-
 bool light = false;
+Scene* s;
 
 void initGL(void)
 {
@@ -56,7 +38,7 @@ void initGL(void)
 	if(err != GLEW_OK)
 	{
 		//Problem: glewInit failed, something is seriously wrong.
-		cout<<"glewInit failed, aborting."<<endl;
+		std::cout<<"glewInit failed, aborting." << std::endl;
 	}
 
 	if(light) {
@@ -72,99 +54,18 @@ void initGL(void)
 
 }
 
-bool getShader()
-{
-	p = new GLSLProgram();
-
-	string vertexShaderSource = Util::loadTextFile("../data/shader/basic.vert");
-	string fragmentShaderSource = Util::loadTextFile("../data/shader/basic.frag");
-
-	if (!p->compileShaderFromString(vertexShaderSource, GLSLShader::VERTEX))  
-	{
-		Error("--- Vertex Shader ---\n" + p->log());
-		return false;
-	}
-
-	if (!p->compileShaderFromString(fragmentShaderSource, GLSLShader::FRAGMENT)) 
-	{
-		Error("--- Fragment Shader ---\n" + p->log());
-		return false;
-	}
-
-	if (!p->link()) {
-		Error("--- Linker ---\n" + p->log());
-		return false;
-	}
-
-	int pos =  glGetAttribLocation(p->getProgramHandle(),"vertexPosition");
-	int norm = glGetAttribLocation(p->getProgramHandle(),"vertexNormal");
-	int col =  glGetAttribLocation(p->getProgramHandle(),"vertexColor");
-
-	Util::printStrings(p->getVertexAttributes());
-	Util::printStrings(p->getUniformAttributes());
-	return true;
-}
-
-void initContent(void)
-{
-	cam = new TestCamera();
-	cam->init();
-
-	bool shaderSet = getShader();
-
-
-	ObjLoader oj;
-
-	clock_t begin = clock();
-	oj.loadObjFile("../data/models/horse.obj");
-	oj.computeNormals();
-	clock_t end = clock();
-	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC * 1000;
-	std::cout << "time [msec]: " << elapsed_secs << std::endl;
-
-	vector<float> vertexArray, normalArray;
-	vector<int> indexArray;
-
-	oj.getVertexArray(vertexArray);
-	oj.getIndexArray(indexArray);
-	oj.getNormalArray(normalArray);
-
-	cow = new Mesh();
-	cow->setPositions(vertexArray,indexArray);
-	cow->setNormals(normalArray);
-	//cow->setColors(vertexArray);
-
-	cow->worldTransform = glm::translate(cow->worldTransform,glm::vec3(0,-0.3f,0));
-
-	tri = new Triangle();
-	box = new Box();
-
-	tri->init();
-	box->init();
-
-	if(shaderSet) {
-		tri->setShader(p);
-		box->setShader(p);
-		cow->setShader(p);
-	}
-	else
-		Error("Shader was not loaded");
-}
 
 void Initialize(int argc, char* argv[])
 {
-
 	InitWindow(argc, argv);
 	initGL();
-	
 
 	fprintf( stdout, "INFO: OpenGL Version: %s\n", glGetString(GL_VERSION) );
 
 	GLint num;
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &num);
 
-	initContent();
-
+	s = new Scene();
 }
 
 void InitWindow(int argc, char* argv[])
@@ -212,10 +113,7 @@ void RenderFunction(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	Shape* s = cow;
-
-	s->render(*(const Camera*)cam);
-	s->worldTransform = glm::rotate(s->worldTransform,1.0f,glm::vec3(0.0f,1.0f,0.0f));   
+	s->render();
 
 	glutSwapBuffers();
 	glutPostRedisplay();

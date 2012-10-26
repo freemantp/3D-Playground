@@ -10,6 +10,7 @@
 #include <GL/freeglut.h>	
 #include <cstdio>
 #include <tchar.h>
+#include "error.h"
 
 
 
