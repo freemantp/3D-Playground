@@ -2,7 +2,7 @@
 
 #include <cmath>
 #include <cfloat>
-
+#include <string>
 
 #define isnan _isnan
 
@@ -18,3 +18,10 @@ inline float Radians(float deg) {
 inline float Degrees(float rad) {
     return (180.f/(float)M_PI) * rad;
 }
+
+class Config {
+
+public:
+
+	static const std::string SHADER_BASE_PATH;
+};

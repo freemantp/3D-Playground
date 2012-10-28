@@ -2,7 +2,7 @@
 
 #include "Transform.h"
 #include "Camera.h"
-#include "shader/GLSLProgram.h"
+#include "shader/ShaderBase.h"
 #include <glm/glm.hpp>
 
 class Shape
@@ -14,9 +14,9 @@ public:
 
 	virtual void init(void) = 0;
 	virtual void render(const Camera& cam) const = 0;
-	virtual void setShader(GLSLProgram* shader);
+	virtual void setShader(ShaderBase* shader);
 
-	GLSLProgram* getShader(void)
+	ShaderBase* getShader(void)
 	{
 		return shaderProgram;
 	}
@@ -29,6 +29,6 @@ public:
 	mat4 worldTransform;
 
 protected:
-	GLSLProgram* shaderProgram;
+	ShaderBase* shaderProgram;
 };
 

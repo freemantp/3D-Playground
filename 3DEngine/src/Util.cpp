@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Util.h"
 #include <fstream>
-#include "GLSLProgram.h"
+#include "shader/GLSLProgram.h"
 
 using std::string;
 

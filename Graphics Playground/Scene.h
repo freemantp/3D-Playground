@@ -15,10 +15,10 @@ public:
 
 protected:
 
-	GLSLProgram* getShader(const string& shaderName);
+	ShaderBase* getShader(const string& shaderName);
 	void initContent(void);
 
-	GLSLProgram* shader;
+	ShaderBase* shader;
 	std::vector<Shape*> objects;
 	TestCamera* cam;
 };

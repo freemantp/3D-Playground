@@ -6,6 +6,7 @@
 #include "Triangle.h"
 #include "Box.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include "shader/DiffusePerVertexShader.h"
 
 Scene::Scene(void)
 {
@@ -103,14 +104,12 @@ void Scene::initContent(void)
 	objects.push_back(model);
 }
 
-GLSLProgram* Scene::getShader(const string& shaderName)
+ShaderBase* Scene::getShader(const string& shaderName)
 {
-	const string basePath = "../data/shader/";
-	
-	string vertexShaderSource = Util::loadTextFile( basePath + shaderName + ".vert");
-	string fragmentShaderSource = Util::loadTextFile( basePath + shaderName + ".frag");
 
-	GLSLProgram* sh = GLSLProgram::createShader(vertexShaderSource, fragmentShaderSource);
+	DiffusePerVertexShader* sh = new DiffusePerVertexShader(*cam);
+
+	sh->setLightPosition(vec4(1,-0.2,0.4,1));
 
 	Util::printStrings(sh->getVertexAttributes());
 	Util::printStrings(sh->getUniformAttributes());

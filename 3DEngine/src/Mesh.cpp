@@ -195,7 +195,7 @@ void Mesh::init(void)
 	initialized = true;
 }
 
-void Mesh::setShader(GLSLProgram* shader)
+void Mesh::setShader(ShaderBase* shader)
 {
 	Shape::setShader(shader);
 
@@ -210,29 +210,15 @@ void Mesh::setShader(GLSLProgram* shader)
 
 	channel = shader->getAttributeChannel(GLSLShader::TextureCoord);
 	mapVertexAttribute(GLSLShader::TextureCoord, channel );
-
 }
 
 void Mesh::render(const Camera& cam) const
 {
-	glm::mat4 modelViewMatrix = cam.viewMatrix * worldTransform;
-	
-	glm::mat4 mvp = cam.projectionMatrix * modelViewMatrix;
-	glm::mat3 normalMatrix	= glm::transpose(glm::inverse(glm::mat3(modelViewMatrix)));
 
 	if(NULL != shaderProgram) 
 	{	
 		shaderProgram->use();
-		shaderProgram->setUniform("MVP", mvp);
-		shaderProgram->setUniform("NormalMatrix", normalMatrix);		
-		shaderProgram->setUniform("ModelViewMatrix", modelViewMatrix);		
-
-		vec4 lp = cam.viewMatrix * glm::vec4(1,-0.2,0.4,1);
-
-		shaderProgram->setUniform("LightPosition", lp);	
-		shaderProgram->setUniform("Kd", glm::vec3(0.7f,0.7f,0.7f));	
-		shaderProgram->setUniform("Ld", glm::vec3(1,1,1));
-
+		shaderProgram->updateTransforms(cam,worldTransform);
 	}
 	
 	glBindVertexArray(vaoHandle);

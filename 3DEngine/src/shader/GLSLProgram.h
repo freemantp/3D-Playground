@@ -6,7 +6,6 @@
 
 #include "../stdafx.h"
 #include "../enums.h"
-#include "../Camera.h"
 
 using std::string;
 using glm::vec2;
@@ -28,12 +27,14 @@ class GLSLProgram
 {
 public:
 
-	GLSLProgram();
-	~GLSLProgram();
+	GLSLProgram(void);
+	virtual ~GLSLProgram(void);
 
 	bool compileShaderFromString( const string & source, GLSLShader::GLSLShaderType type );
-	bool link();
-	bool isLinked() const;
+	bool link(void);
+	bool isLinked(void) const;
+	bool validate(void);
+
 	string log() const;
 
 	void use();
@@ -61,6 +62,8 @@ public:
 	static GLSLProgram* createShader(const string& vertexSource, const string& fragmentSource);
 	
 protected:
+
+	static bool loadShader(GLSLProgram* shader, const string& vertexSource, const string& fragmentSource);
 
 	GLuint getProgramHandle() const;
 

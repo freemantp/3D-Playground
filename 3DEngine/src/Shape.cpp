@@ -11,7 +11,7 @@ Shape::~Shape(void)
 {
 }
 
-void Shape::setShader(GLSLProgram* shader)
+void Shape::setShader(ShaderBase* shader)
 {
 	shaderProgram = shader;
 }

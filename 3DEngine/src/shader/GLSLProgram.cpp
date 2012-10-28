@@ -99,6 +99,17 @@ bool GLSLProgram::isLinked() const
 	return linked;
 }
 
+bool GLSLProgram::validate(void)
+{
+	glValidateProgram(programHandle);
+    GLint status;
+    glGetProgramiv(programHandle, GL_VALIDATE_STATUS, &status);
+
+	logString = getInfoLog(programHandle);
+
+	return GL_TRUE == status;
+}
+
 GLuint GLSLProgram::getProgramHandle() const
 { 
 	return programHandle; 
@@ -390,26 +401,32 @@ string GLSLProgram::getInfoLog(GLuint handle)
 	return logString;
 }
 
- GLSLProgram* GLSLProgram::createShader(const string& vertexSource, const string& fragmentSource)
- {
-	 GLSLProgram* shader = new GLSLProgram();
-
+bool GLSLProgram::loadShader(GLSLProgram* shader, const string& vertexSource, const string& fragmentSource)
+{
 	if (!shader->compileShaderFromString(vertexSource, GLSLShader::VERTEX))  
 	{
 		Error("--- Vertex Shader ---\n" + shader->log());
-		return NULL;
+		return false;
 	}
 
 	if (!shader->compileShaderFromString(fragmentSource, GLSLShader::FRAGMENT)) 
 	{
 		Error("--- Fragment Shader ---\n" + shader->log());
-		return NULL;
+		return false;
 	}
 
 	if (!shader->link()) {
 		Error("--- Linker ---\n" + shader->log());
-		return NULL;
+		return false;
 	}
 
-	return shader;
- }
+	return true;
+
+}
+
+GLSLProgram* GLSLProgram::createShader(const string& vertexSource, const string& fragmentSource)
+{
+	GLSLProgram* shader = new GLSLProgram();
+	bool success = loadShader(shader,vertexSource,fragmentSource);
+	return success ? shader : NULL;
+}
