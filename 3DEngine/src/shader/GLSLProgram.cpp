@@ -323,16 +323,16 @@ GLint GLSLProgram::getAttributeChannel(GLSLShader::VertexAttribute attribute)
 	switch(attribute)
 	{
 	case GLSLShader::Position:
-		return glGetAttribLocation(programHandle, "vertexPosition");
+		return glGetAttribLocation(programHandle, "VertexPosition");
 		break;
 	case GLSLShader::Normal:
-		return  glGetAttribLocation(programHandle, "vertexNormal");
+		return  glGetAttribLocation(programHandle, "VertexNormal");
 		break;
 	case GLSLShader::Color:
-		return glGetAttribLocation(programHandle, "vertexColor");
+		return glGetAttribLocation(programHandle, "VertexColor");
 		break;
 	case GLSLShader::TextureCoord:
-		return glGetAttribLocation(programHandle, "vertexTexCoord");
+		return glGetAttribLocation(programHandle, "VertexTexCoord");
 		break;
 	default:
 		return -1;

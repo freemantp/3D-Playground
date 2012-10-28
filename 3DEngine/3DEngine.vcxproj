@@ -24,11 +24,13 @@
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\enums.h" />
     <ClInclude Include="src\error.h" />
-    <ClInclude Include="src\GLSLProgram.h" />
     <ClInclude Include="src\Matrix4x4.h" />
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\ObjLoader.h" />
     <ClInclude Include="src\Point.h" />
+    <ClInclude Include="src\shader\DiffusePerVertexShader.h" />
+    <ClInclude Include="src\shader\GLSLProgram.h" />
+    <ClInclude Include="src\shader\ShaderBase.h" />
     <ClInclude Include="src\Shape.h" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\Transform.h" />
@@ -38,11 +40,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Box.cpp" />
-    <ClCompile Include="src\GLSLProgram.cpp" />
     <ClCompile Include="src\Matrix4x4.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\ObjLoader.cpp" />
     <ClCompile Include="src\Point.cpp" />
+    <ClCompile Include="src\shader\DiffusePerVertexShader.cpp" />
+    <ClCompile Include="src\shader\GLSLProgram.cpp" />
+    <ClCompile Include="src\shader\ShaderBase.cpp" />
     <ClCompile Include="src\Shape.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

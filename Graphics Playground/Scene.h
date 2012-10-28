@@ -15,7 +15,7 @@ public:
 
 protected:
 
-	GLSLProgram* getShader(void);
+	GLSLProgram* getShader(const string& shaderName);
 	void initContent(void);
 
 	GLSLProgram* shader;

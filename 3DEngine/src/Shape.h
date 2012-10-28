@@ -2,7 +2,7 @@
 
 #include "Transform.h"
 #include "Camera.h"
-#include "GLSLProgram.h"
+#include "shader/GLSLProgram.h"
 #include <glm/glm.hpp>
 
 class Shape

@@ -1,10 +1,12 @@
  // Simple class to contain GLSL shaders/programs
 #pragma once
 
-#include "stdafx.h"
 #include <vector>
 #include <string>
-#include "enums.h"
+
+#include "../stdafx.h"
+#include "../enums.h"
+#include "../Camera.h"
 
 using std::string;
 using glm::vec2;
@@ -50,6 +52,7 @@ public:
 
 	std::vector<std::string>  getVertexAttributes();
 	std::vector<std::string>  getUniformAttributes();
+
 	GLint getAttributeChannel(GLSLShader::VertexAttribute attribute);
 
 	bool bindAttribLocation( GLuint location, const char * name);

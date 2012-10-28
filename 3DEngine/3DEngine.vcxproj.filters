@@ -78,9 +78,6 @@
     <ClInclude Include="src\Camera.h">
       <Filter>Header Files\cameras</Filter>
     </ClInclude>
-    <ClInclude Include="src\GLSLProgram.h">
-      <Filter>Header Files\shaders</Filter>
-    </ClInclude>
     <ClInclude Include="src\Triangle.h">
       <Filter>Header Files\shapes</Filter>
     </ClInclude>
@@ -95,6 +92,15 @@
     </ClInclude>
     <ClInclude Include="src\enums.h">
       <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\ShaderBase.h">
+      <Filter>Header Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\DiffusePerVertexShader.h">
+      <Filter>Header Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\GLSLProgram.h">
+      <Filter>Header Files\shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -116,9 +122,6 @@
     <ClCompile Include="src\Box.cpp">
       <Filter>Source Files\shapes</Filter>
     </ClCompile>
-    <ClCompile Include="src\GLSLProgram.cpp">
-      <Filter>Source Files\shaders</Filter>
-    </ClCompile>
     <ClCompile Include="src\Triangle.cpp">
       <Filter>Source Files\shapes</Filter>
     </ClCompile>
@@ -133,6 +136,15 @@
     </ClCompile>
     <ClCompile Include="src\Shape.cpp">
       <Filter>Source Files\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\ShaderBase.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\DiffusePerVertexShader.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\GLSLProgram.cpp">
+      <Filter>Source Files\shaders</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

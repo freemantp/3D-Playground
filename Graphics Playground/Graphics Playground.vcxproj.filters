@@ -55,5 +55,17 @@
     <None Include="..\data\shader\basic.vert">
       <Filter>data\shaders</Filter>
     </None>
+    <None Include="..\data\shader\normalShader.frag">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="..\data\shader\normalShader.vert">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="..\data\shader\diffusePerVertex.frag">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="..\data\shader\diffusePerVertex.vert">
+      <Filter>data\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

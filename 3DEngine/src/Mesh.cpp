@@ -195,31 +195,6 @@ void Mesh::init(void)
 	initialized = true;
 }
 
-void Mesh::render(const Camera& cam) const
-{
-	glm::mat4 modelViewMatrix = cam.viewMatrix * worldTransform;
-	
-	glm::mat4 mvp = cam.projectionMatrix * modelViewMatrix;
-	glm::mat3 normalMatrix	= glm::transpose(glm::inverse(glm::mat3(modelViewMatrix)));
-
-	if(NULL != shaderProgram) 
-	{	
-		shaderProgram->use();
-		shaderProgram->setUniform("MVP", mvp);
-		shaderProgram->setUniform("N", normalMatrix);		
-	}
-	
-	glBindVertexArray(vaoHandle);
-	glDrawElements(GL_TRIANGLES,(GLsizei)numIndices,GL_UNSIGNED_INT, (GLvoid*)NULL);
-
-	glBindVertexArray(0);
-
-	if(NULL != shaderProgram)
-	{
-		shaderProgram->unuse();
-	}
-}
-
 void Mesh::setShader(GLSLProgram* shader)
 {
 	Shape::setShader(shader);
@@ -237,3 +212,37 @@ void Mesh::setShader(GLSLProgram* shader)
 	mapVertexAttribute(GLSLShader::TextureCoord, channel );
 
 }
+
+void Mesh::render(const Camera& cam) const
+{
+	glm::mat4 modelViewMatrix = cam.viewMatrix * worldTransform;
+	
+	glm::mat4 mvp = cam.projectionMatrix * modelViewMatrix;
+	glm::mat3 normalMatrix	= glm::transpose(glm::inverse(glm::mat3(modelViewMatrix)));
+
+	if(NULL != shaderProgram) 
+	{	
+		shaderProgram->use();
+		shaderProgram->setUniform("MVP", mvp);
+		shaderProgram->setUniform("NormalMatrix", normalMatrix);		
+		shaderProgram->setUniform("ModelViewMatrix", modelViewMatrix);		
+
+		vec4 lp = cam.viewMatrix * glm::vec4(1,-0.2,0.4,1);
+
+		shaderProgram->setUniform("LightPosition", lp);	
+		shaderProgram->setUniform("Kd", glm::vec3(0.7f,0.7f,0.7f));	
+		shaderProgram->setUniform("Ld", glm::vec3(1,1,1));
+
+	}
+	
+	glBindVertexArray(vaoHandle);
+	glDrawElements(GL_TRIANGLES,(GLsizei)numIndices,GL_UNSIGNED_INT, (GLvoid*)NULL);
+
+	glBindVertexArray(0);
+
+	if(NULL != shaderProgram)
+	{
+		shaderProgram->unuse();
+	}
+}
+

@@ -7,6 +7,8 @@ layout (location = 2) in vec3 vertexNormal;
 out vec3 color;
 out vec3 normal;
 
+
+
 uniform mat3 N;
 uniform mat4 MVP;
 

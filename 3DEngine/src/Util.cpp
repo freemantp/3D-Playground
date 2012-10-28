@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Util.h"
 #include <fstream>
+#include "GLSLProgram.h"
 
 using std::string;
 
@@ -14,6 +15,11 @@ unsigned long Util::getFileLength(std::ifstream& file)
 	file.seekg(std::ios::beg);
 
 	return len;
+}
+
+const char* Util::loadTextFile(const string& s)
+{
+	return loadTextFile((char*)s.c_str());
 }
 
 const char* Util::loadTextFile(char* filename)
@@ -53,11 +59,10 @@ void Util::printStrings(const std::vector<string> strings)
 {
 	std::vector<string>::const_iterator stringsIterator;
 
-
 	for(stringsIterator = strings.begin(); 
 		stringsIterator != strings.end();
 		stringsIterator++)
 	{
-		std::cout << *stringsIterator << std::endl;
+			std::cout << *stringsIterator << std::endl;
 	}
 }

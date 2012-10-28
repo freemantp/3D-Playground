@@ -56,7 +56,7 @@ Mesh* loadModel(const string& path)
 Mesh* getDragon()
 {
 	Mesh* model = loadModel("../data/models/dragon.obj");
-	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.75f,0));
+	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.85f,0));
 	model->worldTransform = glm::scale(model->worldTransform,glm::vec3(8,8,8));
 	return model;
 }
@@ -68,11 +68,20 @@ Mesh* getHorse()
 	return model;
 }
 
+Mesh* getElephant()
+{
+	Mesh* model = loadModel("../data/models/elephant.obj");
+	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.5f,0));
+	return model;
+}
+
 
 void Scene::initContent(void)
-{
+{	
+	string shaderName = "diffusePerVertex";
+	//string shaderName = "normalShader";
 	
-	shader = getShader();
+	shader = getShader(shaderName);
 
 	//Triangle* tri = new Triangle();
 	//Box *box = new Box();
@@ -80,7 +89,8 @@ void Scene::initContent(void)
 	//tri->init();
 	//box->init();
 
-	Mesh* model = getHorse();
+	Mesh* model = getElephant();
+	//Mesh* model = getDragon();
 
 	if(shader != NULL) {
 		//tri->setShader(shader);
@@ -93,11 +103,12 @@ void Scene::initContent(void)
 	objects.push_back(model);
 }
 
-GLSLProgram* Scene::getShader()
+GLSLProgram* Scene::getShader(const string& shaderName)
 {
-
-	string vertexShaderSource = Util::loadTextFile("../data/shader/basic.vert");
-	string fragmentShaderSource = Util::loadTextFile("../data/shader/basic.frag");
+	const string basePath = "../data/shader/";
+	
+	string vertexShaderSource = Util::loadTextFile( basePath + shaderName + ".vert");
+	string fragmentShaderSource = Util::loadTextFile( basePath + shaderName + ".frag");
 
 	GLSLProgram* sh = GLSLProgram::createShader(vertexShaderSource, fragmentShaderSource);
 
@@ -115,7 +126,6 @@ void Scene::render(void)
 		Shape* s = *objIt;
 		s->render(*(const Camera*)cam);
 		s->worldTransform = glm::rotate(s->worldTransform,1.0f,glm::vec3(0.0f,1.0f,0.0f));
-
 	}
 }
 
