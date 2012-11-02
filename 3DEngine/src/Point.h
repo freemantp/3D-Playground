@@ -5,8 +5,8 @@
 class Point {
 public:
     // Point Public Methods
-	Point(void);
-	~Point(void);
+	Point();
+	~Point();
 
     Point(float xx, float yy, float zz);
 #ifndef NDEBUG

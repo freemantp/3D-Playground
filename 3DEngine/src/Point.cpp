@@ -3,12 +3,12 @@
 #include <cassert>
 
 
-Point::Point(void)  : x(0.0f), y(0.0f), z(0.0f)
+Point::Point()  : x(0.0f), y(0.0f), z(0.0f)
 {
 }
 
 
-Point::~Point(void)
+Point::~Point()
 {
 }
 

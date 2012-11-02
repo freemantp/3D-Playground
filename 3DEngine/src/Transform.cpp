@@ -3,12 +3,12 @@
 #include <cassert>
 
 
-Transform::Transform(void)
+Transform::Transform()
 {
 }
 
 
-Transform::~Transform(void)
+Transform::~Transform()
 {
 }
 

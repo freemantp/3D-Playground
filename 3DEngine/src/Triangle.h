@@ -3,9 +3,9 @@
 class Triangle : public Mesh
 {
 public:
-	Triangle(void);
-	virtual ~Triangle(void);
+	Triangle();
+	virtual ~Triangle();
 
-	virtual void init(void);
+	virtual void init();
 };
 

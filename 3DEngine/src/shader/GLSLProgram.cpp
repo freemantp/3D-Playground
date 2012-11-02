@@ -6,55 +6,57 @@ GLSLProgram::GLSLProgram()
 	: programHandle(0)
 	, linked(false) 
 {
-    programHandle = glCreateProgram();
+	programHandle = glCreateProgram();
 
-    if( programHandle == 0) 
+	if( programHandle == 0) 
 	{
-        logString = "Unable to create shader program.";
-    }   
+		logString = "Unable to create shader program";
+	}   
 }
 
 GLSLProgram::~GLSLProgram()
 {
-	if ( programHandle > 0 ) {
+	if ( programHandle > 0 ) 
+	{
 		glDeleteProgram(programHandle);
 	}
 }
 
-bool GLSLProgram::compileShaderFromString( const string& source, GLSLShader::GLSLShaderType type )
+bool GLSLProgram::compileShaderFromString( const string& source,  
+										  GLSLShader::GLSLShaderType type)
 {
-    GLuint shaderHandle = 0;
+	GLuint shaderHandle = 0;
 
 	switch( type ) 
 	{
-		case GLSLShader::VERTEX:
-			shaderHandle = glCreateShader(GL_VERTEX_SHADER);
-			break;
-		case GLSLShader::FRAGMENT:
-			shaderHandle = glCreateShader(GL_FRAGMENT_SHADER);
-			break;
-		case GLSLShader::GEOMETRY:
-			shaderHandle = glCreateShader(GL_GEOMETRY_SHADER);
-			break;
-		case GLSLShader::TESS_CONTROL:
-			shaderHandle = glCreateShader(GL_TESS_CONTROL_SHADER);
-			break;
-		case GLSLShader::TESS_EVALUATION:
-			shaderHandle = glCreateShader(GL_TESS_EVALUATION_SHADER);
-			break;
-		default:
-			return false;
+	case GLSLShader::VERTEX:
+		shaderHandle = glCreateShader(GL_VERTEX_SHADER);
+		break;
+	case GLSLShader::FRAGMENT:
+		shaderHandle = glCreateShader(GL_FRAGMENT_SHADER);
+		break;
+	case GLSLShader::GEOMETRY:
+		shaderHandle = glCreateShader(GL_GEOMETRY_SHADER);
+		break;
+	case GLSLShader::TESSELATION_CONTROL:
+		shaderHandle = glCreateShader(GL_TESS_CONTROL_SHADER);
+		break;
+	case GLSLShader::TESSELATION_EVALUATION:
+		shaderHandle = glCreateShader(GL_TESS_EVALUATION_SHADER);
+		break;
+	default:
+		return false;
 	}
 
-    const GLchar * c_code = source.c_str();
-    glShaderSource( shaderHandle, 1, &c_code, NULL );
+	const GLchar * c_code = source.c_str();
+	glShaderSource( shaderHandle, 1, &c_code, NULL );
 
-    // Compile the shader
-    glCompileShader(shaderHandle );
+	// Compile the shader
+	glCompileShader(shaderHandle );
 
-    // Check for errors
-    GLint result;
-    glGetShaderiv( shaderHandle, GL_COMPILE_STATUS, &result );
+	// Check for errors
+	GLint result;
+	glGetShaderiv( shaderHandle, GL_COMPILE_STATUS, &result );
 
 	if( GL_FALSE == result ) 
 	{       
@@ -63,15 +65,15 @@ bool GLSLProgram::compileShaderFromString( const string& source, GLSLShader::GLS
 	} 
 	else 
 	{
-        // Compile succeeded, attach shader and return true
+		// Compile succeeded, attach shader and return true
 		glAttachShader(programHandle, shaderHandle);
-        return true;
-    }
+		return true;
+	}
 }
 
 bool GLSLProgram::link()
 {
-    if( linked ) 
+	if( linked ) 
 		return true;
 
 	if( programHandle <= 0 ) 
@@ -80,18 +82,18 @@ bool GLSLProgram::link()
 		return false;
 	}
 
-    glLinkProgram(programHandle);
+	glLinkProgram(programHandle);
 
-    int status = 0;
-    glGetProgramiv( programHandle, GL_LINK_STATUS, &status);
-    if( GL_TRUE != status ) 
+	int status = 0;
+	glGetProgramiv( programHandle, GL_LINK_STATUS, &status);
+	if( GL_TRUE != status ) 
 	{
 		logString = getInfoLog(programHandle);
 		return false;
-    } else {
-        linked = true;
-        return linked;
-    }
+	} else {
+		linked = true;
+		return linked;
+	}
 }
 
 bool GLSLProgram::isLinked() const
@@ -99,11 +101,11 @@ bool GLSLProgram::isLinked() const
 	return linked;
 }
 
-bool GLSLProgram::validate(void)
+bool GLSLProgram::validate()
 {
 	glValidateProgram(programHandle);
-    GLint status;
-    glGetProgramiv(programHandle, GL_VALIDATE_STATUS, &status);
+	GLint status;
+	glGetProgramiv(programHandle, GL_VALIDATE_STATUS, &status);
 
 	logString = getInfoLog(programHandle);
 
@@ -117,7 +119,7 @@ GLuint GLSLProgram::getProgramHandle() const
 
 string GLSLProgram::log() const
 {
-    return logString;
+	return logString;
 }
 
 void GLSLProgram::use()
@@ -238,7 +240,10 @@ void GLSLProgram::setUniform(const GLchar *name, const mat4& m)
 	}
 }
 
-void GLSLProgram::setUniformArray(const GLchar *name, GLfloat *v, int elementSize, int count)
+void GLSLProgram::setUniformArray(const GLchar *name, 
+								  GLfloat *v, 
+								  int elementSize, 
+								  int count)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc == -1) 
@@ -265,7 +270,10 @@ void GLSLProgram::setUniformArray(const GLchar *name, GLfloat *v, int elementSiz
 	}
 }
 
-void GLSLProgram::bindTexture(const GLchar *name, GLuint tex, GLenum target, GLint unit)
+void GLSLProgram::bindTexture(const GLchar *name, 
+							  GLuint tex, 
+							  GLenum target,
+							  GLint unit)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) {
@@ -281,14 +289,13 @@ void GLSLProgram::bindTexture(const GLchar *name, GLuint tex, GLenum target, GLi
 	}
 }
 
-
 std::vector<std::string> GLSLProgram::getVertexAttributes()
 {
 	GLint nAttribs, maxLength, charsWritten, size;
 	GLenum type;
 
-	glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTES,&nAttribs);
-	glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH,&maxLength);
+	glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTES, &nAttribs);
+	glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxLength);
 
 	GLchar* currentAttrib = new GLchar[maxLength];
 
@@ -296,8 +303,10 @@ std::vector<std::string> GLSLProgram::getVertexAttributes()
 
 	for (int i = 0; i < nAttribs; i++)
 	{
-		glGetActiveAttrib(programHandle, i, maxLength, &charsWritten, &size, &type, currentAttrib);
-		attribNames.push_back(std::string(currentAttrib));
+		glGetActiveAttrib(programHandle, i, maxLength, &charsWritten, 
+			&size, &type, currentAttrib);
+
+		attribNames.push_back( std::string(currentAttrib) );
 	}
 
 	delete[] currentAttrib;
@@ -319,8 +328,10 @@ std::vector<std::string> GLSLProgram::getUniformAttributes()
 
 	for (int i = 0; i < nAttribs; i++)
 	{
-		glGetActiveUniform(programHandle, i, maxLength, &charsWritten, &size, &type, currentAttrib);
-		attribNames.push_back(std::string(currentAttrib));
+		glGetActiveUniform( programHandle, i, maxLength, &charsWritten, 
+			&size, &type, currentAttrib );
+
+		attribNames.push_back( std::string(currentAttrib) );
 	}
 
 	delete[] currentAttrib;
@@ -328,46 +339,24 @@ std::vector<std::string> GLSLProgram::getUniformAttributes()
 
 }
 
-GLint GLSLProgram::getAttributeChannel(GLSLShader::VertexAttribute attribute)
-{
-	
-	switch(attribute)
-	{
-	case GLSLShader::Position:
-		return glGetAttribLocation(programHandle, "VertexPosition");
-		break;
-	case GLSLShader::Normal:
-		return  glGetAttribLocation(programHandle, "VertexNormal");
-		break;
-	case GLSLShader::Color:
-		return glGetAttribLocation(programHandle, "VertexColor");
-		break;
-	case GLSLShader::TextureCoord:
-		return glGetAttribLocation(programHandle, "VertexTexCoord");
-		break;
-	default:
-		return -1;
-	}
-}
-
-bool GLSLProgram::bindAttribLocation( GLuint location, const char * name)
+bool GLSLProgram::bindAttribLocation( GLuint index,  std::string& name)
 {
 	if(linked) 
 		return false;
-	
-	glBindAttribLocation(programHandle, location, name);
+
+	glBindAttribLocation( programHandle, index, name.c_str() );
 	return true;
 
 }
 
-bool GLSLProgram::bindFragDataLocation( GLuint location, const char * name )
+bool GLSLProgram::bindFragDataLocation( GLuint colorNumber,  std::string& name)
 {
-    if(linked) 
+	if(linked) 
 		return false;
-	
-	glBindFragDataLocation(programHandle, location, name);
+
+	glBindFragDataLocation( programHandle, colorNumber, name.c_str() );
 	return true;
-	
+
 }
 
 string GLSLProgram::getInfoLog(GLuint handle) 
@@ -379,7 +368,7 @@ string GLSLProgram::getInfoLog(GLuint handle)
 	int length = 0;
 	string  logString = "";
 
-	if(isShader == GL_TRUE)
+	if(GL_TRUE == isShader)
 		glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &length );
 	else
 		glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &length );
@@ -399,34 +388,4 @@ string GLSLProgram::getInfoLog(GLuint handle)
 	}
 
 	return logString;
-}
-
-bool GLSLProgram::loadShader(GLSLProgram* shader, const string& vertexSource, const string& fragmentSource)
-{
-	if (!shader->compileShaderFromString(vertexSource, GLSLShader::VERTEX))  
-	{
-		Error("--- Vertex Shader ---\n" + shader->log());
-		return false;
-	}
-
-	if (!shader->compileShaderFromString(fragmentSource, GLSLShader::FRAGMENT)) 
-	{
-		Error("--- Fragment Shader ---\n" + shader->log());
-		return false;
-	}
-
-	if (!shader->link()) {
-		Error("--- Linker ---\n" + shader->log());
-		return false;
-	}
-
-	return true;
-
-}
-
-GLSLProgram* GLSLProgram::createShader(const string& vertexSource, const string& fragmentSource)
-{
-	GLSLProgram* shader = new GLSLProgram();
-	bool success = loadShader(shader,vertexSource,fragmentSource);
-	return success ? shader : NULL;
 }

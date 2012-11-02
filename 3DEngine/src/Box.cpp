@@ -2,7 +2,7 @@
 #include "Box.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-void Box::init(void) {
+void Box::init() {
 
 	Mesh::init();
 

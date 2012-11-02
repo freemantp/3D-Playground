@@ -7,19 +7,21 @@
 class Scene
 {
 public:
-	Scene(void);
-	~Scene(void);
+	Scene();
+	~Scene();
 
-	void render(void);
+	void render();
 	void resize(float aspectRatio);
 
 protected:
 
 	ShaderBase* getShader(const string& shaderName);
-	void initContent(void);
+	void initContent();
 
 	ShaderBase* shader;
+	glm::mat4 lightTransform;
 	std::vector<Shape*> objects;
 	TestCamera* cam;
+	glm::vec4 initialLightPos;
 };
 

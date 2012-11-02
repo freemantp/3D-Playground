@@ -46,6 +46,12 @@
     <Filter Include="Header Files\core">
       <UniqueIdentifier>{30d20ed6-5b6e-4b3c-bc63-46458e28da9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\input">
+      <UniqueIdentifier>{ad8b9210-b2c4-4a09-a8dd-706df8b45ef7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\input">
+      <UniqueIdentifier>{919d7c7a-f3d6-493e-a773-35232a39d9e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -101,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="src\shader\GLSLProgram.h">
       <Filter>Header Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\input\MouseObserver.h">
+      <Filter>Header Files\input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

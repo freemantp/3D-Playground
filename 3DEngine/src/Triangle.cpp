@@ -2,16 +2,16 @@
 #include "Triangle.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-Triangle::Triangle(void) : Mesh()
+Triangle::Triangle() : Mesh()
 {
 
 }
 
-Triangle::~Triangle(void)
+Triangle::~Triangle()
 {
 }
 
-void Triangle::init(void)  {
+void Triangle::init()  {
 
 	Mesh::init();
 

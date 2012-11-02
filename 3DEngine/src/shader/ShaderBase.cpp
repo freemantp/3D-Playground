@@ -2,24 +2,25 @@
 #include "ShaderBase.h"
 
 
-ShaderBase::ShaderBase(void)
-	: GLSLProgram()
+ShaderBase::ShaderBase(const Camera& cam)
+	: cam(cam)
+	, GLSLProgram()
 {
 
 }
 
-ShaderBase::~ShaderBase(void)
+ShaderBase::~ShaderBase()
 {
 }
 
-GLint ShaderBase::getCurentProgram(void)
+GLint ShaderBase::getCurentProgram()
 {
 	GLint currentProgram;
 	glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
 	return currentProgram;
 }
 
-void ShaderBase::beforeUniformSet(void)
+void ShaderBase::beforeUniformSet()
 {
 	currentProgram = getCurentProgram();
 
@@ -28,7 +29,7 @@ void ShaderBase::beforeUniformSet(void)
 
 }
 
-void ShaderBase::afterUniformSet(void)
+void ShaderBase::afterUniformSet()
 {
 	if(currentProgram != programHandle)
 		glUseProgram(currentProgram);
@@ -50,9 +51,60 @@ void ShaderBase::updateTransforms(const Camera& cam, const glm::mat4& modelTrans
 	afterUniformSet();
 }
 
-ShaderBase* ShaderBase::createShader(const string& vertexSource, const string& fragmentSource)
+
+ShaderBase* ShaderBase::createShader( const Camera& cam,
+									  const string& vertexSource, 
+									  const string& fragmentSource)
 {
-	ShaderBase* shader = new ShaderBase();
+	ShaderBase* shader = new ShaderBase(cam);
 	bool success = loadShader(shader,vertexSource,fragmentSource);
 	return success ? shader : NULL;
 }
+
+GLint ShaderBase::getAttributeChannel(GLSLShader::VertexAttribute attribute)
+{
+	
+	switch(attribute)
+	{
+	case GLSLShader::Position:
+		return glGetAttribLocation(programHandle, "VertexPosition");
+		break;
+	case GLSLShader::Normal:
+		return  glGetAttribLocation(programHandle, "VertexNormal");
+		break;
+	case GLSLShader::Color:
+		return glGetAttribLocation(programHandle, "VertexColor");
+		break;
+	case GLSLShader::TextureCoord:
+		return glGetAttribLocation(programHandle, "VertexTexCoord");
+		break;
+	default:
+		return -1;
+	}
+}
+
+bool ShaderBase::loadShader(GLSLProgram* shader, 
+							 const string& vertexSource, 
+							 const string& fragmentSource)
+{
+	if (!shader->compileShaderFromString(vertexSource, GLSLShader::VERTEX))  
+	{
+		Error("--- Vertex Shader ---\n" + shader->log());
+		return false;
+	}
+
+	if (!shader->compileShaderFromString(fragmentSource, GLSLShader::FRAGMENT)) 
+	{
+		Error("--- Fragment Shader ---\n" + shader->log());
+		return false;
+	}
+
+	if (!shader->link()) {
+		Error("--- Linker ---\n" + shader->log());
+		return false;
+	}
+
+	return true;
+
+}
+

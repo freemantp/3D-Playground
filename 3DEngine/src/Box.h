@@ -5,7 +5,7 @@ class Box : public Mesh
 {
 public:
 
-	virtual void init(void);
+	virtual void init();
 
 };
 

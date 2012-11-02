@@ -2,12 +2,12 @@
 #include "Shape.h"
 
 
-Shape::Shape(void): shaderProgram(NULL)
+Shape::Shape(): shaderProgram(NULL)
 { 
 
 }
 
-Shape::~Shape(void)
+Shape::~Shape()
 {
 }
 

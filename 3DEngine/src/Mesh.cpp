@@ -3,7 +3,7 @@
 
 using namespace GLSLShader;
 
-Mesh::Mesh(void) 
+Mesh::Mesh() 
 	: numIndices(0)
 	, initialized(false)
 	, Shape() 
@@ -36,7 +36,7 @@ Mesh::Mesh(void)
 
 }
 
-Mesh::~Mesh(void) 
+Mesh::~Mesh() 
 {
 	delete[] bufferObjects;
 	delete[] vAttribData;
@@ -190,7 +190,7 @@ bool Mesh::setColors(const std::vector<float>& colors)
 	return success;
 }
 
-void Mesh::init(void)
+void Mesh::init()
 {
 	initialized = true;
 }
@@ -214,11 +214,10 @@ void Mesh::setShader(ShaderBase* shader)
 
 void Mesh::render(const Camera& cam) const
 {
-
 	if(NULL != shaderProgram) 
 	{	
 		shaderProgram->use();
-		shaderProgram->updateTransforms(cam,worldTransform);
+		shaderProgram->updateTransforms(cam, worldTransform);
 	}
 	
 	glBindVertexArray(vaoHandle);

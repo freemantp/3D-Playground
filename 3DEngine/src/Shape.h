@@ -9,14 +9,14 @@ class Shape
 {
 public:
 
-	Shape(void);
-	virtual ~Shape(void);
+	Shape();
+	virtual ~Shape();
 
-	virtual void init(void) = 0;
+	virtual void init() = 0;
 	virtual void render(const Camera& cam) const = 0;
 	virtual void setShader(ShaderBase* shader);
 
-	ShaderBase* getShader(void)
+	ShaderBase* getShader()
 	{
 		return shaderProgram;
 	}

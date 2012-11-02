@@ -6,7 +6,7 @@ using glm::mat4;
 class Camera
 {
 public:
-	virtual void init(void) = 0;
+	virtual void init() = 0;
 
 	mat4 getViewProjectionTransform() const
 	{

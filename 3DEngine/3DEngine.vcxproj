@@ -24,6 +24,7 @@
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\enums.h" />
     <ClInclude Include="src\error.h" />
+    <ClInclude Include="src\input\MouseObserver.h" />
     <ClInclude Include="src\Matrix4x4.h" />
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\ObjLoader.h" />

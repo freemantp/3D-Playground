@@ -8,12 +8,12 @@
 class Transform {
 public:
     // Transform Public Methods
-    Transform(void);
+    Transform();
     Transform(const float mat[4][4]);
     Transform(const Matrix4x4 &mat);
     Transform(const Matrix4x4 &mat, const Matrix4x4 &minv);
 
-	~Transform(void);
+	~Transform();
 
     void Print(FILE *f) const;
     friend Transform Inverse(const Transform &t);

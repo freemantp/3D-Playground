@@ -6,11 +6,11 @@
 class Mesh : public Shape
 {
 public:
-	Mesh(void);
-	virtual ~Mesh(void);
+	Mesh();
+	virtual ~Mesh();
 
 	virtual void render(const Camera& cam) const;
-	virtual void init(void); 
+	virtual void init(); 
 
 	bool setPositions(const std::vector<float>& positions, const std::vector<int>& indices);
 	bool setNormals(const std::vector<float>& normals);
@@ -19,7 +19,7 @@ public:
 
 	virtual void setShader(ShaderBase* shader);
 
-	bool isInitialized(void) { return initialized; };
+	bool isInitialized() { return initialized; };
 	bool mapVertexAttribute(GLSLShader::VertexAttribute attrib, GLuint channel);
 
 protected:

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <ctime>
 #include "Scene.h"
+#include "MouseHandler.h"
 
 #define WINDOW_TITLE_PREFIX "OpenGL Playground"
 
@@ -11,7 +12,7 @@ int CurrentWidth = 800,
 void Initialize(int, char*[]);
 void InitWindow(int, char*[]);
 void ResizeFunction(int, int);
-void RenderFunction(void);
+void RenderFunction();
 
 
 int main(int argc, char* argv[])
@@ -30,7 +31,7 @@ GLfloat light_position[] = {1.0, 1.0, 1.0, 0.0};  /* Infinite light location. */
 bool light = false;
 Scene* s;
 
-void initGL(void)
+void initGL()
 {
 
 	glewExperimental=GL_TRUE;
@@ -53,7 +54,6 @@ void initGL(void)
 	glEnable(GL_DEPTH_TEST);
 
 }
-
 
 void Initialize(int argc, char* argv[])
 {
@@ -98,6 +98,13 @@ void InitWindow(int argc, char* argv[])
 	glutReshapeFunc(ResizeFunction);
 	glutDisplayFunc(RenderFunction);
 
+	glutMouseFunc(MouseHandler::click);
+	glutMotionFunc(MouseHandler::drag);
+
+	//atexit(Controller::glutAtExit);
+
+	glutReportErrors();
+
 }
 
 void ResizeFunction(int Width, int Height)
@@ -113,7 +120,7 @@ void ResizeFunction(int Width, int Height)
 
 
 
-void RenderFunction(void)
+void RenderFunction()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

@@ -6,7 +6,7 @@
 using glm::vec4;
 using glm::vec3;
 
-TestCamera::TestCamera(void) 
+TestCamera::TestCamera() 
 	: fov(50.0f)
 	, aspectRatio(1.0f)
 	, nearP(1.0f)
@@ -15,12 +15,12 @@ TestCamera::TestCamera(void)
 	updateProjectioMatrix();
 }
 
-TestCamera::~TestCamera(void)
+TestCamera::~TestCamera()
 {
 
 }
 
-void TestCamera::init(void) 
+void TestCamera::init() 
 {
 	vec3 position =  vec3(0.0f, 0.0f, 2.0f);
 	vec3 center =    vec3(0.0f, 0.0f, 0.0f);
@@ -32,7 +32,7 @@ void TestCamera::init(void)
 
 }
 
-void TestCamera::updateProjectioMatrix(void)
+void TestCamera::updateProjectioMatrix()
 {
 	projectionMatrix  = glm::perspective(fov, aspectRatio, nearP, farP);
 }
@@ -59,4 +59,19 @@ void TestCamera::setFarPlane(float farP)
 {
 	this->farP = farP;
 	updateProjectioMatrix();
+}
+
+void TestCamera::onMouseDrag(int x, int y)
+{
+	std:: cout <<"drag x: " << x << " y:" << y << std::endl;
+}
+
+void TestCamera::onMouseClick(Input::MouseButton button, Input::ButtonState state , int x, int y)
+{
+	std:: cout << "click button=" << button << " state=" << state << " x=" << x << " y=" << y << std::endl;
+}
+
+void TestCamera::onMouseWheel(int x, int y)
+{
+	std:: cout <<"wheel x: " << x << " y:" << y << std::endl;
 }

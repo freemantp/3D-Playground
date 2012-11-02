@@ -7,16 +7,20 @@
 #include "Box.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "shader/DiffusePerVertexShader.h"
+#include "MouseHandler.h"
 
-Scene::Scene(void)
+Scene::Scene()
 {
 	cam = new TestCamera();
 	cam->init();
 
+	MouseHandler& mH = MouseHandler::getInstance();
+	mH.addObserver(cam);
+
 	initContent();
 }
 
-Scene::~Scene(void)
+Scene::~Scene()
 {
 	delete cam;
 	delete shader;
@@ -27,7 +31,6 @@ Scene::~Scene(void)
 		delete *objIt;
 	}
 }
-
 
 Mesh* loadModel(const string& path)
 {
@@ -66,6 +69,7 @@ Mesh* getHorse()
 {
 	Mesh* model = loadModel("../data/models/horse.obj");
 	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.3f,0));
+	model->worldTransform = glm::rotate(model->worldTransform, 270.0f, glm::vec3(0,1,0));
 	return model;
 }
 
@@ -77,7 +81,7 @@ Mesh* getElephant()
 }
 
 
-void Scene::initContent(void)
+void Scene::initContent()
 {	
 	string shaderName = "diffusePerVertex";
 	//string shaderName = "normalShader";
@@ -90,8 +94,9 @@ void Scene::initContent(void)
 	//tri->init();
 	//box->init();
 
-	Mesh* model = getElephant();
+	//Mesh* model = getElephant();
 	//Mesh* model = getDragon();
+	Mesh* model = getHorse();
 
 	if(shader != NULL) {
 		//tri->setShader(shader);
@@ -109,7 +114,8 @@ ShaderBase* Scene::getShader(const string& shaderName)
 
 	DiffusePerVertexShader* sh = new DiffusePerVertexShader(*cam);
 
-	sh->setLightPosition(vec4(1,-0.2,0.4,1));
+	initialLightPos = vec4(1,-0.2,0.4,1);
+	sh->setLightPosition(initialLightPos);
 
 	Util::printStrings(sh->getVertexAttributes());
 	Util::printStrings(sh->getUniformAttributes());
@@ -117,15 +123,23 @@ ShaderBase* Scene::getShader(const string& shaderName)
 	return sh;
 }
 
-void Scene::render(void)
+int counter = 0;
+
+
+void Scene::render()
 {		
+	DiffusePerVertexShader* diffSH = ((DiffusePerVertexShader*)shader);
+
 	std::vector<Shape*>::iterator objIt;
 	for(objIt = objects.begin(); objIt != objects.end(); objIt++)
 	{
 		Shape* s = *objIt;
 		s->render(*(const Camera*)cam);
-		s->worldTransform = glm::rotate(s->worldTransform,1.0f,glm::vec3(0.0f,1.0f,0.0f));
+		//s->worldTransform = glm::rotate(s->worldTransform, 1.0f, glm::vec3(0.0f,1.0f,0.0f));
 	}
+
+	lightTransform = (glm::rotate(lightTransform, 1.0f, glm::vec3(0.0f,1.0f,0.0f)));
+	diffSH->setLightPosition( lightTransform * initialLightPos);
 }
 
 void Scene::resize(float aspectRatio)

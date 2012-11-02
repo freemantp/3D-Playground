@@ -3,8 +3,7 @@
 #include "../Util.h"
 
 DiffusePerVertexShader::DiffusePerVertexShader(const Camera& cam)
-	: cam(cam)
-	, ShaderBase()
+	: ShaderBase(cam)
 {
 	string shaderName = "diffusePerVertex";
 	
@@ -22,14 +21,21 @@ DiffusePerVertexShader::DiffusePerVertexShader(const Camera& cam)
 }
 
 
-DiffusePerVertexShader::~DiffusePerVertexShader(void)
+DiffusePerVertexShader::~DiffusePerVertexShader()
 {
 
 }
 
 void DiffusePerVertexShader::setLightPosition(const glm::vec4& position)
 {
+	lightPosition = position;
+	
 	beforeUniformSet();
 	setUniform("LightPosition", cam.viewMatrix * position);	
 	afterUniformSet();
+}
+
+vec4 DiffusePerVertexShader::getLightPosition()
+{
+	return lightPosition;
 }

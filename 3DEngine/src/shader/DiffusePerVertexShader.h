@@ -6,13 +6,15 @@ class DiffusePerVertexShader :
 {
 public:
 	DiffusePerVertexShader(const Camera& cam);
-	virtual ~DiffusePerVertexShader(void);
+	virtual ~DiffusePerVertexShader();
 
 	void setLightPosition(const glm::vec4& position);
 
+	glm::vec4 getLightPosition();
+
 private:
-	const Camera& cam;
-	
+
+	glm::vec4 lightPosition;
 
 };
 

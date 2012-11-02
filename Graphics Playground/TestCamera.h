@@ -1,23 +1,28 @@
 #pragma once
 
 #include "Camera.h"
+#include "input/MouseObserver.h"
 
 class TestCamera :
-	public Camera
+	public Camera, public MouseObserver
 {
 public:
-	TestCamera(void);
-	~TestCamera(void);
+	TestCamera();
+	~TestCamera();
 
-	virtual void init(void);
+	virtual void init();
 	void setFov(float fov);
 	void setAspectRatio(float aspectRatio);
 	void setNearPlane(float near);
 	void setFarPlane(float fov);
 
+	virtual void onMouseDrag(int x, int y);
+	virtual void onMouseClick(Input::MouseButton button, Input::ButtonState state,  int x, int y);
+	virtual void onMouseWheel(int x, int y);
+
 protected:
 
-	void updateProjectioMatrix(void);
+	void updateProjectioMatrix();
 
 	float fov;
 	float aspectRatio;

@@ -6,7 +6,7 @@ using namespace std;
 class Vector
 {
 public:
-	Vector(void);
+	Vector();
 	Vector(float x, float y, float z);
 
 #ifndef NDEBUG
@@ -14,7 +14,7 @@ public:
     Vector &operator=(const Vector &p);
 #endif // !NDEBUG
 
-	~Vector(void);
+	~Vector();
 
 	Vector operator+(const Vector &v) const ;
     Vector& operator+=(const Vector &v);

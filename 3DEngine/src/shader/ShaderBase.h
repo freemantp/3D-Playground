@@ -8,20 +8,28 @@ class ShaderBase : public GLSLProgram
 
 public:
 
-	virtual ~ShaderBase(void);
+	virtual ~ShaderBase();
 
 	void updateTransforms(const Camera& cam, const glm::mat4& modelTransform);
-	static ShaderBase* createShader(const string& vertexSource, const string& fragmentSource);
+	GLint getAttributeChannel(GLSLShader::VertexAttribute attribute);
+
+	static ShaderBase* createShader(const Camera& cam,
+									const string& vertexSource, 
+									const string& fragmentSource);
 
 protected:
 
-	GLint getCurentProgram(void);
-	void beforeUniformSet(void);
-	void afterUniformSet(void);
+	static bool loadShader(	GLSLProgram* shader, 
+						const string& vertexSource, 
+						const string& fragmentSource);
+
+	ShaderBase(const Camera& cam);
+	GLint getCurentProgram();
+	void beforeUniformSet();
+	void afterUniformSet();
 
 	GLint currentProgram;
-
-	ShaderBase(void);
+	const Camera& cam;
 	
 };
 
