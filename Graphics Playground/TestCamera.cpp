@@ -12,7 +12,12 @@ TestCamera::TestCamera()
 	, nearP(1.0f)
 	, farP(10.0f)
 {
-	updateProjectioMatrix();
+	position =  vec3(0.0f, 0.0f, 2.0f);
+	center =    vec3(0.0f, 0.0f, 0.0f);
+	up =        vec3(0.0f, 1.0f, 0.0f);
+
+	updateViewMatrix();
+	updateProjectionMatrix();
 }
 
 TestCamera::~TestCamera()
@@ -22,17 +27,16 @@ TestCamera::~TestCamera()
 
 void TestCamera::init() 
 {
-	vec3 position =  vec3(0.0f, 0.0f, 2.0f);
-	vec3 center =    vec3(0.0f, 0.0f, 0.0f);
-	vec3 up =        vec3(0.0f, 1.0f, 0.0f);
-
-	viewMatrix = glm::lookAt( position, center, up);
-
-	updateProjectioMatrix();
 
 }
 
-void TestCamera::updateProjectioMatrix()
+
+void TestCamera::updateViewMatrix()
+{
+	viewMatrix = glm::lookAt( position, center, up);
+}
+
+void TestCamera::updateProjectionMatrix()
 {
 	projectionMatrix  = glm::perspective(fov, aspectRatio, nearP, farP);
 }
@@ -40,25 +44,25 @@ void TestCamera::updateProjectioMatrix()
 void TestCamera::setAspectRatio(float aspectRatio)
 {
 	this->aspectRatio = aspectRatio;
-	updateProjectioMatrix();
+	updateProjectionMatrix();
 }
 
 void TestCamera::setFov(float fov)
 {
 	this->fov = fov;
-	updateProjectioMatrix();
+	updateProjectionMatrix();
 }
 
 void TestCamera::setNearPlane(float nearP)
 {
 	this->nearP = nearP;
-	updateProjectioMatrix();
+	updateProjectionMatrix();
 }
 
 void TestCamera::setFarPlane(float farP)
 {
 	this->farP = farP;
-	updateProjectioMatrix();
+	updateProjectionMatrix();
 }
 
 void TestCamera::onMouseDrag(int x, int y)
@@ -66,12 +70,22 @@ void TestCamera::onMouseDrag(int x, int y)
 	std:: cout <<"drag x: " << x << " y:" << y << std::endl;
 }
 
-void TestCamera::onMouseClick(Input::MouseButton button, Input::ButtonState state , int x, int y)
+void TestCamera::onMouseClick(Input::MouseButton button, Input::Direction state , int x, int y)
 {
 	std:: cout << "click button=" << button << " state=" << state << " x=" << x << " y=" << y << std::endl;
 }
 
-void TestCamera::onMouseWheel(int x, int y)
+void TestCamera::onMouseWheel(Input::Direction direction, int x, int y)
 {
-	std:: cout <<"wheel x: " << x << " y:" << y << std::endl;
+	vec3 dir = center - position;
+	bool up = direction == Input::UP;
+
+	float len = glm::length(dir);
+
+	if(len <= nearP && up || len >= farP && !up)
+		return;
+	
+	dir = glm::normalize(dir) * 0.2f * (up ? 1.0f : -1.0f);
+	position += dir;
+	updateViewMatrix();
 }

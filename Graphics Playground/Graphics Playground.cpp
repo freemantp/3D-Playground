@@ -100,6 +100,7 @@ void InitWindow(int argc, char* argv[])
 
 	glutMouseFunc(MouseHandler::click);
 	glutMotionFunc(MouseHandler::drag);
+	glutMouseWheelFunc(MouseHandler::wheel);
 
 	//atexit(Controller::glutAtExit);
 

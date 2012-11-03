@@ -18,6 +18,11 @@ void MouseHandler::drag(int x, int y)
 	instance.handleDrag(x,y);
 }
 
+void MouseHandler::wheel(int wheel, int direction, int x, int y)
+{
+	instance.handleWheel(wheel,direction,x,y);
+}
+
 void MouseHandler::click(int button, int state, int x, int y)
 {
 	instance.handleClick(button, state, x, y);
@@ -32,42 +37,36 @@ void MouseHandler::handleDrag(int x, int y)
 	}
 }
 
-void  MouseHandler::handleClick(int button, int state, int x, int y)
+void MouseHandler::handleClick(int button, int state, int x, int y)
 {
-	Input::ButtonState bState = state == GLUT_UP ? Input::UP : Input::DOWN;
+	Input::Direction bState = state == GLUT_UP ? Input::UP : Input::DOWN;
 	Input::MouseButton mButton;
 
-	bool isWheel = false;
-
-	if ((button == 3) || (button == 4)) // It's a wheel event
-	{
-		isWheel = true;
-	}
-	else
-	{
-		switch(button)
-		{	
-		case GLUT_LEFT_BUTTON:
-			mButton = Input::LEFT;
-			break;
-		case GLUT_MIDDLE_BUTTON:
-			mButton = Input::MIDDLE;
-			break;
-		case GLUT_RIGHT_BUTTON:
-			mButton = Input::RIGHT;
-			break;
-		}	
-	}
-
+	switch(button)
+	{	
+	case GLUT_LEFT_BUTTON:
+		mButton = Input::LEFT;
+		break;
+	case GLUT_MIDDLE_BUTTON:
+		mButton = Input::MIDDLE;
+		break;
+	case GLUT_RIGHT_BUTTON:
+		mButton = Input::RIGHT;
+		break;
+	}	
+	
 	std::vector<MouseObserver*>::const_iterator cit;
 	for(cit = observers.cbegin(); cit != observers.cend(); cit++)
 	{
-		if(isWheel)
-			(*cit)->onMouseWheel(x, y);
-		else
-			(*cit)->onMouseClick(mButton, bState,  x, y);
+		(*cit)->onMouseClick(mButton, bState,  x, y);
+	}
+}
 
-		
-		
+void MouseHandler::handleWheel(int wheel, int direction, int x, int y)
+{
+	std::vector<MouseObserver*>::const_iterator cit;
+	for(cit = observers.cbegin(); cit != observers.cend(); cit++)
+	{
+		(*cit)->onMouseWheel(direction > 0 ? Input::UP : Input::DOWN, x, y);	
 	}
 }

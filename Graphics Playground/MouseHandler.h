@@ -10,9 +10,11 @@ public:
 	static MouseHandler& getInstance();
 	static void drag(int x, int y);
 	static void click(int button, int state, int x, int y);
+	static void wheel(int wheel, int direction, int x, int y);
 
 	void handleDrag(int x, int y);
 	void handleClick(int button, int state, int x, int y);
+	void handleWheel(int wheel, int direction, int x, int y);
 
 	void addObserver(MouseObserver* observer);
 
