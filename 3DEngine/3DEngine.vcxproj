@@ -24,6 +24,7 @@
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\enums.h" />
     <ClInclude Include="src\error.h" />
+    <ClInclude Include="src\input\MouseCameraAdapter.h" />
     <ClInclude Include="src\input\MouseObserver.h" />
     <ClInclude Include="src\Matrix4x4.h" />
     <ClInclude Include="src\Mesh.h" />
@@ -41,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Box.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\common.cpp" />
+    <ClCompile Include="src\input\MouseCameraAdapter.cpp" />
     <ClCompile Include="src\Matrix4x4.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\ObjLoader.cpp" />

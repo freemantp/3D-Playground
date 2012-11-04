@@ -111,6 +111,9 @@
     <ClInclude Include="src\input\MouseObserver.h">
       <Filter>Header Files\input</Filter>
     </ClInclude>
+    <ClInclude Include="src\input\MouseCameraAdapter.h">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
@@ -157,6 +160,12 @@
     </ClCompile>
     <ClCompile Include="src\common.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input\MouseCameraAdapter.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>Source Files\cameras</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

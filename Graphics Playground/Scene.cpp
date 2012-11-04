@@ -14,8 +14,10 @@ Scene::Scene()
 	cam = new TestCamera();
 	cam->init();
 
+	 mAdapter = new MouseCameraAdapter(*cam);
+
 	MouseHandler& mH = MouseHandler::getInstance();
-	mH.addObserver(cam);
+	mH.addObserver(mAdapter);
 
 	initContent();
 }

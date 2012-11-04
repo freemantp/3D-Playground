@@ -30,10 +30,12 @@ void MouseHandler::click(int button, int state, int x, int y)
 
 void MouseHandler::handleDrag(int x, int y)
 {
+	glm::vec2 position(x,y);
+
 	std::vector<MouseObserver*>::const_iterator cit;
-	for(cit = observers.cbegin(); cit != observers.cend(); cit++)
+	for(cit = observers.cbegin(); cit != observers.cend(); cit++) 
 	{
-		(*cit)->onMouseDrag(x,y);
+		(*cit)->onMouseDrag(position);
 	}
 }
 
@@ -55,18 +57,23 @@ void MouseHandler::handleClick(int button, int state, int x, int y)
 		break;
 	}	
 	
+	glm::vec2 position(x,y);
+
 	std::vector<MouseObserver*>::const_iterator cit;
 	for(cit = observers.cbegin(); cit != observers.cend(); cit++)
 	{
-		(*cit)->onMouseClick(mButton, bState,  x, y);
+		(*cit)->onMouseClick(mButton, bState, position);
 	}
 }
 
 void MouseHandler::handleWheel(int wheel, int direction, int x, int y)
 {
+
+	glm::vec2 position(x,y);
+
 	std::vector<MouseObserver*>::const_iterator cit;
 	for(cit = observers.cbegin(); cit != observers.cend(); cit++)
 	{
-		(*cit)->onMouseWheel(direction > 0 ? Input::UP : Input::DOWN, x, y);	
+		(*cit)->onMouseWheel(direction > 0 ? Input::UP : Input::DOWN, position);	
 	}
 }
