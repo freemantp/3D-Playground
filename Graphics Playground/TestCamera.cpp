@@ -11,7 +11,7 @@ TestCamera::TestCamera()
 {
 	position =  vec3(0.0f, 0.0f, 2.0f);
 	center =    vec3(0.0f, 0.0f, 0.0f);
-	up =        vec3(0.0f, 1.0f, 0.0f);
+	frame.up =  vec3(0.0f, 1.0f, 0.0f);
 
 	updateViewMatrix();
 	updateProjectionMatrix();

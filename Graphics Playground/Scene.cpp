@@ -137,7 +137,7 @@ void Scene::render()
 	{
 		Shape* s = *objIt;
 		s->render(*(const Camera*)cam);
-		s->worldTransform = glm::rotate(s->worldTransform, 1.0f, glm::vec3(0.0f,1.0f,0.0f));
+		//s->worldTransform = glm::rotate(s->worldTransform, 1.0f, glm::vec3(0.0f,1.0f,0.0f));
 	}
 
 	//lightTransform = (glm::rotate(lightTransform, 1.0f, glm::vec3(0.0f,1.0f,0.0f)));

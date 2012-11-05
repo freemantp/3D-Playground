@@ -6,6 +6,13 @@
 using glm::mat4;
 using glm::vec3;
 
+struct CameraFrame
+{
+	vec3 up;
+	vec3 viewDir;
+	vec3 sideways;
+};
+
 class Camera
 {
 public:
@@ -21,11 +28,11 @@ public:
 
 	const vec3& getPosition() const;
 	const vec3& getCenter() const;
-	const vec3& getUpVector() const;
+	const CameraFrame& getFrame() const;
 	float getNearPlane() const;
 	float getFarPlane() const;
 
-	void setPosition(const vec3& pos);
+	void setPosition(const vec3& pos, const vec3& up);
 
 	void setNearPlane(float near);
 	void setFarPlane(float fov);
@@ -37,7 +44,7 @@ protected:
 
 	vec3 position;
 	vec3 center;
-	vec3 up;
+	CameraFrame frame;
 	float nearP;
 	float farP;
 };
