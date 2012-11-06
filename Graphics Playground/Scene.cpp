@@ -7,17 +7,23 @@
 #include "Box.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "shader/DiffusePerVertexShader.h"
-#include "MouseHandler.h"
+#include "GlutInputHandler.h"
+
+#include <vector>
+
+using std::vector;
 
 Scene::Scene()
 {
 	cam = new PerspectiveCamera();
 	cam->init();
 
-	 mAdapter = new InspectionCameraAdapter(*cam);
+	//mAdapter  = new InspectionCameraAdapter (*cam);
+	mAdapter2 = new FirstPersonCameraAdapter(*cam);
 
-	MouseHandler& mH = MouseHandler::getInstance();
-	mH.addObserver(mAdapter);
+	GlutInputHandler& glutHandler = GlutInputHandler::getInstance();
+	glutHandler.addMouseObserver(mAdapter2);
+	glutHandler.addKeyboardObserver(mAdapter2);
 
 	initContent();
 }

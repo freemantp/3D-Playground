@@ -2,6 +2,9 @@
 
 #include "camera/PerspectiveCamera.h"
 #include <vector>
+
+#include "camera/InspectionCameraAdapter.h"
+#include "camera/FirstPersonCameraAdapter.h"
 #include "Shape.h"
 
 class Scene
@@ -19,6 +22,7 @@ protected:
 	void initContent();
 
 	InspectionCameraAdapter* mAdapter;
+	FirstPersonCameraAdapter* mAdapter2;
 	ShaderBase* shader;
 	glm::mat4 lightTransform;
 	std::vector<Shape*> objects;

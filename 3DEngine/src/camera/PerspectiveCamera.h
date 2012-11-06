@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Camera.h"
-#include "../input/InspectionCameraAdapter.h"
 
 using glm::vec2;
 

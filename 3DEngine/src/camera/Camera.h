@@ -27,12 +27,14 @@ public:
 	virtual void updateProjectionMatrix() = 0;
 
 	const vec3& getPosition() const;
-	const vec3& getCenter() const;
+	const vec3& getTarget() const;
 	const CameraFrame& getFrame() const;
 	float getNearPlane() const;
 	float getFarPlane() const;
 
-	void setPosition(const vec3& pos, const vec3& up);
+	void setPosition(const vec3& pos);
+	void setTarget(const vec3& pos);
+	void setOrientation(const vec3& pos, const vec3& up);
 
 	void setNearPlane(float near);
 	void setFarPlane(float fov);
@@ -43,7 +45,7 @@ public:
 protected:
 
 	vec3 position;
-	vec3 center;
+	vec3 target;
 	CameraFrame frame;
 	float nearP;
 	float farP;

@@ -7,7 +7,7 @@ using glm::vec3;
 using glm::vec4;
 
 InspectionCameraAdapter::InspectionCameraAdapter(Camera& cam) 
-	: cam(cam)
+	: CameraAdapter(cam)
 {
 
 }
@@ -22,7 +22,7 @@ void InspectionCameraAdapter::onMouseDrag(const glm::vec2& screenPos)
 	
 	float degreeRatio = 0.25f;
 	const CameraFrame& frame = cam.getFrame();
-	const vec3& camCenter = cam.getCenter();
+	const vec3& camCenter = cam.getTarget();
 
 	//direction of mouse movement on projetion plane
 	vec2 screenDelta = screenPos - lastScreenPos;
@@ -45,7 +45,7 @@ void InspectionCameraAdapter::onMouseDrag(const glm::vec2& screenPos)
 	//Transform camera position
 	glm::vec4 newPos = transformM * glm::vec4(cam.getPosition(),0.0f);
 	glm::vec4 newUp = transformM * glm::vec4( frame.up, 0.0f);
-	cam.setPosition(vec3(newPos.x,newPos.y,newPos.z), vec3(newUp.x,newUp.y,newUp.z));
+	cam.setOrientation(vec3(newPos.x,newPos.y,newPos.z), vec3(newUp.x,newUp.y,newUp.z));
 
 	//std:: cout <<"dir, x=" << screenDelta.x << " y=" << screenDelta.y << std::endl;
 	//std:: cout <<"rot, x=" << rotAxis.x << " y=" << rotAxis.y << " z=" << rotAxis.z << std::endl ;
@@ -67,7 +67,7 @@ void InspectionCameraAdapter::onMouseClick(Input::MouseButton button, Input::Dir
 
 void InspectionCameraAdapter::onMouseWheel(Input::Direction direction, const glm::vec2& screenPos)
 {
-	vec3 dir = cam.getCenter() - cam.getPosition();
+	vec3 dir = cam.getTarget() - cam.getPosition();
 	bool up = direction == Input::UP;
 
 	float len = glm::length(dir);
@@ -76,7 +76,7 @@ void InspectionCameraAdapter::onMouseWheel(Input::Direction direction, const glm
 		return;
 	
 	dir = glm::normalize(dir) * 0.2f * (up ? 1.0f : -1.0f);
-	cam.setPosition(cam.getPosition() + dir, cam.getFrame().up);
+	cam.setPosition(cam.getPosition() + dir);
 
 	lastScreenPos = screenPos;
 }

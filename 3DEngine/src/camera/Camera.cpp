@@ -16,10 +16,10 @@ mat4 Camera::getViewProjectionTransform() const
 void Camera::updateViewMatrix()
 {
 	//Update view matrix
-	viewMatrix = glm::lookAt( position, center, frame.up);
+	viewMatrix = glm::lookAt( position, target, frame.up);
 	
 	//Update Camera frame
-	frame.viewDir  = glm::normalize(center - position);
+	frame.viewDir  = glm::normalize(target - position);
 	frame.sideways = glm::normalize(glm::cross(frame.viewDir, frame.up ) );
 }
 
@@ -28,16 +28,28 @@ const vec3& Camera::getPosition() const
 	return position;
 }
 
-void Camera::setPosition(const vec3& pos, const vec3& up)
+void Camera::setPosition(const vec3& pos)
+{
+	position = pos;
+	updateViewMatrix();
+}
+
+void Camera::setTarget(const vec3& pos)
+{
+	target = pos;
+	updateViewMatrix();
+}
+
+void Camera::setOrientation(const vec3& pos, const vec3& up)
 {
 	position = pos;
 	frame.up = up;
 	updateViewMatrix();
 }
 
-const vec3& Camera::getCenter() const
+const vec3& Camera::getTarget() const
 {
-	return center;
+	return target;
 }
 
 const CameraFrame& Camera::getFrame() const

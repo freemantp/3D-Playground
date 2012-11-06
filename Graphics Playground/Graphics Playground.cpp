@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include <ctime>
 #include "Scene.h"
-#include "MouseHandler.h"
+#include "GlutInputHandler.h"
 
 #define WINDOW_TITLE_PREFIX "OpenGL Playground"
 
@@ -98,9 +98,11 @@ void InitWindow(int argc, char* argv[])
 	glutReshapeFunc(ResizeFunction);
 	glutDisplayFunc(RenderFunction);
 
-	glutMouseFunc(MouseHandler::click);
-	glutMotionFunc(MouseHandler::drag);
-	glutMouseWheelFunc(MouseHandler::wheel);
+	glutMouseFunc(GlutInputHandler::click);
+	glutMotionFunc(GlutInputHandler::drag);
+	glutMouseWheelFunc(GlutInputHandler::wheel);
+	glutKeyboardFunc(GlutInputHandler::key);
+	glutSpecialFunc(GlutInputHandler::specialKey);
 
 	//atexit(Controller::glutAtExit);
 
