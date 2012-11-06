@@ -1,15 +1,15 @@
 #pragma once
 
-#include "../Camera.h"
+#include "../camera/Camera.h"
 #include "MouseObserver.h"
 
 using glm::vec2;
 
-class MouseCameraAdapter : public MouseObserver
+class InspectionCameraAdapter : public MouseObserver
 {
 public:
-	MouseCameraAdapter(Camera& cam);
-	~MouseCameraAdapter();
+	InspectionCameraAdapter(Camera& cam);
+	~InspectionCameraAdapter();
 
 	virtual void onMouseDrag(const glm::vec2& position);
 	virtual void onMouseClick(Input::MouseButton button, Input::Direction state, const  glm::vec2& position);

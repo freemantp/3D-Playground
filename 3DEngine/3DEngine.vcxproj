@@ -20,11 +20,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Box.h" />
-    <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\camera\Camera.h" />
+    <ClInclude Include="src\camera\PerspectiveCamera.h" />
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\enums.h" />
     <ClInclude Include="src\error.h" />
-    <ClInclude Include="src\input\MouseCameraAdapter.h" />
+    <ClInclude Include="src\input\InspectionCameraAdapter.h" />
     <ClInclude Include="src\input\MouseObserver.h" />
     <ClInclude Include="src\light\PointLight.h" />
     <ClInclude Include="src\Matrix4x4.h" />
@@ -43,9 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Box.cpp" />
-    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\camera\Camera.cpp" />
+    <ClCompile Include="src\camera\PerspectiveCamera.cpp" />
     <ClCompile Include="src\common.cpp" />
-    <ClCompile Include="src\input\MouseCameraAdapter.cpp" />
+    <ClCompile Include="src\input\InspectionCameraAdapter.cpp" />
     <ClCompile Include="src\light\PointLight.cpp" />
     <ClCompile Include="src\Matrix4x4.cpp" />
     <ClCompile Include="src\Mesh.cpp" />

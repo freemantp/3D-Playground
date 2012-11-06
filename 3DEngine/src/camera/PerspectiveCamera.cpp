@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "TestCamera.h"
+#include "PerspectiveCamera.h"
 
 using glm::vec4;
 using glm::vec3;
 
-TestCamera::TestCamera() 
+PerspectiveCamera::PerspectiveCamera() 
 	: fov(50.0f)
 	, aspectRatio(1.0f)
 	, Camera(1.0f, 10.0f)
@@ -17,28 +17,28 @@ TestCamera::TestCamera()
 	updateProjectionMatrix();
 }
 
-TestCamera::~TestCamera()
+PerspectiveCamera::~PerspectiveCamera()
 {
 
 }
 
-void TestCamera::init() 
+void PerspectiveCamera::init() 
 {
 
 }
 
-void TestCamera::updateProjectionMatrix()
+void PerspectiveCamera::updateProjectionMatrix()
 {
 	projectionMatrix  = glm::perspective(fov, aspectRatio, nearP, farP);
 }
 
-void TestCamera::setAspectRatio(float aspectRatio)
+void PerspectiveCamera::setAspectRatio(float aspectRatio)
 {
 	this->aspectRatio = aspectRatio;
 	updateProjectionMatrix();
 }
 
-void TestCamera::setFov(float fov)
+void PerspectiveCamera::setFov(float fov)
 {
 	this->fov = fov;
 	updateProjectionMatrix();

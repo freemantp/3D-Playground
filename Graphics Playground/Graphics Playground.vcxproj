@@ -147,7 +147,6 @@
     <ClInclude Include="MouseHandler.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="TestCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics Playground.cpp" />
@@ -159,7 +158,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TestCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\shader\basic.frag" />

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Transform.h"
-#include "Camera.h"
+#include "camera/Camera.h"
 #include "shader/ShaderBase.h"
 #include <glm/glm.hpp>
 

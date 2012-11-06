@@ -1,16 +1,16 @@
 #pragma once
 
 #include "Camera.h"
-#include "input/MouseCameraAdapter.h"
+#include "../input/InspectionCameraAdapter.h"
 
 using glm::vec2;
 
-class TestCamera :
+class PerspectiveCamera :
 	public Camera
 {
 public:
-	TestCamera();
-	~TestCamera();
+	PerspectiveCamera();
+	~PerspectiveCamera();
 
 	virtual void init();
 	void setFov(float fov);

@@ -1,21 +1,22 @@
 #include "stdafx.h"
-#include "MouseCameraAdapter.h"
+
+#include "InspectionCameraAdapter.h"
 #include <iostream>
 
 using glm::vec3;
 using glm::vec4;
 
-MouseCameraAdapter::MouseCameraAdapter(Camera& cam) 
+InspectionCameraAdapter::InspectionCameraAdapter(Camera& cam) 
 	: cam(cam)
 {
 
 }
 
-MouseCameraAdapter::~MouseCameraAdapter(void)
+InspectionCameraAdapter::~InspectionCameraAdapter(void)
 {
 }
 
-void MouseCameraAdapter::onMouseDrag(const glm::vec2& screenPos)
+void InspectionCameraAdapter::onMouseDrag(const glm::vec2& screenPos)
 {	
 	//std:: cout <<"sp, x=" << screenPos.x << " y=" << screenPos.y << std::endl ;
 	
@@ -58,13 +59,13 @@ void MouseCameraAdapter::onMouseDrag(const glm::vec2& screenPos)
 	lastScreenPos = screenPos;
 }
 
-void MouseCameraAdapter::onMouseClick(Input::MouseButton button, Input::Direction state , const glm::vec2& screenPos)
+void InspectionCameraAdapter::onMouseClick(Input::MouseButton button, Input::Direction state , const glm::vec2& screenPos)
 {
 	//std:: cout << "click button=" << button << " state=" << state << " x=" << screenPos.x << " y=" << screenPos.y << std::endl;
 	lastScreenPos = screenPos;
 }
 
-void MouseCameraAdapter::onMouseWheel(Input::Direction direction, const glm::vec2& screenPos)
+void InspectionCameraAdapter::onMouseWheel(Input::Direction direction, const glm::vec2& screenPos)
 {
 	vec3 dir = cam.getCenter() - cam.getPosition();
 	bool up = direction == Input::UP;

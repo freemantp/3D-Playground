@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TestCamera.h"
+#include "camera/PerspectiveCamera.h"
 #include <vector>
 #include "Shape.h"
 
@@ -18,11 +18,11 @@ protected:
 	ShaderBase* getShader(const string& shaderName);
 	void initContent();
 
-	MouseCameraAdapter* mAdapter;
+	InspectionCameraAdapter* mAdapter;
 	ShaderBase* shader;
 	glm::mat4 lightTransform;
 	std::vector<Shape*> objects;
-	TestCamera* cam;
-	//glm::vec4 initialLightPos;
+	PerspectiveCamera* cam;
+
 };
 

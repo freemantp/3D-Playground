@@ -25,12 +25,6 @@
     <Filter Include="Header Files\shapes">
       <UniqueIdentifier>{bfc9ce7b-82d8-49b0-ac0f-edf48984a2d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\cameras">
-      <UniqueIdentifier>{0f698d31-c7cb-4772-820b-426f9d1b8332}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\cameras">
-      <UniqueIdentifier>{e12e4c9b-c5d5-4a44-864a-3b1b8b5ffa9b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\shaders">
       <UniqueIdentifier>{07fae743-8281-4fe5-a62f-86666be46839}</UniqueIdentifier>
     </Filter>
@@ -57,6 +51,12 @@
     </Filter>
     <Filter Include="Header Files\light">
       <UniqueIdentifier>{a3c4db3f-a56e-4ba2-a6c0-4f410e7756db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\camera">
+      <UniqueIdentifier>{0f698d31-c7cb-4772-820b-426f9d1b8332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\camera">
+      <UniqueIdentifier>{e12e4c9b-c5d5-4a44-864a-3b1b8b5ffa9b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,9 +87,6 @@
     <ClInclude Include="src\Box.h">
       <Filter>Header Files\shapes</Filter>
     </ClInclude>
-    <ClInclude Include="src\Camera.h">
-      <Filter>Header Files\cameras</Filter>
-    </ClInclude>
     <ClInclude Include="src\Triangle.h">
       <Filter>Header Files\shapes</Filter>
     </ClInclude>
@@ -117,11 +114,17 @@
     <ClInclude Include="src\input\MouseObserver.h">
       <Filter>Header Files\input</Filter>
     </ClInclude>
-    <ClInclude Include="src\input\MouseCameraAdapter.h">
-      <Filter>Header Files\input</Filter>
-    </ClInclude>
     <ClInclude Include="src\light\PointLight.h">
       <Filter>Header Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera\Camera.h">
+      <Filter>Header Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera\PerspectiveCamera.h">
+      <Filter>Header Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\input\InspectionCameraAdapter.h">
+      <Filter>Header Files\input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -170,14 +173,17 @@
     <ClCompile Include="src\common.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\input\MouseCameraAdapter.cpp">
-      <Filter>Source Files\input</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Camera.cpp">
-      <Filter>Source Files\cameras</Filter>
-    </ClCompile>
     <ClCompile Include="src\light\PointLight.cpp">
       <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera\Camera.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera\PerspectiveCamera.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input\InspectionCameraAdapter.cpp">
+      <Filter>Source Files\input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
