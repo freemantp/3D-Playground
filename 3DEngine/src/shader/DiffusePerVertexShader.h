@@ -1,5 +1,7 @@
 #pragma once
+
 #include "ShaderBase.h"
+#include "../light/PointLight.h"
 
 class DiffusePerVertexShader :
 	public ShaderBase
@@ -7,14 +9,14 @@ class DiffusePerVertexShader :
 public:
 	DiffusePerVertexShader(const Camera& cam);
 	virtual ~DiffusePerVertexShader();
+	virtual void use();
 
-	void setLightPosition(const glm::vec4& position);
-
-	glm::vec4 getLightPosition();
+	PointLight& getLight();
+	void setLight(PointLight lightSource);
 
 private:
-
-	glm::vec4 lightPosition;
+	PointLight lightSource;
+	glm::vec3 materialColor;
 
 };
 

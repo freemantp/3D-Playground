@@ -77,10 +77,10 @@ public:
 	string log() const;
 
 	/// Activates the shader program associated with this instance
-	void use();
+	virtual void use();
 
 	/// Inactivates the shader program associated with this instance
-	void unuse();
+	virtual void unuse();
 
 	void setUniform(const GLchar *name, int value);
 	void setUniform(const GLchar *name, float value);

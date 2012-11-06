@@ -116,8 +116,12 @@ ShaderBase* Scene::getShader(const string& shaderName)
 
 	DiffusePerVertexShader* sh = new DiffusePerVertexShader(*cam);
 
-	initialLightPos = vec4(1,-0.2,0.4,1);
-	sh->setLightPosition(initialLightPos);
+	PointLight pl;
+	//pl.position = vec4(1,0,0,1);
+	pl.position = vec4(1,-0.2,0.4,1);
+	pl.color = vec3(1,1,1);
+
+	sh->setLight(pl);
 
 	Util::printStrings(sh->getVertexAttributes());
 	Util::printStrings(sh->getUniformAttributes());

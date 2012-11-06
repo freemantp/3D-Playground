@@ -23,6 +23,6 @@ protected:
 	glm::mat4 lightTransform;
 	std::vector<Shape*> objects;
 	TestCamera* cam;
-	glm::vec4 initialLightPos;
+	//glm::vec4 initialLightPos;
 };
 

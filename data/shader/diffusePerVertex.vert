@@ -6,8 +6,8 @@ layout (location = 2) in vec3 VertexNormal;
 out vec3 LightIntensity;
 
 uniform vec4 LightPosition; //in eye coords
-uniform vec3 Kd;			//diffuse reflectivity
-uniform vec3 Ld;			//light source intensity
+uniform vec3 MaterialColor;	//diffuse reflectivity
+uniform vec3 LightColor;	//light source intensity
 
 uniform mat4 ModelViewMatrix;
 uniform mat3 NormalMatrix;
@@ -20,7 +20,7 @@ void main()
 	vec4 eyeCoords = ModelViewMatrix * vec4( VertexPosition, 1.0f);
 	vec3 s = normalize( vec3(LightPosition - eyeCoords) );
 
-	LightIntensity = Ld * Kd * max( dot( s, normal ), 0.0 );
+	LightIntensity = LightColor * MaterialColor * max( dot( s, normal ), 0.0 );
 
-    gl_Position = MVP * vec4( VertexPosition, 1.0 );
+    gl_Position = MVP * vec4( VertexPosition, 1.0 );	
 }

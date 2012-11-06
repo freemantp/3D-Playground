@@ -52,6 +52,12 @@
     <Filter Include="Source Files\input">
       <UniqueIdentifier>{919d7c7a-f3d6-493e-a773-35232a39d9e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\light">
+      <UniqueIdentifier>{0c7985d2-32fb-4114-9cc4-442e9f2301bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\light">
+      <UniqueIdentifier>{a3c4db3f-a56e-4ba2-a6c0-4f410e7756db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -114,6 +120,9 @@
     <ClInclude Include="src\input\MouseCameraAdapter.h">
       <Filter>Header Files\input</Filter>
     </ClInclude>
+    <ClInclude Include="src\light\PointLight.h">
+      <Filter>Header Files\light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
@@ -166,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="src\Camera.cpp">
       <Filter>Source Files\cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="src\light\PointLight.cpp">
+      <Filter>Source Files\light</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

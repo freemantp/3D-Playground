@@ -12,30 +12,30 @@ DiffusePerVertexShader::DiffusePerVertexShader(const Camera& cam)
 
 	loadShader(this, vertexShaderSource, fragmentShaderSource);
 
-	beforeUniformSet();
+	materialColor = vec3(1,1,1);
 
-	setUniform("Kd", glm::vec3(1,1,1));	//Default color = white
-	setUniform("Ld", glm::vec3(1,1,1)); //Default light = white
-
-	afterUniformSet();
 }
-
 
 DiffusePerVertexShader::~DiffusePerVertexShader()
 {
 
 }
 
-void DiffusePerVertexShader::setLightPosition(const glm::vec4& position)
-{
-	lightPosition = position;
-	
-	beforeUniformSet();
-	setUniform("LightPosition", cam.viewMatrix * position);	
-	afterUniformSet();
+void DiffusePerVertexShader::setLight(PointLight lightSource) 
+{ 
+	this->lightSource = lightSource; 
 }
 
-vec4 DiffusePerVertexShader::getLightPosition()
-{
-	return lightPosition;
+PointLight& DiffusePerVertexShader::getLight() 
+{ 
+	return lightSource; 
+}
+
+
+void DiffusePerVertexShader::use()
+{	
+	GLSLProgram::use();
+	setUniform("LightPosition",  cam.viewMatrix * lightSource.position);	
+	setUniform("LightColor", lightSource.color);
+	setUniform("MaterialColor", materialColor);
 }
