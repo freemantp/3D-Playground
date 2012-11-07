@@ -49,12 +49,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\data\shader\basic.frag">
-      <Filter>data\shaders</Filter>
-    </None>
-    <None Include="..\data\shader\basic.vert">
-      <Filter>data\shaders</Filter>
-    </None>
     <None Include="..\data\shader\normalShader.frag">
       <Filter>data\shaders</Filter>
     </None>
@@ -65,6 +59,12 @@
       <Filter>data\shaders</Filter>
     </None>
     <None Include="..\data\shader\diffusePerVertex.vert">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="..\data\shader\colorShader.frag">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="..\data\shader\colorShader.vert">
       <Filter>data\shaders</Filter>
     </None>
   </ItemGroup>

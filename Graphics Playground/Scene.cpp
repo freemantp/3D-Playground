@@ -7,6 +7,7 @@
 #include "Box.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "shader/DiffusePerVertexShader.h"
+#include "shader/ColorShader.h"
 #include "GlutInputHandler.h"
 
 #include <vector>
@@ -18,12 +19,18 @@ Scene::Scene()
 	cam = new PerspectiveCamera();
 	cam->init();
 
-	//mAdapter  = new InspectionCameraAdapter (*cam);
-	mAdapter2 = new FirstPersonCameraAdapter(*cam);
-
 	GlutInputHandler& glutHandler = GlutInputHandler::getInstance();
-	glutHandler.addMouseObserver(mAdapter2);
-	glutHandler.addKeyboardObserver(mAdapter2);
+
+	if(true)
+	{
+		mAdapter  = new InspectionCameraAdapter (*cam);
+		glutHandler.addMouseObserver(mAdapter);
+	} else
+	{
+		mAdapter2 = new FirstPersonCameraAdapter(*cam);
+		glutHandler.addMouseObserver(mAdapter2);
+		glutHandler.addKeyboardObserver(mAdapter2);
+	}
 
 	initContent();
 }
@@ -88,23 +95,29 @@ Mesh* getElephant()
 	return model;
 }
 
+Mesh* getBox()
+{
+	Box* box = new Box();
+	box->init();
+
+	box->worldTransform = glm::translate(box->worldTransform,glm::vec3(-0.5,-0.5f,-0.5));
+	//box->worldTransform = glm::scale(box->worldTransform, glm::vec3(1,1,1));
+
+	return box;
+}
+
 
 void Scene::initContent()
 {	
-	string shaderName = "diffusePerVertex";
-	//string shaderName = "normalShader";
-	
-	shader = getShader(shaderName);
 
-	//Triangle* tri = new Triangle();
-	//Box *box = new Box();
-
-	//tri->init();
-	//box->init();
+	//shader = getDiffuseShader();
+	shader = getColorShader();
 
 	//Mesh* model = getElephant();
 	//Mesh* model = getDragon();
-	Mesh* model = getHorse();
+	//Mesh* model = getHorse();
+	Mesh* model = getBox();
+
 
 	if(shader != NULL) {
 		//tri->setShader(shader);
@@ -117,7 +130,7 @@ void Scene::initContent()
 	objects.push_back(model);
 }
 
-ShaderBase* Scene::getShader(const string& shaderName)
+DiffusePerVertexShader* Scene::getDiffuseShader()
 {
 
 	DiffusePerVertexShader* sh = new DiffusePerVertexShader(*cam);
@@ -131,6 +144,15 @@ ShaderBase* Scene::getShader(const string& shaderName)
 
 	Util::printStrings(sh->getVertexAttributes());
 	Util::printStrings(sh->getUniformAttributes());
+
+	return sh;
+}
+
+
+ColorShader* Scene::getColorShader()
+{
+
+	ColorShader* sh = new ColorShader(*cam);
 
 	return sh;
 }

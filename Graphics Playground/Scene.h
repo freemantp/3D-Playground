@@ -3,6 +3,9 @@
 #include "camera/PerspectiveCamera.h"
 #include <vector>
 
+#include "shader/DiffusePerVertexShader.h"
+#include "shader/ColorShader.h"
+
 #include "camera/InspectionCameraAdapter.h"
 #include "camera/FirstPersonCameraAdapter.h"
 #include "Shape.h"
@@ -18,7 +21,8 @@ public:
 
 protected:
 
-	ShaderBase* getShader(const string& shaderName);
+	DiffusePerVertexShader* getDiffuseShader();
+	ColorShader* getColorShader();
 	void initContent();
 
 	InspectionCameraAdapter* mAdapter;

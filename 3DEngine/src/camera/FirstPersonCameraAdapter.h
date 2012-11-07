@@ -14,6 +14,7 @@ public:
 	FirstPersonCameraAdapter(Camera& cam);
 	~FirstPersonCameraAdapter();
 
+	virtual void onMouseMove(const glm::vec2& position);
 	virtual void onMouseDrag(const glm::vec2& position);
 	virtual void onMouseClick(Input::MouseButton button, Input::Direction state, const  glm::vec2& position);
 	virtual void onMouseWheel(Input::Direction direction, const glm::vec2& position);

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "GlutInputHandler.h"
 
+using glm::vec2;
+
 GlutInputHandler GlutInputHandler::instance = GlutInputHandler();
 
 GlutInputHandler::GlutInputHandler()
@@ -26,33 +28,36 @@ void GlutInputHandler::addKeyboardObserver(KeyboardObserver* observer)
 
 void GlutInputHandler::drag(int x, int y)
 {
-	instance.handleDrag(x,y);
+	instance.handleDrag(vec2(x,y));
+}
+
+void GlutInputHandler::mouseMove(int x, int y)
+{
+	instance.handleMove(vec2(x,y));
 }
 
 void GlutInputHandler::wheel(int wheel, int direction, int x, int y)
 {
-	instance.handleWheel(wheel,direction,x,y);
+	instance.handleWheel(wheel,direction,vec2(x,y));
 }
 
 void GlutInputHandler::click(int button, int state, int x, int y)
 {
-	instance.handleClick(button, state, x, y);
+	instance.handleClick(button, state, vec2(x,y));
 }
 
 void GlutInputHandler::key(unsigned char key, int x, int y)
 {
-	instance.handleKey(key,x, y);
+	instance.handleKey(key,vec2(x,y));
 }
 
 void GlutInputHandler::specialKey(int key, int x, int y)
 {
-	instance.handleSpecialKey(key,x, y);
+	instance.handleSpecialKey(key,vec2(x,y));
 }
 
-void GlutInputHandler::handleDrag(int x, int y)
+void GlutInputHandler::handleDrag(const glm::vec2& position)
 {
-	glm::vec2 position(x,y);
-
 	std::vector<MouseObserver*>::const_iterator cit;
 	for(cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++) 
 	{
@@ -60,7 +65,16 @@ void GlutInputHandler::handleDrag(int x, int y)
 	}
 }
 
-void GlutInputHandler::handleClick(int button, int state, int x, int y)
+void GlutInputHandler::handleMove(const glm::vec2& position)
+{
+	std::vector<MouseObserver*>::const_iterator cit;
+	for(cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++) 
+	{
+		(*cit)->onMouseMove(position);
+	}
+}
+
+void GlutInputHandler::handleClick(int button, int state, const glm::vec2& position)
 {
 	Input::Direction bState = state == GLUT_UP ? Input::UP : Input::DOWN;
 	Input::MouseButton mButton;
@@ -77,8 +91,6 @@ void GlutInputHandler::handleClick(int button, int state, int x, int y)
 		mButton = Input::RIGHT;
 		break;
 	}	
-	
-	glm::vec2 position(x,y);
 
 	std::vector<MouseObserver*>::const_iterator cit;
 	for(cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++)
@@ -87,10 +99,8 @@ void GlutInputHandler::handleClick(int button, int state, int x, int y)
 	}
 }
 
-void GlutInputHandler::handleWheel(int wheel, int direction, int x, int y)
+void GlutInputHandler::handleWheel(int wheel, int direction, const glm::vec2& position)
 {
-	glm::vec2 position(x,y);
-
 	std::vector<MouseObserver*>::const_iterator cit;
 	for(cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++)
 	{
@@ -98,10 +108,8 @@ void GlutInputHandler::handleWheel(int wheel, int direction, int x, int y)
 	}
 }
 
-void GlutInputHandler::handleKey(unsigned char key, int x, int y)
+void GlutInputHandler::handleKey(unsigned char key, const glm::vec2& position)
 {
-	glm::vec2 position(x,y);
-
 	Input::KEY k;
 	Input::MODIFIER m = Input::NONE;
 
@@ -145,10 +153,8 @@ void GlutInputHandler::handleKey(unsigned char key, int x, int y)
 	}
 }
 
-void GlutInputHandler::handleSpecialKey(int key, int x, int y)
+void GlutInputHandler::handleSpecialKey(int key,const glm::vec2& position)
 {
-	glm::vec2 position(x,y);
-
 	Input::KEY k;
 	Input::MODIFIER m = Input::NONE;
 

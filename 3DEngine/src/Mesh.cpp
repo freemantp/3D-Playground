@@ -200,16 +200,20 @@ void Mesh::setShader(ShaderBase* shader)
 	Shape::setShader(shader);
 
 	GLint channel = shader->getAttributeChannel(GLSLShader::Position);
-	mapVertexAttribute(GLSLShader::Position, channel );
+	if(channel >= 0)
+		mapVertexAttribute(GLSLShader::Position, channel );
 
 	channel = shader->getAttributeChannel(GLSLShader::Normal);
-	mapVertexAttribute(GLSLShader::Normal, channel );
+	if(channel >= 0)
+		mapVertexAttribute(GLSLShader::Normal, channel );
 
 	channel = shader->getAttributeChannel(GLSLShader::Color);
-	mapVertexAttribute(GLSLShader::Color, channel );
+	if(channel >= 0)
+		mapVertexAttribute(GLSLShader::Color, channel );
 
 	channel = shader->getAttributeChannel(GLSLShader::TextureCoord);
-	mapVertexAttribute(GLSLShader::TextureCoord, channel );
+	if(channel >= 0)
+		mapVertexAttribute(GLSLShader::TextureCoord, channel );
 }
 
 void Mesh::render(const Camera& cam) const

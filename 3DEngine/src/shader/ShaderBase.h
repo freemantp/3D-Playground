@@ -28,6 +28,8 @@ protected:
 	void beforeUniformSet();
 	void afterUniformSet();
 
+	bool hasMVP, hasNM, hasMVM;
+
 	GLint currentProgram;
 	const Camera& cam;
 	

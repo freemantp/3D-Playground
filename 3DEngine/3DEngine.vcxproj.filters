@@ -117,6 +117,9 @@
     <ClInclude Include="src\camera\InspectionCameraAdapter.h">
       <Filter>Header Files\camera</Filter>
     </ClInclude>
+    <ClInclude Include="src\shader\ColorShader.h">
+      <Filter>Header Files\shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
@@ -166,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="src\camera\InspectionCameraAdapter.cpp">
       <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\ColorShader.cpp">
+      <Filter>Source Files\shaders</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

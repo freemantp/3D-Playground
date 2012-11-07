@@ -35,6 +35,7 @@ public:
 	void setPosition(const vec3& pos);
 	void setTarget(const vec3& pos);
 	void setOrientation(const vec3& pos, const vec3& up);
+	void setOrientation2(const vec3& target, const vec3& up);
 
 	void setNearPlane(float near);
 	void setFarPlane(float fov);

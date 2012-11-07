@@ -4,6 +4,9 @@
 
 ShaderBase::ShaderBase(const Camera& cam)
 	: cam(cam)
+	, hasMVP(true)
+	, hasNM(true)
+	, hasMVM(true)
 	, GLSLProgram()
 {
 
@@ -39,14 +42,17 @@ void ShaderBase::updateTransforms(const Camera& cam, const glm::mat4& modelTrans
 {
 	glm::mat4 modelViewMatrix = cam.viewMatrix * modelTransform;
 	
-	glm::mat4 mvp = cam.projectionMatrix * modelViewMatrix;
+	glm::mat4 mvpMatrix = cam.projectionMatrix * modelViewMatrix;
 	glm::mat3 normalMatrix	= glm::transpose(glm::inverse(glm::mat3(modelViewMatrix)));
 	
 	beforeUniformSet();
 
-	setUniform("MVP", mvp);
-	setUniform("NormalMatrix", normalMatrix);		
-	setUniform("ModelViewMatrix", modelViewMatrix);		
+	if(hasMVP)
+		setUniform("MVP", mvpMatrix);
+	if(hasNM)
+		setUniform("NormalMatrix", normalMatrix);		
+	if(hasMVM)
+		setUniform("ModelViewMatrix", modelViewMatrix);		
 	
 	afterUniformSet();
 }

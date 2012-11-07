@@ -100,6 +100,7 @@ void InitWindow(int argc, char* argv[])
 
 	glutMouseFunc(GlutInputHandler::click);
 	glutMotionFunc(GlutInputHandler::drag);
+	glutPassiveMotionFunc(GlutInputHandler::mouseMove);
 	glutMouseWheelFunc(GlutInputHandler::wheel);
 	glutKeyboardFunc(GlutInputHandler::key);
 	glutSpecialFunc(GlutInputHandler::specialKey);

@@ -16,6 +16,12 @@ InspectionCameraAdapter::~InspectionCameraAdapter(void)
 {
 }
 
+
+void InspectionCameraAdapter::onMouseMove(const glm::vec2& position)
+{
+	
+}
+
 void InspectionCameraAdapter::onMouseDrag(const glm::vec2& screenPos)
 {	
 	//std:: cout <<"sp, x=" << screenPos.x << " y=" << screenPos.y << std::endl ;

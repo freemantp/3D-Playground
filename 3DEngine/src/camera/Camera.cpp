@@ -47,6 +47,14 @@ void Camera::setOrientation(const vec3& pos, const vec3& up)
 	updateViewMatrix();
 }
 
+void Camera::setOrientation2(const vec3& target, const vec3& up)
+{
+	this->target = target;
+	this->frame.up = up;
+
+	updateViewMatrix();
+}
+
 const vec3& Camera::getTarget() const
 {
 	return target;

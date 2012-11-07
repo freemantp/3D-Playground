@@ -23,6 +23,17 @@ void Box::init() {
 		1.0f, 1.0f, 1.0f,
 	};
 
+	float colorData[] = {	
+		0.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 1.0f,
+		1.0f, 0.0f, 0.0f,
+		1.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, 0.0f,
+		1.0f, 1.0f, 0.0f,
+	};
+
 	/**
 	* Face indices, 3 values form a triangle face. The numbers reference
 	* values in the vertexData array
@@ -46,8 +57,11 @@ void Box::init() {
 	};
 
 	std::vector<float> pos(vertexData, vertexData+32);
+	std::vector<float> color(colorData, colorData+32);
 	std::vector<int> idx(indexData, indexData+36);
 
 	setPositions(pos,idx);
+	setColors(color);
+
 
 }
