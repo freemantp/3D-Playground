@@ -13,15 +13,16 @@ public:
 	void updateTransforms(const Camera& cam, const glm::mat4& modelTransform);
 	GLint getAttributeChannel(GLSLShader::VertexAttribute attribute);
 
-	static ShaderBase* createShader(const Camera& cam,
+	virtual void use();
+
+	/*static ShaderBase* createShader(const Camera& cam,
 									const string& vertexSource, 
-									const string& fragmentSource);
+									const string& fragmentSource);*/
 
 protected:
 
-	static bool loadShader(	GLSLProgram* shader, 
-						const string& vertexSource, 
-						const string& fragmentSource);
+	bool loadShader( const string& vertexSource, const string& fragmentSource);
+	bool loadShader(const string& shaderName);	
 
 	ShaderBase(const Camera& cam);
 	GLint getCurentProgram();

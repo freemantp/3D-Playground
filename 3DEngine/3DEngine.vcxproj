@@ -36,6 +36,7 @@
     <ClInclude Include="src\shader\ColorShader.h" />
     <ClInclude Include="src\shader\DiffusePerVertexShader.h" />
     <ClInclude Include="src\shader\GLSLProgram.h" />
+    <ClInclude Include="src\shader\PhongShader.h" />
     <ClInclude Include="src\shader\ShaderBase.h" />
     <ClInclude Include="src\Shape.h" />
     <ClInclude Include="src\stdafx.h" />
@@ -55,6 +56,7 @@
     <ClCompile Include="src\shader\ColorShader.cpp" />
     <ClCompile Include="src\shader\DiffusePerVertexShader.cpp" />
     <ClCompile Include="src\shader\GLSLProgram.cpp" />
+    <ClCompile Include="src\shader\PhongShader.cpp" />
     <ClCompile Include="src\shader\ShaderBase.cpp" />
     <ClCompile Include="src\Shape.cpp" />
     <ClCompile Include="src\stdafx.cpp">

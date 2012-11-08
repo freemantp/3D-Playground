@@ -5,7 +5,7 @@
 
 #include "shader/DiffusePerVertexShader.h"
 #include "shader/ColorShader.h"
-
+#include "shader/PhongShader.h"
 #include "camera/InspectionCameraAdapter.h"
 #include "camera/FirstPersonCameraAdapter.h"
 #include "Shape.h"
@@ -22,6 +22,7 @@ public:
 protected:
 
 	DiffusePerVertexShader* getDiffuseShader();
+	PhongShader* getPhongShader();
 	ColorShader* getColorShader();
 	void initContent();
 

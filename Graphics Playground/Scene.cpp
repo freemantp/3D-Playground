@@ -6,8 +6,6 @@
 #include "Triangle.h"
 #include "Box.h"
 #include <glm/gtc/matrix_transform.hpp>
-#include "shader/DiffusePerVertexShader.h"
-#include "shader/ColorShader.h"
 #include "GlutInputHandler.h"
 
 #include <vector>
@@ -18,6 +16,8 @@ Scene::Scene()
 {
 	cam = new PerspectiveCamera();
 	cam->init();
+	cam->setPosition(vec3(0,0,2));
+	cam->setTarget(vec3(0,0,0));
 
 	GlutInputHandler& glutHandler = GlutInputHandler::getInstance();
 
@@ -67,7 +67,7 @@ Mesh* loadModel(const string& path)
 	Mesh* mesh = new Mesh();;
 	mesh->setPositions(vertexArray,indexArray);
 	mesh->setNormals(normalArray);
-	//cow->setColors(vertexArray);
+	//mesh->setColors(vertexArray);
 
 	return mesh;
 }
@@ -100,8 +100,9 @@ Mesh* getBox()
 	Box* box = new Box();
 	box->init();
 
+	//box->worldTransform = glm::scale(box->worldTransform, glm::vec3(5,5,5));
 	box->worldTransform = glm::translate(box->worldTransform,glm::vec3(-0.5,-0.5f,-0.5));
-	//box->worldTransform = glm::scale(box->worldTransform, glm::vec3(1,1,1));
+	
 
 	return box;
 }
@@ -109,14 +110,14 @@ Mesh* getBox()
 
 void Scene::initContent()
 {	
-
+	shader = getPhongShader();
 	//shader = getDiffuseShader();
-	shader = getColorShader();
+	//shader = getColorShader();
 
 	//Mesh* model = getElephant();
 	//Mesh* model = getDragon();
-	//Mesh* model = getHorse();
-	Mesh* model = getBox();
+	Mesh* model = getHorse();
+	//Mesh* model = getBox();
 
 
 	if(shader != NULL) {
@@ -132,7 +133,6 @@ void Scene::initContent()
 
 DiffusePerVertexShader* Scene::getDiffuseShader()
 {
-
 	DiffusePerVertexShader* sh = new DiffusePerVertexShader(*cam);
 
 	PointLight pl;
@@ -144,6 +144,24 @@ DiffusePerVertexShader* Scene::getDiffuseShader()
 
 	Util::printStrings(sh->getVertexAttributes());
 	Util::printStrings(sh->getUniformAttributes());
+
+	return sh;
+}
+
+PhongShader* Scene::getPhongShader()
+{
+
+	PhongShader* sh = new PhongShader(*cam);
+
+	/*PointLight pl;
+	//pl.position = vec4(1,0,0,1);
+	pl.position = vec4(1,-0.2,0.4,1);
+	pl.color = vec3(1,1,1);
+
+	sh->setLight(pl);
+
+	Util::printStrings(sh->getVertexAttributes());
+	Util::printStrings(sh->getUniformAttributes());*/
 
 	return sh;
 }

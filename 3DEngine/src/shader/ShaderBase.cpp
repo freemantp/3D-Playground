@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ShaderBase.h"
-
+#include "../Util.h"
 
 ShaderBase::ShaderBase(const Camera& cam)
 	: cam(cam)
@@ -57,16 +57,6 @@ void ShaderBase::updateTransforms(const Camera& cam, const glm::mat4& modelTrans
 	afterUniformSet();
 }
 
-
-ShaderBase* ShaderBase::createShader( const Camera& cam,
-									  const string& vertexSource, 
-									  const string& fragmentSource)
-{
-	ShaderBase* shader = new ShaderBase(cam);
-	bool success = loadShader(shader,vertexSource,fragmentSource);
-	return success ? shader : NULL;
-}
-
 GLint ShaderBase::getAttributeChannel(GLSLShader::VertexAttribute attribute)
 {
 	
@@ -89,24 +79,31 @@ GLint ShaderBase::getAttributeChannel(GLSLShader::VertexAttribute attribute)
 	}
 }
 
-bool ShaderBase::loadShader(GLSLProgram* shader, 
-							 const string& vertexSource, 
+bool ShaderBase::loadShader(const string& shaderName)
+{
+	string vertexShaderSource = Util::loadTextFile( Config::SHADER_BASE_PATH + shaderName + ".vert");
+	string fragmentShaderSource = Util::loadTextFile( Config::SHADER_BASE_PATH + shaderName + ".frag");
+
+	return loadShader(vertexShaderSource, fragmentShaderSource);
+}
+
+bool ShaderBase::loadShader( const string& vertexSource, 
 							 const string& fragmentSource)
 {
-	if (!shader->compileShaderFromString(vertexSource, GLSLShader::VERTEX))  
+	if (!this->compileShaderFromString(vertexSource, GLSLShader::VERTEX))  
 	{
-		Error("--- Vertex Shader ---\n" + shader->log());
+		Error("--- Vertex Shader ---\n" + this->log());
 		return false;
 	}
 
-	if (!shader->compileShaderFromString(fragmentSource, GLSLShader::FRAGMENT)) 
+	if (!this->compileShaderFromString(fragmentSource, GLSLShader::FRAGMENT)) 
 	{
-		Error("--- Fragment Shader ---\n" + shader->log());
+		Error("--- Fragment Shader ---\n" + this->log());
 		return false;
 	}
 
-	if (!shader->link()) {
-		Error("--- Linker ---\n" + shader->log());
+	if (!this->link()) {
+		Error("--- Linker ---\n" + this->log());
 		return false;
 	}
 
@@ -114,3 +111,8 @@ bool ShaderBase::loadShader(GLSLProgram* shader,
 
 }
 
+
+void ShaderBase::use()
+{
+	GLSLProgram::use();
+}

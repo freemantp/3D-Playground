@@ -166,6 +166,8 @@
     <None Include="..\data\shader\diffusePerVertex.vert" />
     <None Include="..\data\shader\normalShader.frag" />
     <None Include="..\data\shader\normalShader.vert" />
+    <None Include="..\data\shader\phongShader.frag" />
+    <None Include="..\data\shader\phongShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

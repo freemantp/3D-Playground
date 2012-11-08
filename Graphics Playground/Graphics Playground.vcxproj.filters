@@ -19,6 +19,18 @@
     <Filter Include="data\shaders">
       <UniqueIdentifier>{5a9049f4-05b9-49b4-9e6d-abdd748769eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data\shaders\diffuse">
+      <UniqueIdentifier>{4fca2675-2643-4d6d-8396-bd769cc131dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\shaders\color">
+      <UniqueIdentifier>{da50e406-7a5d-423b-b266-c1300e4ff2d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\shaders\phong">
+      <UniqueIdentifier>{2298ca9d-3b49-440b-b853-7290d49d6647}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\shaders\normal">
+      <UniqueIdentifier>{ebae6df7-b407-488d-ad6a-f2c049cedf8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -49,23 +61,29 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\data\shader\normalShader.frag">
-      <Filter>data\shaders</Filter>
-    </None>
-    <None Include="..\data\shader\normalShader.vert">
-      <Filter>data\shaders</Filter>
-    </None>
     <None Include="..\data\shader\diffusePerVertex.frag">
-      <Filter>data\shaders</Filter>
+      <Filter>data\shaders\diffuse</Filter>
     </None>
     <None Include="..\data\shader\diffusePerVertex.vert">
-      <Filter>data\shaders</Filter>
+      <Filter>data\shaders\diffuse</Filter>
     </None>
     <None Include="..\data\shader\colorShader.frag">
-      <Filter>data\shaders</Filter>
+      <Filter>data\shaders\color</Filter>
     </None>
     <None Include="..\data\shader\colorShader.vert">
-      <Filter>data\shaders</Filter>
+      <Filter>data\shaders\color</Filter>
+    </None>
+    <None Include="..\data\shader\phongShader.frag">
+      <Filter>data\shaders\phong</Filter>
+    </None>
+    <None Include="..\data\shader\phongShader.vert">
+      <Filter>data\shaders\phong</Filter>
+    </None>
+    <None Include="..\data\shader\normalShader.vert">
+      <Filter>data\shaders\normal</Filter>
+    </None>
+    <None Include="..\data\shader\normalShader.frag">
+      <Filter>data\shaders\normal</Filter>
     </None>
   </ItemGroup>
 </Project>

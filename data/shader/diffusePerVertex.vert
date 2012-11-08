@@ -15,7 +15,7 @@ uniform mat4 MVP;
 
 void main()
 {
-	vec3 normal = NormalMatrix * VertexNormal;
+	vec3 normal = normalize(NormalMatrix * VertexNormal);
 
 	vec4 eyeCoords = ModelViewMatrix * vec4( VertexPosition, 1.0f);
 	vec3 s = normalize( vec3(LightPosition - eyeCoords) );
