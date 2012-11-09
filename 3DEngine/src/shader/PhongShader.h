@@ -4,9 +4,9 @@ class PhongShader :
 	public ShaderBase
 {
 public:
-	PhongShader(const Camera& cam);
+	PhongShader();
 	virtual ~PhongShader(void);
 
-	virtual void use();
+	virtual void use(const Camera& cam, const glm::mat4& modelTransform);
 };
 

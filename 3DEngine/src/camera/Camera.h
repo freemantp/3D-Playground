@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "../input/ViewportObserver.h"
 
 using glm::mat4;
 using glm::vec3;
@@ -13,18 +14,17 @@ struct CameraFrame
 	vec3 sideways;
 };
 
-class Camera
+class Camera : public ViewportObserver
 {
 public:
 
 	Camera(float nearPlane, float farPlane);
 
-	virtual void init() = 0;
-
 	mat4 getViewProjectionTransform() const;
 
 	void updateViewMatrix();
 	virtual void updateProjectionMatrix() = 0;
+	virtual void viewportSizeChanged(int width, int height) = 0;
 
 	const vec3& getPosition() const;
 	const vec3& getTarget() const;

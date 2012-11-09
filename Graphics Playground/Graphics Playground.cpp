@@ -2,6 +2,7 @@
 #include <ctime>
 #include "Scene.h"
 #include "GlutInputHandler.h"
+#include "input/WindowEventHandler.h"
 
 #include "Util.h"
 #include "SceneParser.h"
@@ -14,7 +15,6 @@ int CurrentWidth = 800,
 
 void Initialize(int, char*[]);
 void InitWindow(int, char*[]);
-void ResizeFunction(int, int);
 void RenderFunction();
 
 int main(int argc, char* argv[])
@@ -70,7 +70,7 @@ void Initialize(int argc, char* argv[])
 	GLint num;
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &num);
 
-	s = new Scene();
+	s = Scene::createDemoScene();
 }
 
 void InitWindow(int argc, char* argv[])
@@ -100,7 +100,8 @@ void InitWindow(int argc, char* argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	glutReshapeFunc(ResizeFunction);
+
+	glutReshapeFunc(WindowEventHandler::resize);
 	glutDisplayFunc(RenderFunction);
 
 	glutMouseFunc(GlutInputHandler::click);
@@ -115,19 +116,6 @@ void InitWindow(int argc, char* argv[])
 	glutReportErrors();
 
 }
-
-void ResizeFunction(int Width, int Height)
-{
-	CurrentWidth = Width;
-	CurrentHeight = Height;
-	glViewport(0, 0, CurrentWidth, CurrentHeight);
-
-	float aspectRatio = (float)Width / Height;
-
-	s->resize(aspectRatio);
-}
-
-
 
 void RenderFunction()
 {

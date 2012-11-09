@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Shape.h"
-#include "enums.h"
+#include "../enums.h"
 
 class Mesh : public Shape
 {

@@ -7,9 +7,9 @@ class DiffusePerVertexShader :
 	public ShaderBase
 {
 public:
-	DiffusePerVertexShader(const Camera& cam);
+	DiffusePerVertexShader();
 	virtual ~DiffusePerVertexShader();
-	virtual void use();
+	virtual void use(const Camera& cam, const glm::mat4& modelTransform);
 
 	PointLight& getLight();
 	void setLight(PointLight lightSource);

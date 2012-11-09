@@ -2,8 +2,8 @@
 #include "ColorShader.h"
 #include "../Util.h"
 
-ColorShader::ColorShader(const Camera& cam)
-	: ShaderBase(cam)
+ColorShader::ColorShader()
+	: ShaderBase()
 
 {	
 	hasNM = false;

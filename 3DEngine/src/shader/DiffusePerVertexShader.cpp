@@ -2,8 +2,8 @@
 #include "DiffusePerVertexShader.h"
 
 
-DiffusePerVertexShader::DiffusePerVertexShader(const Camera& cam)
-	: ShaderBase(cam)
+DiffusePerVertexShader::DiffusePerVertexShader()
+	: ShaderBase()
 {
 	loadShader("diffusePerVertex");
 	materialColor = vec3(1,1,1);
@@ -25,9 +25,9 @@ PointLight& DiffusePerVertexShader::getLight()
 }
 
 
-void DiffusePerVertexShader::use()
+void DiffusePerVertexShader::use(const Camera& cam, const glm::mat4& modelTransform)
 {	
-	ShaderBase::use();
+	ShaderBase::use(cam,modelTransform);
 	setUniform("LightPosition",  cam.viewMatrix * lightSource.position);	
 	setUniform("LightColor", lightSource.color);
 	setUniform("MaterialColor", materialColor);

@@ -63,18 +63,6 @@
     <ClInclude Include="src\error.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Shape.h">
-      <Filter>Header Files\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Box.h">
-      <Filter>Header Files\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Triangle.h">
-      <Filter>Header Files\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mesh.h">
-      <Filter>Header Files\shapes</Filter>
-    </ClInclude>
     <ClInclude Include="src\Util.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
@@ -123,28 +111,34 @@
     <ClInclude Include="src\shader\PhongShader.h">
       <Filter>Header Files\shaders</Filter>
     </ClInclude>
+    <ClInclude Include="src\input\ViewportObserver.h">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\input\WindowEventHandler.h">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shape\Box.h">
+      <Filter>Header Files\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shape\Mesh.h">
+      <Filter>Header Files\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shape\Shape.h">
+      <Filter>Header Files\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shape\Triangle.h">
+      <Filter>Header Files\shapes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Box.cpp">
-      <Filter>Source Files\shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Triangle.cpp">
-      <Filter>Source Files\shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Mesh.cpp">
-      <Filter>Source Files\shapes</Filter>
     </ClCompile>
     <ClCompile Include="src\Util.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="src\ObjLoader.cpp">
       <Filter>Source Files\util</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Shape.cpp">
-      <Filter>Source Files\shapes</Filter>
     </ClCompile>
     <ClCompile Include="src\shader\ShaderBase.cpp">
       <Filter>Source Files\shaders</Filter>
@@ -178,6 +172,21 @@
     </ClCompile>
     <ClCompile Include="src\shader\PhongShader.cpp">
       <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input\WindowEventHandler.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shape\Box.cpp">
+      <Filter>Source Files\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shape\Mesh.cpp">
+      <Filter>Source Files\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shape\Shape.cpp">
+      <Filter>Source Files\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shape\Triangle.cpp">
+      <Filter>Source Files\shapes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

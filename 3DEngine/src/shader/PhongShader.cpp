@@ -2,8 +2,8 @@
 #include "PhongShader.h"
 
 
-PhongShader::PhongShader(const Camera& cam)
-: ShaderBase(cam)
+PhongShader::PhongShader()
+: ShaderBase()
 {
 	loadShader("phongShader");
 }
@@ -13,12 +13,12 @@ PhongShader::~PhongShader(void)
 {
 }
 
-void PhongShader::use()
+void PhongShader::use(const Camera& cam, const glm::mat4& modelTransform)
 {	
 
 	vec4 lightPos(1,0,1,1);
 
-	ShaderBase::use();
+	ShaderBase::use(cam,modelTransform);
 	setUniform("Light.AmbientIntensity",  vec3(0.2) );	
 	setUniform("Light.DiffuseIntensity",  vec3(1,1,1) );	
 	setUniform("Light.SpecularIntensity", vec3(1,1,1) );	

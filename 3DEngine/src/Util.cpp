@@ -2,8 +2,15 @@
 #include "Util.h"
 #include <fstream>
 #include "shader/GLSLProgram.h"
+#include "ObjLoader.h"
+#include "shape/Box.h"
+
+#include "shader/DiffusePerVertexShader.h"
+#include "shader/ColorShader.h"
+#include "shader/PhongShader.h"
 
 using std::string;
+using std::vector;
 
 unsigned long Util::getFileLength(std::ifstream& file)
 {
@@ -66,3 +73,107 @@ void Util::printStrings(const std::vector<string> strings)
 			std::cout << *stringsIterator << std::endl;
 	}
 }
+
+Mesh* Util::loadModel(const string& path)
+{
+	ObjLoader oj;
+	clock_t begin = clock();
+	oj.loadObjFile(path);
+	oj.computeNormals();
+	clock_t end = clock();
+	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC * 1000;
+	std::cout << "time [msec]: " << elapsed_secs << std::endl;
+
+	vector<float> vertexArray, normalArray;
+	vector<int> indexArray;
+
+	oj.getVertexArray(vertexArray);
+	oj.getIndexArray(indexArray);
+	oj.getNormalArray(normalArray);
+
+	Mesh* mesh = new Mesh();;
+	mesh->setPositions(vertexArray,indexArray);
+	mesh->setNormals(normalArray);
+	//mesh->setColors(vertexArray);
+
+	return mesh;
+}
+
+
+Mesh* Util::getDragon()
+{
+	Mesh* model = Util::loadModel("../data/models/dragon.obj");
+	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.85f,0));
+	model->worldTransform = glm::scale(model->worldTransform,glm::vec3(8,8,8));
+	return model;
+}
+
+Mesh* Util::getHorse()
+{
+	Mesh* model = Util::loadModel("../data/models/horse.obj");
+	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.3f,0));
+	model->worldTransform = glm::rotate(model->worldTransform, 270.0f, glm::vec3(0,1,0));
+	return model;
+}
+
+Mesh* Util::getElephant()
+{
+	Mesh* model = Util::loadModel("../data/models/elephant.obj");
+	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.5f,0));
+	return model;
+}
+
+Mesh* Util::getBox()
+{
+	Box* box = new Box();
+	box->init();
+
+	//box->worldTransform = glm::scale(box->worldTransform, glm::vec3(5,5,5));
+	box->worldTransform = glm::translate(box->worldTransform,glm::vec3(-0.5,-0.5f,-0.5));
+	
+	return box;
+}
+
+
+ShaderBase* Util::getDiffuseShader()
+{
+	DiffusePerVertexShader* sh = new DiffusePerVertexShader();
+
+	PointLight pl;
+	//pl.position = vec4(1,0,0,1);
+	pl.position = vec4(1,-0.2,0.4,1);
+	pl.color = vec3(1,1,1);
+
+	sh->setLight(pl);
+
+	Util::printStrings(sh->getVertexAttributes());
+	Util::printStrings(sh->getUniformAttributes());
+
+	return sh;
+}
+
+ShaderBase* Util::getPhongShader()
+{
+
+	PhongShader* sh = new PhongShader();
+
+	/*PointLight pl;
+	//pl.position = vec4(1,0,0,1);
+	pl.position = vec4(1,-0.2,0.4,1);
+	pl.color = vec3(1,1,1);
+
+	sh->setLight(pl);
+
+	Util::printStrings(sh->getVertexAttributes());
+	Util::printStrings(sh->getUniformAttributes());*/
+
+	return sh;
+}
+
+
+ShaderBase* Util::getColorShader()
+{
+	ColorShader* sh = new ColorShader();
+	return sh;
+}
+

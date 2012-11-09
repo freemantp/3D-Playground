@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Box.h" />
     <ClInclude Include="src\camera\Camera.h" />
     <ClInclude Include="src\camera\CameraAdapter.h" />
     <ClInclude Include="src\camera\FirstPersonCameraAdapter.h" />
@@ -30,41 +29,45 @@
     <ClInclude Include="src\error.h" />
     <ClInclude Include="src\input\KeyboardObserver.h" />
     <ClInclude Include="src\input\MouseObserver.h" />
+    <ClInclude Include="src\input\ViewportObserver.h" />
+    <ClInclude Include="src\input\WindowEventHandler.h" />
     <ClInclude Include="src\light\PointLight.h" />
-    <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\ObjLoader.h" />
     <ClInclude Include="src\shader\ColorShader.h" />
     <ClInclude Include="src\shader\DiffusePerVertexShader.h" />
     <ClInclude Include="src\shader\GLSLProgram.h" />
     <ClInclude Include="src\shader\PhongShader.h" />
     <ClInclude Include="src\shader\ShaderBase.h" />
-    <ClInclude Include="src\Shape.h" />
+    <ClInclude Include="src\shape\Box.h" />
+    <ClInclude Include="src\shape\Mesh.h" />
+    <ClInclude Include="src\shape\Shape.h" />
+    <ClInclude Include="src\shape\Triangle.h" />
     <ClInclude Include="src\stdafx.h" />
-    <ClInclude Include="src\Triangle.h" />
     <ClInclude Include="src\Util.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Box.cpp" />
     <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\camera\FirstPersonCameraAdapter.cpp" />
     <ClCompile Include="src\camera\InspectionCameraAdapter.cpp" />
     <ClCompile Include="src\camera\PerspectiveCamera.cpp" />
     <ClCompile Include="src\common.cpp" />
+    <ClCompile Include="src\input\WindowEventHandler.cpp" />
     <ClCompile Include="src\light\PointLight.cpp" />
-    <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\ObjLoader.cpp" />
     <ClCompile Include="src\shader\ColorShader.cpp" />
     <ClCompile Include="src\shader\DiffusePerVertexShader.cpp" />
     <ClCompile Include="src\shader\GLSLProgram.cpp" />
     <ClCompile Include="src\shader\PhongShader.cpp" />
     <ClCompile Include="src\shader\ShaderBase.cpp" />
-    <ClCompile Include="src\Shape.cpp" />
+    <ClCompile Include="src\shape\Box.cpp" />
+    <ClCompile Include="src\shape\Mesh.cpp" />
+    <ClCompile Include="src\shape\Shape.cpp" />
+    <ClCompile Include="src\shape\Triangle.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Triangle.cpp" />
     <ClCompile Include="src\Util.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "camera/Camera.h"
-#include "shader/ShaderBase.h"
+#include "../camera/Camera.h"
+#include "../shader/ShaderBase.h"
 #include <glm/glm.hpp>
 
 class Shape

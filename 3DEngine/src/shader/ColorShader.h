@@ -6,6 +6,6 @@ class ColorShader :
 	public ShaderBase
 {
 public:
-	ColorShader(const Camera& cam);
+	ColorShader();
 };
 

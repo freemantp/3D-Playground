@@ -2,9 +2,8 @@
 #include "ShaderBase.h"
 #include "../Util.h"
 
-ShaderBase::ShaderBase(const Camera& cam)
-	: cam(cam)
-	, hasMVP(true)
+ShaderBase::ShaderBase()
+	: hasMVP(true)
 	, hasNM(true)
 	, hasMVM(true)
 	, GLSLProgram()
@@ -28,7 +27,7 @@ void ShaderBase::beforeUniformSet()
 	currentProgram = getCurentProgram();
 
 	if(currentProgram != programHandle)
-		use();
+		GLSLProgram::use();
 
 }
 
@@ -112,7 +111,8 @@ bool ShaderBase::loadShader( const string& vertexSource,
 }
 
 
-void ShaderBase::use()
+void ShaderBase::use(const Camera& cam, const glm::mat4& modelTransform)
 {
 	GLSLProgram::use();
+	updateTransforms(cam,modelTransform);
 }

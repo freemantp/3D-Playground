@@ -3,35 +3,41 @@
 #include "camera/PerspectiveCamera.h"
 #include <vector>
 
-#include "shader/DiffusePerVertexShader.h"
-#include "shader/ColorShader.h"
-#include "shader/PhongShader.h"
 #include "camera/InspectionCameraAdapter.h"
 #include "camera/FirstPersonCameraAdapter.h"
-#include "Shape.h"
+#include "shape/Shape.h"
+#include "camera/Camera.h"
+#include "shader/ShaderBase.h"
+
+#include <vector>
+
+using std::vector;
 
 class Scene
 {
 public:
-	Scene();
+	Scene(Camera* cam);
 	~Scene();
 
 	void render();
-	void resize(float aspectRatio);
+
+	void addShape(Shape* shape);
+
+	static Scene* createDemoScene();
 
 protected:
-
-	DiffusePerVertexShader* getDiffuseShader();
-	PhongShader* getPhongShader();
-	ColorShader* getColorShader();
-	void initContent();
 
 	InspectionCameraAdapter* mAdapter;
 	FirstPersonCameraAdapter* mAdapter2;
 	ShaderBase* shader;
 	glm::mat4 lightTransform;
-	std::vector<Shape*> objects;
-	PerspectiveCamera* cam;
+
+	Camera* activeCamera;
+
+	vector<Shape*> objects;
+	vector<ShaderBase*> materials;
+	vector<Camera*> cameras;
 
 };
+
 

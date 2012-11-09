@@ -22,11 +22,6 @@ PerspectiveCamera::~PerspectiveCamera()
 
 }
 
-void PerspectiveCamera::init() 
-{
-
-}
-
 void PerspectiveCamera::updateProjectionMatrix()
 {
 	projectionMatrix  = glm::perspective(fov, aspectRatio, nearP, farP);
@@ -42,4 +37,9 @@ void PerspectiveCamera::setFov(float fov)
 {
 	this->fov = fov;
 	updateProjectionMatrix();
+}
+
+void PerspectiveCamera::viewportSizeChanged(int width, int height)
+{
+	setAspectRatio((float)width / height);
 }
