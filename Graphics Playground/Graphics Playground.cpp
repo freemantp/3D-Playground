@@ -3,6 +3,9 @@
 #include "Scene.h"
 #include "GlutInputHandler.h"
 
+#include "Util.h"
+#include "SceneParser.h"
+
 #define WINDOW_TITLE_PREFIX "OpenGL Playground"
 
 int CurrentWidth = 800,
@@ -14,14 +17,16 @@ void InitWindow(int, char*[]);
 void ResizeFunction(int, int);
 void RenderFunction();
 
-
 int main(int argc, char* argv[])
 {	
-	Initialize(argc, argv);
+	const char* data = Util::loadTextFile(Config::SCENE_BASE_PATH  + "simpleScene.xml");
 
+	SceneParser::parse(data);
+
+	Initialize(argc, argv);
 	glutMainLoop();
 
-	//getchar();
+	getchar();
 	exit(EXIT_SUCCESS);
 }
 

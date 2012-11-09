@@ -24,4 +24,5 @@ class Config {
 public:
 
 	static const std::string SHADER_BASE_PATH;
+	static const std::string SCENE_BASE_PATH;
 };

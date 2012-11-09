@@ -120,10 +120,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <SourcePath>${ProjectDir}\src;$(SourcePath)</SourcePath>
-    <IncludePath>C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;C:\Development\tinyxml2\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;C:\Development\tinyxml2\include;$(IncludePath)</IncludePath>
     <SourcePath>${ProjectDir}\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

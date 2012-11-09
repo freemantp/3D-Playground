@@ -45,6 +45,9 @@
     <ClInclude Include="GlutInputHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SceneParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -59,12 +62,12 @@
     <ClCompile Include="GlutInputHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SceneParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\shader\diffusePerVertex.frag">
-      <Filter>data\shaders\diffuse</Filter>
-    </None>
-    <None Include="..\data\shader\diffusePerVertex.vert">
       <Filter>data\shaders\diffuse</Filter>
     </None>
     <None Include="..\data\shader\colorShader.frag">
@@ -84,6 +87,9 @@
     </None>
     <None Include="..\data\shader\normalShader.frag">
       <Filter>data\shaders\normal</Filter>
+    </None>
+    <None Include="..\data\shader\diffusePerVertex.vert">
+      <Filter>data\shaders\diffuse</Filter>
     </None>
   </ItemGroup>
 </Project>

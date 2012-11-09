@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<scene name="Simple scene">
+
+  <materials>
+    <material name="glossy" shader="PhongShader"/>
+    <material name="dull" shader="DiffusePerVertexShader"/>
+  </materials>
+
+  <objects>
+    <mesh file="horse.obj">
+      <position x="0" y="0" z="0"/>
+      <material>dull</material>
+    </mesh>
+  </objects>
+   
+</scene>

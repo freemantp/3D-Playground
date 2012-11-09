@@ -32,29 +32,40 @@ uniform mat4 ModelViewMatrix;
 uniform mat3 NormalMatrix;
 uniform mat4 MVP;
 
-void main()
+void getEyeSpace( out vec3 normal, out vec4 position)
 {
-	vec3 normal = normalize(NormalMatrix * VertexNormal);
-	vec4 eyeCoords = ModelViewMatrix * vec4( VertexPosition, 1.0);
+	normal = normalize(NormalMatrix * VertexNormal);
+	position = ModelViewMatrix * vec4( VertexPosition, 1.0);
+}
 
-	vec3 s = normalize( vec3(Light.Position - eyeCoords) );
-	vec3 v = normalize(-eyeCoords.xyz);
+vec3 phongModel(const in vec4 position,const in vec3 normal)
+{
+	vec3 s = normalize( vec3(Light.Position - position) );
+	vec3 v = normalize(-position.xyz);
 	vec3 r = reflect( -s , normal);
 
 	float sDotN = max(dot(s,normal), 0.0);
 
 	vec3 ambient = Light.AmbientIntensity * Material.AmbientReflectivity;
 	vec3 diffuse = Light.DiffuseIntensity * Material.DiffuseReflectivity * sDotN;
-	vec3 specular = vec3(0.0);
+	vec3 specular = vec3(0.0);  
 
 	if(sDotN > 0)
 	{
 		specular = Light.SpecularIntensity * Material.SpecularReflectivity * pow( max( dot(r,v), 0.0), Material.Shininess ) ;
 	}
 
-	//vec3 ambient = Light.AmbientIntensity * Material.AmbientReflectivity;
+	return ambient + diffuse + specular;
+}
 
-	LightIntensity = ambient + diffuse + specular;
+void main()
+{
+	vec3 eyeNormal;
+	vec4 eyeCoords;
+
+	getEyeSpace(eyeNormal, eyeCoords);
+
+	LightIntensity = phongModel(eyeCoords,eyeNormal);
 
     gl_Position = MVP * vec4( VertexPosition, 1.0 );	
 }
