@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "ShaderBase.h"
+
+#include "../camera/Camera.h"
 #include "../Util.h"
 
 ShaderBase::ShaderBase()

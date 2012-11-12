@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Mesh.h"
+#include "../Scene.h"
+#include "../shader/ShaderBase.h"
 
 using namespace GLSLShader;
 
@@ -216,11 +218,11 @@ void Mesh::setShader(ShaderBase* shader)
 		mapVertexAttribute(GLSLShader::TextureCoord, channel );
 }
 
-void Mesh::render(const Camera& cam) const
+void Mesh::render(const Scene& scene) const
 {
 	if(NULL != shaderProgram) 
 	{	
-		shaderProgram->use(cam, worldTransform);
+		shaderProgram->use(*scene.activeCamera, worldTransform);
 	}
 	
 	glBindVertexArray(vaoHandle);

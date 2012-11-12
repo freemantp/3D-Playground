@@ -1,7 +1,8 @@
 #pragma once
 
 #include <vector>
-#include "ViewportObserver.h"
+
+class ViewportObserver;
 
 class WindowEventHandler
 {

@@ -2,8 +2,11 @@
 
 #include <iostream>
 #include <vector>
-#include "shape/Mesh.h"
-#include "shader/GLSLProgram.h"
+#include <string>
+
+class Mesh;
+class GLSLProgram;
+class ShaderBase;
 
 class Util
 {
@@ -13,7 +16,7 @@ public:
 	static const char* loadTextFile(char* filename);
 	static const char* Util::loadTextFile(const std::string& s);
 	static void printStrings(const std::vector<std::string> strings);
-	static Mesh* loadModel(const string& path);
+	static Mesh* loadModel(const std::string& path);
 
 	static Mesh* getDragon();
 	static Mesh* getHorse();

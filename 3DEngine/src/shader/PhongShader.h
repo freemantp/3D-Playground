@@ -1,5 +1,7 @@
 #pragma once
+
 #include "ShaderBase.h"
+
 class PhongShader :
 	public ShaderBase
 {

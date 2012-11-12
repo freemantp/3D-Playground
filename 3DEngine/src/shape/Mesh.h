@@ -2,6 +2,10 @@
 
 #include "Shape.h"
 #include "../enums.h"
+#include <vector>
+
+//forward declarations
+class Scene;
 
 class Mesh : public Shape
 {
@@ -9,7 +13,7 @@ public:
 	Mesh();
 	virtual ~Mesh();
 
-	virtual void render(const Camera& cam) const;
+	virtual void render(const Scene& cam) const;
 	virtual void init(); 
 
 	bool setPositions(const std::vector<float>& positions, const std::vector<int>& indices);

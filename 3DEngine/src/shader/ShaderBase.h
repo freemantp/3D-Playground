@@ -1,7 +1,8 @@
 #pragma once
 
 #include "GLSLProgram.h"
-#include "../camera/Camera.h"
+
+class Camera;
 
 class ShaderBase : public GLSLProgram
 {

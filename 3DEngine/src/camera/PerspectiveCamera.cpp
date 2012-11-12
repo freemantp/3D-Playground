@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "PerspectiveCamera.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 using glm::vec4;
 using glm::vec3;

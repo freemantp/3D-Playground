@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "PhongShader.h"
-
+#include "../camera/Camera.h"
 
 PhongShader::PhongShader()
 : ShaderBase()

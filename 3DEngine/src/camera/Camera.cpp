@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Camera.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 Camera::Camera(float nearPlane, float farPlane)
 	: nearP(nearPlane)

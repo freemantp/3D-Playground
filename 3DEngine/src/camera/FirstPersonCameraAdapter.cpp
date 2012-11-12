@@ -1,6 +1,12 @@
 #include "stdafx.h"
 #include "FirstPersonCameraAdapter.h"
 #include <iostream>
+#include "Camera.h"
+#include <glm/gtc/matrix_transform.hpp>
+
+using glm::mat4;
+using glm::vec3;
+
 
 FirstPersonCameraAdapter::FirstPersonCameraAdapter(Camera& cam)
 	: CameraAdapter(cam)

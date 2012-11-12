@@ -1,8 +1,10 @@
 #pragma once
 
-#include "../camera/Camera.h"
-#include "../shader/ShaderBase.h"
 #include <glm/glm.hpp>
+
+//forward declarations
+class Scene;
+class ShaderBase;
 
 class Shape
 {
@@ -12,7 +14,7 @@ public:
 	virtual ~Shape();
 
 	virtual void init() = 0;
-	virtual void render(const Camera& cam) const = 0;
+	virtual void render(const Scene& scene) const = 0;
 	virtual void setShader(ShaderBase* shader);
 
 	ShaderBase* getShader()
@@ -25,7 +27,7 @@ public:
 		worldTransform = transf;
 	}
 	
-	mat4 worldTransform;
+	glm::mat4 worldTransform;
 
 protected:
 	ShaderBase* shaderProgram;

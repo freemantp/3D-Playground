@@ -1,6 +1,6 @@
 ﻿#include "stdafx.h"
 #include "DiffusePerVertexShader.h"
-
+#include "../camera/Camera.h"
 
 DiffusePerVertexShader::DiffusePerVertexShader()
 	: ShaderBase()

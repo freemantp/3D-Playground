@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../camera/Camera.h"
+class Camera;
 
 using glm::vec2;
 

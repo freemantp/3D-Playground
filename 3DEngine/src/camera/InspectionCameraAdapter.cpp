@@ -1,7 +1,10 @@
 #include "stdafx.h"
 
 #include "InspectionCameraAdapter.h"
+#include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
+
+#include "Camera.h"
 
 using glm::vec3;
 using glm::vec4;

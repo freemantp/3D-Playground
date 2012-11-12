@@ -7,12 +7,16 @@
 #include "shader/DiffusePerVertexShader.h"
 #include "shader/ColorShader.h"
 #include "Util.h"
+#include "camera/PerspectiveCamera.h"
+#include "Scene.h"
 
+#include "shape/Mesh.h"
 
 using tinyxml2::XMLDocument;
 using tinyxml2::XMLElement;
 using tinyxml2::XMLNode;
 using std::string;
+using std::vector;
 
 typedef std::pair<string,ShaderBase*> ShaderKeyVal;
 

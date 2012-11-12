@@ -1,17 +1,15 @@
 #pragma once
 
-#include "camera/PerspectiveCamera.h"
 #include <vector>
 
-#include "input/InputHandlerFactory.h"
-#include "camera/InspectionCameraAdapter.h"
-#include "camera/FirstPersonCameraAdapter.h"
-#include "shape/Shape.h"
-#include "camera/Camera.h"
-#include "shader/ShaderBase.h"
-#include "light/Light.h"
-
-#include <vector>
+//fwd decls
+class Camera;
+class Shape;
+class Light;
+class ShaderBase;
+class InspectionCameraAdapter;
+class FirstPersonCameraAdapter;
+class InputHandlerFactory;
 
 using std::vector;
 
@@ -28,7 +26,7 @@ public:
 	void setCamera(Camera* shape);
 	void addLight(Light* shape);
 
-	static Scene* createDemoScene();
+	Camera* activeCamera;
 
 protected:
 
@@ -37,7 +35,7 @@ protected:
 	ShaderBase* shader;
 	glm::mat4 lightTransform;
 
-	Camera* activeCamera;
+	
 
 	vector<Shape*> objects;
 	vector<ShaderBase*> materials;

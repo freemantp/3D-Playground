@@ -8,7 +8,13 @@
 #include "input/InputHandlerFactory.h"
 #include "input/WindowEventHandler.h"
 
+#include "input/InputHandlerFactory.h"
+#include "camera/InspectionCameraAdapter.h"
+#include "camera/FirstPersonCameraAdapter.h"
+
 #include "camera/Camera.h"
+#include "shader/ShaderBase.h"
+#include "shape/Shape.h"
 
 using std::vector;
 
@@ -65,48 +71,13 @@ void Scene::render()
 	for(objIt = objects.begin(); objIt != objects.end(); objIt++)
 	{
 		Shape* s = *objIt;
-		s->render(*activeCamera);
+		s->render(*this);
 		//s->worldTransform = glm::rotate(s->worldTransform, 1.0f, glm::vec3(0.0f,1.0f,0.0f));
 	}
 
 	//DiffusePerVertexShader* diffSH = ((DiffusePerVertexShader*)shader);
 	//lightTransform = (glm::rotate(lightTransform, 1.0f, glm::vec3(0.0f,1.0f,0.0f)));
 	//diffSH->setLightPosition( lightTransform * initialLightPos);
-}
-
-Scene* Scene::createDemoScene()
-{
-	/*PerspectiveCamera* pcam = new PerspectiveCamera(50.0f);
-	pcam->setPosition(vec3(0,0,2));
-	pcam->setTarget(vec3(0,0,0));
-	
-
-	Scene* scene = new Scene(pcam);
-
-	ShaderBase* shader = Util::getPhongShader();
-	//shader = Util::getDiffuseShader();
-	//shader = Util::getColorShader();
-
-	scene->addMaterial(shader);
-
-	//Mesh* model = Util::getElephant();
-	//Mesh* model = Util::getDragon();
-	Mesh* model = Util::getHorse();
-	//Mesh* model = Util::getBox();
-
-
-	if(shader != NULL) {
-		//tri->setShader(shader);
-		//box->setShader(shader);
-		model->setShader(shader);
-	}
-	else
-		Error("Shader was not loaded");
-
-	scene->addShape(model);
-
-	return scene;*/
-	return NULL;
 }
 
 void Scene::addMaterial(ShaderBase* material)

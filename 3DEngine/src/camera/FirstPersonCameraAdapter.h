@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Camera.h"
+#include <glm/glm.hpp>
 #include "CameraAdapter.h"
-
 #include "../input/MouseObserver.h"
 #include "../input/KeyboardObserver.h"
 
-using glm::vec2;
+class Camera;
+class KeyboardObserver;
 
 class FirstPersonCameraAdapter : public CameraAdapter, public MouseObserver, public KeyboardObserver
 {

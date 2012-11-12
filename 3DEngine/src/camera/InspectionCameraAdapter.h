@@ -1,11 +1,9 @@
 #pragma once
 
-#include "Camera.h"
 #include "../input/MouseObserver.h"
 #include "CameraAdapter.h"
 
-using glm::vec2;
-
+class Camera;
 /**
 * \class InspectionCameraAdapter for GLUT
 * \brief Mouse adapter class that rotates around a reference point
