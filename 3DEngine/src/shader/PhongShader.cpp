@@ -1,11 +1,18 @@
 #include "stdafx.h"
 #include "PhongShader.h"
 #include "../camera/Camera.h"
+#include "../scene/Scene.h"
+#include "../light/PointLight.h"
 
 PhongShader::PhongShader()
 : ShaderBase()
 {
 	loadShader("phongShader");
+	ambientReflection = vec3(0.0f);
+	diffuseReflection = vec3(0.0f);
+	glossyReflection = vec3(1.0f);
+	shininess = 20;
+
 }
 
 
@@ -13,20 +20,21 @@ PhongShader::~PhongShader(void)
 {
 }
 
-void PhongShader::use(const Camera& cam, const glm::mat4& modelTransform)
+void PhongShader::use(const Scene& scene, const glm::mat4& modelTransform)
 {	
 
-	vec4 lightPos(1,0,1,1);
+	PointLight* pl = static_cast<PointLight*>(scene.lights[0]);
 
-	ShaderBase::use(cam,modelTransform);
-	setUniform("Light.AmbientIntensity",  vec3(0.2) );	
-	setUniform("Light.DiffuseIntensity",  vec3(1,1,1) );	
-	setUniform("Light.SpecularIntensity", vec3(1,1,1) );	
-	setUniform("Light.Position", cam.viewMatrix * lightPos );
+	ShaderBase::use(scene,modelTransform);
+	
+	setUniform("Light.AmbientIntensity",  vec3(0.0) );	
+	setUniform("Light.DiffuseIntensity",  pl->color );	
+	setUniform("Light.SpecularIntensity", pl->color );	
+	setUniform("Light.Position", scene.activeCamera->viewMatrix * pl->position );
 
-	setUniform("Material.AmbientReflectivity", vec3(0.6) );
-	setUniform("Material.DiffuseReflectivity", vec3(0,1,1) );
-	setUniform("Material.SpecularReflectivity", vec3(1,0,1) );
-	setUniform("Material.Shininess", 20);
-
+	setUniform("Material.AmbientReflectivity", ambientReflection );
+	setUniform("Material.DiffuseReflectivity", diffuseReflection );
+	setUniform("Material.SpecularReflectivity", glossyReflection );
+	setUniform("Material.Shininess", shininess);
+	
 }

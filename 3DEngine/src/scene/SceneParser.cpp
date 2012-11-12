@@ -3,14 +3,14 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <string>
-#include "shader/PhongShader.h"
-#include "shader/DiffusePerVertexShader.h"
-#include "shader/ColorShader.h"
-#include "Util.h"
-#include "camera/PerspectiveCamera.h"
-#include "Scene.h"
+#include "../shader/PhongShader.h"
+#include "../shader/DiffusePerVertexShader.h"
+#include "../shader/ColorShader.h"
+#include "../Util.h"
+#include "../camera/PerspectiveCamera.h"
+#include "../scene/Scene.h"
 
-#include "shape/Mesh.h"
+#include "../shape/Mesh.h"
 
 using tinyxml2::XMLDocument;
 using tinyxml2::XMLElement;
@@ -102,11 +102,36 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 
 		if(shaderName == "PhongShader")
 		{
-			shader = new PhongShader();
+			PhongShader* ps = new PhongShader();
+
+			XMLElement* subElem;
+
+			if ( (subElem = materialElement->FirstChildElement("ambientReflect")) != NULL )
+				getColorVector3(subElem,ps->ambientReflection);
+
+			if ( (subElem = materialElement->FirstChildElement("diffuseReflect")) != NULL )
+				getColorVector3(subElem,ps->diffuseReflection);
+
+			if ( (subElem = materialElement->FirstChildElement("glossyReflect")) != NULL )
+				getColorVector3(subElem,ps->glossyReflection);
+
+			if ( (subElem = materialElement->FirstChildElement("shininess")) != NULL )
+				getIntAttrib(subElem,"value",ps->shininess);
+			
+
+			shader = ps;
 		}
 		else if(shaderName == "DiffusePerVertexShader")
 		{
-			shader = new DiffusePerVertexShader();
+			DiffusePerVertexShader* dpvs = new DiffusePerVertexShader();
+			XMLElement* colorElem = materialElement->FirstChildElement("color");
+			if(colorElem != NULL)
+			{
+				getColorVector3(colorElem,dpvs->materialColor);
+			}
+
+			shader = dpvs;
+
 		}
 		else if(shaderName == "ColorShader")
 		{
@@ -337,6 +362,15 @@ bool SceneParser::getColorVector3(XMLElement* element, vec3& vec)
 
 
 bool SceneParser::getFloatAttrib(XMLElement* element, const char* attribName, float& value)
+{
+	if(element == NULL)
+		return false;
+	
+	std::istringstream isstr(element->Attribute(attribName));
+	return !(isstr >> value).fail();
+}
+
+bool SceneParser::getIntAttrib(XMLElement* element, const char* attribName, int& value)
 {
 	if(element == NULL)
 		return false;

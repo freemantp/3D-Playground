@@ -22,6 +22,8 @@ public:
 
 protected:
 
+	
+	inline bool getIntAttrib(XMLElement* element, const char* attribName, int& value);
 	inline bool getFloatAttrib(XMLElement* element, const char* attribName, float& value);
 	bool getVector3(XMLElement* element, glm::vec3& vec);
 	bool getColorVector3(XMLElement* element, glm::vec3& vec);

@@ -27,6 +27,9 @@ public:
 	void addLight(Light* shape);
 
 	Camera* activeCamera;
+	vector<Light*> lights;
+	vector<Shape*> objects;
+	vector<ShaderBase*> materials;
 
 protected:
 
@@ -37,9 +40,7 @@ protected:
 
 	
 
-	vector<Shape*> objects;
-	vector<ShaderBase*> materials;
-	vector<Light*> lights;
+
 
 };
 

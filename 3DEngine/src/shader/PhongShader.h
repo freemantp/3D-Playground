@@ -9,6 +9,13 @@ public:
 	PhongShader();
 	virtual ~PhongShader(void);
 
-	virtual void use(const Camera& cam, const glm::mat4& modelTransform);
+	virtual void use(const Scene& scene, const glm::mat4& modelTransform);
+
+	vec3 ambientReflection;
+	vec3 diffuseReflection;
+	vec3 glossyReflection;
+
+	int shininess;
+
 };
 

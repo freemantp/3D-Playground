@@ -105,7 +105,6 @@ Mesh* Util::loadModel(const string& path)
 	return mesh;
 }
 
-
 Mesh* Util::getDragon()
 {
 	Mesh* model = Util::loadModel("../data/models/dragon.obj");
@@ -139,47 +138,3 @@ Mesh* Util::getBox()
 	
 	return box;
 }
-
-
-ShaderBase* Util::getDiffuseShader()
-{
-	DiffusePerVertexShader* sh = new DiffusePerVertexShader();
-
-	PointLight pl;
-	//pl.position = vec4(1,0,0,1);
-	pl.position = vec4(1,-0.2,0.4,1);
-	pl.color = vec3(1,1,1);
-
-	sh->setLight(pl);
-
-	Util::printStrings(sh->getVertexAttributes());
-	Util::printStrings(sh->getUniformAttributes());
-
-	return sh;
-}
-
-ShaderBase* Util::getPhongShader()
-{
-
-	PhongShader* sh = new PhongShader();
-
-	/*PointLight pl;
-	//pl.position = vec4(1,0,0,1);
-	pl.position = vec4(1,-0.2,0.4,1);
-	pl.color = vec3(1,1,1);
-
-	sh->setLight(pl);
-
-	Util::printStrings(sh->getVertexAttributes());
-	Util::printStrings(sh->getUniformAttributes());*/
-
-	return sh;
-}
-
-
-ShaderBase* Util::getColorShader()
-{
-	ColorShader* sh = new ColorShader();
-	return sh;
-}
-

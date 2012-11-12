@@ -6,7 +6,6 @@
 
 class Mesh;
 class GLSLProgram;
-class ShaderBase;
 
 class Util
 {
@@ -22,10 +21,6 @@ public:
 	static Mesh* getHorse();
 	static Mesh* getElephant();
 	static Mesh* getBox();
-
-	static ShaderBase* getDiffuseShader();
-	static ShaderBase* getPhongShader();
-	static ShaderBase* getColorShader();
 
 
 };

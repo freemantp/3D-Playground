@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include <ctime>
 #include <string>
-#include "Scene.h"
+#include "scene/Scene.h"
 #include "GlutInputHandler.h"
 #include "input/WindowEventHandler.h"
 #include "GlutInputHandlerFactory.H"
 
 #include "common.h"
 #include "Util.h"
-#include "SceneParser.h"
+#include "scene/SceneParser.h"
 
 
 using std::string;

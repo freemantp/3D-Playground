@@ -3,6 +3,7 @@
 
 #include "../camera/Camera.h"
 #include "../Util.h"
+#include "../scene/Scene.h"
 
 ShaderBase::ShaderBase()
 	: hasMVP(true)
@@ -112,9 +113,8 @@ bool ShaderBase::loadShader( const string& vertexSource,
 
 }
 
-
-void ShaderBase::use(const Camera& cam, const glm::mat4& modelTransform)
+void ShaderBase::use(const Scene& scene, const glm::mat4& modelTransform)
 {
 	GLSLProgram::use();
-	updateTransforms(cam,modelTransform);
+	updateTransforms(*scene.activeCamera,modelTransform);
 }

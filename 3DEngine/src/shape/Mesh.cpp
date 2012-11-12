@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Mesh.h"
-#include "../Scene.h"
+#include "../scene/Scene.h"
 #include "../shader/ShaderBase.h"
 
 using namespace GLSLShader;
@@ -222,7 +222,7 @@ void Mesh::render(const Scene& scene) const
 {
 	if(NULL != shaderProgram) 
 	{	
-		shaderProgram->use(*scene.activeCamera, worldTransform);
+		shaderProgram->use(scene, worldTransform);
 	}
 	
 	glBindVertexArray(vaoHandle);

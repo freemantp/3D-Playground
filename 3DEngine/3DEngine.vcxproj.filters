@@ -52,6 +52,12 @@
     <Filter Include="Source Files\camera">
       <UniqueIdentifier>{e12e4c9b-c5d5-4a44-864a-3b1b8b5ffa9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\scene">
+      <UniqueIdentifier>{0dd71ba4-022b-44c6-9e06-f9b0b04cc544}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\scene">
+      <UniqueIdentifier>{ceed5300-3960-4a87-b087-3cdb4a1b1b57}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -132,14 +138,17 @@
     <ClInclude Include="src\light\Light.h">
       <Filter>Header Files\light</Filter>
     </ClInclude>
-    <ClInclude Include="src\Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\input\InputHandler.h">
       <Filter>Source Files\input</Filter>
     </ClInclude>
     <ClInclude Include="src\input\InputHandlerFactory.h">
       <Filter>Source Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\Scene.h">
+      <Filter>Header Files\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\SceneParser.h">
+      <Filter>Header Files\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -200,8 +209,11 @@
     <ClCompile Include="src\shape\Triangle.cpp">
       <Filter>Source Files\shapes</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scene.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\scene\Scene.cpp">
+      <Filter>Source Files\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\SceneParser.cpp">
+      <Filter>Source Files\scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

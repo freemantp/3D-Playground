@@ -1,5 +1,7 @@
 ﻿#include "stdafx.h"
 #include "DiffusePerVertexShader.h"
+
+#include "../scene/Scene.h"
 #include "../camera/Camera.h"
 
 DiffusePerVertexShader::DiffusePerVertexShader()
@@ -14,21 +16,13 @@ DiffusePerVertexShader::~DiffusePerVertexShader()
 
 }
 
-void DiffusePerVertexShader::setLight(PointLight lightSource) 
-{ 
-	this->lightSource = lightSource; 
-}
-
-PointLight& DiffusePerVertexShader::getLight() 
-{ 
-	return lightSource; 
-}
-
-
-void DiffusePerVertexShader::use(const Camera& cam, const glm::mat4& modelTransform)
+void DiffusePerVertexShader::use(const Scene& scene, const glm::mat4& modelTransform)
 {	
-	ShaderBase::use(cam,modelTransform);
-	setUniform("LightPosition",  cam.viewMatrix * lightSource.position);	
-	setUniform("LightColor", lightSource.color);
+	ShaderBase::use(scene,modelTransform);
+	
+	PointLight* pl = static_cast<PointLight*>(scene.lights[0]);
+	
+	setUniform("LightPosition",  scene.activeCamera->viewMatrix * pl->position);	
+	setUniform("LightColor", pl->color);
 	setUniform("MaterialColor", materialColor);
 }

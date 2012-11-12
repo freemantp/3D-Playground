@@ -9,13 +9,8 @@ class DiffusePerVertexShader :
 public:
 	DiffusePerVertexShader();
 	virtual ~DiffusePerVertexShader();
-	virtual void use(const Camera& cam, const glm::mat4& modelTransform);
+	virtual void use(const Scene& scene, const glm::mat4& modelTransform);
 
-	PointLight& getLight();
-	void setLight(PointLight lightSource);
-
-private:
-	PointLight lightSource;
 	glm::vec3 materialColor;
 
 };

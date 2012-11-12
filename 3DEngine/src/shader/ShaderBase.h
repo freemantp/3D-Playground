@@ -2,6 +2,7 @@
 
 #include "GLSLProgram.h"
 
+class Scene;
 class Camera;
 
 class ShaderBase : public GLSLProgram
@@ -13,7 +14,7 @@ public:
 
 	GLint getAttributeChannel(GLSLShader::VertexAttribute attribute);
 
-	virtual void use(const Camera& cam, const glm::mat4& modelTransform);
+	virtual void use(const Scene& cam, const glm::mat4& modelTransform);
 
 protected:
 
