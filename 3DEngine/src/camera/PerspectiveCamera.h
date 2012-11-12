@@ -8,7 +8,7 @@ class PerspectiveCamera :
 	public Camera
 {
 public:
-	PerspectiveCamera();
+	PerspectiveCamera(float fov);
 	~PerspectiveCamera();
 
 	void setFov(float fov);

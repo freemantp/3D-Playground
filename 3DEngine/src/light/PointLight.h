@@ -1,8 +1,9 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include "Light.h"
 
-class PointLight
+class PointLight : public Light
 {
 public:
 	PointLight(void);

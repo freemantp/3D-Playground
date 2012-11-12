@@ -31,6 +31,7 @@
     <ClInclude Include="src\input\MouseObserver.h" />
     <ClInclude Include="src\input\ViewportObserver.h" />
     <ClInclude Include="src\input\WindowEventHandler.h" />
+    <ClInclude Include="src\light\Light.h" />
     <ClInclude Include="src\light\PointLight.h" />
     <ClInclude Include="src\ObjLoader.h" />
     <ClInclude Include="src\shader\ColorShader.h" />

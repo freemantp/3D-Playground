@@ -8,6 +8,7 @@
 #include "shape/Shape.h"
 #include "camera/Camera.h"
 #include "shader/ShaderBase.h"
+#include "light/Light.h"
 
 #include <vector>
 
@@ -22,6 +23,9 @@ public:
 	void render();
 
 	void addShape(Shape* shape);
+	void addMaterial(ShaderBase* shape);
+	void setCamera(Camera* shape);
+	void addLight(Light* shape);
 
 	static Scene* createDemoScene();
 
@@ -36,7 +40,7 @@ protected:
 
 	vector<Shape*> objects;
 	vector<ShaderBase*> materials;
-	vector<Camera*> cameras;
+	vector<Light*> lights;
 
 };
 

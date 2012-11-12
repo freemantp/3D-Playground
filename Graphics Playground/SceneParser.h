@@ -1,16 +1,34 @@
 #pragma once
 
 #include <tinyxml2.h>
+#include "Scene.h"
+#include <map>
+
+using tinyxml2::XMLElement;
 
 class SceneParser
 {
 public:
-	static void parse(const char* xmlDocument);
+
+	SceneParser();
+
+	bool parse(const char* xmlDocument);
+	Scene* getScene();
 
 protected:
 
-	static void parseMaterials(tinyxml2::XMLElement* materialElement);
-	static void parseObjects(tinyxml2::XMLElement* materialElement);
+	inline bool getFloatAttrib(XMLElement* element, const char* attribName, float& value);
+	bool getVector3(XMLElement* element, vec3& vec);
+	bool getColorVector3(XMLElement* element, vec3& vec);
+
+	bool parseMaterials(XMLElement* materialElement);
+	bool parseObjects(XMLElement* materialElement);
+	bool parseCamera(Camera** cam, XMLElement* materialElement);
+	bool parseLights(XMLElement* materialElement);
+
+
+	std::map<string, ShaderBase*> shaders;
+	Scene* generatedScene;
 
 };
 

@@ -129,6 +129,9 @@
     <ClInclude Include="src\shape\Triangle.h">
       <Filter>Header Files\shapes</Filter>
     </ClInclude>
+    <ClInclude Include="src\light\Light.h">
+      <Filter>Header Files\light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">

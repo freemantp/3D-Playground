@@ -15,7 +15,7 @@ using std::vector;
 Scene::Scene(Camera* cam)
 {
 
-	cameras.push_back(cam);
+	setCamera(cam);
 	activeCamera = cam;
 
 	GlutInputHandler& glutHandler = GlutInputHandler::getInstance();
@@ -44,12 +44,14 @@ Scene::~Scene()
 		delete *objIt;
 	}
 
-	//Delete cameras
-	std::vector<Camera*>::iterator camIt;
-	for(camIt = cameras.begin(); camIt != cameras.end(); camIt++)
+	//Delete materials
+	std::vector<ShaderBase*>::iterator mIt;
+	for(mIt = materials.begin(); mIt != materials.end(); mIt++)
 	{
-		delete *camIt;
+		delete *mIt;
 	}
+
+	delete activeCamera;
 }
 
 void Scene::addShape(Shape* shape)
@@ -59,8 +61,6 @@ void Scene::addShape(Shape* shape)
 
 void Scene::render()
 {		
-	
-
 	std::vector<Shape*>::iterator objIt;
 	for(objIt = objects.begin(); objIt != objects.end(); objIt++)
 	{
@@ -76,7 +76,7 @@ void Scene::render()
 
 Scene* Scene::createDemoScene()
 {
-	PerspectiveCamera* pcam = new PerspectiveCamera();
+	PerspectiveCamera* pcam = new PerspectiveCamera(50.0f);
 	pcam->setPosition(vec3(0,0,2));
 	pcam->setTarget(vec3(0,0,0));
 	
@@ -85,6 +85,8 @@ Scene* Scene::createDemoScene()
 	ShaderBase* shader = Util::getPhongShader();
 	//shader = Util::getDiffuseShader();
 	//shader = Util::getColorShader();
+
+	scene->addMaterial(shader);
 
 	//Mesh* model = Util::getElephant();
 	//Mesh* model = Util::getDragon();
@@ -103,4 +105,19 @@ Scene* Scene::createDemoScene()
 	scene->addShape(model);
 
 	return scene;
+}
+
+void Scene::addMaterial(ShaderBase* material)
+{
+	materials.push_back(material);
+}
+
+void Scene::setCamera(Camera* cam)
+{
+	activeCamera = cam;
+}
+
+void Scene::addLight(Light* light)
+{
+	lights.push_back(light);
 }

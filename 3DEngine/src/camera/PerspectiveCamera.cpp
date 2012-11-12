@@ -4,13 +4,13 @@
 using glm::vec4;
 using glm::vec3;
 
-PerspectiveCamera::PerspectiveCamera() 
-	: fov(50.0f)
+PerspectiveCamera::PerspectiveCamera(float fov) 
+	: fov(fov)
 	, aspectRatio(1.0f)
 	, Camera(0.01f, 100.0f)
 {
-	position =  vec3(0.0f, 0.0f, 0.0f);
-	target =    vec3(1.0f, 0.0f, 0.0f);
+	position =  vec3(0.0f, 0.0f, 1.0f);
+	target =    vec3(0.0f, 0.0f, 0.0f);
 	frame.up =  vec3(0.0f, 1.0f, 0.0f);
 
 	updateViewMatrix();

@@ -19,14 +19,10 @@ void RenderFunction();
 
 int main(int argc, char* argv[])
 {	
-	const char* data = Util::loadTextFile(Config::SCENE_BASE_PATH  + "simpleScene.xml");
-
-	SceneParser::parse(data);
-
 	Initialize(argc, argv);
 	glutMainLoop();
 
-	getchar();
+	//getchar();
 	exit(EXIT_SUCCESS);
 }
 
@@ -70,7 +66,21 @@ void Initialize(int argc, char* argv[])
 	GLint num;
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &num);
 
-	s = Scene::createDemoScene();
+	string sceneName = "simpleScene.xml";
+
+	const char* data = Util::loadTextFile(Config::SCENE_BASE_PATH  + sceneName.c_str());
+	SceneParser sp;	
+	if(sp.parse(data))
+	{
+		s = sp.getScene();
+	}
+	else
+	{
+		Error("Scene could not be parsed: " + sceneName );		
+		//s = Scene::createDemoScene();
+	}
+
+
 }
 
 void InitWindow(int argc, char* argv[])

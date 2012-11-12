@@ -40,6 +40,13 @@ void Camera::setTarget(const vec3& pos)
 	updateViewMatrix();
 }
 
+void Camera::setUpVector(const vec3& up)
+{
+	frame.up = up;
+	updateViewMatrix();
+}
+
+
 void Camera::setOrientation(const vec3& pos, const vec3& up)
 {
 	position = pos;
