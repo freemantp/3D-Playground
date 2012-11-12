@@ -5,31 +5,31 @@
 #include "Util.h"
 
 #include <glm/gtc/matrix_transform.hpp>
-#include "GlutInputHandler.h"
+#include "input/InputHandlerFactory.h"
 #include "input/WindowEventHandler.h"
 
 #include "camera/Camera.h"
 
 using std::vector;
 
-Scene::Scene(Camera* cam)
+Scene::Scene(InputHandlerFactory& ihf, Camera* cam)
 {
 
 	setCamera(cam);
 	activeCamera = cam;
 
-	GlutInputHandler& glutHandler = GlutInputHandler::getInstance();
+	InputHandler& inputHandler = ihf.getInputHandler();
 	WindowEventHandler& winEventHandler = WindowEventHandler::getInstance();
 
 	if(true)
 	{
 		mAdapter  = new InspectionCameraAdapter (*cam);
-		glutHandler.addMouseObserver(mAdapter);
+		inputHandler.addMouseObserver(mAdapter);
 	} else
 	{
 		mAdapter2 = new FirstPersonCameraAdapter(*cam);
-		glutHandler.addMouseObserver(mAdapter2);
-		glutHandler.addKeyboardObserver(mAdapter2);
+		inputHandler.addMouseObserver(mAdapter2);
+		inputHandler.addKeyboardObserver(mAdapter2);
 	}
 
 	winEventHandler.addViewportObserver(cam);
@@ -76,10 +76,11 @@ void Scene::render()
 
 Scene* Scene::createDemoScene()
 {
-	PerspectiveCamera* pcam = new PerspectiveCamera(50.0f);
+	/*PerspectiveCamera* pcam = new PerspectiveCamera(50.0f);
 	pcam->setPosition(vec3(0,0,2));
 	pcam->setTarget(vec3(0,0,0));
 	
+
 	Scene* scene = new Scene(pcam);
 
 	ShaderBase* shader = Util::getPhongShader();
@@ -104,7 +105,8 @@ Scene* Scene::createDemoScene()
 
 	scene->addShape(model);
 
-	return scene;
+	return scene;*/
+	return NULL;
 }
 
 void Scene::addMaterial(ShaderBase* material)

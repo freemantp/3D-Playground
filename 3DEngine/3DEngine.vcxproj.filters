@@ -132,6 +132,15 @@
     <ClInclude Include="src\light\Light.h">
       <Filter>Header Files\light</Filter>
     </ClInclude>
+    <ClInclude Include="src\Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\input\InputHandler.h">
+      <Filter>Source Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\input\InputHandlerFactory.h">
+      <Filter>Source Files\input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
@@ -190,6 +199,9 @@
     </ClCompile>
     <ClCompile Include="src\shape\Triangle.cpp">
       <Filter>Source Files\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

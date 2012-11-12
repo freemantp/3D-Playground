@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "GlutInputHandler.h"
 #include "input/WindowEventHandler.h"
+#include "GlutInputHandlerFactory.H"
 
 #include "Util.h"
 #include "SceneParser.h"
@@ -69,7 +70,11 @@ void Initialize(int argc, char* argv[])
 	string sceneName = "simpleScene.xml";
 
 	const char* data = Util::loadTextFile(Config::SCENE_BASE_PATH  + sceneName.c_str());
-	SceneParser sp;	
+	
+	GlutInputHandlerFactory gihf;
+	
+	
+	SceneParser sp(gihf);	
 	if(sp.parse(data))
 	{
 		s = sp.getScene();

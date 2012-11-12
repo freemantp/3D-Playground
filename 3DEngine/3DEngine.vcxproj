@@ -27,6 +27,8 @@
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\enums.h" />
     <ClInclude Include="src\error.h" />
+    <ClInclude Include="src\input\InputHandler.h" />
+    <ClInclude Include="src\input\InputHandlerFactory.h" />
     <ClInclude Include="src\input\KeyboardObserver.h" />
     <ClInclude Include="src\input\MouseObserver.h" />
     <ClInclude Include="src\input\ViewportObserver.h" />
@@ -34,6 +36,7 @@
     <ClInclude Include="src\light\Light.h" />
     <ClInclude Include="src\light\PointLight.h" />
     <ClInclude Include="src\ObjLoader.h" />
+    <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\shader\ColorShader.h" />
     <ClInclude Include="src\shader\DiffusePerVertexShader.h" />
     <ClInclude Include="src\shader\GLSLProgram.h" />
@@ -55,6 +58,7 @@
     <ClCompile Include="src\input\WindowEventHandler.cpp" />
     <ClCompile Include="src\light\PointLight.cpp" />
     <ClCompile Include="src\ObjLoader.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\shader\ColorShader.cpp" />
     <ClCompile Include="src\shader\DiffusePerVertexShader.cpp" />
     <ClCompile Include="src\shader\GLSLProgram.cpp" />

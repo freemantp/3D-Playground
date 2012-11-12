@@ -3,6 +3,7 @@
 #include <tinyxml2.h>
 #include "Scene.h"
 #include <map>
+#include "input/InputHandlerFactory.h"
 
 using tinyxml2::XMLElement;
 
@@ -10,7 +11,7 @@ class SceneParser
 {
 public:
 
-	SceneParser();
+	SceneParser(InputHandlerFactory& factory);
 
 	bool parse(const char* xmlDocument);
 	Scene* getScene();
@@ -29,6 +30,8 @@ protected:
 
 	std::map<string, ShaderBase*> shaders;
 	Scene* generatedScene;
+
+	InputHandlerFactory& factory;
 
 };
 

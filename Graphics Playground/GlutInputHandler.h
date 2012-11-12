@@ -1,10 +1,10 @@
 #pragma once
 
-#include "input/MouseObserver.h"
-#include "input/KeyboardObserver.h"
+#include "input/InputHandler.h"
 #include <vector>
 
-class GlutInputHandler {
+class GlutInputHandler : public InputHandler
+{
 
 public:
 
@@ -18,8 +18,8 @@ public:
 	static void key(unsigned char key, int x, int y);
 	static void specialKey(int key, int x, int y);
 
-	void addMouseObserver(MouseObserver* observer);
-	void addKeyboardObserver(KeyboardObserver* observer);
+	virtual void addMouseObserver(MouseObserver* observer);
+	virtual void addKeyboardObserver(KeyboardObserver* observer);
 
 protected:
 

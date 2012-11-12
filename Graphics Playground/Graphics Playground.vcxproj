@@ -145,14 +145,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GlutInputHandler.h" />
-    <ClInclude Include="Scene.h" />
+    <ClInclude Include="GlutInputHandlerFactory.h" />
     <ClInclude Include="SceneParser.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GlutInputHandlerFactory.cpp" />
     <ClCompile Include="Graphics Playground.cpp" />
     <ClCompile Include="GlutInputHandler.cpp" />
-    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneParser.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

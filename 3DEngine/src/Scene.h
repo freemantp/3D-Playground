@@ -3,6 +3,7 @@
 #include "camera/PerspectiveCamera.h"
 #include <vector>
 
+#include "input/InputHandlerFactory.h"
 #include "camera/InspectionCameraAdapter.h"
 #include "camera/FirstPersonCameraAdapter.h"
 #include "shape/Shape.h"
@@ -17,7 +18,7 @@ using std::vector;
 class Scene
 {
 public:
-	Scene(Camera* cam);
+	Scene(InputHandlerFactory& ihf, Camera* cam);
 	~Scene();
 
 	void render();
