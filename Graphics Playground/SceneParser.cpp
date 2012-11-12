@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "SceneParser.h"
 
+#include <glm/gtc/matrix_transform.hpp>
 #include <string>
 #include "shader/PhongShader.h"
 #include "shader/DiffusePerVertexShader.h"
+#include "shader/ColorShader.h"
 #include "Util.h"
 
 using tinyxml2::XMLDocument;
@@ -101,6 +103,10 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 		{
 			shader = new DiffusePerVertexShader();
 		}
+		else if(shaderName == "ColorShader")
+		{
+			shader = new ColorShader();
+		}
 		else
 		{
 			Error("Shader " + shaderName + " not supported");
@@ -119,29 +125,117 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 bool SceneParser::parseObjects(XMLElement* objects)
 {
 	//Meshes
-	XMLElement* meshElem = objects->FirstChildElement("mesh");
+	XMLElement* objeElem = objects->FirstChildElement();
+	
+
 	do
 	{
-		string file = meshElem->Attribute("file");
-		Mesh* model = Util::loadModel("../data/models/"+file);
-		ShaderBase* material = shaders[meshElem->Attribute("material")];
+		string type = objeElem->Name();
+		Shape* s;
 
-		if(material != NULL)		
+		if(type == "mesh")
 		{
-			model->setShader(material);
+			string file = objeElem->Attribute("file");
+			s = Util::loadModel("../data/models/"+file);		
 		}
-		int a = 0;
+		else if(type == "box")
+		{
+			s = Util::getBox();		
+		}
+		else 
+		{
+			Error("Object of type " + type + " not supported");
+			continue;
+		}
 
-		//TODO: parse transforms
-		generatedScene->addShape(model);
+		const char* shaderName = objeElem->Attribute("material");
+
+		if(shaderName != NULL)
+		{
+			ShaderBase* material = shaders[shaderName];
+
+			if(material != NULL)		
+			{
+				s->setShader(material);
+			}
+		}
+
+
+		XMLElement* transformsElem = objeElem->FirstChildElement("transform");
+
+		if(transformsElem != NULL)
+		{
+			mat4 tMatrix;
+			parseTransforms(tMatrix,transformsElem);
+			s->worldTransform = tMatrix;
+		}
+
+		generatedScene->addShape(s);
 
 		
 	} 
-	while (meshElem = meshElem->NextSiblingElement("mesh"));
+	while (objeElem = objeElem->NextSiblingElement());
 	
 	return true;
 }
 
+bool SceneParser::parseTransforms(mat4& tMatrix, tinyxml2::XMLElement* transformElem)
+{
+	
+	bool success = true;
+	
+	XMLElement* transform = transformElem->FirstChildElement();
+	do
+	{
+		string type = transform->Name();
+
+		if(type == "translate")
+		{
+			vec3 transl;
+			if( getVector3(transform,transl) )
+			{
+				tMatrix = glm::translate(tMatrix,transl);
+			}
+			else
+			{
+				Error("Could not parse translation");
+				success = false;
+			}
+		}
+		else if(type == "rotate")
+		{
+			vec3 axis;
+			float angle;
+			if( getVector3(transform,axis) && getFloatAttrib(transform, "angle",angle) )
+			{
+				tMatrix = glm::rotate(tMatrix,angle,axis);
+			}
+			else
+			{
+				Error("Could not parse rotation");
+				success = false;
+			}
+		}
+		else if(type == "scale")
+		{
+			vec3 factors;
+			if( getVector3(transform,factors) )
+			{
+				tMatrix = glm::scale(tMatrix,factors);
+			}
+			else
+			{
+				Error("Could not parse scale");
+				success = false;
+			}
+		}
+
+	} 
+	while (transform = transform->NextSiblingElement());
+
+	return success;
+
+}
 
 bool SceneParser::parseCamera(Camera** cam, tinyxml2::XMLElement* camElement)
 {

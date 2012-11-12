@@ -25,7 +25,7 @@ protected:
 	bool parseObjects(XMLElement* materialElement);
 	bool parseCamera(Camera** cam, XMLElement* materialElement);
 	bool parseLights(XMLElement* materialElement);
-
+	bool parseTransforms(mat4& tMatrix, tinyxml2::XMLElement* transformElem);
 
 	std::map<string, ShaderBase*> shaders;
 	Scene* generatedScene;
