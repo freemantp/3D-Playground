@@ -2,7 +2,7 @@
 #include "ShaderBase.h"
 
 #include "../camera/Camera.h"
-#include "../Util.h"
+#include "../util/Util.h"
 #include "../scene/Scene.h"
 
 ShaderBase::ShaderBase()

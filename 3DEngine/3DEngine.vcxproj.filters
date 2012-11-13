@@ -69,9 +69,6 @@
     <ClInclude Include="src\error.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Util.h">
-      <Filter>Header Files\util</Filter>
-    </ClInclude>
     <ClInclude Include="src\ObjLoader.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
@@ -150,13 +147,13 @@
     <ClInclude Include="src\scene\SceneParser.h">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\Util.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Util.cpp">
-      <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="src\ObjLoader.cpp">
       <Filter>Source Files\util</Filter>
@@ -214,6 +211,9 @@
     </ClCompile>
     <ClCompile Include="src\scene\SceneParser.cpp">
       <Filter>Source Files\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\Util.cpp">
+      <Filter>Source Files\util</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

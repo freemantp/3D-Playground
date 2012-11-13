@@ -22,12 +22,12 @@
   
   <lights>
     <light type="point">
-      <position x="1.0" y="0.0" z="3.0"/>
+      <position x="1.0" y="0.0" z="1.0"/>
       <color r="1.0" g="1.0" b="1.0"/>
     </light>
   </lights>
 
-  <objects>
+ <objects>
     <mesh file="horse.obj" material="glossyRed">
       <position x="0" y="0" z="0"/>
       <transform>
@@ -36,9 +36,17 @@
       </transform>
     </mesh>
     
-    <box material="constRed">
+    <!--<mesh file="elephant.obj" material="glossyRed">
+      <position x="0" y="0" z="0"/>
       <transform>
-        <translate x="0.0" y="-0.29" z="0.0"/>   
+        <translate x="1.0" y="-0.3" z="0.0"/>
+     
+      </transform>
+    </mesh>-->
+    
+    <box material="dull">
+      <transform>
+        <translate x="0.0" y="-0.3" z="0.0"/>   
         <scale x="5.0" y="0.01" z="5.0"/>
         <translate x="-0.5" y="-0.5" z="-0.5"/>
       </transform>

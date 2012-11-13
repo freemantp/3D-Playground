@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ColorShader.h"
-#include "../Util.h"
+#include "../util/Util.h"
 
 ColorShader::ColorShader()
 	: ShaderBase()

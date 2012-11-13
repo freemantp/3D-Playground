@@ -30,7 +30,7 @@ void PhongShader::use(const Scene& scene, const glm::mat4& modelTransform)
 	setUniform("Light.AmbientIntensity",  vec3(0.0) );	
 	setUniform("Light.DiffuseIntensity",  pl->color );	
 	setUniform("Light.SpecularIntensity", pl->color );	
-	setUniform("Light.Position", scene.activeCamera->viewMatrix * pl->position );
+	setUniform("Light.Position", scene.activeCamera->viewMatrix * pl->getPosition() );
 
 	setUniform("Material.AmbientReflectivity", ambientReflection );
 	setUniform("Material.DiffuseReflectivity", diffuseReflection );

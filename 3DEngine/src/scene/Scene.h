@@ -35,12 +35,6 @@ protected:
 
 	InspectionCameraAdapter* mAdapter;
 	FirstPersonCameraAdapter* mAdapter2;
-	ShaderBase* shader;
-	glm::mat4 lightTransform;
-
-	
-
-
 
 };
 

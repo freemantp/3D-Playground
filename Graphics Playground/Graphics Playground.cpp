@@ -7,7 +7,7 @@
 #include "GlutInputHandlerFactory.H"
 
 #include "common.h"
-#include "Util.h"
+#include "util/Util.h"
 #include "scene/SceneParser.h"
 
 

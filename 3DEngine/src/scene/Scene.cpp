@@ -2,7 +2,7 @@
 #include "Scene.h"
 
 #include <vector>
-#include "../Util.h"
+#include "../util/Util.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include "../input/InputHandlerFactory.h"
@@ -15,6 +15,7 @@
 #include "../camera/Camera.h"
 #include "../shader/ShaderBase.h"
 #include "../shape/Shape.h"
+#include "../light/PointLight.h"
 
 using std::vector;
 
@@ -75,9 +76,18 @@ void Scene::render()
 		//s->worldTransform = glm::rotate(s->worldTransform, 1.0f, glm::vec3(0.0f,1.0f,0.0f));
 	}
 
-	//DiffusePerVertexShader* diffSH = ((DiffusePerVertexShader*)shader);
-	//lightTransform = (glm::rotate(lightTransform, 1.0f, glm::vec3(0.0f,1.0f,0.0f)));
-	//diffSH->setLightPosition( lightTransform * initialLightPos);
+	std::vector<Light*>::iterator lIt;
+	for(lIt = lights.begin(); lIt != lights.end(); lIt++)
+	{
+		Light* l = *lIt;
+		l->render(*this);
+		//s->worldTransform = glm::rotate(s->worldTransform, 1.0f, glm::vec3(0.0f,1.0f,0.0f));
+	}
+
+	//Animate light
+	PointLight* pl = static_cast<PointLight*>(lights[0]);
+	glm::mat4 lightTransform = (glm::rotate(mat4(1.0f), 1.0f, glm::vec3(0.0f,1.0f,0.0f)));
+	pl->setPosition(lightTransform * pl->getPosition());
 }
 
 void Scene::addMaterial(ShaderBase* material)

@@ -6,11 +6,12 @@
 #include "../shader/PhongShader.h"
 #include "../shader/DiffusePerVertexShader.h"
 #include "../shader/ColorShader.h"
-#include "../Util.h"
+#include "../util/Util.h"
 #include "../camera/PerspectiveCamera.h"
 #include "../scene/Scene.h"
 
 #include "../shape/Mesh.h"
+#include "../shape/Box.h"
 
 using tinyxml2::XMLDocument;
 using tinyxml2::XMLElement;
@@ -157,6 +158,8 @@ bool SceneParser::parseObjects(XMLElement* objects)
 	//Meshes
 	XMLElement* objeElem = objects->FirstChildElement();
 	
+	if(objeElem == NULL)
+		return false;
 
 	do
 	{
@@ -170,13 +173,15 @@ bool SceneParser::parseObjects(XMLElement* objects)
 		}
 		else if(type == "box")
 		{
-			s = Util::getBox();		
+			s = new Box();		
 		}
 		else 
 		{
 			Error("Object of type " + type + " not supported");
 			continue;
 		}
+
+		s->init();
 
 		const char* shaderName = objeElem->Attribute("material");
 
@@ -315,7 +320,7 @@ bool SceneParser::parseLights(tinyxml2::XMLElement* lightsGroupElement)
 			getVector3(lightElem->FirstChildElement("position"),pos);
 			getColorVector3(lightElem->FirstChildElement("color"),color);
 
-			plight->position = vec4(pos,1.0);
+			plight->setPosition(vec4(pos,1.0));
 			plight->color = color;
 
 			generatedScene->addLight(plight);

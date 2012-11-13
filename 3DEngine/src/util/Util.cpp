@@ -1,19 +1,19 @@
 #include "stdafx.h"
 #include "Util.h"
 #include <fstream>
-#include "shader/GLSLProgram.h"
-#include "ObjLoader.h"
-#include "shape/Box.h"
+#include "../shader/GLSLProgram.h"
+#include "../ObjLoader.h"
+#include "../shape/Box.h"
 #include <ctime>
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "shader/DiffusePerVertexShader.h"
-#include "shader/ColorShader.h"
-#include "shader/PhongShader.h"
+#include "../shader/DiffusePerVertexShader.h"
+#include "../shader/ColorShader.h"
+#include "../shader/PhongShader.h"
 
-#include "shape/Mesh.h"
-#include "shader/GLSLProgram.h"
+#include "../shape/Mesh.h"
+#include "../shader/GLSLProgram.h"
 
 using std::string;
 using std::vector;

@@ -48,7 +48,7 @@
     <ClInclude Include="src\shape\Shape.h" />
     <ClInclude Include="src\shape\Triangle.h" />
     <ClInclude Include="src\stdafx.h" />
-    <ClInclude Include="src\Util.h" />
+    <ClInclude Include="src\util\Util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp" />
@@ -75,7 +75,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Util.cpp" />
+    <ClCompile Include="src\util\Util.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{32FFB0D3-DAA7-436A-9E9A-44391510D878}</ProjectGuid>
