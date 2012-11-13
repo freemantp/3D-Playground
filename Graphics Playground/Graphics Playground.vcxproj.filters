@@ -31,6 +31,9 @@
     <Filter Include="data\shaders\normal">
       <UniqueIdentifier>{ebae6df7-b407-488d-ad6a-f2c049cedf8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data\shaders\const">
+      <UniqueIdentifier>{c25f430e-7583-45a3-9ea2-722ee4129769}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -84,6 +87,12 @@
     </None>
     <None Include="..\data\shader\diffusePerVertex.vert">
       <Filter>data\shaders\diffuse</Filter>
+    </None>
+    <None Include="..\data\shader\constShader.frag">
+      <Filter>data\shaders\const</Filter>
+    </None>
+    <None Include="..\data\shader\constShader.vert">
+      <Filter>data\shaders\const</Filter>
     </None>
   </ItemGroup>
 </Project>

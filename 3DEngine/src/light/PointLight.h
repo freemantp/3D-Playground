@@ -4,6 +4,7 @@
 #include "Light.h"
 
 class Shape;
+class ConstShader;
 
 class PointLight : public Light
 {
@@ -11,15 +12,12 @@ public:
 	PointLight(void);
 	~PointLight(void);
 	virtual void render(const Scene& scene);
-
-	glm::vec3 color;
-	glm::vec4& getPosition();
-	void setPosition(glm::vec4& pos);
+	virtual void setPosition(glm::vec4& pos);
+	virtual void setColor(glm::vec3& color);
 
 protected:
-	
-	glm::vec4 position;
 
+	ConstShader* visShader;
 	Shape* visMesh;
 };
 

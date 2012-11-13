@@ -23,6 +23,6 @@ void DiffusePerVertexShader::use(const Scene& scene, const glm::mat4& modelTrans
 	PointLight* pl = static_cast<PointLight*>(scene.lights[0]);
 	
 	setUniform("LightPosition",  scene.activeCamera->viewMatrix * pl->getPosition() );	
-	setUniform("LightColor", pl->color);
+	setUniform("LightColor", pl->getColor());
 	setUniform("MaterialColor", materialColor);
 }

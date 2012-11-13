@@ -3,9 +3,12 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <string>
+
 #include "../shader/PhongShader.h"
 #include "../shader/DiffusePerVertexShader.h"
 #include "../shader/ColorShader.h"
+#include "../shader/ConstShader.h"
+
 #include "../util/Util.h"
 #include "../camera/PerspectiveCamera.h"
 #include "../scene/Scene.h"
@@ -137,6 +140,10 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 		else if(shaderName == "ColorShader")
 		{
 			shader = new ColorShader();
+		}
+		else if(shaderName == "ConstShader")
+		{
+			shader = new ConstShader();
 		}
 		else
 		{
@@ -321,7 +328,7 @@ bool SceneParser::parseLights(tinyxml2::XMLElement* lightsGroupElement)
 			getColorVector3(lightElem->FirstChildElement("color"),color);
 
 			plight->setPosition(vec4(pos,1.0));
-			plight->color = color;
+			plight->setColor(color);
 
 			generatedScene->addLight(plight);
 			

@@ -2,7 +2,7 @@
 #include "PointLight.h"
 
 #include "../shape/Box.h"
-#include "../shader/ColorShader.h"
+#include "../shader/ConstShader.h"
 #include "../util/Util.h"
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -10,31 +10,36 @@
 using glm::vec3;
 
 PointLight::PointLight(void)
-	: color(vec3(1,1,1))
+	: Light()
 {
 	visMesh = Util::getBox();
 	visMesh->init();
 
-	visMesh->setShader(new ColorShader());
+	visShader = new ConstShader();
+	visShader->color = color;
+
+	visMesh->setShader(visShader);
 }
 
 
 PointLight::~PointLight(void)
 {
 	delete visMesh;
-}
-
-vec4& PointLight::getPosition()
-{
-	return position;
+	delete visShader;
 }
 
 void PointLight::setPosition(vec4& pos)
 {
-	position = pos;
+	Light::setPosition(pos);
 	
 	visMesh->worldTransform = glm::translate(mat4(1.0),vec3(pos.x,pos.y,pos.z));
 	visMesh->worldTransform = glm::scale(visMesh->worldTransform,vec3(0.05));
+}
+
+void PointLight::setColor(vec3& color)
+{
+	Light::setColor(color);
+	visShader->color = color;
 }
 
 void PointLight::render(const Scene& scene)

@@ -150,6 +150,9 @@
     <ClInclude Include="src\util\Util.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="src\shader\ConstShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
@@ -214,6 +217,12 @@
     </ClCompile>
     <ClCompile Include="src\util\Util.cpp">
       <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\ConstShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\light\Light.cpp">
+      <Filter>Source Files\light</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

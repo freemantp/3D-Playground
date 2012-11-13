@@ -162,6 +162,8 @@
   <ItemGroup>
     <None Include="..\data\shader\colorShader.frag" />
     <None Include="..\data\shader\colorShader.vert" />
+    <None Include="..\data\shader\constShader.frag" />
+    <None Include="..\data\shader\constShader.vert" />
     <None Include="..\data\shader\diffusePerVertex.frag" />
     <None Include="..\data\shader\diffusePerVertex.vert" />
     <None Include="..\data\shader\normalShader.frag" />
