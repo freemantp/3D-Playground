@@ -1,22 +1,22 @@
 ﻿#include "stdafx.h"
-#include "DiffusePerVertexShader.h"
+#include "DiffuseShader.h"
 
 #include "../scene/Scene.h"
 #include "../camera/Camera.h"
 
-DiffusePerVertexShader::DiffusePerVertexShader()
+DiffuseShader::DiffuseShader()
 	: ShaderBase()
 {
-	loadShader("diffusePerVertex");
+	loadShader("diffuseShader");
 	materialColor = vec3(1,1,1);
 }
 
-DiffusePerVertexShader::~DiffusePerVertexShader()
+DiffuseShader::~DiffuseShader()
 {
 
 }
 
-void DiffusePerVertexShader::use(const Scene& scene, const glm::mat4& modelTransform)
+void DiffuseShader::use(const Scene& scene, const glm::mat4& modelTransform)
 {	
 	ShaderBase::use(scene,modelTransform);
 	

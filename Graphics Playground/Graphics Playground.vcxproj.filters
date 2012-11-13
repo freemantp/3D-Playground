@@ -13,27 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="data">
-      <UniqueIdentifier>{54b6e7d6-63ff-48ff-97d7-b411a21d6157}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="data\shaders">
-      <UniqueIdentifier>{5a9049f4-05b9-49b4-9e6d-abdd748769eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="data\shaders\diffuse">
-      <UniqueIdentifier>{4fca2675-2643-4d6d-8396-bd769cc131dd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="data\shaders\color">
-      <UniqueIdentifier>{da50e406-7a5d-423b-b266-c1300e4ff2d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="data\shaders\phong">
-      <UniqueIdentifier>{2298ca9d-3b49-440b-b853-7290d49d6647}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="data\shaders\normal">
-      <UniqueIdentifier>{ebae6df7-b407-488d-ad6a-f2c049cedf8e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="data\shaders\const">
-      <UniqueIdentifier>{c25f430e-7583-45a3-9ea2-722ee4129769}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -62,37 +41,5 @@
     <ClCompile Include="GlutInputHandlerFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\data\shader\diffusePerVertex.frag">
-      <Filter>data\shaders\diffuse</Filter>
-    </None>
-    <None Include="..\data\shader\colorShader.frag">
-      <Filter>data\shaders\color</Filter>
-    </None>
-    <None Include="..\data\shader\colorShader.vert">
-      <Filter>data\shaders\color</Filter>
-    </None>
-    <None Include="..\data\shader\phongShader.frag">
-      <Filter>data\shaders\phong</Filter>
-    </None>
-    <None Include="..\data\shader\phongShader.vert">
-      <Filter>data\shaders\phong</Filter>
-    </None>
-    <None Include="..\data\shader\normalShader.vert">
-      <Filter>data\shaders\normal</Filter>
-    </None>
-    <None Include="..\data\shader\normalShader.frag">
-      <Filter>data\shaders\normal</Filter>
-    </None>
-    <None Include="..\data\shader\diffusePerVertex.vert">
-      <Filter>data\shaders\diffuse</Filter>
-    </None>
-    <None Include="..\data\shader\constShader.frag">
-      <Filter>data\shaders\const</Filter>
-    </None>
-    <None Include="..\data\shader\constShader.vert">
-      <Filter>data\shaders\const</Filter>
-    </None>
   </ItemGroup>
 </Project>

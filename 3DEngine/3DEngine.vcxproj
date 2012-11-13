@@ -40,7 +40,7 @@
     <ClInclude Include="src\scene\SceneParser.h" />
     <ClInclude Include="src\shader\ColorShader.h" />
     <ClInclude Include="src\shader\ConstShader.h" />
-    <ClInclude Include="src\shader\DiffusePerVertexShader.h" />
+    <ClInclude Include="src\shader\DiffuseShader.h" />
     <ClInclude Include="src\shader\GLSLProgram.h" />
     <ClInclude Include="src\shader\PhongShader.h" />
     <ClInclude Include="src\shader\ShaderBase.h" />
@@ -65,7 +65,7 @@
     <ClCompile Include="src\scene\SceneParser.cpp" />
     <ClCompile Include="src\shader\ColorShader.cpp" />
     <ClCompile Include="src\shader\ConstShader.cpp" />
-    <ClCompile Include="src\shader\DiffusePerVertexShader.cpp" />
+    <ClCompile Include="src\shader\DiffuseShader.cpp" />
     <ClCompile Include="src\shader\GLSLProgram.cpp" />
     <ClCompile Include="src\shader\PhongShader.cpp" />
     <ClCompile Include="src\shader\ShaderBase.cpp" />
@@ -79,6 +79,38 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\util\Util.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\data\shader\colorShader.frag">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\data\shader\colorShader.vert">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\data\shader\constShader.frag">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\data\shader\constShader.vert">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\data\shader\diffuseShader.frag">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\data\shader\diffuseShader.vert">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\data\shader\normalShader.frag">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\data\shader\normalShader.vert">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\data\shader\phongShader.frag">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\data\shader\phongShader.vert">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{32FFB0D3-DAA7-436A-9E9A-44391510D878}</ProjectGuid>

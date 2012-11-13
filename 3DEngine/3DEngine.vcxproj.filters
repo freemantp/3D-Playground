@@ -58,6 +58,27 @@
     <Filter Include="Header Files\scene">
       <UniqueIdentifier>{ceed5300-3960-4a87-b087-3cdb4a1b1b57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data">
+      <UniqueIdentifier>{16113422-2689-4bb2-bd5d-cd4ab8d0f29a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\shaders">
+      <UniqueIdentifier>{c2a0288b-6deb-4c1f-812d-639659650813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\shaders\diffuse">
+      <UniqueIdentifier>{42e3ecdf-8155-4f1c-a5c4-4e04d30519eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\shaders\color">
+      <UniqueIdentifier>{a21cc952-af27-4f39-b00e-502c72ba2f84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\shaders\phong">
+      <UniqueIdentifier>{29fc2a83-da54-44d3-bb6a-0c0cdd82ec06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\shaders\normal">
+      <UniqueIdentifier>{35406b7b-1fcb-4025-b9f3-6ec318278f3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\shaders\const">
+      <UniqueIdentifier>{72f28301-0593-4e4e-a92d-78dd53cdb11c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -76,9 +97,6 @@
       <Filter>Header Files\core</Filter>
     </ClInclude>
     <ClInclude Include="src\shader\ShaderBase.h">
-      <Filter>Header Files\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\DiffusePerVertexShader.h">
       <Filter>Header Files\shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\shader\GLSLProgram.h">
@@ -153,6 +171,9 @@
     <ClInclude Include="src\shader\ConstShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\shader\DiffuseShader.h">
+      <Filter>Header Files\shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
@@ -162,9 +183,6 @@
       <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="src\shader\ShaderBase.cpp">
-      <Filter>Source Files\shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\DiffusePerVertexShader.cpp">
       <Filter>Source Files\shaders</Filter>
     </ClCompile>
     <ClCompile Include="src\shader\GLSLProgram.cpp">
@@ -224,5 +242,40 @@
     <ClCompile Include="src\light\Light.cpp">
       <Filter>Source Files\light</Filter>
     </ClCompile>
+    <ClCompile Include="src\shader\DiffuseShader.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\data\shader\colorShader.frag">
+      <Filter>data\shaders\color</Filter>
+    </None>
+    <None Include="..\data\shader\colorShader.vert">
+      <Filter>data\shaders\color</Filter>
+    </None>
+    <None Include="..\data\shader\phongShader.frag">
+      <Filter>data\shaders\phong</Filter>
+    </None>
+    <None Include="..\data\shader\phongShader.vert">
+      <Filter>data\shaders\phong</Filter>
+    </None>
+    <None Include="..\data\shader\normalShader.frag">
+      <Filter>data\shaders\normal</Filter>
+    </None>
+    <None Include="..\data\shader\normalShader.vert">
+      <Filter>data\shaders\normal</Filter>
+    </None>
+    <None Include="..\data\shader\constShader.frag">
+      <Filter>data\shaders\const</Filter>
+    </None>
+    <None Include="..\data\shader\constShader.vert">
+      <Filter>data\shaders\const</Filter>
+    </None>
+    <None Include="..\data\shader\diffuseShader.frag">
+      <Filter>data\shaders\diffuse</Filter>
+    </None>
+    <None Include="..\data\shader\diffuseShader.vert">
+      <Filter>data\shaders\diffuse</Filter>
+    </None>
   </ItemGroup>
 </Project>

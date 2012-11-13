@@ -9,12 +9,12 @@
 
   <materials>
     <material name="glossyRed" shader="PhongShader">
-      <ambientReflect r="0.0" g="0.0" b="0.0"/>
-      <diffuseReflect r="0.0" g="0.0" b="0.0"/>
-      <glossyReflect r="1.0" g="1.0" b="1.0"/>
-      <shininess value="2"/>
+      <ambientReflect r="0.1" g="0.1" b="0.1"/>
+      <diffuseReflect r="0.3" g="0.3" b="0.3"/>
+      <glossyReflect r="0.9" g="0.9" b="0.9"/>
+      <shininess value="20"/>
     </material>
-    <material name="dull" shader="DiffusePerVertexShader">
+    <material name="dull" shader="DiffuseShader">
       <color r="1.0" g="0.0" b="1.0"/>
     </material>
     <material name="meshColors" shader="ColorShader"/>
@@ -22,7 +22,7 @@
   
   <lights>
     <light type="point">
-      <position x="1.0" y="0.0" z="1.0"/>
+      <position x="1.0" y="0.5" z="1.0"/>
       <color r="1.0" g="0.0" b="0.0"/>
     </light>
   </lights>
@@ -35,11 +35,19 @@
         <rotate angle="270.0" x="0.0" y="1.0" z="0.0"/>
       </transform>
     </mesh>
+    
+    <!--<mesh file="dragon.obj" material="glossyRed">
+      <position x="0" y="0" z="0"/>
+      <transform>
+        <translate x="0.0" y="-0.75" z="0.0"/>
+        <scale x="10.0" y="10.0" z="10.0"/>
+      </transform>
+    </mesh>-->
    
     <box material="dull">
       <transform>
         <translate x="0.0" y="-0.3" z="0.0"/>   
-        <scale x="5.0" y="0.01" z="5.0"/>
+        <scale x="20.0" y="0.01" z="20.0"/>
         <translate x="-0.5" y="-0.5" z="-0.5"/>
       </transform>
     </box>

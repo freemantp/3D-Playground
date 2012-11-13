@@ -5,7 +5,7 @@
 #include <string>
 
 #include "../shader/PhongShader.h"
-#include "../shader/DiffusePerVertexShader.h"
+#include "../shader/DiffuseShader.h"
 #include "../shader/ColorShader.h"
 #include "../shader/ConstShader.h"
 
@@ -125,9 +125,9 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 
 			shader = ps;
 		}
-		else if(shaderName == "DiffusePerVertexShader")
+		else if(shaderName == "DiffuseShader")
 		{
-			DiffusePerVertexShader* dpvs = new DiffusePerVertexShader();
+			DiffuseShader* dpvs = new DiffuseShader();
 			XMLElement* colorElem = materialElement->FirstChildElement("color");
 			if(colorElem != NULL)
 			{
