@@ -13,6 +13,13 @@ PhongShader::PhongShader()
 	glossyReflection = vec3(1.0f);
 	shininess = 20;
 
+	//Get subroutine indices
+	blinnSubroutineIdx = glGetSubroutineIndex(programHandle, GL_FRAGMENT_SHADER, "blinn");
+	phongSubroutineIdx = glGetSubroutineIndex(programHandle, GL_FRAGMENT_SHADER, "phong");
+
+	//Select default shade model
+	shadeModel = GLSLShader::BLINN_PHONG;
+
 }
 
 
@@ -36,5 +43,19 @@ void PhongShader::use(const Scene& scene, const glm::mat4& modelTransform)
 	setUniform("Material.DiffuseReflectivity", diffuseReflection );
 	setUniform("Material.SpecularReflectivity", glossyReflection );
 	setUniform("Material.Shininess", shininess);
+
+	GLuint* shadeFunc;
+
+	switch (shadeModel)
+	{
+	case GLSLShader::PHONG:
+		shadeFunc = &phongSubroutineIdx;
+		break;
+	case GLSLShader::BLINN_PHONG:
+		shadeFunc = &blinnSubroutineIdx;
+		break;
+	}
+
+	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, shadeFunc);
 	
 }

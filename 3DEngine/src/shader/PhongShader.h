@@ -2,6 +2,14 @@
 
 #include "ShaderBase.h"
 
+namespace GLSLShader 
+{
+	enum PhongShadeModel 
+	{
+		PHONG, BLINN_PHONG
+	};
+};
+
 class PhongShader :
 	public ShaderBase
 {
@@ -16,6 +24,12 @@ public:
 	vec3 glossyReflection;
 
 	int shininess;
+	GLSLShader::PhongShadeModel shadeModel;
+
+protected:
+
+	GLuint blinnSubroutineIdx;
+	GLuint phongSubroutineIdx;
 
 };
 
