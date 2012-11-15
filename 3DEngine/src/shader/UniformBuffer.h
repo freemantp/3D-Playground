@@ -16,8 +16,6 @@ public:
 	UniformBuffer(GLSLProgram* program, std::string bufferName, const GLchar* elemNames[], int numElems);
 	~UniformBuffer(void);
 
-	/// Updates the buffer object with the content set trough the members of this class
-	void updateBufferObject();
 	void bindToShader(GLSLProgram* program, std::string bufferName);
 
 	void setElement(const std::string& name, const vec3& v);
@@ -25,10 +23,9 @@ public:
 
 protected:
 
-	//virtual void 
+	inline void setElement(const std::string& name, const void* ptr, const GLsizei numBytes);
+
 	std::map<std::string,GLint> offsets;
-	GLint blockSize;
 	GLuint uboHandle;
-	GLubyte* blockBuffer;
 };
 

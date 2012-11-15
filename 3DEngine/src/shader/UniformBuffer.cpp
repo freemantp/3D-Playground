@@ -5,14 +5,21 @@
 
 UniformBuffer::UniformBuffer(GLSLProgram* program, std::string bufferName, const GLchar* elemNames[], const int numElems)
 {	
+	if( ! program->isLinked () )
+		Error("[UniformBuffer] Program is not linked");
+	
 	GLuint programHandle = program->getProgramHandle();
 	GLuint blockIdx = glGetUniformBlockIndex(programHandle,bufferName.c_str());
 
 	//Get mem size the uniform block requires
+	GLint blockSize;
 	glGetActiveUniformBlockiv(programHandle, blockIdx, GL_UNIFORM_BLOCK_DATA_SIZE, &blockSize);
 
 	//Generate buffer object
 	glGenBuffers(1,&uboHandle);
+
+	
+
 
 	//Obtain indices and offsets
 	GLuint* indices = new GLuint[numElems];
@@ -21,40 +28,56 @@ UniformBuffer::UniformBuffer(GLSLProgram* program, std::string bufferName, const
 	glGetUniformIndices(programHandle,numElems,elemNames,indices);
 	glGetActiveUniformsiv(programHandle, numElems, indices, GL_UNIFORM_OFFSET, eOffsets);
 
+	/*std::vector<std::string> ll = program->getUniformAttributes();
+	std::cout << "Indices:" << std::endl;
+	for(int i=0; i < numElems; i++)
+	{
+		std::cout << elemNames[i] << " i:" << indices[i] << " o:" <<  eOffsets[i] << std::endl;
+	}
+	std::cout << std::endl;*/
+
+
 	//Save offsets with element names as key
 	for(int i=0; i < numElems; i++)
+	{
 		offsets.insert( std::pair<std::string,GLint>( elemNames[i], eOffsets[i] ) );
-	
+	}
+
 	delete[] eOffsets;
 	delete[] indices;
 
+	//Allocate memory for buffer
+	GLubyte* blockBuffer = new GLubyte[blockSize];
+	memset(blockBuffer,0,blockSize);
 
-	//Allocate memory
-	blockBuffer = new GLubyte[blockSize];
+	glBindBuffer(GL_UNIFORM_BUFFER, uboHandle);
+	glBufferData(GL_UNIFORM_BUFFER, blockSize, blockBuffer,GL_DYNAMIC_DRAW);
 
-	//initData();
+	delete[] blockBuffer;
 }
 
 UniformBuffer::~UniformBuffer(void)
 {
-	delete[] blockBuffer;
+	
+}
+
+void UniformBuffer::setElement(const string& name, const void* ptr, const GLsizei numBytes)
+{
+	glBindBuffer(GL_UNIFORM_BUFFER, uboHandle);
+	glBufferSubData(GL_UNIFORM_BUFFER, offsets[name], numBytes, ptr);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 void UniformBuffer::setElement(const string& name, const vec3& v)
 {
-	memcpy( blockBuffer + offsets[name], &v[0], 3 * sizeof(GLfloat) );
+	setElement(name, &v[0],3 * sizeof(GLfloat));
 }
 
 void UniformBuffer::setElement(const string& name, const vec4& v)
 {
-	memcpy( blockBuffer + offsets[name], &v[0], 4 * sizeof(GLfloat) );
+	setElement(name, &v[0],4 * sizeof(GLfloat));
 }
 
-void UniformBuffer::updateBufferObject()
-{
-	glBindBuffer(GL_UNIFORM_BUFFER, uboHandle);
-	glBufferData(GL_UNIFORM_BUFFER, blockSize, blockBuffer,GL_DYNAMIC_DRAW);
-}
 
 void UniformBuffer::bindToShader(GLSLProgram* program, std::string bufferName)
 {

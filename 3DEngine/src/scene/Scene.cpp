@@ -85,10 +85,18 @@ void Scene::render()
 		//s->worldTransform = glm::rotate(s->worldTransform, 1.0f, glm::vec3(0.0f,1.0f,0.0f));
 	}
 
-	//Animate light
+	//Animate lights
 	PointLight* pl = static_cast<PointLight*>(lightModel.pointLights[0]);
-	glm::mat4 lightTransform = (glm::rotate(mat4(1.0f), 1.0f, glm::vec3(0.0f,1.0f,0.0f)));
-	pl->setPosition(lightTransform * pl->getPosition());
+	glm::mat4 lightTransform1 = (glm::rotate(mat4(1.0f), 1.0f, glm::vec3(0.0f,1.0f,0.0f)));
+	pl->setPosition(lightTransform1 * pl->getPosition());
+
+	pl = static_cast<PointLight*>(lightModel.pointLights[1]);
+	glm::mat4 lightTransform2 = (glm::rotate(mat4(1.0f), 1.0f, glm::vec3(0.0f,0.0f,1.0f)));
+	pl->setPosition(lightTransform2 * pl->getPosition());
+
+	pl = static_cast<PointLight*>(lightModel.pointLights[2]);
+	glm::mat4 lightTransform3 = (glm::rotate(mat4(1.0f), 1.0f, glm::vec3(1.0f,0.0f,0.0f)));
+	pl->setPosition(lightTransform3 * pl->getPosition());
 }
 
 void Scene::addMaterial(ShaderBase* material)

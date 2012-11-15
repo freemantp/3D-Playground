@@ -5,6 +5,7 @@
 
 #include "../scene/Scene.h"
 #include "../camera/Camera.h"
+#include <sstream>
 
 DiffuseShader::DiffuseShader()
 	: ShaderBase()
@@ -12,12 +13,13 @@ DiffuseShader::DiffuseShader()
 	loadShader("diffuseShader");
 	materialColor = vec3(1,1,1);
 
-	const int numElems = 2;
-	const GLchar* elemNames[] = {"LPosition","LColor"};
-	lightsBuffer = new UniformBuffer(this,"PointLight",elemNames,numElems);
+	const int numElems = 8;
+	const GLchar* elemNames[] = {"Lights.PointLights[0].Position","Lights.PointLights[0].Color",
+								 "Lights.PointLights[1].Position","Lights.PointLights[1].Color",
+								 "Lights.PointLights[2].Position","Lights.PointLights[2].Color",
+								 "Lights.PointLights[3].Position","Lights.PointLights[3].Color"};
 
-	vec4 lightPos = vec4(1.0f, 0.5f, 1.0f, 1.0f);
-	vec3 lightColor = vec3(0.0f, 1.0f, 1.0f);
+	lightsBuffer = new UniformBuffer(this,"Lights",elemNames,numElems);
 }
 
 DiffuseShader::~DiffuseShader()
@@ -28,19 +30,24 @@ DiffuseShader::~DiffuseShader()
 void DiffuseShader::use(const Scene& scene, const glm::mat4& modelTransform)
 {	
 	ShaderBase::use(scene,modelTransform);
+
+	int numLights = (int)scene.lightModel.pointLights.size();
 	
-	if(scene.lightModel.pointLights.size() > 0)
+	setUniform("MaterialColor", materialColor);
+	setUniform("NumLights", numLights);
+	
+	for(int i=0; i < numLights; i++)
 	{
-		PointLight* pl = scene.lightModel.pointLights[0];
 
-		lightsBuffer->bindToShader(this,"PointLight");
+		PointLight* pl = scene.lightModel.pointLights[i];
 
-		setUniform("MaterialColor", materialColor);
-
-		
-		lightsBuffer->setElement("LPosition", scene.activeCamera->viewMatrix * pl->getPosition() );
-		lightsBuffer->setElement("LColor",pl->getColor());
-		lightsBuffer->updateBufferObject();
-		
+		std::stringstream lightName;
+		lightName << "Lights.PointLights[" << i << "].";
+	
+		lightsBuffer->setElement(lightName.str() + "Position", scene.activeCamera->viewMatrix * pl->getPosition() );
+		lightsBuffer->setElement(lightName.str() + "Color",pl->getColor());
 	}
+
+
+	lightsBuffer->bindToShader(this,"Lights");
 }
