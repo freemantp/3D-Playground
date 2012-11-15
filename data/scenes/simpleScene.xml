@@ -15,7 +15,7 @@
       <shininess value="90"/>
     </material>
     <material name="dull" shader="DiffuseShader">
-      <color r="1.0" g="0.0" b="1.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
     </material>
     <material name="meshColors" shader="ColorShader"/>
   </materials>

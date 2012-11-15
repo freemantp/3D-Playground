@@ -121,10 +121,12 @@ public:
 	*/
 	bool bindFragDataLocation( GLuint colorNumber, std::string& name);
 
-protected:
-
 	/// Returns the program handle encapsulated by this instance
 	GLuint getProgramHandle() const;
+
+protected:
+
+
 
 	/// Retrieves the info log for the specified handle (program or shader)
 	string getInfoLog(GLuint handle);

@@ -29,7 +29,7 @@ protected:
 	void beforeUniformSet();
 	void afterUniformSet();
 
-	bool hasMVP, hasNM, hasMVM;
+	bool hasMVP, hasNM, hasMVM, hasVM;
 
 	GLint currentProgram;
 	

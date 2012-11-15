@@ -15,6 +15,7 @@
 #include "../camera/Camera.h"
 #include "../shader/ShaderBase.h"
 #include "../shape/Shape.h"
+#include "../light/LightModel.h"
 #include "../light/PointLight.h"
 
 using std::vector;
@@ -76,8 +77,8 @@ void Scene::render()
 		//s->worldTransform = glm::rotate(s->worldTransform, 1.0f, glm::vec3(0.0f,1.0f,0.0f));
 	}
 
-	std::vector<Light*>::iterator lIt;
-	for(lIt = lights.begin(); lIt != lights.end(); lIt++)
+	std::vector<PointLight*>::const_iterator lIt;
+	for(lIt = lightModel.pointLights.cbegin(); lIt != lightModel.pointLights.cend(); lIt++)
 	{
 		Light* l = *lIt;
 		l->render(*this);
@@ -85,7 +86,7 @@ void Scene::render()
 	}
 
 	//Animate light
-	PointLight* pl = static_cast<PointLight*>(lights[0]);
+	PointLight* pl = static_cast<PointLight*>(lightModel.pointLights[0]);
 	glm::mat4 lightTransform = (glm::rotate(mat4(1.0f), 1.0f, glm::vec3(0.0f,1.0f,0.0f)));
 	pl->setPosition(lightTransform * pl->getPosition());
 }
@@ -100,7 +101,7 @@ void Scene::setCamera(Camera* cam)
 	activeCamera = cam;
 }
 
-void Scene::addLight(Light* light)
+void Scene::addLight(PointLight* light)
 {
-	lights.push_back(light);
+	lightModel.pointLights.push_back(light);
 }

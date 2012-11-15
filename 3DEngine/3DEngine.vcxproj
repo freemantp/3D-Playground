@@ -34,6 +34,7 @@
     <ClInclude Include="src\input\ViewportObserver.h" />
     <ClInclude Include="src\input\WindowEventHandler.h" />
     <ClInclude Include="src\light\Light.h" />
+    <ClInclude Include="src\light\LightModel.h" />
     <ClInclude Include="src\light\PointLight.h" />
     <ClInclude Include="src\ObjLoader.h" />
     <ClInclude Include="src\scene\Scene.h" />
@@ -44,6 +45,7 @@
     <ClInclude Include="src\shader\GLSLProgram.h" />
     <ClInclude Include="src\shader\PhongShader.h" />
     <ClInclude Include="src\shader\ShaderBase.h" />
+    <ClInclude Include="src\shader\UniformBuffer.h" />
     <ClInclude Include="src\shape\Box.h" />
     <ClInclude Include="src\shape\Mesh.h" />
     <ClInclude Include="src\shape\Shape.h" />
@@ -59,6 +61,7 @@
     <ClCompile Include="src\common.cpp" />
     <ClCompile Include="src\input\WindowEventHandler.cpp" />
     <ClCompile Include="src\light\Light.cpp" />
+    <ClCompile Include="src\light\LightModel.cpp" />
     <ClCompile Include="src\light\PointLight.cpp" />
     <ClCompile Include="src\ObjLoader.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
@@ -69,6 +72,7 @@
     <ClCompile Include="src\shader\GLSLProgram.cpp" />
     <ClCompile Include="src\shader\PhongShader.cpp" />
     <ClCompile Include="src\shader\ShaderBase.cpp" />
+    <ClCompile Include="src\shader\UniformBuffer.cpp" />
     <ClCompile Include="src\shape\Box.cpp" />
     <ClCompile Include="src\shape\Mesh.cpp" />
     <ClCompile Include="src\shape\Shape.cpp" />

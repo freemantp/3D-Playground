@@ -9,6 +9,7 @@ ShaderBase::ShaderBase()
 	: hasMVP(true)
 	, hasNM(true)
 	, hasMVM(true)
+	, hasVM(false)
 	, GLSLProgram()
 {
 
@@ -55,6 +56,8 @@ void ShaderBase::updateTransforms(const Camera& cam, const glm::mat4& modelTrans
 		setUniform("NormalMatrix", normalMatrix);		
 	if(hasMVM)
 		setUniform("ModelViewMatrix", modelViewMatrix);		
+	if(hasVM)
+		setUniform("ViewMatrix",  cam.viewMatrix);		
 	
 	afterUniformSet();
 }

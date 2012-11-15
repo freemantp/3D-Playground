@@ -1,15 +1,17 @@
 #pragma once
 
 #include <vector>
+#include "../light/LightModel.h"
 
 //fwd decls
 class Camera;
 class Shape;
-class Light;
+class PointLight;
 class ShaderBase;
 class InspectionCameraAdapter;
 class FirstPersonCameraAdapter;
 class InputHandlerFactory;
+class LightModel;
 
 using std::vector;
 
@@ -24,10 +26,10 @@ public:
 	void addShape(Shape* shape);
 	void addMaterial(ShaderBase* shape);
 	void setCamera(Camera* shape);
-	void addLight(Light* shape);
+	void addLight(PointLight* shape);
 
 	Camera* activeCamera;
-	vector<Light*> lights;
+	LightModel lightModel;
 	vector<Shape*> objects;
 	vector<ShaderBase*> materials;
 
