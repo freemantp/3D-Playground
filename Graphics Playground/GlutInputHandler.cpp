@@ -3,13 +3,15 @@
 
 using glm::vec2;
 
+#include "input/MouseObserver.h"
+#include "input/KeyboardObserver.h"
+
 GlutInputHandler GlutInputHandler::instance = GlutInputHandler();
 
 GlutInputHandler::GlutInputHandler()
 {
 
 }
-	
 
 GlutInputHandler& GlutInputHandler::getInstance()
 {
@@ -145,6 +147,9 @@ void GlutInputHandler::handleKey(unsigned char key, const glm::vec2& position)
 		case 27 : k = Input::ESCAPE; break;
 		default: return; break;
 	}
+
+	if(k == Input::ESCAPE)
+		glutLeaveMainLoop();
 
 	std::vector<KeyboardObserver*>::const_iterator cit;
 	for(cit = keyboardObservers.cbegin(); cit != keyboardObservers.cend(); cit++)

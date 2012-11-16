@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "../light/LightModel.h"
+#include "../animation/TimeObserver.h"
 
 //fwd decls
 class Camera;
@@ -15,7 +16,7 @@ class LightModel;
 
 using std::vector;
 
-class Scene
+class Scene : public TimeObserver
 {
 public:
 	Scene(InputHandlerFactory& ihf, Camera* cam);
@@ -27,6 +28,8 @@ public:
 	void addMaterial(ShaderBase* shape);
 	void setCamera(Camera* shape);
 	void addLight(PointLight* shape);
+
+	virtual void timeUpdate(long time);
 
 	Camera* activeCamera;
 	LightModel lightModel;

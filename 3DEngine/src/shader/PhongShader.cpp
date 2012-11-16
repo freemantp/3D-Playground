@@ -3,6 +3,7 @@
 #include "../camera/Camera.h"
 #include "../scene/Scene.h"
 #include "../light/PointLight.h"
+#include "UniformBuffer.h"
 
 PhongShader::PhongShader()
 : ShaderBase()
@@ -31,16 +32,6 @@ void PhongShader::use(const Scene& scene, const glm::mat4& modelTransform)
 {	
 	ShaderBase::use(scene,modelTransform);
 
-	if(scene.lightModel.pointLights.size() > 0)
-	{
-		PointLight* pl = scene.lightModel.pointLights[0];
-		setUniform("Light.AmbientIntensity",  vec3(0.0) );	
-		setUniform("Light.DiffuseIntensity",  pl->getColor() );	
-		setUniform("Light.SpecularIntensity", pl->getColor() );	
-		setUniform("Light.Position", scene.activeCamera->viewMatrix * pl->getPosition() );
-	}
-
-
 	setUniform("Material.AmbientReflectivity", ambientReflection );
 	setUniform("Material.DiffuseReflectivity", diffuseReflection );
 	setUniform("Material.SpecularReflectivity", glossyReflection );
@@ -59,5 +50,10 @@ void PhongShader::use(const Scene& scene, const glm::mat4& modelTransform)
 	}
 
 	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, shadeFunc);
+
+	//set lights
+	int numLights = (int)scene.lightModel.pointLights.size();	
+	setUniform("NumLights", numLights);
+	scene.lightModel.getLightsBuffer()->bindToShader(this,"Lights");
 	
 }

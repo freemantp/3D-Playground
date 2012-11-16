@@ -15,9 +15,5 @@ public:
 
 	glm::vec3 materialColor;
 
-protected:
-	GLuint uboHandle;
-	UniformBuffer* lightsBuffer;
-
 };
 

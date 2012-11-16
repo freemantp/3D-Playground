@@ -3,13 +3,13 @@
 layout (location = 0) out vec4 FragColor;
 
 //Structs declaration
-struct LightInfo
+/*struct LightInfo
 {
 	vec4 Position;
 	vec3 AmbientIntensity;
 	vec3 DiffuseIntensity;
 	vec3 SpecularIntensity;
-};
+};*/
 
 struct MaterialInfo
 {
@@ -19,11 +19,24 @@ struct MaterialInfo
 	int Shininess;
 };
 
+struct PointLight
+{
+	vec4 Position;
+	vec3 Color;
+};
+
+layout (std140) uniform Lights
+{
+	PointLight PointLights[4];
+} pLights;
+
+uniform int NumLights;
+
 //Subroutine declaration
 subroutine float shadeModelType(in vec3 s, in vec3 v, in vec3 normal);
 
 //Uniforms
-uniform LightInfo Light;
+//uniform LightInfo Light;
 uniform MaterialInfo Material;
 subroutine uniform shadeModelType shadeModel;
 
@@ -49,18 +62,27 @@ float phong(in vec3 s, in vec3 v, in vec3 normal)
 
 vec3 shade(const in vec3 position,const in vec3 normal)
 {	
-	vec3 s = normalize( vec3(Light.Position) - position);
-	vec3 v = normalize(-position);
 	
-	float sDotN = max(dot(s,normal), 0.0);
+	vec3 ambient = vec3(0);
+	vec3 diffuse = vec3(0);
+	vec3 specular = vec3(0);
 
-	vec3 ambient = Light.AmbientIntensity * Material.AmbientReflectivity;
-	vec3 diffuse = Light.DiffuseIntensity * Material.DiffuseReflectivity * sDotN;
-	vec3 specular = vec3(0.0);  
-
-	if(sDotN > 0)
+	for(int i=0; i < NumLights; i++)
 	{
-		specular = Light.SpecularIntensity * Material.SpecularReflectivity * shadeModel(s,v,normal) ;
+	
+		vec3 s = normalize( vec3(pLights.PointLights[i].Position) - position);
+		vec3 v = normalize(-position);
+	
+		float sDotN = max(dot(s,normal), 0.0);
+
+		ambient += pLights.PointLights[i].Color * Material.AmbientReflectivity;
+		diffuse += pLights.PointLights[i].Color * Material.DiffuseReflectivity * sDotN;
+
+		if(sDotN > 0)
+		{
+			specular += pLights.PointLights[i].Color * Material.SpecularReflectivity * shadeModel(s,v,normal) ;
+		}
+
 	}
 
 	return ambient + diffuse + specular;

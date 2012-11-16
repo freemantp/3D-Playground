@@ -9,7 +9,7 @@
 
   <materials>
     <material name="glossyRed" shader="PhongShader">
-      <ambientReflect r="0.1" g="0.1" b="0.1"/>
+      <ambientReflect r="0.0" g="0.0" b="0.0"/>
       <diffuseReflect r="0.3" g="0.3" b="0.3"/>
       <glossyReflect r="0.9" g="0.9" b="0.9"/>
       <shininess value="90"/>
@@ -26,13 +26,13 @@
       <color r="1.0" g="0.0" b="0.0"/>
     </light>
     <light type="point">
-      <position x="-1.0" y="0.5" z="0.0"/>
+      <position x="-1.0" y="1.0" z="0.0"/>
       <color r="0.0" g="0.0" b="1.0"/>
     </light>
-    <light type="point">
+    <!--<light type="point">
       <position x="0.0" y="0.5" z="1.0"/>
-      <color r="0.0" g="1.0" b="0.0"/>
-    </light>
+      <color r="0.5" g="0.5" b="0.5"/>
+    </light>-->
   </lights>
 
  <objects>

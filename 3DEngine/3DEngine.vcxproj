@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\animation\TimeObserver.h" />
     <ClInclude Include="src\camera\Camera.h" />
     <ClInclude Include="src\camera\CameraAdapter.h" />
     <ClInclude Include="src\camera\FirstPersonCameraAdapter.h" />
@@ -46,6 +47,7 @@
     <ClInclude Include="src\shader\PhongShader.h" />
     <ClInclude Include="src\shader\ShaderBase.h" />
     <ClInclude Include="src\shader\UniformBuffer.h" />
+    <ClInclude Include="src\shader\UniformBufferShader.h" />
     <ClInclude Include="src\shape\Box.h" />
     <ClInclude Include="src\shape\Mesh.h" />
     <ClInclude Include="src\shape\Shape.h" />
@@ -73,6 +75,7 @@
     <ClCompile Include="src\shader\PhongShader.cpp" />
     <ClCompile Include="src\shader\ShaderBase.cpp" />
     <ClCompile Include="src\shader\UniformBuffer.cpp" />
+    <ClCompile Include="src\shader\UniformBufferShader.cpp" />
     <ClCompile Include="src\shape\Box.cpp" />
     <ClCompile Include="src\shape\Mesh.cpp" />
     <ClCompile Include="src\shape\Shape.cpp" />
@@ -115,6 +118,8 @@
     <None Include="..\data\shader\phongShader.vert">
       <FileType>Document</FileType>
     </None>
+    <None Include="..\data\shader\uniformBuffer.frag" />
+    <None Include="..\data\shader\uniformBuffer.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{32FFB0D3-DAA7-436A-9E9A-44391510D878}</ProjectGuid>

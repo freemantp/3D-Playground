@@ -3,7 +3,7 @@
 #include "UniformBuffer.h"
 #include "GLSLProgram.h"
 
-UniformBuffer::UniformBuffer(GLSLProgram* program, std::string bufferName, const GLchar* elemNames[], const int numElems)
+UniformBuffer::UniformBuffer(const GLSLProgram* program, std::string bufferName, const GLchar* elemNames[], const int numElems)
 {	
 	if( ! program->isLinked () )
 		Error("[UniformBuffer] Program is not linked");
@@ -18,8 +18,6 @@ UniformBuffer::UniformBuffer(GLSLProgram* program, std::string bufferName, const
 	//Generate buffer object
 	glGenBuffers(1,&uboHandle);
 
-	
-
 
 	//Obtain indices and offsets
 	GLuint* indices = new GLuint[numElems];
@@ -28,14 +26,7 @@ UniformBuffer::UniformBuffer(GLSLProgram* program, std::string bufferName, const
 	glGetUniformIndices(programHandle,numElems,elemNames,indices);
 	glGetActiveUniformsiv(programHandle, numElems, indices, GL_UNIFORM_OFFSET, eOffsets);
 
-	/*std::vector<std::string> ll = program->getUniformAttributes();
-	std::cout << "Indices:" << std::endl;
-	for(int i=0; i < numElems; i++)
-	{
-		std::cout << elemNames[i] << " i:" << indices[i] << " o:" <<  eOffsets[i] << std::endl;
-	}
-	std::cout << std::endl;*/
-
+	//printUniforms();
 
 	//Save offsets with element names as key
 	for(int i=0; i < numElems; i++)
@@ -59,6 +50,18 @@ UniformBuffer::UniformBuffer(GLSLProgram* program, std::string bufferName, const
 UniformBuffer::~UniformBuffer(void)
 {
 	
+}
+
+void UniformBuffer::printUniforms(const GLchar* elemNames[],const GLuint* indices,const GLint* eOffsets)
+{
+
+	/*std::vector<std::string> ll = program->getUniformAttributes();
+	std::cout << "Indices:" << std::endl;
+	for(int i=0; i < numElems; i++)
+	{
+		std::cout << elemNames[i] << " i:" << indices[i] << " o:" <<  eOffsets[i] << std::endl;
+	}
+	std::cout << std::endl;*/
 }
 
 void UniformBuffer::setElement(const string& name, const void* ptr, const GLsizei numBytes)

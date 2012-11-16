@@ -1,7 +1,7 @@
 #pragma once;
 
-#include "MouseObserver.h"
-#include "KeyboardObserver.h"
+class MouseObserver;
+class KeyboardObserver;
 
 class InputHandler
 {

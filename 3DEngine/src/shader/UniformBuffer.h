@@ -13,7 +13,7 @@ class UniformBuffer
 {
 public:
 	///The glsl program and bufferName is needed to allocate the right amount of mem (queried)
-	UniformBuffer(GLSLProgram* program, std::string bufferName, const GLchar* elemNames[], int numElems);
+	UniformBuffer(const GLSLProgram* program, std::string bufferName, const GLchar* elemNames[], int numElems);
 	~UniformBuffer(void);
 
 	void bindToShader(GLSLProgram* program, std::string bufferName);
@@ -23,6 +23,7 @@ public:
 
 protected:
 
+	void printUniforms(const GLchar* elemNames[],const GLuint* indices,const GLint* eOffsets);
 	inline void setElement(const std::string& name, const void* ptr, const GLsizei numBytes);
 
 	std::map<std::string,GLint> offsets;

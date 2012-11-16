@@ -9,6 +9,7 @@
 #include "common.h"
 #include "util/Util.h"
 #include "scene/SceneParser.h"
+#include "TimeManager.h"
 
 
 using std::string;
@@ -26,6 +27,9 @@ void RenderFunction();
 int main(int argc, char* argv[])
 {	
 	Initialize(argc, argv);
+
+	glutFullScreenToggle();
+
 	glutMainLoop();
 
 	//getchar();
@@ -40,7 +44,6 @@ Scene* s;
 
 void initGL()
 {
-
 	glewExperimental=GL_TRUE;
 	GLenum err=glewInit();
 	if(err != GLEW_OK)
@@ -49,7 +52,8 @@ void initGL()
 		std::cout<<"glewInit failed, aborting." << std::endl;
 	}
 
-	if(light) {
+	if(light) 
+	{
 		/* Enable a single OpenGL light. */
 		glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
 		glLightfv(GL_LIGHT0, GL_POSITION, light_position);
@@ -77,20 +81,16 @@ void Initialize(int argc, char* argv[])
 	const char* data = Util::loadTextFile(Config::SCENE_BASE_PATH  + sceneName.c_str());
 	
 	GlutInputHandlerFactory gihf;
-	
-	
 	SceneParser sp(gihf);	
 	if(sp.parse(data))
 	{
 		s = sp.getScene();
+		TimeManager::getInstance().addTimeObserver(s);
 	}
 	else
 	{
 		Error("Scene could not be parsed: " + sceneName );		
-		//s = Scene::createDemoScene();
 	}
-
-
 }
 
 void InitWindow(int argc, char* argv[])
@@ -120,9 +120,9 @@ void InitWindow(int argc, char* argv[])
 		exit(EXIT_FAILURE);
 	}
 
-
 	glutReshapeFunc(WindowEventHandler::resize);
 	glutDisplayFunc(RenderFunction);
+	//glutIdleFunc
 
 	glutMouseFunc(GlutInputHandler::click);
 	glutMotionFunc(GlutInputHandler::drag);
@@ -130,6 +130,7 @@ void InitWindow(int argc, char* argv[])
 	glutMouseWheelFunc(GlutInputHandler::wheel);
 	glutKeyboardFunc(GlutInputHandler::key);
 	glutSpecialFunc(GlutInputHandler::specialKey);
+	glutIdleFunc(TimeManager::tick);
 
 	//atexit(Controller::glutAtExit);
 

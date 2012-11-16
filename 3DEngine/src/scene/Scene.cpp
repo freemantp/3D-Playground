@@ -15,7 +15,7 @@
 #include "../camera/Camera.h"
 #include "../shader/ShaderBase.h"
 #include "../shape/Shape.h"
-#include "../light/LightModel.h"
+#include "../light/lightModel.h"
 #include "../light/PointLight.h"
 
 using std::vector;
@@ -85,18 +85,25 @@ void Scene::render()
 		//s->worldTransform = glm::rotate(s->worldTransform, 1.0f, glm::vec3(0.0f,1.0f,0.0f));
 	}
 
+
+}
+
+void Scene::timeUpdate(long time)
+{
 	//Animate lights
 	PointLight* pl = static_cast<PointLight*>(lightModel.pointLights[0]);
 	glm::mat4 lightTransform1 = (glm::rotate(mat4(1.0f), 1.0f, glm::vec3(0.0f,1.0f,0.0f)));
 	pl->setPosition(lightTransform1 * pl->getPosition());
 
 	pl = static_cast<PointLight*>(lightModel.pointLights[1]);
-	glm::mat4 lightTransform2 = (glm::rotate(mat4(1.0f), 1.0f, glm::vec3(0.0f,0.0f,1.0f)));
+	glm::mat4 lightTransform2 = (glm::rotate(mat4(1.0f), 0.5f, glm::normalize(glm::vec3(0.5f,1.0f,0.0f))));
 	pl->setPosition(lightTransform2 * pl->getPosition());
 
-	pl = static_cast<PointLight*>(lightModel.pointLights[2]);
-	glm::mat4 lightTransform3 = (glm::rotate(mat4(1.0f), 1.0f, glm::vec3(1.0f,0.0f,0.0f)));
+	/*pl = static_cast<PointLight*>(lightModel.pointLights[2]);
+	glm::mat4 lightTransform3 = (glm::rotate(mat4(1.0f), 2.0f, glm::vec3(1.0f,0.0f,0.0f)));
 	pl->setPosition(lightTransform3 * pl->getPosition());
+	*/
+	lightModel.updateUniformBuffer(activeCamera);
 }
 
 void Scene::addMaterial(ShaderBase* material)
