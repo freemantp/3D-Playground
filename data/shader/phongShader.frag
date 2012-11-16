@@ -2,15 +2,6 @@
 
 layout (location = 0) out vec4 FragColor;
 
-//Structs declaration
-/*struct LightInfo
-{
-	vec4 Position;
-	vec3 AmbientIntensity;
-	vec3 DiffuseIntensity;
-	vec3 SpecularIntensity;
-};*/
-
 struct MaterialInfo
 {
 	vec3 AmbientReflectivity;
@@ -25,12 +16,25 @@ struct PointLight
 	vec3 Color;
 };
 
+//PointLight declaration
+struct SpotLight
+{
+	vec4 Position;
+	vec3 Color;
+	vec3 Direction;
+	float CutoffAngle;
+	float Exponent;
+};
+
+
 layout (std140) uniform Lights
 {
 	PointLight PointLights[4];
+	SpotLight  SpotLights[4];
 } pLights;
 
-uniform int NumLights;
+uniform int NumPointLights;
+uniform int NumSpotLights;
 
 //Subroutine declaration
 subroutine float shadeModelType(in vec3 s, in vec3 v, in vec3 normal);
@@ -60,29 +64,19 @@ float phong(in vec3 s, in vec3 v, in vec3 normal)
 	return pow( max( dot(r,v), 0.0), Material.Shininess );
 }
 
-vec3 shade(const in vec3 position,const in vec3 normal)
+vec3 shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir)
 {	
+	vec3 v = normalize(-position);
 	
-	vec3 ambient = vec3(0);
-	vec3 diffuse = vec3(0);
+	float sDotN = max(dot(lightDir,normal), 0.0);
+
+	vec3 ambient = Material.AmbientReflectivity;
+	vec3 diffuse = Material.DiffuseReflectivity * sDotN;
 	vec3 specular = vec3(0);
 
-	for(int i=0; i < NumLights; i++)
+	if(sDotN > 0)
 	{
-	
-		vec3 s = normalize( vec3(pLights.PointLights[i].Position) - position);
-		vec3 v = normalize(-position);
-	
-		float sDotN = max(dot(s,normal), 0.0);
-
-		ambient += pLights.PointLights[i].Color * Material.AmbientReflectivity;
-		diffuse += pLights.PointLights[i].Color * Material.DiffuseReflectivity * sDotN;
-
-		if(sDotN > 0)
-		{
-			specular += pLights.PointLights[i].Color * Material.SpecularReflectivity * shadeModel(s,v,normal) ;
-		}
-
+		specular = Material.SpecularReflectivity * shadeModel(lightDir,v,normal) ;
 	}
 
 	return ambient + diffuse + specular;
@@ -91,5 +85,29 @@ vec3 shade(const in vec3 position,const in vec3 normal)
 void main()
 {
 	vec3 normal = normalize(Normal);
-	FragColor = vec4(shade(Position,normal), 1.0);
+
+	//Point lights
+	for(int i=0; i < NumPointLights; i++)
+	{	
+		PointLight light = pLights.PointLights[i];
+
+		vec3 s = normalize( vec3(light.Position) - Position);
+		FragColor += vec4( light.Color * shade(Position,normal,s), 1.0  );		
+	}
+
+	//Spot lights
+	for(int i=0; i < NumSpotLights; i++)
+	{	
+		SpotLight light = pLights.SpotLights[i];
+
+		vec3 s = normalize( vec3(light.Position) - Position);
+		float angle = acos( dot(-s,light.Direction) );
+		float cutoff = radians( clamp (light.CutoffAngle, 0.0, 90.0) ) ;
+		
+		if( angle  < cutoff)
+		{		
+			float spotFactor = pow( dot( -s , light.Direction), light.Exponent);
+			FragColor += spotFactor * vec4( light.Color * shade(Position,normal,s), 1.0  );
+		}
+	}
 }

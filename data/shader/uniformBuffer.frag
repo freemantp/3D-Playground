@@ -7,11 +7,22 @@ struct PointLight
 	vec3 Color;
 };
 
+//PointLight declaration
+struct SpotLight
+{
+	vec4 Position;
+	vec3 Color;
+	vec3 Direction;
+	float CutoffAngle;
+	float Exponent;
+};
+
+
 layout (std140) uniform Lights
 {
 	PointLight PointLights[4];
+	SpotLight  SpotLights[4];
 } pLights;
-
 
 //End uniform block declarations
 

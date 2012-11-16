@@ -314,7 +314,7 @@ std::vector<std::string> GLSLProgram::getVertexAttributes()
 
 }
 
-std::vector<std::string> GLSLProgram::getUniformAttributes()
+std::vector<std::string> GLSLProgram::getUniformAttributes() const
 {
 	GLint nAttribs, maxLength, charsWritten, size;
 	GLenum type;

@@ -37,12 +37,12 @@
     <ClInclude Include="src\light\Light.h" />
     <ClInclude Include="src\light\LightModel.h" />
     <ClInclude Include="src\light\PointLight.h" />
+    <ClInclude Include="src\light\SpotLight.h" />
     <ClInclude Include="src\ObjLoader.h" />
     <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="src\scene\SceneParser.h" />
     <ClInclude Include="src\shader\ColorShader.h" />
     <ClInclude Include="src\shader\ConstShader.h" />
-    <ClInclude Include="src\shader\DiffuseShader.h" />
     <ClInclude Include="src\shader\GLSLProgram.h" />
     <ClInclude Include="src\shader\PhongShader.h" />
     <ClInclude Include="src\shader\ShaderBase.h" />
@@ -65,12 +65,12 @@
     <ClCompile Include="src\light\Light.cpp" />
     <ClCompile Include="src\light\LightModel.cpp" />
     <ClCompile Include="src\light\PointLight.cpp" />
+    <ClCompile Include="src\light\SpotLight.cpp" />
     <ClCompile Include="src\ObjLoader.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\scene\SceneParser.cpp" />
     <ClCompile Include="src\shader\ColorShader.cpp" />
     <ClCompile Include="src\shader\ConstShader.cpp" />
-    <ClCompile Include="src\shader\DiffuseShader.cpp" />
     <ClCompile Include="src\shader\GLSLProgram.cpp" />
     <ClCompile Include="src\shader\PhongShader.cpp" />
     <ClCompile Include="src\shader\ShaderBase.cpp" />
@@ -98,12 +98,6 @@
       <FileType>Document</FileType>
     </None>
     <None Include="..\data\shader\constShader.vert">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="..\data\shader\diffuseShader.frag">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="..\data\shader\diffuseShader.vert">
       <FileType>Document</FileType>
     </None>
     <None Include="..\data\shader\normalShader.frag">

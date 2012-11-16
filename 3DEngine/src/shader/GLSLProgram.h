@@ -103,7 +103,7 @@ public:
 	* \brief Retrieves available uniform attributes
 	* \return a vector of strings containing the uniform attribute identifiers
 	*/
-	std::vector<std::string> getUniformAttributes();
+	std::vector<std::string> getUniformAttributes() const;
 
 	/**
 	* \brief Binds the specified vertex attribute to index

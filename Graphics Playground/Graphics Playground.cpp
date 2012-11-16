@@ -28,8 +28,6 @@ int main(int argc, char* argv[])
 {	
 	Initialize(argc, argv);
 
-	glutFullScreenToggle();
-
 	glutMainLoop();
 
 	//getchar();

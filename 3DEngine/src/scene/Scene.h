@@ -28,6 +28,7 @@ public:
 	void addMaterial(ShaderBase* shape);
 	void setCamera(Camera* shape);
 	void addLight(PointLight* shape);
+	void addLight(SpotLight* light);
 
 	virtual void timeUpdate(long time);
 

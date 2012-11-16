@@ -64,9 +64,6 @@
     <Filter Include="data\shaders">
       <UniqueIdentifier>{c2a0288b-6deb-4c1f-812d-639659650813}</UniqueIdentifier>
     </Filter>
-    <Filter Include="data\shaders\diffuse">
-      <UniqueIdentifier>{42e3ecdf-8155-4f1c-a5c4-4e04d30519eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="data\shaders\color">
       <UniqueIdentifier>{a21cc952-af27-4f39-b00e-502c72ba2f84}</UniqueIdentifier>
     </Filter>
@@ -180,9 +177,6 @@
     <ClInclude Include="src\shader\ConstShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\shader\DiffuseShader.h">
-      <Filter>Header Files\shaders</Filter>
-    </ClInclude>
     <ClInclude Include="src\light\LightModel.h">
       <Filter>Header Files\light</Filter>
     </ClInclude>
@@ -194,6 +188,9 @@
     </ClInclude>
     <ClInclude Include="src\animation\TimeObserver.h">
       <Filter>Header Files\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\light\SpotLight.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -263,9 +260,6 @@
     <ClCompile Include="src\light\Light.cpp">
       <Filter>Source Files\light</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader\DiffuseShader.cpp">
-      <Filter>Source Files\shaders</Filter>
-    </ClCompile>
     <ClCompile Include="src\light\LightModel.cpp">
       <Filter>Source Files\light</Filter>
     </ClCompile>
@@ -274,6 +268,9 @@
     </ClCompile>
     <ClCompile Include="src\shader\UniformBufferShader.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\light\SpotLight.cpp">
+      <Filter>Source Files\light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -300,12 +297,6 @@
     </None>
     <None Include="..\data\shader\constShader.vert">
       <Filter>data\shaders\const</Filter>
-    </None>
-    <None Include="..\data\shader\diffuseShader.frag">
-      <Filter>data\shaders\diffuse</Filter>
-    </None>
-    <None Include="..\data\shader\diffuseShader.vert">
-      <Filter>data\shaders\diffuse</Filter>
     </None>
     <None Include="..\data\shader\uniformBuffer.vert">
       <Filter>data\shaders\uniformBuffer</Filter>

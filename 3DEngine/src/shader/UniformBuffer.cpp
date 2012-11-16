@@ -26,7 +26,7 @@ UniformBuffer::UniformBuffer(const GLSLProgram* program, std::string bufferName,
 	glGetUniformIndices(programHandle,numElems,elemNames,indices);
 	glGetActiveUniformsiv(programHandle, numElems, indices, GL_UNIFORM_OFFSET, eOffsets);
 
-	//printUniforms();
+	//printUniforms(program,elemNames, indices,eOffsets,numElems);
 
 	//Save offsets with element names as key
 	for(int i=0; i < numElems; i++)
@@ -52,16 +52,16 @@ UniformBuffer::~UniformBuffer(void)
 	
 }
 
-void UniformBuffer::printUniforms(const GLchar* elemNames[],const GLuint* indices,const GLint* eOffsets)
+void UniformBuffer::printUniforms(const GLSLProgram* program, const GLchar* elemNames[],GLuint* indices, GLint* eOffsets, int numElems)
 {
 
-	/*std::vector<std::string> ll = program->getUniformAttributes();
+	std::vector<std::string> ll = program->getUniformAttributes();
 	std::cout << "Indices:" << std::endl;
 	for(int i=0; i < numElems; i++)
 	{
 		std::cout << elemNames[i] << " i:" << indices[i] << " o:" <<  eOffsets[i] << std::endl;
 	}
-	std::cout << std::endl;*/
+	std::cout << std::endl;
 }
 
 void UniformBuffer::setElement(const string& name, const void* ptr, const GLsizei numBytes)
@@ -81,6 +81,10 @@ void UniformBuffer::setElement(const string& name, const vec4& v)
 	setElement(name, &v[0],4 * sizeof(GLfloat));
 }
 
+void UniformBuffer::setElement(const string& name, float v)
+{
+	setElement(name, &v, sizeof(GLfloat));
+}
 
 void UniformBuffer::bindToShader(GLSLProgram* program, std::string bufferName)
 {

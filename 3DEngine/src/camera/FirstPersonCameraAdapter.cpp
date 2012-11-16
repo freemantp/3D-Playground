@@ -20,7 +20,7 @@ FirstPersonCameraAdapter::~FirstPersonCameraAdapter(void)
 
 void FirstPersonCameraAdapter::onKey(const Input::KEY key, const Input::MODIFIER mod, const glm::vec2& position)
 {
-	std::cout << "Key " << key << " pressed" << std::endl;
+	//std::cout << "Key " << key << " pressed" << std::endl;
 
 	switch(key)
 	{
@@ -75,7 +75,7 @@ void FirstPersonCameraAdapter::onMouseMove(const glm::vec2& position)
 
 	//cam.setOrientation(vec3(newPos.x,newPos.y,newPos.z), vec3(newUp.x,newUp.y,newUp.z));
 
-	std:: cout << position.x << " " << position.y << std::endl;
+	//std:: cout << position.x << " " << position.y << std::endl;
 
 	lastScreenPos = position;
 }

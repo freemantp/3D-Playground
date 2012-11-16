@@ -5,7 +5,6 @@
 #include <string>
 
 #include "../shader/PhongShader.h"
-#include "../shader/DiffuseShader.h"
 #include "../shader/ColorShader.h"
 #include "../shader/ConstShader.h"
 
@@ -15,6 +14,8 @@
 
 #include "../shape/Mesh.h"
 #include "../shape/Box.h"
+
+#include "../light/SpotLight.h"
 
 using tinyxml2::XMLDocument;
 using tinyxml2::XMLElement;
@@ -124,18 +125,6 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 			
 
 			shader = ps;
-		}
-		else if(shaderName == "DiffuseShader")
-		{
-			DiffuseShader* dpvs = new DiffuseShader();
-			XMLElement* colorElem = materialElement->FirstChildElement("color");
-			if(colorElem != NULL)
-			{
-				getColorVector3(colorElem,dpvs->materialColor);
-			}
-
-			shader = dpvs;
-
 		}
 		else if(shaderName == "ColorShader")
 		{
@@ -332,6 +321,25 @@ bool SceneParser::parseLights(tinyxml2::XMLElement* lightsGroupElement)
 
 			generatedScene->addLight(plight);
 			
+		}
+		else if(lightType == "spot")
+		{
+			
+			vec3 pos, color, direction;
+			float cutoff, exponent = 5;
+			getVector3(lightElem->FirstChildElement("position"),pos);
+			getVector3(lightElem->FirstChildElement("direction"),direction);
+			getColorVector3(lightElem->FirstChildElement("color"),color);
+
+			getFloatAttrib(lightElem,"cutoff",cutoff);
+			getFloatAttrib(lightElem,"exponent",exponent);
+
+			SpotLight* slight = new SpotLight(direction,cutoff,exponent);
+
+			slight->setPosition(vec4(pos,1.0));
+			slight->setColor(color);
+
+			generatedScene->addLight(slight);
 		}
 		else
 		{

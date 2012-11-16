@@ -3,6 +3,7 @@
 
 #include <vector>
 
+class SpotLight;
 class PointLight;
 class UniformBuffer;
 class GLSLProgram;
@@ -19,6 +20,8 @@ public:
 	~LightModel();
 
 	vector<PointLight*> pointLights;
+	vector<SpotLight*> spotLights;
+
 	UniformBuffer* getLightsBuffer() const;
 	void updateUniformBuffer(const Camera* cam);
 

@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <scene name="Simple scene">
-
   <camera type="perspective" fov="50.0">
     <position x="0.0" y="0.0" z="2.0"/>
     <target   x="0.0" y="0.0" z="0.0"/>
@@ -14,24 +13,30 @@
       <glossyReflect r="0.9" g="0.9" b="0.9"/>
       <shininess value="90"/>
     </material>
-    <material name="dull" shader="DiffuseShader">
-      <color r="1.0" g="1.0" b="1.0"/>
+    <material name="dull" shader="PhongShader">
+      <ambientReflect r="0.0" g="0.0" b="0.0"/>
+      <diffuseReflect r="1.0" g="1.0" b="1.0"/>
+      <glossyReflect r="0.0" g="0.0" b="0.0"/>
+      <shininess value="90"/>
     </material>
     <material name="meshColors" shader="ColorShader"/>
   </materials>
   
   <lights>
-    <light type="point">
+    <light type="spot" cutoff="60" exponent="5">
       <position x="1.0" y="0.5" z="1.0"/>
+      <direction x="-1.0" y="0.0" z="-1.0"/>
       <color r="1.0" g="0.0" b="0.0"/>
     </light>
-    <light type="point">
+    <light type="spot" cutoff="60" exponent="5">
       <position x="-1.0" y="1.0" z="0.0"/>
+      <direction x="1.0" y="-1.0" z="0.0"/>
       <color r="0.0" g="0.0" b="1.0"/>
     </light>
-    <!--<light type="point">
+    <!--<light type="spot"  cutoff="60" exponent="5">
       <position x="0.0" y="0.5" z="1.0"/>
-      <color r="0.5" g="0.5" b="0.5"/>
+       <direction x="0.0" y="0.0" z="-1.0"/>
+      <color r="0.0" g="1" b="0.0"/>
     </light>-->
   </lights>
 

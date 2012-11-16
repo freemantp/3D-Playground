@@ -151,6 +151,9 @@ void GlutInputHandler::handleKey(unsigned char key, const glm::vec2& position)
 	if(k == Input::ESCAPE)
 		glutLeaveMainLoop();
 
+	if(k == Input::F)
+		glutFullScreenToggle();
+
 	std::vector<KeyboardObserver*>::const_iterator cit;
 	for(cit = keyboardObservers.cbegin(); cit != keyboardObservers.cend(); cit++)
 	{

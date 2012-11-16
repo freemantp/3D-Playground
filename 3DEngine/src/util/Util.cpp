@@ -8,9 +8,6 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "../shader/DiffuseShader.h"
-#include "../shader/ColorShader.h"
-#include "../shader/PhongShader.h"
 
 #include "../shape/Mesh.h"
 #include "../shader/GLSLProgram.h"
