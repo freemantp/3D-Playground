@@ -83,6 +83,7 @@ public:
 	virtual void unuse();
 
 	void setUniform(const GLchar *name, int value);
+	void setUniform(const GLchar *name, unsigned int value);
 	void setUniform(const GLchar *name, float value);
 	void setUniform(const GLchar *name, bool value);
 	void setUniform(const GLchar *name, const vec2& v);

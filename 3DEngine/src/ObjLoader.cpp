@@ -143,6 +143,11 @@ inline void copyVec3(float* target, const vec3& v)
 	memcpy( target, &v.x, 3 * sizeof(float));	
 }
 
+inline void copyVec2(float* target, const vec2& v)
+{
+	memcpy( target, &v.x, 2 * sizeof(float));	
+}
+
 void ObjLoader::getNormalArray (vector<float>& normalArray)
 {
 	//Lookup directory, holds information about vertices that are already processed
@@ -183,7 +188,41 @@ void ObjLoader::getNormalArray (vector<float>& normalArray)
 
 void ObjLoader::getTexCoordArray(vector<float>& texCoordArray)
 {
+//Lookup directory, holds information about vertices that are already processed
+
+	bool* processedDictionary = new bool[vertices.size()];
+	memset(processedDictionary, false, vertices.size() * sizeof(bool));
+
+	//2 floats per vertex
+	texCoordArray.resize(vertices.size() * 2);
+
+	float* txRaw = &texCoordArray[0];
+
+	for(int i = 0; i < triangles.size(); i++)
+	{
+		Tri& t = triangles[i];
+
+		if( ! processedDictionary[t.v1.x])
+		{
+			vec2& tx  = texCoords [t.v1.y];
+			copyVec2( &txRaw[t.v1.x * 2], tx);
+			processedDictionary[t.v1.x] = true;
+		}
+		if( ! processedDictionary[t.v2.x])
+		{
+			vec2& tx  = texCoords  [t.v2.y];
+			copyVec2( &txRaw[t.v2.x * 2], tx);
+			processedDictionary[t.v2.x] = true;
+		}
+		if( ! processedDictionary[t.v3.x])
+		{
+			vec2& tx  = texCoords  [t.v3.y];
+			copyVec2( &txRaw[t.v3.x * 2], tx);
+			processedDictionary[t.v3.x] = true;
+		}
+	}
 	
+	delete[] processedDictionary;
 }
 
 bool ObjLoader::computeNormals()

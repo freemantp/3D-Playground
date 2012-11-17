@@ -165,6 +165,21 @@ void GLSLProgram::setUniform(const GLchar *name, int value)
 	}
 }
 
+void GLSLProgram::setUniform(const GLchar *name, unsigned int value)
+{
+	GLint loc = glGetUniformLocation(programHandle, name);
+	if (loc >= 0) 
+	{
+		glUniform1i(loc, value);
+	} 
+	else 
+	{
+#if _DEBUG
+		Error(string("Error setting parameter '") + name + "'");
+#endif
+	}
+}
+
 void GLSLProgram::setUniform(const GLchar *name, const vec2& v)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);

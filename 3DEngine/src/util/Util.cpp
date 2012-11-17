@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Util.h"
 #include <fstream>
-#include "../shader/GLSLProgram.h"
+#include "../shader/ShaderBase.h"
 #include "../ObjLoader.h"
 #include "../shape/Box.h"
 #include <ctime>
@@ -77,6 +77,13 @@ void Util::printStrings(const std::vector<string> strings)
 	}
 }
 
+void Util::printUniforms(const ShaderBase* shader)
+{
+	std::cout << shader->getName() << std::endl << "------------------" << std::endl;
+	printStrings(shader->getUniformAttributes());
+	std::cout << std::endl;
+}
+
 Mesh* Util::loadModel(const string& path)
 {
 	ObjLoader oj;
@@ -87,16 +94,18 @@ Mesh* Util::loadModel(const string& path)
 	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC * 1000;
 	std::cout << "time [msec]: " << elapsed_secs << std::endl;
 
-	vector<float> vertexArray, normalArray;
+	vector<float> vertexArray, normalArray, texCoordArray;
 	vector<int> indexArray;
 
 	oj.getVertexArray(vertexArray);
 	oj.getIndexArray(indexArray);
 	oj.getNormalArray(normalArray);
+	oj.getTexCoordArray(texCoordArray);
 
 	Mesh* mesh = new Mesh();;
 	mesh->setPositions(vertexArray,indexArray);
 	mesh->setNormals(normalArray);
+	mesh->setTextureCoordinates(texCoordArray);
 	//mesh->setColors(vertexArray);
 
 	return mesh;

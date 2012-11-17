@@ -10,6 +10,7 @@ ShaderBase::ShaderBase(const string& shaderName)
 	, hasNM(true)
 	, hasMVM(true)
 	, hasVM(false)
+	, shaderName(shaderName)
 	, GLSLProgram()
 {
 	loadShader(shaderName);
@@ -30,6 +31,11 @@ GLint ShaderBase::getCurentProgram()
 	GLint currentProgram;
 	glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
 	return currentProgram;
+}
+
+const string& ShaderBase::getName() const
+{ 
+	return shaderName; 
 }
 
 void ShaderBase::beforeUniformSet()

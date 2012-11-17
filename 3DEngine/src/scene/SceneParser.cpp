@@ -181,7 +181,7 @@ bool SceneParser::parseObjects(XMLElement* objects)
 		}
 		else if(type == "box")
 		{
-			s = new Box();		
+			s = new Box();
 		}
 		else 
 		{

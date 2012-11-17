@@ -149,6 +149,8 @@ bool Mesh::setTextureCoordinates(const std::vector<float>& texCoords)
 	glGenBuffers(1, &bufferObjects[TextureCoord]);
 	bool success = false;
 
+	glBindBuffer(GL_ARRAY_BUFFER, bufferObjects[TextureCoord]);
+
 	if( glIsBuffer(bufferObjects[TextureCoord]) )
 	{	
 		glEnableVertexAttribArray(vAttribData[TextureCoord].channel);  // texture coord
@@ -159,6 +161,7 @@ bool Mesh::setTextureCoordinates(const std::vector<float>& texCoords)
 	} 
 	else
 	{
+		Error("Could not created texture coordinate buffer");
 		glDeleteBuffers(1, &bufferObjects[TextureCoord]);
 	}
 

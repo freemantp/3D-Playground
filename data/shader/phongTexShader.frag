@@ -26,7 +26,6 @@ struct SpotLight
 	float Exponent;
 };
 
-
 layout (std140) uniform Lights
 {
 	PointLight PointLights[4];
@@ -35,6 +34,7 @@ layout (std140) uniform Lights
 
 uniform int NumPointLights;
 uniform int NumSpotLights;
+uniform sampler2D Tex1;
 
 //Subroutine declaration
 subroutine float shadeModelType(in vec3 s, in vec3 v, in vec3 normal);
@@ -47,6 +47,7 @@ subroutine uniform shadeModelType shadeModel;
 //input from previous stage
 in vec3 Position;
 in vec3 Normal;
+in vec2 TexCoord;
 
 //Blinn-Phong model
 subroutine( shadeModelType )
@@ -86,6 +87,9 @@ void main()
 {
 	vec3 normal = normalize(Normal);
 
+	vec4 texColor = texture(Tex1, TexCoord);
+	FragColor = texColor;
+
 	//Point lights
 	for(int i=0; i < NumPointLights; i++)
 	{	
@@ -110,5 +114,9 @@ void main()
 			FragColor += spotFactor * vec4( light.Color * shade(Position,normal,s), 1.0  );
 		}
 	}
+
+	FragColor = texColor;
+
+	
 
 }

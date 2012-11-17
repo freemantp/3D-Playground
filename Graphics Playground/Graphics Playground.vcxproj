@@ -34,7 +34,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -71,16 +71,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\3DEngine\src;C:\Development\Freeglut\include;C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;C:\Development\tinyxml2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\x64\Debug;C:\Development\Freeglut\lib\x64\Debug;C:\Development\glew-1.9.0\lib;C:\Development\tinyxml2\include;C:\Development\tinyxml2\lib\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\3DEngine\src;C:\Development\Freeglut\include;C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;C:\Development\tinyxml2\include;C:\Development\DevIL-SDK-x64-1.7.8\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\x64\Debug;C:\Development\Freeglut\lib\x64\Debug;C:\Development\glew-1.9.0\lib;C:\Development\tinyxml2\include;C:\Development\tinyxml2\lib\Debug;C:\Development\DevIL-SDK-x64-1.7.8\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\3DEngine\src;C:\Development\Freeglut\include;C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;$(SolutionDir)\ObjLoader;C:\Development\tinyxml2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\x64\Release;C:\Development\Freeglut\lib\x64\Release;C:\Development\glew-1.9.0\lib;C:\Development\tinyxml2\lib\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\3DEngine\src;C:\Development\Freeglut\include;C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;$(SolutionDir)\ObjLoader;C:\Development\tinyxml2\include;C:\Development\DevIL-SDK-x64-1.7.8\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\x64\Release;C:\Development\Freeglut\lib\x64\Release;C:\Development\glew-1.9.0\lib;C:\Development\tinyxml2\lib\Release;C:\Development\DevIL-SDK-x64-1.7.8\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -104,7 +104,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>3DEngine.lib;freeglut.lib;glew32.lib;tinyxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>3DEngine.lib;freeglut.lib;glew32.lib;tinyxml2.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -137,7 +137,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>3DEngine.lib;freeglut.lib;glew32.lib;tinyxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>3DEngine.lib;freeglut.lib;glew32.lib;tinyxml2.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -135,7 +135,7 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -149,7 +149,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -172,10 +172,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <SourcePath>${ProjectDir}\src;$(SourcePath)</SourcePath>
-    <IncludePath>C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;C:\Development\tinyxml2\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;C:\Development\tinyxml2\include;C:\Development\DevIL-SDK-x64-1.7.8\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;C:\Development\tinyxml2\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;C:\Development\tinyxml2\include;C:\Development\DevIL-SDK-x64-1.7.8\include;$(IncludePath)</IncludePath>
     <SourcePath>${ProjectDir}\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

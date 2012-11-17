@@ -12,6 +12,8 @@
 #include "TimeManager.h"
 
 
+#include  <IL/il.h>
+
 using std::string;
 
 #define WINDOW_TITLE_PREFIX "OpenGL Playground"
@@ -68,6 +70,7 @@ void Initialize(int argc, char* argv[])
 {
 	InitWindow(argc, argv);
 	initGL();
+	ilInit();
 
 	fprintf( stdout, "INFO: OpenGL Version: %s\n", glGetString(GL_VERSION) );
 
@@ -89,6 +92,7 @@ void Initialize(int argc, char* argv[])
 	{
 		Error("Scene could not be parsed: " + sceneName );		
 	}
+
 }
 
 void InitWindow(int argc, char* argv[])
