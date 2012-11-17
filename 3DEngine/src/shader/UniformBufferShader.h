@@ -7,6 +7,5 @@ class UniformBufferShader :
 {
 public:
 	UniformBufferShader();
-	~UniformBufferShader();
 };
 

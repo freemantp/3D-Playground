@@ -3,12 +3,7 @@
 
 
 UniformBufferShader::UniformBufferShader()
-	: ShaderBase()
+	: ShaderBase("uniformBuffer")
 {
-	loadShader("uniformBuffer");
-}
 
-
-UniformBufferShader::~UniformBufferShader()
-{
 }

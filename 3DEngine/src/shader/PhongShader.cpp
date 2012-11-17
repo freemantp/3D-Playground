@@ -6,9 +6,19 @@
 #include "UniformBuffer.h"
 
 PhongShader::PhongShader()
-: ShaderBase()
+: ShaderBase("phongShader")
 {
-	loadShader("phongShader");
+	init();
+}
+
+PhongShader::PhongShader(const string& shaderName)
+	: ShaderBase(shaderName)
+{
+	init();
+}
+
+void PhongShader::init()
+{
 	ambientReflection = vec3(0.0f);
 	diffuseReflection = vec3(0.0f);
 	glossyReflection = vec3(1.0f);
@@ -20,9 +30,7 @@ PhongShader::PhongShader()
 
 	//Select default shade model
 	shadeModel = GLSLShader::BLINN_PHONG;
-
 }
-
 
 PhongShader::~PhongShader(void)
 {

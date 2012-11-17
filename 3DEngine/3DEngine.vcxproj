@@ -45,6 +45,7 @@
     <ClInclude Include="src\shader\ConstShader.h" />
     <ClInclude Include="src\shader\GLSLProgram.h" />
     <ClInclude Include="src\shader\PhongShader.h" />
+    <ClInclude Include="src\shader\PhongTextureShader.h" />
     <ClInclude Include="src\shader\ShaderBase.h" />
     <ClInclude Include="src\shader\UniformBuffer.h" />
     <ClInclude Include="src\shader\UniformBufferShader.h" />
@@ -73,6 +74,7 @@
     <ClCompile Include="src\shader\ConstShader.cpp" />
     <ClCompile Include="src\shader\GLSLProgram.cpp" />
     <ClCompile Include="src\shader\PhongShader.cpp" />
+    <ClCompile Include="src\shader\PhongTextureShader.cpp" />
     <ClCompile Include="src\shader\ShaderBase.cpp" />
     <ClCompile Include="src\shader\UniformBuffer.cpp" />
     <ClCompile Include="src\shader\UniformBufferShader.cpp" />
@@ -112,6 +114,8 @@
     <None Include="..\data\shader\phongShader.vert">
       <FileType>Document</FileType>
     </None>
+    <None Include="..\data\shader\phongTexShader.frag" />
+    <None Include="..\data\shader\phongTexShader.vert" />
     <None Include="..\data\shader\uniformBuffer.frag" />
     <None Include="..\data\shader\uniformBuffer.vert" />
   </ItemGroup>

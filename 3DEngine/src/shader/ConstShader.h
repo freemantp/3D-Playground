@@ -6,7 +6,6 @@ class ConstShader : public ShaderBase
 {
 public:
 	ConstShader(void);
-	~ConstShader(void);
 
 	virtual void use(const Scene& scene, const glm::mat4& modelTransform);
 

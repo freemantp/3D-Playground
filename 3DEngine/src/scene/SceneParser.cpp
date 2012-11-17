@@ -5,6 +5,7 @@
 #include <string>
 
 #include "../shader/PhongShader.h"
+#include "../shader/PhongTextureShader.h"
 #include "../shader/ColorShader.h"
 #include "../shader/ConstShader.h"
 
@@ -104,13 +105,25 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 		string shaderName = materialElement->Attribute("shader");
 
 		ShaderBase* shader;
+		
+		if(shaderName == "phong")
+		{			
+			XMLElement* subElem = materialElement->FirstChildElement("texture");
+			PhongShader* ps;
+			PhongTextureShader* pts;
 
-		if(shaderName == "PhongShader")
-		{
-			PhongShader* ps = new PhongShader();
-
-			XMLElement* subElem;
-
+			//Load textured version if available
+			if(subElem != NULL)
+			{
+				pts = new PhongTextureShader();
+				ps = pts; 
+			}
+			else
+			{
+				ps = new PhongShader();
+			}
+			
+			//Load common phong attributes
 			if ( (subElem = materialElement->FirstChildElement("ambientReflect")) != NULL )
 				getColorVector3(subElem,ps->ambientReflection);
 
@@ -122,15 +135,14 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 
 			if ( (subElem = materialElement->FirstChildElement("shininess")) != NULL )
 				getIntAttrib(subElem,"value",ps->shininess);
-			
 
 			shader = ps;
 		}
-		else if(shaderName == "ColorShader")
+		else if(shaderName == "color")
 		{
 			shader = new ColorShader();
 		}
-		else if(shaderName == "ConstShader")
+		else if(shaderName == "const")
 		{
 			shader = new ConstShader();
 		}

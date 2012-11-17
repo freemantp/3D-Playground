@@ -3,12 +3,10 @@
 #include "../util/Util.h"
 
 ColorShader::ColorShader()
-	: ShaderBase()
+	: ShaderBase("colorShader")
 
 {	
 	hasNM = false;
 	hasMVM = false;
-
-	loadShader("colorShader");
 
 }

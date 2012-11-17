@@ -3,19 +3,14 @@
 
 
 ConstShader::ConstShader(void)
+	: ShaderBase("constShader")
 {
 	hasNM = false;
 	hasMVM = false;
 
 	color = vec3(1,1,1);
-
-	loadShader("constShader");
 }
 
-
-ConstShader::~ConstShader(void)
-{
-}
 
 void ConstShader::use(const Scene& scene, const glm::mat4& modelTransform)
 {	

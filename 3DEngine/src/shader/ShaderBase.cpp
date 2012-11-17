@@ -5,18 +5,24 @@
 #include "../util/Util.h"
 #include "../scene/Scene.h"
 
-ShaderBase::ShaderBase()
+ShaderBase::ShaderBase(const string& shaderName)
 	: hasMVP(true)
 	, hasNM(true)
 	, hasMVM(true)
 	, hasVM(false)
 	, GLSLProgram()
 {
-
+	loadShader(shaderName);
+	init();
 }
 
 ShaderBase::~ShaderBase()
 {
+}
+
+void ShaderBase::init()
+{
+
 }
 
 GLint ShaderBase::getCurentProgram()

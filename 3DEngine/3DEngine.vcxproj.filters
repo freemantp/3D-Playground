@@ -192,6 +192,9 @@
     <ClInclude Include="src\light\SpotLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\shader\PhongTextureShader.h">
+      <Filter>Header Files\shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
@@ -272,6 +275,9 @@
     <ClCompile Include="src\light\SpotLight.cpp">
       <Filter>Source Files\light</Filter>
     </ClCompile>
+    <ClCompile Include="src\shader\PhongTextureShader.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\shader\colorShader.frag">
@@ -303,6 +309,12 @@
     </None>
     <None Include="..\data\shader\uniformBuffer.frag">
       <Filter>data\shaders\uniformBuffer</Filter>
+    </None>
+    <None Include="..\data\shader\phongTexShader.frag">
+      <Filter>data\shaders\phong</Filter>
+    </None>
+    <None Include="..\data\shader\phongTexShader.vert">
+      <Filter>data\shaders\phong</Filter>
     </None>
   </ItemGroup>
 </Project>

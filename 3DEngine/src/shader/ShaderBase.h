@@ -16,9 +16,13 @@ public:
 
 	virtual void use(const Scene& cam, const glm::mat4& modelTransform);
 
+	
+
 protected:
 
-	ShaderBase();
+	ShaderBase(const string& shaderName);
+
+	virtual void init();
 
 	bool loadShader( const string& vertexSource, const string& fragmentSource);
 	bool loadShader(const string& shaderName);	

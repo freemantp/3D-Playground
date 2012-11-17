@@ -1,21 +1,14 @@
 #pragma once
 
-#include "ShaderBase.h"
+#include "PhongShader.h"
 
-namespace GLSLShader 
-{
-	enum PhongShadeModel 
-	{
-		PHONG, BLINN_PHONG
-	};
-};
 
-class PhongShader :
-	public ShaderBase
+class PhongTextureShader :
+	public PhongShader
 {
 public:
-	PhongShader();
-	virtual ~PhongShader(void);
+	PhongTextureShader();
+	virtual ~PhongTextureShader();
 
 	virtual void use(const Scene& scene, const glm::mat4& modelTransform);
 
@@ -27,10 +20,6 @@ public:
 	GLSLShader::PhongShadeModel shadeModel;
 
 protected:
-
-	PhongShader(const string& shaderName);
-
-	virtual void init();
 
 	GLuint blinnSubroutineIdx;
 	GLuint phongSubroutineIdx;
