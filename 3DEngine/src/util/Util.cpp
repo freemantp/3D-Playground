@@ -94,18 +94,28 @@ Mesh* Util::loadModel(const string& path)
 	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC * 1000;
 	std::cout << "time [msec]: " << elapsed_secs << std::endl;
 
-	vector<float> vertexArray, normalArray, texCoordArray;
+	Mesh* mesh = new Mesh();;
+	vector<float> vertexArray;
 	vector<int> indexArray;
 
 	oj.getVertexArray(vertexArray);
 	oj.getIndexArray(indexArray);
-	oj.getNormalArray(normalArray);
-	oj.getTexCoordArray(texCoordArray);
-
-	Mesh* mesh = new Mesh();;
 	mesh->setPositions(vertexArray,indexArray);
-	mesh->setNormals(normalArray);
-	mesh->setTextureCoordinates(texCoordArray);
+
+	if( oj.hasTexCoords() )
+	{
+		vector<float> texCoordArray;
+		oj.getTexCoordArray(texCoordArray);
+		mesh->setTextureCoordinates(texCoordArray);
+	}
+	
+	if( oj.hasNormals() )
+	{
+		vector<float> normalArray;
+		oj.getNormalArray(normalArray);
+		mesh->setNormals(normalArray);
+	}
+
 	//mesh->setColors(vertexArray);
 
 	return mesh;

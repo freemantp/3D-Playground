@@ -77,18 +77,24 @@ void Scene::render()
 		s->render(*this);
 	}
 
-	std::vector<PointLight*>::const_iterator lIt;
-	for(lIt = lightModel.pointLights.cbegin(); lIt != lightModel.pointLights.cend(); lIt++)
-	{
-		Light* l = *lIt;
-		l->render(*this);
-	}
+	bool renderLights = true;
 
-	std::vector<SpotLight*>::const_iterator slIt;
-	for(slIt = lightModel.spotLights.cbegin(); slIt != lightModel.spotLights.cend(); slIt++)
+	if(renderLights)
 	{
-		Light* l = *slIt;
-		l->render(*this);
+
+		std::vector<PointLight*>::const_iterator lIt;
+		for(lIt = lightModel.pointLights.cbegin(); lIt != lightModel.pointLights.cend(); lIt++)
+		{
+			Light* l = *lIt;
+			l->render(*this);
+		}
+
+		std::vector<SpotLight*>::const_iterator slIt;
+		for(slIt = lightModel.spotLights.cbegin(); slIt != lightModel.spotLights.cend(); slIt++)
+		{
+			Light* l = *slIt;
+			l->render(*this);
+		}
 	}
 }
 

@@ -30,6 +30,8 @@ protected:
 
 	PhongShader(const string& shaderName);
 
+	void setLightAndModel(const Scene& scene);
+
 	virtual void init();
 
 	GLuint blinnSubroutineIdx;

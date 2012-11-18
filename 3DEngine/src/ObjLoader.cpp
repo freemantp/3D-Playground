@@ -74,12 +74,11 @@ void ObjLoader::loadObj(istream& istr)
 		{
 			istringstream s(line.substr(3));
 			glm::vec2 tc; 
-			s >> tc.x; s >> tc.y;
+			s >> tc.x;  s >> tc.y;
 			texCoords.push_back(tc);
 		}
 		else if(line.substr(0,2) == "f ")
-		{
-			
+		{			
 			ivec3 v1,v2,v3;
 			string s1,s2,s3;
 			string sub = line.substr(2);

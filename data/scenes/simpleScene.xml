@@ -14,7 +14,7 @@
       <ambientReflect r="0.0" g="0.0" b="0.0"/>
       <diffuseReflect r="0.3" g="0.3" b="0.3"/>
       <glossyReflect r="0.9" g="0.9" b="0.9"/>
-      <texture file=""/>
+      <texture file="crate.jpg"/>
       <shininess value="90"/>
     </material>
     <!-- diffuse material -->
@@ -24,6 +24,9 @@
       <glossyReflect r="0.0" g="0.0" b="0.0"/>
       <shininess value="90"/>
     </material>
+    <!--<material name="other" shader="const">
+      <color r="0.0" g="1.0" b="1.0"/>
+    </material>-->
   </materials>
   
   <lights>
@@ -46,14 +49,21 @@
 
  <objects>
  
-    <mesh file="cube/cube.obj" material="glossy">
+     <mesh file="rectangle.obj" material="glossy">
+      <position x="0" y="0" z="0"/>
+      <transform>
+        <translate x="0.0" y="0.7" z="0.0"/>
+      </transform>
+    </mesh>
+ 
+    <!--<mesh file="cube/cube.obj" material="glossy">
       <position x="0" y="0" z="0"/>
       <transform>
         <translate x="0.0" y="0.25" z="0.0"/>
       </transform>
     </mesh>
  
-    <!--<mesh file="horse.obj" material="glossy">
+    <mesh file="horse.obj" material="glossy">
       <position x="0" y="0" z="0"/>
       <transform>
         <translate x="0.0" y="-0.3" z="0.0"/>

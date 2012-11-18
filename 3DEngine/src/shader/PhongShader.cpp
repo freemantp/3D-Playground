@@ -45,6 +45,13 @@ void PhongShader::use(const Scene& scene, const glm::mat4& modelTransform)
 	setUniform("Material.SpecularReflectivity", glossyReflection );
 	setUniform("Material.Shininess", shininess);
 
+	setLightAndModel(scene);
+	
+	
+}
+
+void PhongShader::setLightAndModel(const Scene& scene)
+{
 	GLuint* shadeFunc;
 
 	switch (shadeModel)
@@ -63,5 +70,4 @@ void PhongShader::use(const Scene& scene, const glm::mat4& modelTransform)
 	setUniform("NumPointLights", (int)scene.lightModel.pointLights.size());
 	setUniform("NumSpotLights", (int)scene.lightModel.spotLights.size());
 	scene.lightModel.getLightsBuffer()->bindToShader(this,"Lights");
-	
 }

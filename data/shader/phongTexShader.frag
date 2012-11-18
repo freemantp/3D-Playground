@@ -1,14 +1,7 @@
 #version 400
 
-layout (location = 0) out vec4 FragColor;
 
-struct MaterialInfo
-{
-	vec3 AmbientReflectivity;
-	vec3 DiffuseReflectivity;
-	vec3 SpecularReflectivity;
-	int Shininess;
-};
+// ----------------- declarations -----------------
 
 struct PointLight
 {
@@ -26,6 +19,10 @@ struct SpotLight
 	float Exponent;
 };
 
+subroutine float shadeModelType(in vec3 s, in vec3 v, in vec3 normal);
+
+// ----------------- uniforms -----------------
+
 layout (std140) uniform Lights
 {
 	PointLight PointLights[4];
@@ -35,26 +32,29 @@ layout (std140) uniform Lights
 uniform int NumPointLights;
 uniform int NumSpotLights;
 uniform sampler2D Tex1;
+uniform int	Shininess;
 
 //Subroutine declaration
-subroutine float shadeModelType(in vec3 s, in vec3 v, in vec3 normal);
-
-//Uniforms
-//uniform LightInfo Light;
-uniform MaterialInfo Material;
 subroutine uniform shadeModelType shadeModel;
+
+// ----------------- in / out -----------------
 
 //input from previous stage
 in vec3 Position;
 in vec3 Normal;
 in vec2 TexCoord;
 
+layout (location = 0) out vec4 FragColor;
+
+
+// ----------------- subroutines -----------------
+
 //Blinn-Phong model
 subroutine( shadeModelType )
 float blinn(in vec3 s, in vec3 v, in vec3 normal)
 {
 	vec3 h = normalize( v + s );
-	return pow( max( dot(h,normal), 0.0), Material.Shininess ) ;
+	return pow( max( dot(h,normal), 0.0), Shininess ) ;
 }
 
 //Phong model
@@ -62,33 +62,38 @@ subroutine( shadeModelType )
 float phong(in vec3 s, in vec3 v, in vec3 normal)
 {
 	vec3 r = reflect( -s , normal);
-	return pow( max( dot(r,v), 0.0), Material.Shininess );
+	return pow( max( dot(r,v), 0.0), Shininess );
 }
 
-vec3 shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir)
+
+// ----------------- functions -----------------
+
+vec3 shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir, const in vec3 albedo)
 {	
 	vec3 v = normalize(-position);
 	
 	float sDotN = max(dot(lightDir,normal), 0.0);
 
-	vec3 ambient = Material.AmbientReflectivity;
-	vec3 diffuse = Material.DiffuseReflectivity * sDotN;
+	//vec3 ambient = Material.AmbientReflectivity;
+	vec3 diffuse = albedo * sDotN;
 	vec3 specular = vec3(0);
 
 	if(sDotN > 0)
 	{
-		specular = Material.SpecularReflectivity * shadeModel(lightDir,v,normal) ;
+		specular = albedo * shadeModel(lightDir,v,normal) ;
 	}
 
-	return ambient + diffuse + specular;
+	return diffuse + specular;
 }
+
+
+// ----------------- main -----------------
 
 void main()
 {
 	vec3 normal = normalize(Normal);
 
-	vec4 texColor = texture(Tex1, TexCoord);
-	FragColor = texColor;
+	vec3 texColor = texture(Tex1, TexCoord).xyz;
 
 	//Point lights
 	for(int i=0; i < NumPointLights; i++)
@@ -96,7 +101,7 @@ void main()
 		PointLight light = pLights.PointLights[i];
 
 		vec3 s = normalize( vec3(light.Position) - Position);
-		FragColor += vec4( light.Color * shade(Position,normal,s), 1.0  );		
+		FragColor += vec4( light.Color * shade(Position,normal,s,texColor), 1.0  );		
 	}
 
 	//Spot lights
@@ -111,12 +116,8 @@ void main()
 		if( angle  < cutoff)
 		{		
 			float spotFactor = pow( dot( -s , light.Direction), light.Exponent);
-			FragColor += spotFactor * vec4( light.Color * shade(Position,normal,s), 1.0  );
+			FragColor += spotFactor * vec4( light.Color * shade(Position,normal,s,texColor), 1.0  );
 		}
-	}
-
-	FragColor = texColor;
-
-	
+	}	
 
 }

@@ -27,11 +27,11 @@ Mesh::Mesh()
 	vAttribData[Normal].channel = 1;
 	vAttribData[Normal].size = 3;
 
-	vAttribData[Color].channel = 2;
-	vAttribData[Color].size = 3;
+	vAttribData[TextureCoord].channel = 2;
+	vAttribData[TextureCoord].size = 2;
 
-	vAttribData[TextureCoord].channel = 3;
-	vAttribData[TextureCoord].size = 3;
+	vAttribData[Color].channel = 3;
+	vAttribData[Color].size = 3;
 
 	vAttribData[Index].channel = 999; //unused
 	vAttribData[Index].size = 3;
@@ -154,6 +154,7 @@ bool Mesh::setTextureCoordinates(const std::vector<float>& texCoords)
 	if( glIsBuffer(bufferObjects[TextureCoord]) )
 	{	
 		glEnableVertexAttribArray(vAttribData[TextureCoord].channel);  // texture coord
+
 		glBufferData(GL_ARRAY_BUFFER, texCoords.size() * sizeof(float), &texCoords[0], GL_STATIC_DRAW);
 
 		setAttribPointer(TextureCoord);

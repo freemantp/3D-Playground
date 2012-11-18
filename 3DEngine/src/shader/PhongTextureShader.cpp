@@ -8,10 +8,10 @@
 
 #include  <IL/il.h>
 
-PhongTextureShader::PhongTextureShader()
+PhongTextureShader::PhongTextureShader(const string& textureFile)
 : PhongShader("phongTexShader")
 {
-	string texturePath = Config::TEXTURE_BASE_PATH + "crate.jpg";
+	string texturePath = Config::TEXTURE_BASE_PATH + textureFile;
 
 	if( ilLoadImage(texturePath.c_str()) == IL_TRUE )
 	{
@@ -50,7 +50,9 @@ PhongTextureShader::~PhongTextureShader()
 
 void PhongTextureShader::use(const Scene& scene, const glm::mat4& modelTransform)
 {	
-	PhongShader::use(scene,modelTransform);
-	
+	ShaderBase::use(scene,modelTransform);
+
+	setLightAndModel(scene);
+	setUniform("Shininess", shininess);
 	//setUniform("Tex1", texObjHandle);
 }

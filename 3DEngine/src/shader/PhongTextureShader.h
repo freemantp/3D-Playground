@@ -7,7 +7,7 @@ class PhongTextureShader :
 	public PhongShader
 {
 public:
-	PhongTextureShader();
+	PhongTextureShader(const string& textureFile);
 	virtual ~PhongTextureShader();
 
 	virtual void use(const Scene& scene, const glm::mat4& modelTransform);

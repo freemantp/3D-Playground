@@ -22,43 +22,37 @@ int CurrentWidth = 800,
 	CurrentHeight = 800,
 	WindowHandle = 0;
 
-void Initialize(int, char*[]);
-void InitWindow(int, char*[]);
+bool Initialize(int, char*[]);
+bool InitializeGlut(int, char*[]);
+void InitWindow();
 void RenderFunction();
+
+Scene* s;
 
 int main(int argc, char* argv[])
 {	
-	Initialize(argc, argv);
+	
+	int retCode = EXIT_SUCCESS;
+	if( Initialize(argc, argv) )
+	{
+		glutMainLoop();
+	} else {
+		getchar();
+		retCode = EXIT_FAILURE;
+	}
 
-	glutMainLoop();
-
-	//getchar();
-	exit(EXIT_SUCCESS);
+	exit(retCode);
 }
-
-GLfloat light_diffuse[] = {1.0, 0.0, 0.0, 1.0};  /* Red diffuse light. */
-GLfloat light_position[] = {1.0, 1.0, 1.0, 0.0};  /* Infinite light location. */
-
-bool light = false;
-Scene* s;
 
 void initGL()
 {
 	glewExperimental=GL_TRUE;
 	GLenum err=glewInit();
+
 	if(err != GLEW_OK)
 	{
 		//Problem: glewInit failed, something is seriously wrong.
 		std::cout<<"glewInit failed, aborting." << std::endl;
-	}
-
-	if(light) 
-	{
-		/* Enable a single OpenGL light. */
-		glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-		glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-		glEnable(GL_LIGHT0);
-		glEnable(GL_LIGHTING);
 	}
 
 	/* Use depth buffering for hidden surface elimination. */
@@ -66,11 +60,16 @@ void initGL()
 
 }
 
-void Initialize(int argc, char* argv[])
+bool Initialize(int argc, char* argv[])
 {
-	InitWindow(argc, argv);
+	if( ! InitializeGlut(argc, argv) )
+		return false;
+	
+	InitWindow();
 	initGL();
 	ilInit();
+
+	
 
 	fprintf( stdout, "INFO: OpenGL Version: %s\n", glGetString(GL_VERSION) );
 
@@ -90,12 +89,16 @@ void Initialize(int argc, char* argv[])
 	}
 	else
 	{
-		Error("Scene could not be parsed: " + sceneName );		
+		Error("Scene could not be loaded: " + sceneName );	
+		return false;
 	}
+
+	return true;
+
 
 }
 
-void InitWindow(int argc, char* argv[])
+bool InitializeGlut(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
 
@@ -112,19 +115,21 @@ void InitWindow(int argc, char* argv[])
 
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 
+	return true;
+}
+
+void InitWindow()
+{
 	WindowHandle = glutCreateWindow(WINDOW_TITLE_PREFIX);
 
 	if(WindowHandle < 1) 
 	{
-
 		Error("ERROR: Could not create a new rendering window");
-
 		exit(EXIT_FAILURE);
 	}
 
 	glutReshapeFunc(WindowEventHandler::resize);
 	glutDisplayFunc(RenderFunction);
-	//glutIdleFunc
 
 	glutMouseFunc(GlutInputHandler::click);
 	glutMotionFunc(GlutInputHandler::drag);

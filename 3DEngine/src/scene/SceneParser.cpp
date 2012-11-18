@@ -26,10 +26,13 @@ using std::vector;
 
 typedef std::pair<string,ShaderBase*> ShaderKeyVal;
 
-SceneParser::SceneParser(InputHandlerFactory& factory) : factory(factory)
+SceneParser::SceneParser(InputHandlerFactory& factory) 
+	: factory(factory)
+	, generatedScene(NULL)
 {
 
 }
+
 
 Scene* SceneParser::getScene()
 {
@@ -38,7 +41,6 @@ Scene* SceneParser::getScene()
 
 bool SceneParser::parse(const char* xmlDocument)
 {
-
 	bool parseOk = true;
 	
 	tinyxml2::XMLDocument doc;
@@ -68,18 +70,27 @@ bool SceneParser::parse(const char* xmlDocument)
 
 			//Materials
 			XMLElement* materialsElement = root->FirstChildElement("materials");
-			if( cameraElement != NULL)
-				parseMaterials(materialsElement);
+			if( cameraElement != NULL) 
+			{
+				if( ! parseMaterials(materialsElement) )
+					return false;
+			}
 
 			//Lights
 			XMLElement* lightsElement = root->FirstChildElement("lights");
 			if( lightsElement != NULL)
-				parseLights(lightsElement);
+			{
+				if( ! parseLights(lightsElement) )
+					return false;
+			}
 
 			//Objects
 			XMLElement* objectsElement = root->FirstChildElement("objects");
 			if( objectsElement != NULL)
-				parseObjects(objectsElement);
+			{
+				if( ! parseObjects(objectsElement) )
+					return false;
+			}
 		}
 		else 
 		{
@@ -89,11 +100,11 @@ bool SceneParser::parse(const char* xmlDocument)
 	}
 	else
 	{
-		Error("File could not be parsed");
+		Error("File could not be parsed" );
 		parseOk = false;
 	}
 
-	return true;
+	return parseOk;
 }
 
 bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
@@ -115,13 +126,14 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 			//Load textured version if available
 			if(subElem != NULL)
 			{
-				pts = new PhongTextureShader();
+				string texFile(subElem->Attribute("file"));
+				pts = new PhongTextureShader(texFile);
 				ps = pts; 
 			}
 			else
 			{
 				ps = new PhongShader();
-			}
+			}		
 			
 			//Load common phong attributes
 			if ( (subElem = materialElement->FirstChildElement("ambientReflect")) != NULL )
@@ -144,13 +156,23 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 		}
 		else if(shaderName == "const")
 		{
-			shader = new ConstShader();
+			ConstShader* cshader = new ConstShader();
+			
+			XMLElement* subElem;
+			if ( (subElem = materialElement->FirstChildElement("color")) != NULL )
+				getColorVector3(subElem,cshader->color);
+
+			shader = cshader;
+		
 		}
 		else
 		{
 			Error("Shader " + shaderName + " not supported");
 			return false;
 		}
+
+		if( ! shader->isLinked() )
+				return false;
 
 		shaders.insert(ShaderKeyVal(materialElement->Attribute("name"),shader));
 
