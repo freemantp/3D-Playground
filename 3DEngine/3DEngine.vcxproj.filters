@@ -85,6 +85,12 @@
     <Filter Include="Source Files\animation">
       <UniqueIdentifier>{8f9148b3-2a15-4874-abe4-3657d8d34fb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\texture">
+      <UniqueIdentifier>{5f45893d-2a56-48eb-93b2-58c0c0b6fa6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\texture">
+      <UniqueIdentifier>{0b710b89-fe25-4b56-85cf-82a69c8c84ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -195,6 +201,9 @@
     <ClInclude Include="src\shader\UniformBufferShader.h">
       <Filter>Header Files\shaders</Filter>
     </ClInclude>
+    <ClInclude Include="src\texture\Texture.h">
+      <Filter>Header Files\texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
@@ -277,6 +286,9 @@
     </ClCompile>
     <ClCompile Include="src\shader\UniformBufferShader.cpp">
       <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture\Texture.cpp">
+      <Filter>Source Files\texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

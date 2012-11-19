@@ -31,7 +31,7 @@ layout (std140) uniform Lights
 
 uniform int NumPointLights;
 uniform int NumSpotLights;
-uniform sampler2D Tex1;
+uniform sampler2D AlbedoTex;
 uniform int	Shininess;
 
 //Subroutine declaration
@@ -92,7 +92,7 @@ vec3 shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir,
 void main()
 {
 	vec3 normal = normalize(Normal);
-	vec3 texColor = texture(Tex1, TexCoord).xyz;
+	vec3 texColor = texture(AlbedoTex, TexCoord).xyz;
 
 	FragColor = vec4(0);
 

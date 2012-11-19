@@ -19,8 +19,8 @@
       <ambientReflect r="0.0" g="0.0" b="0.0"/>
       <diffuseReflect r="1.0" g="1.0" b="1.0"/>
       <glossyReflect r="0.0" g="0.0" b="0.0"/>
-      <texture file="crate.jpg"/>
-      <shininess value="90"/>
+      <texture file="checkerboard.png"/>
+      <shininess value="600"/>
     </material>
     <!--<material name="other" shader="const">
       <color r="0.0" g="1.0" b="1.0"/>
@@ -29,7 +29,7 @@
   
   <lights>
     <light type="spot" cutoff="60" exponent="5">
-      <position x="0.0" y="1.0" z="1.0"/>
+      <position x="0.0" y="4.0" z="4.0"/>
       <direction x="0.0" y="-1.0" z="-1.0"/>
       <color r="1.0" g="1.0" b="1.0"/>
     </light>

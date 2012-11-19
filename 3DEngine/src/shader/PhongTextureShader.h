@@ -2,6 +2,7 @@
 
 #include "PhongShader.h"
 
+class Texture;
 
 class PhongTextureShader :
 	public PhongShader
@@ -14,7 +15,12 @@ public:
 
 
 protected:
-	GLuint texObjHandle;
+
+	enum TextureType {Albedo};
+	static const int numTextures = 1;
+
+	GLuint texUnits[numTextures];
+	Texture* textures[numTextures];
 
 };
 
