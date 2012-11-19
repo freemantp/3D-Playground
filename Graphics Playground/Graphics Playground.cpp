@@ -76,7 +76,7 @@ bool Initialize(int argc, char* argv[])
 	GLint num;
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &num);
 
-	string sceneName = "simpleScene.xml";
+	string sceneName = "debugScene.xml";
 
 	const char* data = Util::loadTextFile(Config::SCENE_BASE_PATH  + sceneName.c_str());
 	

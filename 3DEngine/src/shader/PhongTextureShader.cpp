@@ -22,16 +22,16 @@ PhongTextureShader::PhongTextureShader(const string& textureFile)
 			int width =  ilGetInteger(IL_IMAGE_WIDTH);
 			int height =  ilGetInteger(IL_IMAGE_HEIGHT);
 
-			glActiveTexture(GL_TEXTURE0);
-		
 			glGenTextures(1,&texObjHandle);
-
 			glBindTexture(GL_TEXTURE_2D, texObjHandle);
+
 
 			glTexImage2D(GL_TEXTURE_2D,0, GL_RGBA,width, height,0,GL_RGBA, GL_UNSIGNED_BYTE, mem);
 
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+			glBindTexture(GL_TEXTURE_2D, 0);
 						
 		} 
 		else 
@@ -52,5 +52,9 @@ void PhongTextureShader::use(const Scene& scene, const glm::mat4& modelTransform
 
 	setLightAndModel(scene);
 	setUniform("Shininess", shininess);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texObjHandle);
+
 	//setUniform("Tex1", texObjHandle);
 }

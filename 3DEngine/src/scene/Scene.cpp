@@ -105,9 +105,9 @@ void Scene::timeUpdate(long time)
 	int numPLs = (int)lightModel.spotLights.size();
 	SpotLight* pl;
 
-	if(numPLs > 0)
+	if(numPLs > 1)
 	{
-		pl = static_cast<SpotLight*>(lightModel.spotLights[0]);
+		pl = static_cast<SpotLight*>(lightModel.spotLights[1]);
 		glm::mat4 lightTransform1 = (glm::rotate(mat4(1.0f), 1.0f, glm::vec3(0.0f,1.0f,0.0f)));
 		pl->setPosition(lightTransform1 * pl->getPosition());
 
@@ -116,9 +116,9 @@ void Scene::timeUpdate(long time)
 		
 	}
 
-	if(numPLs > 1)
+	if(numPLs > 0)
 	{
-		pl = static_cast<SpotLight*>(lightModel.spotLights[1]);
+		pl = static_cast<SpotLight*>(lightModel.spotLights[0]);
 		glm::mat4 lightTransform2 = (glm::rotate(mat4(1.0f), 0.5f, glm::normalize(glm::vec3(0.5f,1.0f,0.0f))));
 		pl->setPosition(lightTransform2 * pl->getPosition());
 	

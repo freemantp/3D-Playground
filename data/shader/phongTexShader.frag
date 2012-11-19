@@ -83,7 +83,7 @@ vec3 shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir,
 		specular = albedo * shadeModel(lightDir,v,normal) ;
 	}
 
-	return diffuse + specular;
+	return diffuse + specular * 0.5;
 }
 
 
