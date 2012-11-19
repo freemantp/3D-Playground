@@ -46,8 +46,6 @@ void PhongShader::use(const Scene& scene, const glm::mat4& modelTransform)
 	setUniform("Material.Shininess", shininess);
 
 	setLightAndModel(scene);
-	
-	
 }
 
 void PhongShader::setLightAndModel(const Scene& scene)

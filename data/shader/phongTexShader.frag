@@ -92,8 +92,9 @@ vec3 shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir,
 void main()
 {
 	vec3 normal = normalize(Normal);
-
 	vec3 texColor = texture(Tex1, TexCoord).xyz;
+
+	FragColor = vec4(0);
 
 	//Point lights
 	for(int i=0; i < NumPointLights; i++)
@@ -119,5 +120,7 @@ void main()
 			FragColor += spotFactor * vec4( light.Color * shade(Position,normal,s,texColor), 1.0  );
 		}
 	}	
+
+	//FragColor = vec4(normal, 1.0);
 
 }

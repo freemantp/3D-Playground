@@ -88,11 +88,9 @@ Mesh* Util::loadModel(const string& path)
 {
 	ObjLoader oj;
 	clock_t begin = clock();
-	oj.loadObjFile(path);
-	oj.computeNormals();
-	clock_t end = clock();
-	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC * 1000;
-	std::cout << "time [msec]: " << elapsed_secs << std::endl;
+	
+	if(!oj.loadObjFile(path))
+		return NULL;
 
 	Mesh* mesh = new Mesh();;
 	vector<float> vertexArray;
@@ -108,15 +106,23 @@ Mesh* Util::loadModel(const string& path)
 		oj.getTexCoordArray(texCoordArray);
 		mesh->setTextureCoordinates(texCoordArray);
 	}
-	
-	if( oj.hasNormals() )
-	{
-		vector<float> normalArray;
-		oj.getNormalArray(normalArray);
-		mesh->setNormals(normalArray);
-	}
+
+
+	if( ! oj.hasNormals() )
+	{		
+		Warn("Normal data not present... computing normals");		
+		oj.computeNormals();	
+	}	
+		
+	vector<float> normalArray;
+	oj.getNormalArray(normalArray);
+	mesh->setNormals(normalArray);
 
 	//mesh->setColors(vertexArray);
+
+	clock_t end = clock();
+	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC * 1000;
+	std::cout << "time [msec]: " << elapsed_secs << std::endl;
 
 	return mesh;
 }

@@ -14,32 +14,28 @@
       <ambientReflect r="0.0" g="0.0" b="0.0"/>
       <diffuseReflect r="0.3" g="0.3" b="0.3"/>
       <glossyReflect r="0.9" g="0.9" b="0.9"/>
-      <texture file="crate.jpg"/>
       <shininess value="90"/>
     </material>
     <!-- diffuse material -->
     <material name="dull" shader="phong">
-      <ambientReflect r="0.0" g="0.0" b="0.0"/>
+      <ambientReflect r="0.0" g="0.00" b="0.0"/>
       <diffuseReflect r="1.0" g="1.0" b="1.0"/>
       <glossyReflect r="0.0" g="0.0" b="0.0"/>
       <shininess value="90"/>
     </material>
-    <!--<material name="other" shader="const">
-      <color r="0.0" g="1.0" b="1.0"/>
-    </material>-->
   </materials>
   
   <lights>
     <light type="spot" cutoff="60" exponent="5">
       <position x="1.0" y="0.5" z="1.0"/>
-      <direction x="-1.0" y="0.0" z="-1.0"/>
+      <direction x="-1.0" y="-0.5" z="-1.0"/>
       <color r="1.2" g="0.0" b="0.0"/>
     </light>
     <light type="spot" cutoff="60" exponent="5">
       <position x="-1.0" y="1.0" z="0.0"/>
       <direction x="1.0" y="-1.0" z="0.0"/>
       <color r="0.0" g="0.0" b="1.2"/>
-    </light>
+    </light>s
     <!--<light type="spot"  cutoff="60" exponent="5">
       <position x="0.0" y="0.5" z="1.0"/>
        <direction x="0.0" y="0.0" z="-1.0"/>
@@ -48,30 +44,15 @@
   </lights>
 
  <objects>
- 
-     <mesh file="rectangle.obj" material="glossy">
-      <position x="0" y="0" z="0"/>
-      <transform>
-        <translate x="0.0" y="0.7" z="0.0"/>
-      </transform>
-    </mesh>
- 
-    <!--<mesh file="cube/cube.obj" material="glossy">
-      <position x="0" y="0" z="0"/>
-      <transform>
-        <translate x="0.0" y="0.25" z="0.0"/>
-      </transform>
-    </mesh>
- 
-    <mesh file="horse.obj" material="glossy">
+     <mesh file="horse.obj" material="glossy">
       <position x="0" y="0" z="0"/>
       <transform>
         <translate x="0.0" y="-0.3" z="0.0"/>
         <rotate angle="270.0" x="0.0" y="1.0" z="0.0"/>
       </transform>
-    </mesh>-->
+    </mesh>
     
-    <!--<mesh file="dragon.obj" material="glossy">
+   <!--<mesh file="dragon.obj" material="glossy">
       <position x="0" y="0" z="0"/>
       <transform>
         <translate x="0.0" y="-0.75" z="0.0"/>

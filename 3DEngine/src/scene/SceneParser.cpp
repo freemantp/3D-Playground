@@ -199,7 +199,9 @@ bool SceneParser::parseObjects(XMLElement* objects)
 		if(type == "mesh")
 		{
 			string file = objeElem->Attribute("file");
-			s = Util::loadModel("../data/models/"+file);		
+			s = Util::loadModel("../data/models/"+file);
+			if(s == NULL)
+				return false;
 		}
 		else if(type == "box")
 		{

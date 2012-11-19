@@ -23,6 +23,17 @@ void Box::init() {
 		1.0f, 1.0f, 1.0f,
 	};
 
+	float normalData[] = {	
+		0.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+	};
+
 	float colorData[] = {	
 		0.0f, 0.0f, 0.0f,
 		0.0f, 0.0f, 1.0f,
@@ -68,11 +79,13 @@ void Box::init() {
 	};
 
 	std::vector<float> pos(vertexData, vertexData+24);
+	std::vector<float> normal(normalData, normalData+24);
 	std::vector<float> color(colorData, colorData+24);
 	std::vector<float> tex(textureData, textureData+16);
 	std::vector<int> idx(indexData, indexData+36);
 
 	setPositions(pos,idx);
+	setNormals(normal);
 	setColors(color);
 	setTextureCoordinates(tex);
 

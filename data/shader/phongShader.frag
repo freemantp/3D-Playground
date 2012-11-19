@@ -110,4 +110,5 @@ void main()
 			FragColor += spotFactor * vec4( light.Color * shade(Position,normal,s), 1.0  );
 		}
 	}
+
 }

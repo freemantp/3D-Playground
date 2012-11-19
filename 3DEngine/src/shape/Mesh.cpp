@@ -128,7 +128,7 @@ bool Mesh::setNormals(const std::vector<float>& normals)
 	if( glIsBuffer(bufferObjects[Normal]) )
 	{	
 		glEnableVertexAttribArray(vAttribData[Normal].channel);  // Vertex normal
-		
+
 		glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(float), &normals[0], GL_STATIC_DRAW);
 
 		setAttribPointer(Normal);

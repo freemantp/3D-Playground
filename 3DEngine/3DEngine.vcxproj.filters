@@ -174,25 +174,25 @@
     <ClInclude Include="src\util\Util.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="src\shader\ConstShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\light\LightModel.h">
       <Filter>Header Files\light</Filter>
     </ClInclude>
     <ClInclude Include="src\shader\UniformBuffer.h">
       <Filter>Header Files\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="src\shader\UniformBufferShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\animation\TimeObserver.h">
       <Filter>Header Files\animation</Filter>
     </ClInclude>
-    <ClInclude Include="src\light\SpotLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\shader\PhongTextureShader.h">
+      <Filter>Header Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\ConstShader.h">
+      <Filter>Header Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\light\SpotLight.h">
+      <Filter>Header Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\UniformBufferShader.h">
       <Filter>Header Files\shaders</Filter>
     </ClInclude>
   </ItemGroup>
@@ -257,9 +257,6 @@
     <ClCompile Include="src\util\Util.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader\ConstShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\light\Light.cpp">
       <Filter>Source Files\light</Filter>
     </ClCompile>
@@ -269,13 +266,16 @@
     <ClCompile Include="src\shader\UniformBuffer.cpp">
       <Filter>Source Files\shaders</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader\UniformBufferShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\light\SpotLight.cpp">
       <Filter>Source Files\light</Filter>
     </ClCompile>
     <ClCompile Include="src\shader\PhongTextureShader.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\ConstShader.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\UniformBufferShader.cpp">
       <Filter>Source Files\shaders</Filter>
     </ClCompile>
   </ItemGroup>

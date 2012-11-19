@@ -32,9 +32,7 @@ PhongTextureShader::PhongTextureShader(const string& textureFile)
 
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			
-			
-			std::cout << "success" << std::endl;
+						
 		} 
 		else 
 			Error("Could not convert texture: " + texturePath);

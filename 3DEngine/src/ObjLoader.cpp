@@ -45,7 +45,7 @@ void ObjLoader::parseIdx(string& s,ivec3& indices)
 	indices[idxPtr++] = number - 1;
 }
 
-void ObjLoader::loadObj(istream& istr)
+bool ObjLoader::loadObj(istream& istr)
 {	
 	int lineCount = 0;
 
@@ -75,6 +75,10 @@ void ObjLoader::loadObj(istream& istr)
 			istringstream s(line.substr(3));
 			glm::vec2 tc; 
 			s >> tc.x;  s >> tc.y;
+
+			//Invert y-axis
+			 tc.y =  1 - tc.y;
+
 			texCoords.push_back(tc);
 		}
 		else if(line.substr(0,2) == "f ")
@@ -89,13 +93,13 @@ void ObjLoader::loadObj(istream& istr)
 			parseIdx(s2,v2);
 			parseIdx(s3,v3);
 
-			triangles.push_back(Tri(v1,v2,v3));
+			faces.push_back(Tri(v1,v2,v3));
 
 		}
 		
 	}
-	cout << "Mesh loaded, f=" << triangles.size() <<  " , v=" << vertices.size() / 3 << " , n=" << normals.size() << " ,tex coords=" << texCoords.size() << endl;
-	
+	cout << "Mesh loaded, f=" << faces.size() <<  " , v=" << vertices.size() / 3 << " , n=" << normals.size() << " ,tex coords=" << texCoords.size() << endl;
+	return true;
 }
 
 bool ObjLoader::hasNormals()
@@ -125,10 +129,10 @@ void ObjLoader::getVertexArray (vector<float>& vertexArray)
 void ObjLoader::getIndexArray(vector<int>& indexArray)
 {
 	indexArray.clear();
-	indexArray.reserve(triangles.size() * 3);
+	indexArray.reserve(faces.size() * 3);
 
 	vector<Tri>::const_iterator triIt;
-	for(triIt = triangles.cbegin(); triIt != triangles.cend(); triIt++)
+	for(triIt = faces.cbegin(); triIt != faces.cend(); triIt++)
 	{
 		Tri t = *triIt;
 		indexArray.push_back(t.v1.x);
@@ -158,9 +162,9 @@ void ObjLoader::getNormalArray (vector<float>& normalArray)
 
 	float* normalRaw = &normalArray[0];
 
-	for(int i = 0; i < triangles.size(); i++)
+	for(int i = 0; i < faces.size(); i++)
 	{
-		Tri& t = triangles[i];
+		Tri& t = faces[i];
 
 		if( ! processedDictionary[t.v1.x])
 		{
@@ -197,9 +201,9 @@ void ObjLoader::getTexCoordArray(vector<float>& texCoordArray)
 
 	float* txRaw = &texCoordArray[0];
 
-	for(int i = 0; i < triangles.size(); i++)
+	for(int i = 0; i < faces.size(); i++)
 	{
-		Tri& t = triangles[i];
+		Tri& t = faces[i];
 
 		if( ! processedDictionary[t.v1.x])
 		{
@@ -232,11 +236,11 @@ bool ObjLoader::computeNormals()
 	normals.clear();
 	normals.resize(vertices.size());
 
-	for(int i = 0; i < triangles.size(); i++)
+	for(int i = 0; i < faces.size(); i++)
 	{		
-		int aIdx = triangles[i].v1.x;
-		int bIdx = triangles[i].v2.x;
-		int cIdx = triangles[i].v3.x;
+		int aIdx = faces[i].v1.x;
+		int bIdx = faces[i].v2.x;
+		int cIdx = faces[i].v3.x;
 		
 		vec3& a = vertices[aIdx];
 		vec3& b = vertices[bIdx];
@@ -256,9 +260,9 @@ bool ObjLoader::computeNormals()
 		normals[cIdx] += perpVector;
 
 		//Update vertex indices
-		triangles[i].v1.z = aIdx;
-		triangles[i].v2.z = bIdx;
-		triangles[i].v3.z = cIdx;
+		faces[i].v1.z = aIdx;
+		faces[i].v2.z = bIdx;
+		faces[i].v3.z = cIdx;
 	}
 		
 	//Normalize normals (unit-length)
@@ -269,17 +273,24 @@ bool ObjLoader::computeNormals()
 	return true;
 }
 
-void ObjLoader::loadObjFile(const string& path)
+bool ObjLoader::loadObjFile(const string& path)
 {
 	ifstream myfile;
 	myfile.open(path);
 
+	bool success = true;
+
 	std::string line;
 	if (myfile.is_open())
 	{
-		loadObj(myfile);
+		success = loadObj(myfile);
 		myfile.close();
 	}
 	else 
-		cerr << "Unable to open file" << endl;; 
+	{
+		cerr << "Unable to open OBJ file: "  << path << endl;
+		success = false;
+	}
+
+	return success;
 }

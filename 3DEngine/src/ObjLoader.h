@@ -14,8 +14,8 @@ class ObjLoader
 {
 public:
 
-	void loadObjFile(const std::string& path);
-	void loadObj(std::istream& istr);
+	bool loadObjFile(const std::string& path);
+	bool loadObj(std::istream& istr);
 
 	bool computeNormals();
 	
@@ -23,6 +23,10 @@ public:
 	void getVertexArray  (std::vector<float>& vertexArray);
 	void getNormalArray  (std::vector<float>& normalArray);
 	void getTexCoordArray(std::vector<float>& texCoordArray);
+
+	int getNumVertices() { return (int)vertices.size();};
+	int getNumNormals() { return (int)normals.size();};
+	int getNumTexCoords() { return (int)texCoords.size();};
 
 	bool hasNormals();
 	bool hasTexCoords();
@@ -44,7 +48,8 @@ private:
 	std::vector<vec3> vertices;
 	std::vector<vec3> normals;
 	std::vector<vec2> texCoords;
-	std::vector<Tri> triangles;
+	std::vector<Tri> faces;
 
 };
 
+	
