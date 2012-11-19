@@ -22,18 +22,25 @@ int CurrentWidth = 800,
 	CurrentHeight = 800,
 	WindowHandle = 0;
 
-bool Initialize(int, char*[]);
+bool Initialize();
 bool InitializeGlut(int, char*[]);
 void InitWindow();
 void RenderFunction();
 
 Scene* s;
+string sceneName = "headScene.xml";
 
 int main(int argc, char* argv[])
 {	
+
+	if(argc == 2)
+	{
+		sceneName = string(argv[1]);
+	}
+
 	
 	int retCode = EXIT_SUCCESS;
-	if( Initialize(argc, argv) )
+	if( Initialize() )
 	{
 		glutMainLoop();
 	} else {
@@ -60,23 +67,23 @@ void initGL()
 
 }
 
-bool Initialize(int argc, char* argv[])
+bool Initialize()
 {
-	if( ! InitializeGlut(argc, argv) )
+
+	int glutArgc = 0;
+	char** glutArgv;
+
+	if( ! InitializeGlut(glutArgc, glutArgv) )
 		return false;
 	
 	InitWindow();
 	initGL();
 	ilInit();
 
-	
-
 	fprintf( stdout, "INFO: OpenGL Version: %s\n", glGetString(GL_VERSION) );
 
 	GLint num;
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &num);
-
-	string sceneName = "debugScene.xml";
 
 	const char* data = Util::loadTextFile(Config::SCENE_BASE_PATH  + sceneName.c_str());
 	

@@ -111,7 +111,8 @@ void main()
 		SpotLight light = pLights.SpotLights[i];
 
 		vec3 s = normalize( vec3(light.Position) - Position);
-		float angle = acos( dot(-s,light.Direction) );
+
+		float angle = acos( clamp(dot(-s,normalize(light.Direction)),0.0,0.9999) );
 		float cutoff = radians( clamp (light.CutoffAngle, 0.0, 90.0) ) ;
 		
 		if( angle  < cutoff)
@@ -120,7 +121,4 @@ void main()
 			FragColor += spotFactor * vec4( light.Color * shade(Position,normal,s,texColor), 1.0  );
 		}
 	}	
-
-	//FragColor = vec4(normal, 1.0);
-
 }
