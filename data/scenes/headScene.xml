@@ -11,7 +11,7 @@
   <materials>
     <!-- shiny material -->
     <material name="glossy" shader="phong">
-      <texture file="lambertian.jpg"/>
+      <texture file="head/lambertian.jpg"/>
       <shininess value="5"/>
     </material>
     <!-- diffuse material -->

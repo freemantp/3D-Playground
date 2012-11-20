@@ -8,85 +8,124 @@ void Box::init() {
 
 	enum {Position, Color, Index};
 
-	/**
-	 * These are vertex coordinates. 3 subsequent values form a vertex
-	 */
-	
-	float vertexData[] = {	
-		0.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 1.0f,
-		1.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 1.0f,
-		1.0f, 1.0f, 0.0f,
-		1.0f, 1.0f, 1.0f,
-	};
+	float side = 1.0f;
+    float side2 = side / 2.0f;
 
-	float normalData[] = {	
-		0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-	};
+    float vertexData[24*3] = {
+        // Front
+       -side2, -side2, side2,
+        side2, -side2, side2,
+        side2,  side2, side2,
+       -side2,  side2, side2,
+       // Right
+        side2, -side2, side2,
+        side2, -side2, -side2,
+        side2,  side2, -side2,
+        side2,  side2, side2,
+       // Back
+       -side2, -side2, -side2,
+       -side2,  side2, -side2,
+        side2,  side2, -side2,
+        side2, -side2, -side2,
+       // Left
+       -side2, -side2, side2,
+       -side2,  side2, side2,
+       -side2,  side2, -side2,
+       -side2, -side2, -side2,
+       // Bottom
+       -side2, -side2, side2,
+       -side2, -side2, -side2,
+        side2, -side2, -side2,
+        side2, -side2, side2,
+       // Top
+       -side2,  side2, side2,
+        side2,  side2, side2,
+        side2,  side2, -side2,
+       -side2,  side2, -side2
+    };
 
-	float colorData[] = {	
-		0.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 1.0f,
-		1.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 1.0f,
-		1.0f, 1.0f, 0.0f,
-		1.0f, 1.0f, 0.0f,
-	};
+    float normalData[24*3] = {
+        // Front
+        0.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 1.0f,
+        // Right
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        // Back
+        0.0f, 0.0f, -1.0f,
+        0.0f, 0.0f, -1.0f,
+        0.0f, 0.0f, -1.0f,
+        0.0f, 0.0f, -1.0f,
+        // Left
+        -1.0f, 0.0f, 0.0f,
+        -1.0f, 0.0f, 0.0f,
+        -1.0f, 0.0f, 0.0f,
+        -1.0f, 0.0f, 0.0f,
+        // Bottom
+        0.0f, -1.0f, 0.0f,
+        0.0f, -1.0f, 0.0f,
+        0.0f, -1.0f, 0.0f,
+        0.0f, -1.0f, 0.0f,
+        // Top
+        0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f
+    };
 
-	float textureData[] = {	
-		0.0f, 0.0f,
-		0.0f, 0.0f,
-		0.0f, 1.0f, 
-		0.0f, 1.0f, 
-		1.0f, 0.0f,
-		1.0f, 0.0f, 
-		1.0f, 1.0f,
-		1.0f, 1.0f, 
-	};
+    float textureData[24*2] = {
+        // Front
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        0.0f, 1.0f,
+        // Right
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        0.0f, 1.0f,
+        // Back
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        0.0f, 1.0f,
+        // Left
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        0.0f, 1.0f,
+        // Bottom
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        0.0f, 1.0f,
+        // Top
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        0.0f, 1.0f
+    };
 
-	/**
-	* Face indices, 3 values form a triangle face. The numbers reference
-	* values in the vertexData array
-	*/
-	int indexData[] = 	 {	
-		0, 6, 4,
-		0, 2, 6,
-		0, 3, 2,
+    GLuint indexData[] = {
+        0,1,2,0,2,3,
+        4,5,6,4,6,7,
+        8,9,10,8,10,11,
+        12,13,14,12,14,15,
+        16,17,18,16,18,19,
+        20,21,22,20,22,23
+    };
 
-		0, 1, 3,
-		2, 7, 6,
-		2, 3, 7,
-
-		4, 6, 7,
-		4, 7, 5,
-		0, 4, 5,
-
-		0, 5, 1,
-		1, 5, 7,
-		1, 7, 3,
-	};
-
-	std::vector<float> pos(vertexData, vertexData+24);
-	std::vector<float> normal(normalData, normalData+24);
-	std::vector<float> color(colorData, colorData+24);
-	std::vector<float> tex(textureData, textureData+16);
+	std::vector<float> pos(vertexData, vertexData+24*3);
+	std::vector<float> normal(normalData, normalData+24*3);
+	std::vector<float> tex(textureData, textureData+24*2);
 	std::vector<int> idx(indexData, indexData+36);
 
 	setPositions(pos,idx);
 	setNormals(normal);
-	setColors(color);
 	setTextureCoordinates(tex);
 
 

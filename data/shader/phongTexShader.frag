@@ -32,6 +32,7 @@ layout (std140) uniform Lights
 uniform int NumPointLights;
 uniform int NumSpotLights;
 uniform sampler2D AlbedoTex;
+uniform sampler2D OtherTex;
 uniform int	Shininess;
 
 //Subroutine declaration
@@ -42,6 +43,7 @@ subroutine uniform shadeModelType shadeModel;
 //input from previous stage
 in vec3 Position;
 in vec3 Normal;
+in vec4 Tangent;
 in vec2 TexCoord;
 
 layout (location = 0) out vec4 FragColor;
@@ -92,9 +94,14 @@ vec3 shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir,
 void main()
 {
 	vec3 normal = normalize(Normal);
-	vec3 texColor = texture(AlbedoTex, TexCoord).xyz;
+	vec4 albedo = texture(AlbedoTex, TexCoord);
+	vec4 other = texture(OtherTex, TexCoord);
+	vec4 texColor = mix(albedo, other, 0);
 
-	FragColor = vec4(0);
+	if(length(normal) > 5)
+		FragColor = vec4(Tangent.xyz,1.0);
+
+	//FragColor = vec4(0);
 
 	//Point lights
 	for(int i=0; i < NumPointLights; i++)
@@ -102,7 +109,7 @@ void main()
 		PointLight light = pLights.PointLights[i];
 
 		vec3 s = normalize( vec3(light.Position) - Position);
-		FragColor += vec4( light.Color * shade(Position,normal,s,texColor), 1.0  );		
+		FragColor += vec4( light.Color * shade(Position,normal,s,texColor.xyz), 1.0  );		
 	}
 
 	//Spot lights
@@ -116,9 +123,10 @@ void main()
 		float cutoff = radians( clamp (light.CutoffAngle, 0.0, 90.0) ) ;
 		
 		if( angle  < cutoff)
-		{		
+		{
 			float spotFactor = pow( dot( -s , light.Direction), light.Exponent);
-			FragColor += spotFactor * vec4( light.Color * shade(Position,normal,s,texColor), 1.0  );
+			FragColor += spotFactor * vec4( light.Color * shade(Position,normal,s,texColor.xyz), 1.0  );
 		}
 	}	
+
 }

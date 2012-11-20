@@ -2,6 +2,6 @@
 
 namespace GLSLShader {
 
-	enum VertexAttribute {Position, Index, Normal, Color, TextureCoord};
+	enum VertexAttribute {Position, Index, Normal, Tangent, Color, TextureCoord};
 
 };

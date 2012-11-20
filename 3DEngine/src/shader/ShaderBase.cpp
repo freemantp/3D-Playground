@@ -85,6 +85,9 @@ GLint ShaderBase::getAttributeChannel(GLSLShader::VertexAttribute attribute)
 	case GLSLShader::Normal:
 		return  glGetAttribLocation(programHandle, "VertexNormal");
 		break;
+	case GLSLShader::Tangent:
+		return  glGetAttribLocation(programHandle, "VertexTangent");
+		break;
 	case GLSLShader::Color:
 		return glGetAttribLocation(programHandle, "VertexColor");
 		break;

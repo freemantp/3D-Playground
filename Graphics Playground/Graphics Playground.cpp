@@ -71,7 +71,7 @@ bool Initialize()
 {
 
 	int glutArgc = 0;
-	char** glutArgv;
+	char** glutArgv = NULL;
 
 	if( ! InitializeGlut(glutArgc, glutArgv) )
 		return false;

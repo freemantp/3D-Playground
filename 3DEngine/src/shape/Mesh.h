@@ -18,6 +18,7 @@ public:
 
 	bool setPositions(const std::vector<float>& positions, const std::vector<int>& indices);
 	bool setNormals(const std::vector<float>& normals);
+	bool setTangents(const std::vector<float>& tangents);
 	bool setTextureCoordinates(const std::vector<float>& texCoords);
 	bool setColors(const std::vector<float>& colors);
 
@@ -39,6 +40,8 @@ protected:
 	size_t numIndices;
 	GLuint* bufferObjects;
 	VertexAttribData* vAttribData;
+
+	bool normalsSet,tangentsSet,colorsSet,texCoordsSet;
 
 	bool initialized;
 

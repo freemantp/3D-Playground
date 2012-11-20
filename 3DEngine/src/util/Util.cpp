@@ -111,12 +111,22 @@ Mesh* Util::loadModel(const string& path)
 	if( ! oj.hasNormals() )
 	{		
 		Warn("Normal data not present... computing normals");		
-		oj.computeNormals();	
+		if(! oj.computeNormals() )
+			Error("Could not compute normals");
 	}	
+
+	if (! oj.computeTangents() ) 
+	{
+		Error("Could not compute tangents");
+	}
 		
 	vector<float> normalArray;
 	oj.getNormalArray(normalArray);
 	mesh->setNormals(normalArray);
+
+	vector<float> tangentArray;
+	oj.getTangentArray(tangentArray);
+	mesh->setTangents(tangentArray);
 
 	//mesh->setColors(vertexArray);
 
