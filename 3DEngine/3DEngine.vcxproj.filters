@@ -102,9 +102,6 @@
     <ClInclude Include="src\error.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ObjLoader.h">
-      <Filter>Header Files\util</Filter>
-    </ClInclude>
     <ClInclude Include="src\enums.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
@@ -204,13 +201,16 @@
     <ClInclude Include="src\texture\Texture.h">
       <Filter>Header Files\texture</Filter>
     </ClInclude>
+    <ClInclude Include="src\shader\PhongBumpShader.h">
+      <Filter>Header Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\ObjLoader.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ObjLoader.cpp">
-      <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="src\shader\ShaderBase.cpp">
       <Filter>Source Files\shaders</Filter>
@@ -290,6 +290,12 @@
     <ClCompile Include="src\texture\Texture.cpp">
       <Filter>Source Files\texture</Filter>
     </ClCompile>
+    <ClCompile Include="src\shader\PhongBumpShader.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\ObjLoader.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\shader\colorShader.frag">
@@ -326,6 +332,12 @@
       <Filter>data\shaders\phong</Filter>
     </None>
     <None Include="..\data\shader\phongTexShader.vert">
+      <Filter>data\shaders\phong</Filter>
+    </None>
+    <None Include="..\data\shader\phongBumpShader.frag">
+      <Filter>data\shaders\phong</Filter>
+    </None>
+    <None Include="..\data\shader\phongBumpShader.vert">
       <Filter>data\shaders\phong</Filter>
     </None>
   </ItemGroup>

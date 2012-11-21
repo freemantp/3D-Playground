@@ -373,7 +373,7 @@ bool ObjLoader::computeTangents()
 
 		tangents_tmp[v1Idx.x] += sdir;
 		tangents_tmp[v2Idx.x] += sdir;
-		tangents_tmp[v2Idx.x] += sdir;
+		tangents_tmp[v3Idx.x] += sdir;
 
 		bitangents[v1Idx.x] += tdir;
 		bitangents[v2Idx.x] += tdir;

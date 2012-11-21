@@ -44,6 +44,7 @@ int main(int argc, char* argv[])
 	{
 		glutMainLoop();
 	} else {
+		glutHideWindow();
 		getchar();
 		retCode = EXIT_FAILURE;
 	}
@@ -55,6 +56,7 @@ void initGL()
 {
 	glewExperimental=GL_TRUE;
 	GLenum err=glewInit();
+	glGetError(); //dummy call, see http://www.opengl.org/wiki/OpenGL_Loading_Library#GLEW
 
 	if(err != GLEW_OK)
 	{

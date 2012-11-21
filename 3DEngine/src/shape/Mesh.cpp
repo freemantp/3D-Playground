@@ -17,7 +17,7 @@ Mesh::Mesh()
 	// Create and set-up the vertex array object
     glGenVertexArrays( 1, &vaoHandle );
 
-	int numBuffers = 5;
+	int numBuffers = 6;
 
 	//Init buffer names
 	bufferObjects = new GLuint[numBuffers];
@@ -42,7 +42,6 @@ Mesh::Mesh()
 
 	vAttribData[Index].channel = 999; //unused
 	vAttribData[Index].size = 3;
-
 }
 
 Mesh::~Mesh() 
@@ -151,7 +150,7 @@ bool Mesh::setNormals(const std::vector<float>& normals)
 }
 
 bool Mesh::setTangents(const std::vector<float>& tangents)
-{
+{	
 	glBindVertexArray(vaoHandle);
 	bool success = false;
 
@@ -164,7 +163,7 @@ bool Mesh::setTangents(const std::vector<float>& tangents)
 
 		glBufferData(GL_ARRAY_BUFFER, tangents.size() * sizeof(float), &tangents[0], GL_STATIC_DRAW);
 
-		setAttribPointer(Normal);
+		setAttribPointer(Tangent);
 		success =  true;
 	} 
 	else
@@ -254,7 +253,6 @@ void Mesh::setShader(ShaderBase* shader)
 			Warn("Shader uses normal vertex attribute, but no normals were set");
 	}
 
-
 	channel = shader->getAttributeChannel(GLSLShader::Tangent);
 	if(channel >= 0) 
 	{
@@ -289,7 +287,7 @@ void Mesh::render(const Scene& scene) const
 	}
 	
 	glBindVertexArray(vaoHandle);
-	glDrawElements(GL_TRIANGLES,(GLsizei)numIndices,GL_UNSIGNED_INT, (GLvoid*)NULL);
+	glDrawElements(GL_TRIANGLES, (GLsizei)numIndices, GL_UNSIGNED_INT, (GLvoid*)NULL);
 
 	glBindVertexArray(0);
 

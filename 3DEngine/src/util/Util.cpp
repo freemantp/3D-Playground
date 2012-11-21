@@ -2,7 +2,7 @@
 #include "Util.h"
 #include <fstream>
 #include "../shader/ShaderBase.h"
-#include "../ObjLoader.h"
+#include "../util/ObjLoader.h"
 #include "../shape/Box.h"
 #include <ctime>
 
@@ -115,7 +115,13 @@ Mesh* Util::loadModel(const string& path)
 			Error("Could not compute normals");
 	}	
 
-	if (! oj.computeTangents() ) 
+	if ( oj.computeTangents() ) 
+	{		
+		vector<float> tangentArray;
+		oj.getTangentArray(tangentArray);
+		mesh->setTangents(tangentArray);
+	}
+	else
 	{
 		Error("Could not compute tangents");
 	}
@@ -124,9 +130,6 @@ Mesh* Util::loadModel(const string& path)
 	oj.getNormalArray(normalArray);
 	mesh->setNormals(normalArray);
 
-	vector<float> tangentArray;
-	oj.getTangentArray(tangentArray);
-	mesh->setTangents(tangentArray);
 
 	//mesh->setColors(vertexArray);
 

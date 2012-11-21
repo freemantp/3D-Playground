@@ -32,7 +32,6 @@ layout (std140) uniform Lights
 uniform int NumPointLights;
 uniform int NumSpotLights;
 uniform sampler2D AlbedoTex;
-uniform sampler2D OtherTex;
 uniform int	Shininess;
 
 //Subroutine declaration
@@ -43,7 +42,6 @@ subroutine uniform shadeModelType shadeModel;
 //input from previous stage
 in vec3 Position;
 in vec3 Normal;
-in vec4 Tangent;
 in vec2 TexCoord;
 
 layout (location = 0) out vec4 FragColor;
@@ -95,13 +93,8 @@ void main()
 {
 	vec3 normal = normalize(Normal);
 	vec4 albedo = texture(AlbedoTex, TexCoord);
-	vec4 other = texture(OtherTex, TexCoord);
-	vec4 texColor = mix(albedo, other, 0);
+	vec4 texColor = albedo;
 
-	if(length(normal) > 5)
-		FragColor = vec4(Tangent.xyz,1.0);
-
-	//FragColor = vec4(0);
 
 	//Point lights
 	for(int i=0; i < NumPointLights; i++)

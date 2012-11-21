@@ -8,6 +8,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Graphics Playground", "Grap
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "3DEngine", "3DEngine\3DEngine.vcxproj", "{32FFB0D3-DAA7-436A-9E9A-44391510D878}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Debug Playground", "Debug Playground\Debug Playground.vcxproj", "{DA4B601E-A925-458C-B800-EFE14BC4E69B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{32FFB0D3-DAA7-436A-9E9A-44391510D878} = {32FFB0D3-DAA7-436A-9E9A-44391510D878}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -42,6 +47,16 @@ Global
 		{32FFB0D3-DAA7-436A-9E9A-44391510D878}.Release|Win32.Build.0 = Release|Win32
 		{32FFB0D3-DAA7-436A-9E9A-44391510D878}.Release|x64.ActiveCfg = Release|x64
 		{32FFB0D3-DAA7-436A-9E9A-44391510D878}.Release|x64.Build.0 = Release|x64
+		{DA4B601E-A925-458C-B800-EFE14BC4E69B}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
+		{DA4B601E-A925-458C-B800-EFE14BC4E69B}.Debug|Mixed Platforms.Build.0 = Debug|x64
+		{DA4B601E-A925-458C-B800-EFE14BC4E69B}.Debug|Win32.ActiveCfg = Debug|x64
+		{DA4B601E-A925-458C-B800-EFE14BC4E69B}.Debug|x64.ActiveCfg = Debug|x64
+		{DA4B601E-A925-458C-B800-EFE14BC4E69B}.Debug|x64.Build.0 = Debug|x64
+		{DA4B601E-A925-458C-B800-EFE14BC4E69B}.Release|Mixed Platforms.ActiveCfg = Release|x64
+		{DA4B601E-A925-458C-B800-EFE14BC4E69B}.Release|Mixed Platforms.Build.0 = Release|x64
+		{DA4B601E-A925-458C-B800-EFE14BC4E69B}.Release|Win32.ActiveCfg = Release|x64
+		{DA4B601E-A925-458C-B800-EFE14BC4E69B}.Release|x64.ActiveCfg = Release|x64
+		{DA4B601E-A925-458C-B800-EFE14BC4E69B}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

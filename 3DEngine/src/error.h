@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <string>
 #include <sstream>
 
 inline void Error(const char* errorMsg) 
@@ -13,6 +14,18 @@ inline void Error(const std::string& errorMsg)
 {
 	std::cerr << "ERROR: " << errorMsg << std::endl;
 }
+
+inline void CheckOpenGlError(std::string file, int line) 
+{
+#if _DEBUG 
+	GLenum err = glGetError();
+	if(err != GL_NO_ERROR)
+		std::cerr << "ERROR [OpenGL]: " << err << " on "<<  file << ":" << line << std::endl;
+#endif
+}
+//macro with file and line nr
+#define OpenGLErrorCheck() CheckOpenGlError(__FILE__,__LINE__)
+
 
 inline void Error(const std::string& errorMsg, int line) 
 {

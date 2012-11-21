@@ -13,7 +13,7 @@ public:
 	Mesh();
 	virtual ~Mesh();
 
-	virtual void render(const Scene& cam) const;
+	virtual void render(const Scene& scene) const;
 	virtual void init(); 
 
 	bool setPositions(const std::vector<float>& positions, const std::vector<int>& indices);

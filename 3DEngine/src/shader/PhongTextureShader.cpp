@@ -19,10 +19,6 @@ PhongTextureShader::PhongTextureShader(const string& albedoTexFile)
 	//Create albedo texture and specify texUnit 0
 	textures[Albedo] = new Texture( Config::TEXTURE_BASE_PATH + albedoTexFile );
 	texUnits[Albedo] = 0;
-
-	//Create albedo texture and specify texUnit 0
-	textures[Other] = new Texture( Config::TEXTURE_BASE_PATH + "moss.png" );
-	texUnits[Other] = 1;
 }
 
 PhongTextureShader::~PhongTextureShader()
@@ -41,8 +37,4 @@ void PhongTextureShader::use(const Scene& scene, const glm::mat4& modelTransform
 	//Bind albedo texture to texture unit 0
 	textures[Albedo]->bindTexture(texUnits[Albedo]);
 	setUniform("AlbedoTex", texUnits[Albedo]);
-
-	//Bind other texture to texture unit 1
-	textures[Other]->bindTexture(texUnits[Other]);
-	setUniform("OtherTex", texUnits[Other]);
 }

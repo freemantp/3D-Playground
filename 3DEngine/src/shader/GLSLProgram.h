@@ -77,7 +77,7 @@ public:
 	string log() const;
 
 	/// Activates the shader program associated with this instance
-	virtual void use();
+	virtual bool use();
 
 	/// Inactivates the shader program associated with this instance
 	virtual void unuse();
@@ -92,7 +92,6 @@ public:
 	void setUniform(const GLchar *name, const mat4& m);
 	void setUniform(const GLchar *name, const mat3& m);
 	void setUniformArray(const GLchar *name, float *v, int elementSize, int count=1);
-	void bindTexture(const char *name, GLuint tex, GLenum target, GLint unit);
 
 	/** 
 	* \brief Retrieves available vertex attributes

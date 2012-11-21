@@ -122,12 +122,15 @@ string GLSLProgram::log() const
 	return logString;
 }
 
-void GLSLProgram::use()
+bool GLSLProgram::use()
 {
 	if( programHandle <= 0 || (! linked) ) 
-		return;
+		return false;
 
 	glUseProgram(programHandle);
+
+	return true;
+
 }
 
 void GLSLProgram::unuse()
@@ -282,25 +285,6 @@ void GLSLProgram::setUniformArray(const GLchar *name,
 	case 4:
 		glUniform4fv(loc, count, v);
 		break;
-	}
-}
-
-void GLSLProgram::bindTexture(const GLchar *name, 
-							  GLuint tex, 
-							  GLenum target,
-							  GLint unit)
-{
-	GLint loc = glGetUniformLocation(programHandle, name);
-	if (loc >= 0) {
-		glActiveTexture(GL_TEXTURE0 + unit);
-		glBindTexture(target, tex);
-		glUseProgram(programHandle);
-		glUniform1i(loc, unit);
-		glActiveTexture(GL_TEXTURE0);
-	} else {
-#if _DEBUG
-		Error(string("Error binding texture  '") + name + "'");
-#endif
 	}
 }
 
