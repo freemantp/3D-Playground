@@ -357,7 +357,7 @@
     <Xml Include="..\data\scenes\simpleScene.xml">
       <Filter>data\scenes</Filter>
     </Xml>
-    <Xml Include="..\data\scenes\twoPlanes.xml">
+    <Xml Include="..\data\scenes\manyPlanes.xml">
       <Filter>data\scenes</Filter>
     </Xml>
   </ItemGroup>

@@ -1,6 +1,9 @@
 #version 400
 
-//PointLight declaration
+// ----------------- declarations -----------------
+
+const int numLights = 4;
+
 struct PointLight
 {
 	vec4 Position;
@@ -17,12 +20,13 @@ struct SpotLight
 	float Exponent;
 };
 
+// ----------------- uniforms -----------------
 
 layout (std140) uniform Lights
 {
-	PointLight PointLights[4];
-	SpotLight  SpotLights[4];
-} pLights;
+	PointLight PointLights[numLights];
+	SpotLight  SpotLights[numLights];
+} sceneLights;
 
 //End uniform block declarations
 

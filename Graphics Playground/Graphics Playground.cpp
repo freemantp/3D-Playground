@@ -28,7 +28,8 @@ void InitWindow();
 void RenderFunction();
 
 Scene* s;
-string sceneName = "twoPlanes.xml";
+string sceneName = "manyPlanes.xml";
+//string sceneName = "ogreScene.xml";
 
 int main(int argc, char* argv[])
 {	

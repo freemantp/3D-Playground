@@ -130,7 +130,7 @@
     <Xml Include="..\data\scenes\headScene.xml" />
     <Xml Include="..\data\scenes\ogreScene.xml" />
     <Xml Include="..\data\scenes\simpleScene.xml" />
-    <Xml Include="..\data\scenes\twoPlanes.xml">
+    <Xml Include="..\data\scenes\manyPlanes.xml">
       <SubType>Designer</SubType>
     </Xml>
   </ItemGroup>

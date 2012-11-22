@@ -101,39 +101,38 @@ void Scene::render()
 void Scene::timeUpdate(long time)
 {
 	//Animate lights
-
-	int numPLs = (int)lightModel.pointLights.size();
+	int numPLs = (int)lightModel.spotLights.size();
 	SpotLight* pl;
-
-	if(numPLs > 1)
-	{
-		pl = static_cast<SpotLight*>(lightModel.pointLights[1]);
-		glm::mat4 lightTransform1 = (glm::rotate(mat4(1.0f), 1.0f, glm::vec3(0.0f,1.0f,0.0f)));
-		pl->setPosition(lightTransform1 * pl->getPosition());
-
-		//vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform1))) * pl->getDirection();
-		//pl->setDirection(newDir);
-		
-	}
 
 	if(numPLs > 0)
 	{
-		pl = static_cast<SpotLight*>(lightModel.pointLights[0]);
+		pl = static_cast<SpotLight*>(lightModel.spotLights[0]);
+		glm::mat4 lightTransform1 = (glm::rotate(mat4(1.0f), 1.0f, glm::vec3(0.0f,1.0f,0.0f)));
+		pl->setPosition(lightTransform1 * pl->getPosition());
+
+		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform1))) * pl->getDirection();
+		pl->setDirection(newDir);
+		
+	}
+
+	if(numPLs > 1)
+	{
+		pl = static_cast<SpotLight*>(lightModel.spotLights[1]);
 		glm::mat4 lightTransform2 = (glm::rotate(mat4(1.0f), 0.5f, glm::normalize(glm::vec3(0.5f,1.0f,0.0f))));
 		pl->setPosition(lightTransform2 * pl->getPosition());
 	
-		//vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform2))) * pl->getDirection();
-		//pl->setDirection(newDir);
+		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform2))) * pl->getDirection();
+		pl->setDirection(newDir);
 	}
 
 	if(numPLs > 2)
 	{
-		pl = static_cast<SpotLight*>(lightModel.pointLights[2]);
+		pl = static_cast<SpotLight*>(lightModel.spotLights[2]);
 		glm::mat4 lightTransform3 = (glm::rotate(mat4(1.0f), 2.0f, glm::vec3(1.0f,0.0f,0.0f)));
 		pl->setPosition(lightTransform3 * pl->getPosition());
 	
-		//vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform3))) * pl->getDirection();
-		//pl->setDirection(newDir);
+		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform3))) * pl->getDirection();
+		pl->setDirection(newDir);
 	}
 
 	/*glm::mat4 translateM = glm::translate(glm::mat4(1.0f), activeCamera->getFrame().viewDir * 0.01f); 
