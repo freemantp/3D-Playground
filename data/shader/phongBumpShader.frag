@@ -44,6 +44,7 @@ subroutine uniform shadeModelType shadeModel;
 
 //input from previous stage
 in vec2 TexCoord;
+in vec3 Position;
 in vec3 LightDirection;
 in vec3 ViewDirection;
 in vec3 PointlightDir[numLights];
@@ -75,15 +76,15 @@ vec3 shade(const in vec3 normal, const in vec3 viewDir, const in vec3 lightDir, 
 
 	float sDotN = max(dot(lightDir,normal), 0.0);
 
-	vec3 diffuse = albedo * sDotN;
-	vec3 specular = vec3(0);
+	float diffuse = sDotN;
+	float specular = 0;
 
 	if(sDotN > 0)
 	{
-		specular = lightColor * albedo * blinn(lightDir,viewDir,normal) ;
+		specular = shadeModel(lightDir,viewDir,normal) ;
 	}
 
-	return diffuse + specular;
+	return lightColor * albedo * (diffuse + specular);
 }
 
 void main() 
@@ -99,7 +100,18 @@ void main()
 
 	for(int i=0;  i < NumSpotLights; i++)
 	{
-		FragColor += vec4(shade(normal,ViewDirection,SpotlightDir[i],albedo,sceneLights.SpotLights[i].Color),1);
+		
+		SpotLight light = sceneLights.SpotLights[i];
+		vec3 s = normalize( vec3(light.Position) - Position);
+		
+		float angle = acos( clamp(dot(-s,normalize(light.Direction)),0.0,0.9999) );
+		float cutoff = radians( clamp (light.CutoffAngle, 0.0, 90.0) ) ;
+		
+		if( angle  < cutoff)
+		{
+			float spotFactor = pow( dot( -s , light.Direction), light.Exponent);
+			FragColor += spotFactor * vec4(shade(normal,ViewDirection,SpotlightDir[i],albedo,sceneLights.SpotLights[i].Color),1);
+		}
 	}
 
 }

@@ -42,6 +42,7 @@ uniform mat4 MVP;
 uniform int NumPointLights;
 uniform int NumSpotLights;
 
+out vec3 Position;
 out vec3 LightDirection;
 out vec3 ViewDirection;
 out vec2 TexCoord;
@@ -56,7 +57,8 @@ void main()
 	vec3 b = normalize( cross(n, t) ) * VertexTangent.w;
 
 	//Directional vectors
-	vec3 vertexPosition = vec3(ModelViewMatrix * vec4(VertexPosition, 1.0));
+	vec3 vertexPosition = vec3( ModelViewMatrix * vec4(VertexPosition, 1.0));
+
 
 	mat3 toTangent = transpose( mat3(t,b,n) );
 
@@ -80,6 +82,7 @@ void main()
 		SpotlightDir[i] = normalize( toTangent * lightDir);
 	}
 
+	Position = vertexPosition;
 	TexCoord = VertexTexCoord;
 	gl_Position = MVP * vec4(VertexPosition, 1.0);
 }
