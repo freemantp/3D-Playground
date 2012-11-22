@@ -125,6 +125,15 @@
     <None Include="..\data\shader\uniformBuffer.frag" />
     <None Include="..\data\shader\uniformBuffer.vert" />
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\data\scenes\boxScene.xml" />
+    <Xml Include="..\data\scenes\headScene.xml" />
+    <Xml Include="..\data\scenes\ogreScene.xml" />
+    <Xml Include="..\data\scenes\simpleScene.xml" />
+    <Xml Include="..\data\scenes\twoPlanes.xml">
+      <SubType>Designer</SubType>
+    </Xml>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{32FFB0D3-DAA7-436A-9E9A-44391510D878}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

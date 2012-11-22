@@ -91,6 +91,9 @@
     <Filter Include="Header Files\texture">
       <UniqueIdentifier>{0b710b89-fe25-4b56-85cf-82a69c8c84ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data\scenes">
+      <UniqueIdentifier>{fd416fe8-c161-49b3-bc12-1bb782d5dc03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -340,5 +343,22 @@
     <None Include="..\data\shader\phongBumpShader.vert">
       <Filter>data\shaders\phong</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\data\scenes\boxScene.xml">
+      <Filter>data\scenes</Filter>
+    </Xml>
+    <Xml Include="..\data\scenes\headScene.xml">
+      <Filter>data\scenes</Filter>
+    </Xml>
+    <Xml Include="..\data\scenes\ogreScene.xml">
+      <Filter>data\scenes</Filter>
+    </Xml>
+    <Xml Include="..\data\scenes\simpleScene.xml">
+      <Filter>data\scenes</Filter>
+    </Xml>
+    <Xml Include="..\data\scenes\twoPlanes.xml">
+      <Filter>data\scenes</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

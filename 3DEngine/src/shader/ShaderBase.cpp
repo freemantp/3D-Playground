@@ -10,6 +10,7 @@ ShaderBase::ShaderBase(const string& shaderName)
 	, hasNM(true)
 	, hasMVM(true)
 	, hasVM(false)
+	, hasMM(false)
 	, shaderName(shaderName)
 	, GLSLProgram()
 {
@@ -70,6 +71,9 @@ void ShaderBase::updateTransforms(const Camera& cam, const glm::mat4& modelTrans
 		setUniform("ModelViewMatrix", modelViewMatrix);		
 	if(hasVM)
 		setUniform("ViewMatrix",  cam.viewMatrix);		
+	if(hasMM)
+		setUniform("ModelMatrix",  modelTransform);		
+	
 	
 	afterUniformSet();
 }

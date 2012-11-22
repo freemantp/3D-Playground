@@ -12,12 +12,8 @@
     <!-- shiny material -->
     <material name="glossy" shader="phong">
       <texture file="ogre/ogre_diffuse.png"/>
+      <normalMap file="ogre/ogre_normalmap.png"/>
       <shininess value="5"/>
-    </material>
-    <!-- diffuse material -->
-    <material name="dull" shader="phong">
-      <texture file="checker.jpg"/>
-      <shininess value="600"/>
     </material>
   </materials>
   

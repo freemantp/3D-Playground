@@ -68,24 +68,21 @@ float phong(in vec3 s, in vec3 v, in vec3 normal)
 
 // ----------------- functions -----------------
 
-vec3 shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir, const in vec3 albedo)
-{	
-	vec3 v = normalize(-position);
+vec3 shade(const in vec3 normal, const in vec3 lightDir,const in vec3 viewDir, const in vec3 albedo)
+{
 	
 	float sDotN = max(dot(lightDir,normal), 0.0);
 
-	//vec3 ambient = Material.AmbientReflectivity;
 	vec3 diffuse = albedo * sDotN;
 	vec3 specular = vec3(0);
 
-	if(sDotN > 0)
+	if(sDotN > 0 && Shininess > 0)
 	{
-		specular = albedo * shadeModel(lightDir,v,normal) ;
+		specular = albedo * shadeModel(lightDir,viewDir,normal) ;
 	}
 
-	return diffuse + specular * 0.5;
+	return diffuse + specular;
 }
-
 
 // ----------------- main -----------------
 
@@ -95,18 +92,19 @@ void main()
 	vec4 albedo = texture(AlbedoTex, TexCoord);
 	vec4 texColor = albedo;
 
+	vec3 viewDir = normalize(-Position);
 
 	//Point lights
 	for(int i=0; i < NumPointLights; i++)
 	{	
 		PointLight light = pLights.PointLights[i];
 
-		vec3 s = normalize( vec3(light.Position) - Position);
-		FragColor += vec4( light.Color * shade(Position,normal,s,texColor.xyz), 1.0  );		
+		vec3 lightDir = normalize( vec3(light.Position) - Position);
+		FragColor += vec4( light.Color * shade(normal,lightDir,viewDir,texColor.xyz), 1.0  );		
 	}
 
 	//Spot lights
-	for(int i=0; i < NumSpotLights; i++)
+	/*for(int i=0; i < NumSpotLights; i++)
 	{	
 		SpotLight light = pLights.SpotLights[i];
 
@@ -120,6 +118,5 @@ void main()
 			float spotFactor = pow( dot( -s , light.Direction), light.Exponent);
 			FragColor += spotFactor * vec4( light.Color * shade(Position,normal,s,texColor.xyz), 1.0  );
 		}
-	}	
-
+	}	*/
 }

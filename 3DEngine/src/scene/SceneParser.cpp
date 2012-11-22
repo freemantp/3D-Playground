@@ -6,6 +6,7 @@
 
 #include "../shader/PhongShader.h"
 #include "../shader/PhongTextureShader.h"
+#include "../shader/PhongBumpShader.h"
 #include "../shader/ColorShader.h"
 #include "../shader/ConstShader.h"
 
@@ -119,16 +120,25 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 		
 		if(shaderName == "phong")
 		{			
-			XMLElement* subElem = materialElement->FirstChildElement("texture");
+			
 			PhongShader* ps;
-			PhongTextureShader* pts;
 
+			XMLElement* subElem = materialElement->FirstChildElement("texture");
 			//Load textured version if available
 			if(subElem != NULL)
 			{
 				string texFile(subElem->Attribute("file"));
-				pts = new PhongTextureShader(texFile);
-				ps = pts; 
+				subElem = materialElement->FirstChildElement("normalMap");
+
+				if(subElem == NULL)
+				{
+					ps = new PhongTextureShader(texFile);
+				}
+				else 
+				{
+					string normalMapFile(subElem->Attribute("file"));
+					ps = new PhongBumpShader(texFile,normalMapFile);
+				}
 			}
 			else
 			{
