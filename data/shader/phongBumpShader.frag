@@ -79,7 +79,7 @@ float shade(const in vec3 normal, const in vec3 viewDir, const in vec3 lightDir,
 	float diffuse = max( dot(lightDir,normal), 0.0 );	
 	float specular;
 
-	float specularity = texture(SpecularTex,TexCoord).r;
+	float specularity = hasSpecularMap ? texture(SpecularTex,TexCoord).r : 1.0;
 
 	if(diffuse > 0)
 		specular = shadeModel(lightDir,viewDir,normal) ;

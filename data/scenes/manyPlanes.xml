@@ -26,7 +26,7 @@
       <texture file="cobble/cobblestonesDiffuse.tga"/>
       <bumpMap file="cobble/cobblestonesNormal.tga" type="normal"/>
       <specularMap file="cobble/cobblestonesSpecular.tga"/>
-      <shininess value="50"/>
+      <shininess value="20"/>
     </material>
     
     <material name="rock" shader="phong">
