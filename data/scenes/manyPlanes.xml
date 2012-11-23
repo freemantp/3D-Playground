@@ -3,7 +3,7 @@
 
   <!-- initial camera position -->
   <camera type="perspective" fov="50.0">
-    <position x="0.0" y="2.0" z="4.0"/>
+    <position x="0.0" y="4.0" z="4.0"/>
     <target   x="0.0" y="0.0" z="0.0"/>
     <up       x="0.0" y="1.0" z="0.0"/>
   </camera>
@@ -15,9 +15,17 @@
       <shininess value="1"/>
     </material>
 
+    <!--<material name="cobble" shader="phong">
+      <texture file="stonework/Medievil-Stonework-Color-Map.png"/>
+      <bumpMap file="stonework/Medievil-Stonework-Normal-Map.png" type="normal"/>
+      <specularMap file="stonework/Medievil-Stonework-Specular-Map.png"/>
+      <shininess value="50"/>
+    </material>-->
+    
     <material name="cobble" shader="phong">
       <texture file="cobble/cobblestonesDiffuse.tga"/>
       <bumpMap file="cobble/cobblestonesNormal.tga" type="normal"/>
+      <specularMap file="cobble/cobblestonesSpecular.tga"/>
       <shininess value="50"/>
     </material>
     

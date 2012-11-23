@@ -33,8 +33,10 @@ uniform int NumPointLights;
 uniform int NumSpotLights;
 uniform sampler2D AlbedoTex;
 uniform sampler2D BumpmapTex;
+uniform sampler2D SpecularTex;
 uniform mat4 ViewMatrix;
 uniform bool isNormalMap;
+uniform bool hasSpecularMap;
 uniform int	Shininess;
 
 //Subroutine declaration
@@ -72,15 +74,17 @@ float phong(in vec3 s, in vec3 v, in vec3 normal)
 	return pow( max( dot(r,v), 0.0), Shininess );
 }
 
-float shade(const in vec3 normal, const in vec3 viewDir, const in vec3 lightDir)
+float shade(const in vec3 normal, const in vec3 viewDir, const in vec3 lightDir, vec2 texCoord)
 {		
 	float diffuse = max( dot(lightDir,normal), 0.0 );	
 	float specular;
 
+	float specularity = texture(SpecularTex,TexCoord).r;
+
 	if(diffuse > 0)
 		specular = shadeModel(lightDir,viewDir,normal) ;
 
-	return diffuse + specular;
+	return diffuse + specularity * specular;
 }
 
 //see http://athile.net/library/wiki/index.php/Library/Graphics/Bump_Mapping
@@ -127,7 +131,7 @@ void main()
 	{
 		PointLight light = sceneLights.PointLights[i];
 		vec3 lightDir = isNormalMap ? PointlightDirTGT[i] : normalize( vec3(light.Position) - PositionEYE);
-		FragColor += vec4(light.Color * albedo * shade(normal,ViewDirection, lightDir),1);
+		FragColor += vec4(light.Color * albedo * shade(normal,ViewDirection, lightDir,TexCoord),1);
 	}
 
 	//Spot lights
@@ -143,8 +147,9 @@ void main()
 		{
 			float spotFactor = pow( dot( -lightToCamDir, light.Direction), light.Exponent);
 			vec3 lightDir = isNormalMap ? SpotlightDirTGT[i] : normalize( vec3(light.Position) - PositionEYE);
-			FragColor += spotFactor * vec4(light.Color * albedo * shade(normal,ViewDirection,lightDir),1);
+			FragColor += spotFactor * vec4(light.Color * albedo * shade(normal,ViewDirection,lightDir,TexCoord),1);
 		}
 	}
+	
 
 }

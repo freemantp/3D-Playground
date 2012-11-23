@@ -128,8 +128,9 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 			if(subElem != NULL)
 			{
 				string texFile(subElem->Attribute("file"));
+			
+				//bump mapping
 				subElem = materialElement->FirstChildElement("bumpMap");
-
 				if(subElem == NULL)
 				{
 					ps = new PhongTextureShader(texFile);
@@ -140,6 +141,16 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 					string type(subElem->Attribute("type"));
 					ps = new PhongBumpShader(texFile,bumpMapFile, type == "normal");
 				}
+
+				//specular mapping
+				subElem = materialElement->FirstChildElement("specularMap");
+				if(subElem != NULL)
+				{
+					string specMapFile(subElem->Attribute("file"));
+					PhongBumpShader* pbs = static_cast<PhongBumpShader*>(ps);
+					pbs->setSpecularMap(specMapFile);
+				}
+
 			}
 			else
 			{

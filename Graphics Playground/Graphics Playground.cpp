@@ -18,8 +18,8 @@ using std::string;
 
 #define WINDOW_TITLE_PREFIX "OpenGL Playground"
 
-int CurrentWidth = 800,
-	CurrentHeight = 800,
+int CurrentWidth = 1600,
+	CurrentHeight = 900,
 	WindowHandle = 0;
 
 bool Initialize();
