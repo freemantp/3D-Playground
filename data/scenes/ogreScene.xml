@@ -12,7 +12,7 @@
     <!-- shiny material -->
     <material name="glossy" shader="phong">
       <texture file="ogre/ogre_diffuse.png"/>
-      <normalMap file="ogre/ogre_normalmap.png"/>
+      <bumpMap file="ogre/ogre_normalmap.png" type="normal"/>
       <shininess value="5"/>
     </material>
   </materials>

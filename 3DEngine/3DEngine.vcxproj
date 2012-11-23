@@ -127,7 +127,9 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\data\scenes\boxScene.xml" />
-    <Xml Include="..\data\scenes\headScene.xml" />
+    <Xml Include="..\data\scenes\headScene.xml">
+      <SubType>Designer</SubType>
+    </Xml>
     <Xml Include="..\data\scenes\ogreScene.xml" />
     <Xml Include="..\data\scenes\simpleScene.xml" />
     <Xml Include="..\data\scenes\manyPlanes.xml">

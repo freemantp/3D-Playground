@@ -10,8 +10,9 @@
 #include  <IL/il.h>
 
 
-PhongBumpShader::PhongBumpShader(const string& albedoTexFile, const string& normalMap)
-: PhongShader("phongBumpShader")
+PhongBumpShader::PhongBumpShader(const string& albedoTexFile, const string& BumpMapTex, bool isNormalMap)
+: isNormalMap(isNormalMap)
+, PhongShader("phongBumpShader")
 {
 	GLint maxTexUnits;
 	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,&maxTexUnits);
@@ -21,11 +22,8 @@ PhongBumpShader::PhongBumpShader(const string& albedoTexFile, const string& norm
 	texUnits[Albedo] = 0;
 
 	//Create albedo texture and specify texUnit 0
-	textures[NormalMap] = new Texture( Config::TEXTURE_BASE_PATH + normalMap );
-	texUnits[NormalMap] = 1;
-
-	hasVM = true;
-	hasMM = true;
+	textures[BumpMap] = new Texture( Config::TEXTURE_BASE_PATH + BumpMapTex );
+	texUnits[BumpMap] = 1;
 }
 
 PhongBumpShader::~PhongBumpShader()
@@ -46,6 +44,7 @@ void PhongBumpShader::use(const Scene& scene, const glm::mat4& modelTransform)
 	setUniform("AlbedoTex", texUnits[Albedo]);
 
 	//Bind normal texture to texture unit 1
-	textures[NormalMap]->bindTexture(texUnits[NormalMap]);
-	setUniform("NormalMapTex", texUnits[NormalMap]);
+	textures[BumpMap]->bindTexture(texUnits[BumpMap]);
+	setUniform("BumpmapTex", texUnits[BumpMap]);
+	setUniform("isNormalMap",isNormalMap);
 }

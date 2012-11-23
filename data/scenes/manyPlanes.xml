@@ -3,7 +3,7 @@
 
   <!-- initial camera position -->
   <camera type="perspective" fov="50.0">
-    <position x="0.0" y="1.0" z="4.0"/>
+    <position x="0.0" y="2.0" z="4.0"/>
     <target   x="0.0" y="0.0" z="0.0"/>
     <up       x="0.0" y="1.0" z="0.0"/>
   </camera>
@@ -11,13 +11,13 @@
   <materials>
     <material name="brick" shader="phong">
       <texture file="metalSheet/metalSheetDiffuse.tga"/>
-      <normalMap file="metalSheet/metalSheetNormal.tga"/>
+      <bumpMap file="metalSheet/metalSheetNormal.tga" type="normal"/>
       <shininess value="1"/>
     </material>
 
     <material name="cobble" shader="phong">
       <texture file="cobble/cobblestonesDiffuse.tga"/>
-      <normalMap file="cobble/cobblestonesNormal.tga"/>
+      <bumpMap file="cobble/cobblestonesNormal.tga" type="normal"/>
       <shininess value="50"/>
     </material>
     

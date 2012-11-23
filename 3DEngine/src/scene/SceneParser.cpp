@@ -128,7 +128,7 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 			if(subElem != NULL)
 			{
 				string texFile(subElem->Attribute("file"));
-				subElem = materialElement->FirstChildElement("normalMap");
+				subElem = materialElement->FirstChildElement("bumpMap");
 
 				if(subElem == NULL)
 				{
@@ -136,8 +136,9 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 				}
 				else 
 				{
-					string normalMapFile(subElem->Attribute("file"));
-					ps = new PhongBumpShader(texFile,normalMapFile);
+					string bumpMapFile(subElem->Attribute("file"));
+					string type(subElem->Attribute("type"));
+					ps = new PhongBumpShader(texFile,bumpMapFile, type == "normal");
 				}
 			}
 			else

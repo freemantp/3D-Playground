@@ -137,6 +137,20 @@ void GLSLProgram::unuse()
 {
 	glUseProgram(0);
 }
+void GLSLProgram::setUniform(const GLchar *name, bool value)
+{
+	GLint loc = glGetUniformLocation(programHandle, name);
+	if (loc >= 0) 
+	{
+		glUniform1f(loc, value);
+	} 
+	else 
+	{
+#if _DEBUG
+		Error(string("Error setting parameter '") + name + "'");
+#endif
+	}
+}
 
 void GLSLProgram::setUniform(const GLchar *name, float value)
 {

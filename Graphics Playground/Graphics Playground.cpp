@@ -28,6 +28,7 @@ void InitWindow();
 void RenderFunction();
 
 Scene* s;
+//string sceneName = "headScene.xml";
 string sceneName = "manyPlanes.xml";
 //string sceneName = "ogreScene.xml";
 
