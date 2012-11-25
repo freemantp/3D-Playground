@@ -47,9 +47,11 @@
     <ClInclude Include="src\shader\PhongShader.h" />
     <ClInclude Include="src\shader\PhongTextureShader.h" />
     <ClInclude Include="src\shader\ShaderBase.h" />
+    <ClInclude Include="src\shader\SkyboxShader.h" />
     <ClInclude Include="src\shader\UniformBuffer.h" />
     <ClInclude Include="src\shader\UniformBufferShader.h" />
     <ClInclude Include="src\shape\Box.h" />
+    <ClInclude Include="src\shape\Skybox.h" />
     <ClInclude Include="src\shape\Mesh.h" />
     <ClInclude Include="src\shape\Shape.h" />
     <ClInclude Include="src\shape\Triangle.h" />
@@ -79,9 +81,11 @@
     <ClCompile Include="src\shader\PhongShader.cpp" />
     <ClCompile Include="src\shader\PhongTextureShader.cpp" />
     <ClCompile Include="src\shader\ShaderBase.cpp" />
+    <ClCompile Include="src\shader\SkyboxShader.cpp" />
     <ClCompile Include="src\shader\UniformBuffer.cpp" />
     <ClCompile Include="src\shader\UniformBufferShader.cpp" />
     <ClCompile Include="src\shape\Box.cpp" />
+    <ClCompile Include="src\shape\Skybox.cpp" />
     <ClCompile Include="src\shape\Mesh.cpp" />
     <ClCompile Include="src\shape\Shape.cpp" />
     <ClCompile Include="src\shape\Triangle.cpp" />
@@ -124,6 +128,8 @@
     </None>
     <None Include="..\data\shader\phongTexShader.frag" />
     <None Include="..\data\shader\phongTexShader.vert" />
+    <None Include="..\data\shader\skyboxShader.frag" />
+    <None Include="..\data\shader\skyboxShader.vert" />
     <None Include="..\data\shader\uniformBuffer.frag" />
     <None Include="..\data\shader\uniformBuffer.vert" />
   </ItemGroup>

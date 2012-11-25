@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include  <IL/il.h>
 
 class Mesh;
 class GLSLProgram;
@@ -19,7 +18,7 @@ public:
 	static void printStrings(const std::vector<std::string> strings);
 	static void printUniforms(const ShaderBase* shader);
 	static Mesh* loadModel(const std::string& path);
-	static ILubyte* loadTexture(const std::string& texturePath, int& width, int& height);
+	static unsigned char* loadTexture(const std::string& texturePath, int& width, int& height);
 
 	static Mesh* getDragon();
 	static Mesh* getHorse();

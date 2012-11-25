@@ -15,8 +15,7 @@ PointLight::PointLight(void)
 	visMesh = Util::getBox();
 	visMesh->init();
 
-	visShader = new ConstShader();
-	visShader->color = color;
+	visShader = new ConstShader(color);
 
 	visMesh->setShader(visShader);
 }

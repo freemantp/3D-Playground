@@ -38,13 +38,15 @@
     <light type="point" cutoff="90" exponent="30">
       <position x="0.0" y="10.0" z="0.0"/>
       <direction x="0.0" y="0.0" z="1.0"/>
-      <color r="0.15" g="0.15" b="0.2"/>
+      <color r="0.2" g="0.15" b="0.15"/>
     </light>
 
   </lights>
 
-  <objects>
+  <skybox cubemapBase="cubeMap/sunset/sunset" type="jpg"/>
 
+  <objects>
+    
     <mesh file="Car/car.obj" material="car">
       <transform>
         <translate x="0.2" y="0.0" z="-2.0"/>

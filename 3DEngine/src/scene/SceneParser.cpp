@@ -16,6 +16,7 @@
 
 #include "../shape/Mesh.h"
 #include "../shape/Box.h"
+#include "../shape/Skybox.h"
 
 #include "../light/SpotLight.h"
 
@@ -86,6 +87,14 @@ bool SceneParser::parse(const char* xmlDocument)
 					return false;
 			}
 
+			//Skybox
+			XMLElement* skyboxElement = root->FirstChildElement("skybox");
+			if( skyboxElement != NULL)
+			{
+				if( ! parseSkybox(skyboxElement) )
+					return false;
+			}
+
 			//Objects
 			XMLElement* objectsElement = root->FirstChildElement("objects");
 			if( objectsElement != NULL)
@@ -93,6 +102,7 @@ bool SceneParser::parse(const char* xmlDocument)
 				if( ! parseObjects(objectsElement) )
 					return false;
 			}
+
 		}
 		else 
 		{
@@ -179,7 +189,7 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 		}
 		else if(shaderName == "const")
 		{
-			ConstShader* cshader = new ConstShader();
+			ConstShader* cshader = new ConstShader(vec3(1.0));
 			
 			XMLElement* subElem;
 			if ( (subElem = materialElement->FirstChildElement("color")) != NULL )
@@ -202,6 +212,18 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 	} 
 	while (materialElement = materialElement->NextSiblingElement("material"));
 	
+
+	return true;
+}
+
+bool SceneParser::parseSkybox(XMLElement* skyboxElem)
+{
+	string cubeMapBase = skyboxElem->Attribute("cubemapBase");
+	string type = skyboxElem->Attribute("type");
+
+	Skybox* sb = new Skybox(cubeMapBase,type);
+	sb->init();
+	generatedScene->addShape(sb);
 
 	return true;
 }

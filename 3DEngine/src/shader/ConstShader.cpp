@@ -2,13 +2,13 @@
 #include "ConstShader.h"
 
 
-ConstShader::ConstShader(void)
+ConstShader::ConstShader(vec3& color)
 	: ShaderBase("constShader")
 {
 	hasNM = false;
 	hasMVM = false;
 
-	color = vec3(1,1,1);
+	this->color = color;
 }
 
 

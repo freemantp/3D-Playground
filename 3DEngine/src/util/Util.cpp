@@ -176,7 +176,7 @@ Mesh* Util::getBox()
 }
 
 /// Loads an image as RGBA texture
-ILubyte* Util::loadTexture(const std::string& texturePath, int& width, int& height)
+unsigned char* Util::loadTexture(const std::string& texturePath, int& width, int& height)
 {
 	bool success = false;
 

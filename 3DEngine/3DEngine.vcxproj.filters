@@ -76,9 +76,6 @@
     <Filter Include="data\shaders\const">
       <UniqueIdentifier>{72f28301-0593-4e4e-a92d-78dd53cdb11c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="data\shaders\uniformBuffer">
-      <UniqueIdentifier>{c8ce3269-5f14-4980-9f96-0d3d20106c5b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\animation">
       <UniqueIdentifier>{d2bf620c-605a-4827-a643-8040e1e610bc}</UniqueIdentifier>
     </Filter>
@@ -93,6 +90,9 @@
     </Filter>
     <Filter Include="data\scenes">
       <UniqueIdentifier>{fd416fe8-c161-49b3-bc12-1bb782d5dc03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\shaders\specialized">
+      <UniqueIdentifier>{c8ce3269-5f14-4980-9f96-0d3d20106c5b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +213,12 @@
     <ClInclude Include="src\texture\CubeMapTexture.h">
       <Filter>Header Files\texture</Filter>
     </ClInclude>
+    <ClInclude Include="src\shape\Skybox.h">
+      <Filter>Header Files\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\SkyboxShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
@@ -305,6 +311,12 @@
     <ClCompile Include="src\texture\CubeMapTexture.cpp">
       <Filter>Source Files\texture</Filter>
     </ClCompile>
+    <ClCompile Include="src\shape\Skybox.cpp">
+      <Filter>Source Files\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\SkyboxShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\shader\colorShader.frag">
@@ -332,10 +344,10 @@
       <Filter>data\shaders\const</Filter>
     </None>
     <None Include="..\data\shader\uniformBuffer.vert">
-      <Filter>data\shaders\uniformBuffer</Filter>
+      <Filter>data\shaders\specialized</Filter>
     </None>
     <None Include="..\data\shader\uniformBuffer.frag">
-      <Filter>data\shaders\uniformBuffer</Filter>
+      <Filter>data\shaders\specialized</Filter>
     </None>
     <None Include="..\data\shader\phongTexShader.frag">
       <Filter>data\shaders\phong</Filter>
@@ -348,6 +360,12 @@
     </None>
     <None Include="..\data\shader\phongBumpShader.vert">
       <Filter>data\shaders\phong</Filter>
+    </None>
+    <None Include="..\data\shader\skyboxShader.frag">
+      <Filter>data\shaders\specialized</Filter>
+    </None>
+    <None Include="..\data\shader\skyboxShader.vert">
+      <Filter>data\shaders\specialized</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

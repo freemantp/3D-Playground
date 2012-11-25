@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Texture.h"
 
-#include  <IL/il.h>
 #include "../util/Util.h"
 
 Texture::Texture(const std::string& texturePath)
@@ -11,13 +10,14 @@ Texture::Texture(const std::string& texturePath)
 
 	int width = 0;
 	int height = 0;
-	ILubyte* imageData = Util::loadTexture(texturePath,width,height);
+	unsigned char* imageData = Util::loadTexture(texturePath,width,height);
 
 	glBindTexture(GL_TEXTURE_2D, texObject);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	delete[] imageData;
 
 }
 

@@ -7,7 +7,8 @@
 
 CubeMapTexture::CubeMapTexture(const std::string& textureBasePath, const std::string& imageExtension)
 {
-	const char* suffixes[] = {"posx","negx",  "posy","negy", "posz","negz" };
+	//const char* suffixes[] = {"posx","negx",  "posy","negy", "posz","negz" };
+	const char* suffixes[] = {"rt","lf",  "up","dn", "bk","ft" };
 
 	GLuint targets[] = { 
 		GL_TEXTURE_CUBE_MAP_POSITIVE_X,
@@ -18,7 +19,6 @@ CubeMapTexture::CubeMapTexture(const std::string& textureBasePath, const std::st
 		GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
 	};
 
-
 	//Generate texture object and bind
 	glGenTextures(1, &texObject);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texObject);
@@ -26,14 +26,13 @@ CubeMapTexture::CubeMapTexture(const std::string& textureBasePath, const std::st
 	for(int i=0; i < 6; i++)
 	{
 		std::string fileName = textureBasePath + "_" + suffixes[i] + "." + imageExtension;
-		
-		unsigned char* imgData;
+
 		int width = 0, height = 0;
+		unsigned char* imageData =  Util::loadTexture(fileName,width,height);
 
-		/*if (! Util::loadTexture(fileName,&imgData,width,height) )
-			Error("Could not load cubemap");
+		glTexImage2D(targets[i], 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
 
-		glTexImage2D(targets[i], 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imgData);*/
+		delete[] imageData;
 	}
 
     glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
