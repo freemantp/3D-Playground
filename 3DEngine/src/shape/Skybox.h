@@ -9,7 +9,7 @@ class Skybox :
 	public Box
 {
 public:
-	Skybox(const std::string& cubeMapBase,const std::string& type);
+	Skybox(CubeMapTexture* texture);
 	~Skybox();
 
 protected:

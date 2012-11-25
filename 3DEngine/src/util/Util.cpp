@@ -169,18 +169,59 @@ Mesh* Util::getBox()
 	Box* box = new Box();
 	box->init();
 
-	//box->worldTransform = glm::scale(box->worldTransform, glm::vec3(5,5,5));
 	box->worldTransform = glm::translate(box->worldTransform,glm::vec3(-0.5,-0.5f,-0.5));
 	
 	return box;
 }
 
+bool Util::loadCubeMapTexture(const std::string& texturePath, unsigned char* imgPointers[], int& width, int& height)
+{
+	//Load  image
+	if( ilLoadImage(texturePath.c_str()) == IL_TRUE )
+	{
+		if( ilConvertImage(IL_RGBA,IL_UNSIGNED_BYTE) == IL_TRUE )
+		{
+			ILubyte* imgData = ilGetData();
+			int w =  ilGetInteger(IL_IMAGE_WIDTH);
+			int h =  ilGetInteger(IL_IMAGE_HEIGHT);
+
+			//subimage sizes
+			width = w / 4;
+			height = h / 3;
+			int bytesPerSubimage = w * h * sizeof(ILubyte) * 4;
+
+			//Allocate memory
+			imgPointers[0] = new unsigned char[bytesPerSubimage];
+			imgPointers[1] = new unsigned char[bytesPerSubimage];
+			imgPointers[2] = new unsigned char[bytesPerSubimage];
+			imgPointers[3] = new unsigned char[bytesPerSubimage];
+			imgPointers[4] = new unsigned char[bytesPerSubimage];
+			imgPointers[5] = new unsigned char[bytesPerSubimage];
+
+			//Copy subimage pixel data
+			ilCopyPixels(width,0,0, width, height, 1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[0]);
+			ilCopyPixels(0,height,0 , width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[1]);
+			ilCopyPixels(1*width,height,0, width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[2]);
+			ilCopyPixels(2*width,height,0, width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[3]);
+			ilCopyPixels(3*width,height,0, width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[4]);
+			ilCopyPixels(width,2*height,0, width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[5]);
+
+			return true;
+		} 
+		else 
+			Error("Could not convert texture: " + texturePath);
+	}
+	else
+		Error("Could not load texture: " + texturePath);
+
+	return false;
+}
+
+
 /// Loads an image as RGBA texture
 unsigned char* Util::loadTexture(const std::string& texturePath, int& width, int& height)
 {
-	bool success = false;
-
-	//Load albedo texture
+	//Load  image
 	if( ilLoadImage(texturePath.c_str()) == IL_TRUE )
 	{
 		if( ilConvertImage(IL_RGBA,IL_UNSIGNED_BYTE) == IL_TRUE )

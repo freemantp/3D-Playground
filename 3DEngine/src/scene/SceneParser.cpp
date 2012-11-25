@@ -9,6 +9,7 @@
 #include "../shader/PhongBumpShader.h"
 #include "../shader/ColorShader.h"
 #include "../shader/ConstShader.h"
+#include "../texture/CubeMapTexture.h"
 
 #include "../util/Util.h"
 #include "../camera/PerspectiveCamera.h"
@@ -221,7 +222,9 @@ bool SceneParser::parseSkybox(XMLElement* skyboxElem)
 	string cubeMapBase = skyboxElem->Attribute("cubemapBase");
 	string type = skyboxElem->Attribute("type");
 
-	Skybox* sb = new Skybox(cubeMapBase,type);
+	CubeMapTexture* texture = new CubeMapTexture(Config::TEXTURE_BASE_PATH + cubeMapBase);
+
+	Skybox* sb = new Skybox(texture);
 	sb->init();
 	generatedScene->addShape(sb);
 

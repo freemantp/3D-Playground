@@ -2,7 +2,7 @@
 <scene name="Road">
 
   <!-- initial camera position -->
-  <camera type="perspective" fov="50.0">
+  <camera type="perspective" fov="70.0">
     <position x="4.0" y="4.0" z="4.0"/>
     <target   x="0.0" y="0.0" z="0.0"/>
     <up       x="0.0" y="1.0" z="0.0"/>
@@ -38,12 +38,12 @@
     <light type="point" cutoff="90" exponent="30">
       <position x="0.0" y="10.0" z="0.0"/>
       <direction x="0.0" y="0.0" z="1.0"/>
-      <color r="0.4" g="0.25" b="0.25"/>
+      <color r="0.35" g="0.35" b="0.4"/>
     </light>
 
   </lights>
 
-  <skybox cubemapBase="cubeMap/sunset/sunset" type="jpg"/>
+  <skybox cubemapBase="cubeMap/skybox_texture.png" type="jpg"/>
   
   <objects>
     

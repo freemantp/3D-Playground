@@ -8,9 +8,6 @@ in vec3 VertexPos;
 
 void main()
 {
-	vec3 vpos = VertexPos;
-	vpos.x = -vpos.x; //by trial and error :(
-	vec4 cubeMapColor = texture(CubeMapTex,vpos);
-
+	vec4 cubeMapColor = texture(CubeMapTex,VertexPos);
 	FragColor = cubeMapColor;
 }
