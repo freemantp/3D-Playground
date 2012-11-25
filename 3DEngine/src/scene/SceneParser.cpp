@@ -68,6 +68,7 @@ bool SceneParser::parse(const char* xmlDocument)
 			Camera* cam = NULL;
 			parseOk &= parseCamera(&cam,cameraElement);
 			generatedScene = new Scene(factory,cam);
+			generatedScene->name = sceneName;
 
 			//Materials
 			XMLElement* materialsElement = root->FirstChildElement("materials");

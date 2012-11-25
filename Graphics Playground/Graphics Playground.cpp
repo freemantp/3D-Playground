@@ -29,7 +29,8 @@ void RenderFunction();
 
 Scene* s;
 //string sceneName = "headScene.xml";
-string sceneName = "manyPlanes.xml";
+//string sceneName = "manyPlanes.xml";
+string sceneName = "road.xml";
 //string sceneName = "ogreScene.xml";
 
 int main(int argc, char* argv[])
@@ -97,6 +98,9 @@ bool Initialize()
 	{
 		s = sp.getScene();
 		TimeManager::getInstance().addTimeObserver(s);
+
+		string windowTitle = string(WINDOW_TITLE_PREFIX) + " - " + s->name;
+		glutSetWindowTitle(windowTitle.c_str() );
 	}
 	else
 	{

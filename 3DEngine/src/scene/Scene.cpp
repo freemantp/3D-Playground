@@ -101,7 +101,7 @@ void Scene::render()
 void Scene::timeUpdate(long time)
 {
 	//Animate lights
-	int numPLs = (int)lightModel.spotLights.size();
+	/*int numPLs = (int)lightModel.spotLights.size();
 	SpotLight* pl;
 
 	if(numPLs > 0)

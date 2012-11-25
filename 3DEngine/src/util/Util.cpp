@@ -5,6 +5,7 @@
 #include "../util/ObjLoader.h"
 #include "../shape/Box.h"
 #include <ctime>
+#include <IL/il.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -172,4 +173,35 @@ Mesh* Util::getBox()
 	box->worldTransform = glm::translate(box->worldTransform,glm::vec3(-0.5,-0.5f,-0.5));
 	
 	return box;
+}
+
+/// Loads an image as RGBA texture
+ILubyte* Util::loadTexture(const std::string& texturePath, int& width, int& height)
+{
+	bool success = false;
+
+	//Load albedo texture
+	if( ilLoadImage(texturePath.c_str()) == IL_TRUE )
+	{
+		if( ilConvertImage(IL_RGBA,IL_UNSIGNED_BYTE) == IL_TRUE )
+		{
+			ILubyte* imgData = ilGetData();
+			width =  ilGetInteger(IL_IMAGE_WIDTH);
+			height =  ilGetInteger(IL_IMAGE_HEIGHT);
+
+			int numBytes = width * height * sizeof(ILubyte) * 4;
+
+			//Return a copy because the image gets destroyed after this function returns
+			ILubyte* dataCopy = new ILubyte[numBytes];
+			memcpy(dataCopy,imgData,numBytes);
+
+			return dataCopy;
+		} 
+		else 
+			Error("Could not convert texture: " + texturePath);
+	}
+	else
+		Error("Could not load texture: " + texturePath);
+
+	return NULL;
 }

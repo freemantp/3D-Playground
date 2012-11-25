@@ -36,6 +36,7 @@ public:
 	LightModel lightModel;
 	vector<Shape*> objects;
 	vector<ShaderBase*> materials;
+	std::string name;
 
 protected:
 

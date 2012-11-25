@@ -210,6 +210,9 @@
     <ClInclude Include="src\util\ObjLoader.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="src\texture\CubeMapTexture.h">
+      <Filter>Header Files\texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
@@ -299,6 +302,9 @@
     <ClCompile Include="src\util\ObjLoader.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="src\texture\CubeMapTexture.cpp">
+      <Filter>Source Files\texture</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\shader\colorShader.frag">
@@ -358,6 +364,9 @@
       <Filter>data\scenes</Filter>
     </Xml>
     <Xml Include="..\data\scenes\manyPlanes.xml">
+      <Filter>data\scenes</Filter>
+    </Xml>
+    <Xml Include="..\data\scenes\road.xml">
       <Filter>data\scenes</Filter>
     </Xml>
   </ItemGroup>

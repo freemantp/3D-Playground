@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<scene name="Road">
+
+  <!-- initial camera position -->
+  <camera type="perspective" fov="50.0">
+    <position x="0.0" y="4.0" z="4.0"/>
+    <target   x="0.0" y="0.0" z="0.0"/>
+    <up       x="0.0" y="1.0" z="0.0"/>
+  </camera>
+
+  <materials>
+    <material name="road" shader="phong">
+      <texture file="road/road_color.jpg"/>
+      <bumpMap file="road/road_normal.jpg" type="normal"/>
+      <specularMap file="road/road_specular.jpg"/>
+      <shininess value="1"/>
+    </material>
+
+    <material name="car" shader="phong">
+      <texture file="Car/car_out_d.dds"/>
+      <shininess value="0"/>
+    </material>
+  </materials>
+
+  <lights>
+    <light type="spot" cutoff="45" exponent="30">
+      <position x="0.1" y="0.1" z="-1.625"/>
+      <direction x="0.0" y="0.0" z="1.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </light>
+    
+    <light type="spot" cutoff="45" exponent="30">
+      <position x="0.29" y="0.1" z="-1.625"/>
+      <direction x="0.0" y="0.0" z="1.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </light>
+
+    <light type="point" cutoff="90" exponent="30">
+      <position x="0.0" y="10.0" z="0.0"/>
+      <direction x="0.0" y="0.0" z="1.0"/>
+      <color r="0.15" g="0.15" b="0.2"/>
+    </light>
+
+  </lights>
+
+  <objects>
+
+    <mesh file="Car/car.obj" material="car">
+      <transform>
+        <translate x="0.2" y="0.0" z="-2.0"/>
+        <scale x="0.075" y="0.075" z="0.075"/>
+      </transform>
+    </mesh>
+
+    <mesh file="rectangle.obj" material="road">
+      <transform>
+        <translate x="1.0" y="0.0" z="-5.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </mesh>
+    <mesh file="rectangle.obj" material="road">
+      <transform>
+        <translate x="-1.0" y="0.0" z="-5.0"/>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </mesh>    
+    
+    <mesh file="rectangle.obj" material="road">
+      <transform>
+        <translate x="1.0" y="0.0" z="-3.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </mesh>
+    <mesh file="rectangle.obj" material="road">
+      <transform>
+        <translate x="-1.0" y="0.0" z="-3.0"/>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </mesh>    
+    
+    <mesh file="rectangle.obj" material="road">
+      <transform>
+        <translate x="1.0" y="0.0" z="-1.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </mesh>
+    <mesh file="rectangle.obj" material="road">
+      <transform>
+        <translate x="-1.0" y="0.0" z="-1.0"/>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </mesh>
+
+    <mesh file="rectangle.obj" material="road">
+      <transform>
+        <translate x="1.0" y="0.0" z="1.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </mesh>
+    <mesh file="rectangle.obj" material="road">
+      <transform>
+        <translate x="-1.0" y="0.0" z="1.0"/>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </mesh>
+
+    <mesh file="rectangle.obj" material="road">
+      <transform>
+        <translate x="1.0" y="0.0" z="3.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </mesh>
+    <mesh file="rectangle.obj" material="road">
+      <transform>
+        <translate x="-1.0" y="0.0" z="3.0"/>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </mesh>
+
+    <mesh file="rectangle.obj" material="road">
+      <transform>
+        <translate x="1.0" y="0.0" z="5.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </mesh>
+    <mesh file="rectangle.obj" material="road">
+      <transform>
+        <translate x="-1.0" y="0.0" z="5.0"/>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </mesh>
+
+    <mesh file="rectangle.obj" material="road">
+      <transform>
+        <translate x="1.0" y="0.0" z="-3.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </mesh>
+    <mesh file="rectangle.obj" material="road">
+      <transform>
+        <translate x="-1.0" y="0.0" z="-3.0"/>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </mesh>
+
+  </objects>
+</scene>
