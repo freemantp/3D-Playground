@@ -7,7 +7,9 @@ SkyboxShader::SkyboxShader(CubeMapTexture* texture)
 	, texUnit(0)
 	, ShaderBase("skyboxShader")
 {
-	//hasMM = true;
+	hasVM = true;
+	hasPM = true;
+	hasMVP = false;
 }
 
 
@@ -23,4 +25,7 @@ void SkyboxShader::use(const Scene& scene, const glm::mat4& modelTransform)
 	//Bind cubemap texture to texture unit 0
 	texture->bindTexture(texUnit);
 	setUniform("CubeMapTex", texUnit);
+
+	setUniform("SkyboxSize",50);
+
 }

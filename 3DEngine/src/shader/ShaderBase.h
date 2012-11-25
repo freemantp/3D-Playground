@@ -34,7 +34,7 @@ protected:
 	void beforeUniformSet();
 	void afterUniformSet();
 
-	bool hasMVP, hasNM, hasMVM, hasVM, hasMM;
+	bool hasMVP, hasNM, hasMVM, hasVM, hasMM, hasPM;
 
 	string shaderName;
 	GLint currentProgram;

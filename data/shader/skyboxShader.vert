@@ -2,12 +2,19 @@
 
 layout (location = 0) in vec3 VertexPosition;
 
-uniform mat4 MVP;
+uniform mat4 ViewMatrix;
+uniform mat4 ProjectionMatrix;
+uniform int SkyboxSize;
 
 out vec3 VertexPos;
 
 void main()
 {
 	VertexPos = VertexPosition;
-    gl_Position = MVP * vec4( VertexPosition, 1.0 );	
+
+	mat4 viewM = ViewMatrix;
+	//Elliminate the translatonal part of the view matrix
+	viewM[3] = vec4(0,0,0,1);
+
+    gl_Position = ProjectionMatrix  * viewM * vec4( VertexPosition * SkyboxSize, 1.0 );	
 }
