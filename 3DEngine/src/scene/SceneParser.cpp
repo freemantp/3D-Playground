@@ -219,14 +219,28 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 
 bool SceneParser::parseSkybox(XMLElement* skyboxElem)
 {
-	string cubeMapBase = skyboxElem->Attribute("cubemapBase");
-	string type = skyboxElem->Attribute("type");
+	CubeMapTexture* texture;
 
-	CubeMapTexture* texture = new CubeMapTexture(Config::TEXTURE_BASE_PATH + cubeMapBase);
+	const char* path = skyboxElem->Attribute("cubeMapFile");
+	if( (path = skyboxElem->Attribute("cubeMapFile")) != NULL )
+	{
+		//Single file cube map
+		texture = new CubeMapTexture(Config::TEXTURE_BASE_PATH + path);
+	}
+	else if( (path = skyboxElem->Attribute("cubeMapBase")) != NULL )
+	{
+		//Cube map consisting of 6 files
+		string type = skyboxElem->Attribute("type");
+		texture = new CubeMapTexture(Config::TEXTURE_BASE_PATH + path, type);
+	}
+	else
+	{
+		return false;
+	}
 
 	Skybox* sb = new Skybox(texture);
 	sb->init();
-	generatedScene->addShape(sb);
+	generatedScene->setSkybox(sb);
 
 	return true;
 }

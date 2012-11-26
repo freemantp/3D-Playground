@@ -43,8 +43,9 @@
 
   </lights>
 
-  <skybox cubemapBase="cubeMap/skybox_texture.png" type="jpg"/>
-  
+  <skybox cubeMapFile="cubeMap/stormydays.jpg"/>
+  <!--<skybox cubeMapBase="cubeMap/desert_evening/desert_evening" type="jpg"/>-->
+
   <objects>
     
     <mesh file="Car/car.obj" material="car">

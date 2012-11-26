@@ -15,6 +15,7 @@
 #include "../camera/Camera.h"
 #include "../shader/ShaderBase.h"
 #include "../shape/Shape.h"
+#include "../shape/Skybox.h"
 #include "../light/lightModel.h"
 #include "../light/PointLight.h"
 #include "../light/SpotLight.h"
@@ -68,8 +69,18 @@ void Scene::addShape(Shape* shape)
 	objects.push_back(shape);
 }
 
+void Scene::setSkybox(Skybox* skybox)
+{
+	this->skybox = skybox;
+}
+
 void Scene::render()
 {		
+	
+	//Render skybox
+	skybox->render(*this);
+	
+	//Render objects
 	std::vector<Shape*>::iterator objIt;
 	for(objIt = objects.begin(); objIt != objects.end(); objIt++)
 	{

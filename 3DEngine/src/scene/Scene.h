@@ -13,6 +13,7 @@ class InspectionCameraAdapter;
 class FirstPersonCameraAdapter;
 class InputHandlerFactory;
 class LightModel;
+class Skybox;
 
 using std::vector;
 
@@ -25,6 +26,7 @@ public:
 	void render();
 
 	void addShape(Shape* shape);
+	void setSkybox(Skybox* skybox);
 	void addMaterial(ShaderBase* shape);
 	void setCamera(Camera* shape);
 	void addLight(PointLight* shape);
@@ -36,12 +38,14 @@ public:
 	LightModel lightModel;
 	vector<Shape*> objects;
 	vector<ShaderBase*> materials;
+	Skybox* skybox;
 	std::string name;
 
 protected:
 
 	InspectionCameraAdapter* mAdapter;
 	FirstPersonCameraAdapter* mAdapter2;
+	
 
 };
 
