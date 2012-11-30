@@ -108,7 +108,6 @@ Mesh* Util::loadModel(const string& path)
 		mesh->setTextureCoordinates(texCoordArray);
 	}
 
-
 	if( ! oj.hasNormals() )
 	{		
 		Warn("Normal data not present... computing normals");		

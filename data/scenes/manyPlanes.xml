@@ -48,6 +48,8 @@
     </light>
   </lights>
 
+  <skybox cubeMapFolder="cubeMap/desert_evening/" type="jpg"/>
+
  <objects>
   <mesh file="rectangle.obj" material="cobble">
     <transform>

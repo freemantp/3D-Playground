@@ -54,7 +54,7 @@ CubeMapTexture::CubeMapTexture(const std::string& cubeMapTexture)
 CubeMapTexture::CubeMapTexture(const std::string& textureBasePath, const std::string& imageExtension)
 {
 	const char* suffixes[] = {"posx","negx",  "posy","negy", "posz","negz" };
-	//const char* suffixes[] = {"rt","lf",  "up","dn", "bk","ft" };
+	//const char* suffixes[] = {"rt","lf",     "up","dn",     "bk","ft" };
 
 	GLuint targets[] = { 
 		GL_TEXTURE_CUBE_MAP_POSITIVE_X,
@@ -71,7 +71,7 @@ CubeMapTexture::CubeMapTexture(const std::string& textureBasePath, const std::st
 
 	for(int i=0; i < 6; i++)
 	{
-		std::string fileName = textureBasePath + "_" + suffixes[i] + "." + imageExtension;
+		std::string fileName = textureBasePath + "/" + suffixes[i] + "." + imageExtension;
 
 		int width = 0, height = 0;
 		unsigned char* imageData =  Util::loadTexture(fileName,width,height);
@@ -103,5 +103,5 @@ CubeMapTexture::~CubeMapTexture()
 void CubeMapTexture::bindTexture(int textureUnit)
 {
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
-	glBindTexture(GL_TEXTURE_2D, texObject);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, texObject);
 }

@@ -23,6 +23,7 @@
 using std::vector;
 
 Scene::Scene(InputHandlerFactory& ihf, Camera* cam)
+	: skybox(NULL)
 {
 
 	setCamera(cam);
@@ -92,7 +93,6 @@ void Scene::render()
 
 	if(renderLights)
 	{
-
 		std::vector<PointLight*>::const_iterator lIt;
 		for(lIt = lightModel.pointLights.cbegin(); lIt != lightModel.pointLights.cend(); lIt++)
 		{

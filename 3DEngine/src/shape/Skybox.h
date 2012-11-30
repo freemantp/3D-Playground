@@ -12,10 +12,12 @@ public:
 	Skybox(CubeMapTexture* texture);
 	~Skybox();
 
+	CubeMapTexture* texture;
+
 protected:
 	virtual void setShader(ShaderBase* shader);
 
-	CubeMapTexture* texture;
+	
 
 };
 

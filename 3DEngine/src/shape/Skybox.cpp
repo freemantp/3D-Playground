@@ -13,7 +13,6 @@ Skybox::Skybox(CubeMapTexture* texture)
 	setShader(new SkyboxShader(texture));
 }
 
-
 Skybox::~Skybox()
 {
 	delete shaderProgram;

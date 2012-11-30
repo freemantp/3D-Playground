@@ -16,8 +16,8 @@ public:
 
 protected:
 
-	enum TextureType {Albedo};
-	static const int numTextures = 1;
+	enum TextureType {Albedo, Environment};
+	static const int numTextures = 2;
 
 	GLuint texUnits[numTextures];
 	Texture* textures[numTextures];

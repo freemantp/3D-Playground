@@ -32,7 +32,9 @@ layout (std140) uniform Lights
 uniform int NumPointLights;
 uniform int NumSpotLights;
 uniform sampler2D AlbedoTex;
+uniform samplerCube EnvMapTex;
 uniform int	Shininess;
+uniform float EnvReflection; //[0,1]
 
 //Subroutine declaration
 subroutine uniform shadeModelType shadeModel;
@@ -43,6 +45,7 @@ subroutine uniform shadeModelType shadeModel;
 in vec3 Position;
 in vec3 Normal;
 in vec2 TexCoord;
+in vec3 ReflectDir;
 
 layout (location = 0) out vec4 FragColor;
 
@@ -95,7 +98,6 @@ void main()
 	vec4 albedo = texture(AlbedoTex, TexCoord);
 	vec4 texColor = albedo;
 
-
 	//Point lights
 	for(int i=0; i < NumPointLights; i++)
 	{	
@@ -121,5 +123,10 @@ void main()
 			FragColor += spotFactor * vec4( light.Color * shade(Position,normal,s,texColor.xyz), 1.0  );
 		}
 	}	
+
+	//Environment mapping
+	if(EnvReflection > 0) {
+		FragColor = mix (FragColor, texture(EnvMapTex, ReflectDir), EnvReflection);
+	}
 
 }

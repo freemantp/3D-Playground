@@ -227,7 +227,7 @@ bool SceneParser::parseSkybox(XMLElement* skyboxElem)
 		//Single file cube map
 		texture = new CubeMapTexture(Config::TEXTURE_BASE_PATH + path);
 	}
-	else if( (path = skyboxElem->Attribute("cubeMapBase")) != NULL )
+	else if( (path = skyboxElem->Attribute("cubeMapFolder")) != NULL )
 	{
 		//Cube map consisting of 6 files
 		string type = skyboxElem->Attribute("type");
