@@ -53,12 +53,31 @@ MeshRaw* ObjLoader::loadObj(istream& istr)
 
 	MeshRaw* newMesh = new MeshRaw();
 
+	string groupName;
+	int groupFaceStartIdx = 0;
+
 	std::string line;
 	while ( istr.good() )
 	{
 		getline (istr,line);
 		lineCount++;
 
+		if(line.substr(0,2) == "o ")
+		{
+			newMesh->name = line.substr(2);
+		}
+		if(line.substr(0,2) == "g " && faces.size() > 0)
+		{			
+			int groupEndIndex  = (int)faces.size() - 1;
+			MeshRaw::Range range(groupFaceStartIdx, groupEndIndex);
+
+			newMesh->addGroup(groupName,range);
+
+			//next group
+			groupFaceStartIdx = groupEndIndex + 1;
+			groupName = line.substr(2);
+
+		}
 		if(line.substr(0,2) == "v ")
 		{
 			istringstream s(line.substr(2));
@@ -97,11 +116,19 @@ MeshRaw* ObjLoader::loadObj(istream& istr)
 			parseIdx(s2,v2);
 			parseIdx(s3,v3);
 
-			faces.push_back(Tri(v1,v2,v3));
+			Tri t(v1,v2,v3);
+			faces.push_back(t);
 
 		}
 		
 	}
+
+	//Complete last index group
+	int groupEndIndex  = (int)faces.size() - 1;
+	MeshRaw::Range range(groupFaceStartIdx, groupEndIndex);
+
+	newMesh->addGroup(groupName,range);
+
 	cout << "Mesh loaded, f=" << faces.size() <<  " , v=" << vertices.size() / 3 << " , n=" << normals.size() << " ,tex coords=" << texCoords.size() << endl;
 
 	getVertexArray(newMesh->vertices);
@@ -141,33 +168,28 @@ bool ObjLoader::hasTexCoords()
 	return texCoords.size() > 0;
 }
 
+///Copy vertex data
 void ObjLoader::getVertexArray (vector<float>& vertexArray)
 {
 	vertexArray.resize(vertices.size() * 3, 0.0f);
-	
-	//Copy vertex data
-	for(int i = 0; i < vertices.size(); i++)
-	{
-		memcpy(&vertexArray[i*3], &vertices[i], 3 * sizeof(float));
-	}
-
-	//memcpy(&vertexArray[0], &vertices[0],  vertices.size() * 3 * sizeof(float));
-
+	memcpy(&vertexArray[0], &vertices[0],  vertices.size() * 3 * sizeof(float));
 }
 
-void ObjLoader::getIndexArray(vector<int>& indexArray)
+void ObjLoader::getIndexArray(vector<int>& indicesArray)
 {
-	indexArray.clear();
-	indexArray.reserve(faces.size() * 3);
+	size_t numIndices = faces.size() * 3;
+
+	indicesArray.reserve(numIndices);
 
 	vector<Tri>::const_iterator triIt;
 	for(triIt = faces.cbegin(); triIt != faces.cend(); triIt++)
 	{
 		Tri t = *triIt;
-		indexArray.push_back(t.v1.x);
-		indexArray.push_back(t.v2.x);
-		indexArray.push_back(t.v3.x);
+		indicesArray.push_back(t.v1.x);
+		indicesArray.push_back(t.v2.x);
+		indicesArray.push_back(t.v3.x);
 	}
+
 }
 
 void ObjLoader::copyVec4(float* target, const vec4& v)

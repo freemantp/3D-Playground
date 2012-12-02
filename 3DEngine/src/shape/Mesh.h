@@ -6,17 +6,19 @@
 
 //forward declarations
 class Scene;
+class MeshRaw;
 
 class Mesh : public Shape
 {
 public:
 	Mesh();
+	Mesh(MeshRaw* rawMesh);
 	virtual ~Mesh();
 
 	virtual void render(const Scene& scene) const;
 	virtual void init(); 
 
-	bool setPositions(const std::vector<float>& positions, const std::vector<int>& indices);
+	bool setPositions(const std::vector<float>& positions, const std::vector<int>& indices, std::vector<std::pair<int,int> >* indexGroups = NULL);
 	bool setNormals(const std::vector<float>& normals);
 	bool setTangents(const std::vector<float>& tangents);
 	bool setTextureCoordinates(const std::vector<float>& texCoords);
@@ -36,10 +38,15 @@ protected:
 
 	inline void setAttribPointer(const GLSLShader::VertexAttribute& attrib);
 
+	void selectIndexGroup(int groupNumber) const;
+
 	GLuint vaoHandle;
 	size_t numIndices;
 	GLuint* bufferObjects;
+	GLuint* indexBufferObjects;
 	VertexAttribData* vAttribData;
+
+	std::vector< std::pair<int,int> > ranges;
 
 	bool normalsSet,tangentsSet,colorsSet,texCoordsSet;
 

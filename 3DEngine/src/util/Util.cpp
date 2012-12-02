@@ -96,22 +96,9 @@ Mesh* Util::loadModel(const string& path)
 	if(rawMesh == NULL)
 		return NULL;
 
-	Mesh* mesh = new Mesh();;
+	Mesh* mesh = new Mesh(rawMesh);
 
-	mesh->setPositions(rawMesh->vertices,rawMesh->faces);
-
-	if( rawMesh->hasTexCoords() )
-		mesh->setTextureCoordinates(rawMesh->texCoords);
-	
-	if( rawMesh->hasNormals() )
-		mesh->setNormals(rawMesh->normals);
-	else	
-		Warn("Normal data not present!");		
-
-	if ( rawMesh->hasTangents() ) 
-		mesh->setTangents(rawMesh->tangents);
-	else
-		Warn("Tangent data not present!");
+	delete rawMesh;
 
 	clock_t end = clock();
 	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC * 1000;

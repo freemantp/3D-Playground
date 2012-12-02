@@ -2,6 +2,7 @@
 #include "Mesh.h"
 #include "../scene/Scene.h"
 #include "../shader/ShaderBase.h"
+#include "../util/MeshRaw.h"
 
 using namespace GLSLShader;
 
@@ -14,39 +15,44 @@ Mesh::Mesh()
 	, texCoordsSet(false)
 	, Shape() 
 {
-	// Create and set-up the vertex array object
-    glGenVertexArrays( 1, &vaoHandle );
+	init();
+}
 
-	int numBuffers = 6;
+Mesh::Mesh(MeshRaw* rawMesh)
+	: numIndices(0)
+	, initialized(false)
+	, normalsSet(false)
+	, tangentsSet(false)
+	, colorsSet(false)
+	, texCoordsSet(false)
+	, Shape() 
+{
 
-	//Init buffer names
-	bufferObjects = new GLuint[numBuffers];
-	memset(bufferObjects,0, numBuffers * sizeof(GLuint) );
+	init();
 
-	vAttribData = new VertexAttribData[numBuffers];
 
-	vAttribData[Position].channel = 0;
-	vAttribData[Position].size = 3;
 
-	vAttribData[Normal].channel = 1;
-	vAttribData[Normal].size = 3;
+	setPositions(rawMesh->vertices,rawMesh->faces, &rawMesh->groupRanges);
 
-	vAttribData[Tangent].channel = 2;
-	vAttribData[Tangent].size = 4;
+	if( rawMesh->hasTexCoords() )
+		setTextureCoordinates(rawMesh->texCoords);
+	
+	if( rawMesh->hasNormals() )
+		setNormals(rawMesh->normals);
+	else	
+		Warn("Normal data not present!");		
 
-	vAttribData[TextureCoord].channel = 3;
-	vAttribData[TextureCoord].size = 2;
+	if ( rawMesh->hasTangents() ) 
+		setTangents(rawMesh->tangents);
+	else
+		Warn("Tangent data not present!");
 
-	vAttribData[Color].channel = 4;
-	vAttribData[Color].size = 3;
-
-	vAttribData[Index].channel = 999; //unused
-	vAttribData[Index].size = 3;
 }
 
 Mesh::~Mesh() 
 {
 	delete[] bufferObjects;
+	delete[] indexBufferObjects;
 	delete[] vAttribData;
 }
 
@@ -85,41 +91,82 @@ void Mesh::setAttribPointer(const VertexAttribute& attrib)
 	glVertexAttribPointer( channel, size,  GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL );
 }
 
-bool Mesh::setPositions(const std::vector<float>& positions, const std::vector<int>& indices)
+bool Mesh::setPositions(const std::vector<float>& positions, const std::vector<int>& indices, vector<std::pair<int,int> > *indexGroups)
 {
+	bool success = true;
+
+
 	glBindVertexArray(vaoHandle);
-
+	
+	//Vertex buffer
 	glGenBuffers(1, &bufferObjects[Position]);
-	glGenBuffers(1, &bufferObjects[Index]);
 
+	//Allocate mem for index buffer handles
+	bool hasIndexGroups =  indexGroups != NULL;
+	int numIdxBuffers = hasIndexGroups ? (int)indexGroups->size() : 1;
+	indexBufferObjects = new GLuint[numIdxBuffers];	
+	glGenBuffers(numIdxBuffers, indexBufferObjects);
+	
+	//Copy index groups, if available
+	if(hasIndexGroups)
+		ranges = *indexGroups;
+
+	// Vertex positions
 	glBindBuffer(GL_ARRAY_BUFFER, bufferObjects[Position]);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferObjects[Index]);
-
-	bool success = false;
-
-	if(glIsBuffer(bufferObjects[Position]) && glIsBuffer(bufferObjects[Index]))
-	{		
+	if(glIsBuffer(bufferObjects[Position]))
+	{
 		glEnableVertexAttribArray(vAttribData[Position].channel);  
-		
-		// Vertex position
 		glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(float), &positions[0], GL_STATIC_DRAW);
 		setAttribPointer(Position);
-
-		// Indices
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(int), &indices[0], GL_STATIC_DRAW);
-		numIndices = indices.size();
-
-		success =  true;
 	} 
 	else 
 	{
-		glDeleteBuffers(1, &bufferObjects[Position]);
-		glDeleteBuffers(1, &bufferObjects[Index]);
+		success = false;
 	}
 
+	// Indices
+	for(int i = 0; i < numIdxBuffers; i++)
+	{
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[i]);
+		if(glIsBuffer(indexBufferObjects[i]))
+		{		
+			if(hasIndexGroups)
+			{
+				std::pair<int,int>& range = (*indexGroups)[i];
+				int numIndices = (range.second - range.first + 1) * 3;
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, numIndices * sizeof(int), &indices[range.first * 3], GL_STATIC_DRAW);
+			} 
+			else
+			{
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(int), &indices[0], GL_STATIC_DRAW);
+				numIndices = indices.size(); //this is three times the number of triangles to be rendered
+			}
+		} 
+		else
+		{
+			success = false;
+			break;
+		}
+	}
+
+	//Clean up buffers if sth went wrong
+	if(!success)
+	{		
+		glDeleteBuffers(1, &bufferObjects[Position]);
+		glDeleteBuffers(numIdxBuffers, indexBufferObjects);
+	}
+
+	//Bind first index buffer  (1st group) per default
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[0]);
 	glBindVertexArray(0);
 
 	return success;
+}
+
+void Mesh::selectIndexGroup(int groupNumber) const
+{
+	glBindVertexArray(vaoHandle);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[groupNumber]);
 }
 
 bool Mesh::setNormals(const std::vector<float>& normals)
@@ -175,8 +222,6 @@ bool Mesh::setTangents(const std::vector<float>& tangents)
 	tangentsSet = success;
 	return success;
 }
-
-
 
 bool Mesh::setTextureCoordinates(const std::vector<float>& texCoords)
 {
@@ -235,7 +280,39 @@ bool Mesh::setColors(const std::vector<float>& colors)
 
 void Mesh::init()
 {
-	initialized = true;
+	if( ! initialized )
+	{
+		// Create and set-up the vertex array object
+		glGenVertexArrays( 1, &vaoHandle );
+
+		int numBuffers = 6;
+
+		//Init buffer names
+		bufferObjects = new GLuint[numBuffers];		
+		memset(bufferObjects,0, numBuffers * sizeof(GLuint) );
+
+		vAttribData = new VertexAttribData[numBuffers];
+
+		vAttribData[Position].channel = 0;
+		vAttribData[Position].size = 3;
+
+		vAttribData[Normal].channel = 1;
+		vAttribData[Normal].size = 3;
+
+		vAttribData[Tangent].channel = 2;
+		vAttribData[Tangent].size = 4;
+
+		vAttribData[TextureCoord].channel = 3;
+		vAttribData[TextureCoord].size = 2;
+
+		vAttribData[Color].channel = 4;
+		vAttribData[Color].size = 3;
+
+		vAttribData[Index].channel = 999; //unused
+		vAttribData[Index].size = 3;
+
+		initialized = true;
+	}
 }
 
 void Mesh::setShader(ShaderBase* shader)
@@ -287,7 +364,23 @@ void Mesh::render(const Scene& scene) const
 	}
 	
 	glBindVertexArray(vaoHandle);
-	glDrawElements(GL_TRIANGLES, (GLsizei)numIndices, GL_UNSIGNED_INT, (GLvoid*)NULL);
+
+	//Render individual index groups if available
+	int numRanges = (int)ranges.size();
+	if(numRanges > 1)
+	{
+		for(int i=0 ; i < numRanges; i++)
+		{			
+			selectIndexGroup(i);
+			int numElems = (ranges[i].second - ranges[i].first + 1) * 3;
+			glDrawElements(GL_TRIANGLES, (GLsizei)numElems, GL_UNSIGNED_INT, (GLvoid*)NULL);
+			//TODO: use glDrawRangeElements for better performance
+		}
+	}
+	else 
+	{
+		glDrawElements(GL_TRIANGLES, (GLsizei)numIndices, GL_UNSIGNED_INT, (GLvoid*)NULL);
+	}
 
 	glBindVertexArray(0);
 

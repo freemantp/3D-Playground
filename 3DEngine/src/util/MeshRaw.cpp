@@ -9,9 +9,8 @@ MeshRaw::MeshRaw(void)
 
 MeshRaw::~MeshRaw(void)
 {
+	
 }
-
-
 
 bool MeshRaw::hasNormals()
 {
@@ -26,4 +25,10 @@ bool MeshRaw::hasTangents()
 bool MeshRaw::hasTexCoords()
 {
 	return texCoords.size() > 0;
+}
+
+
+void MeshRaw::addGroup(string& name, Range idxRange)
+{
+	groupRanges.push_back(idxRange);
 }

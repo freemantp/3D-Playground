@@ -34,7 +34,7 @@ public:
 
 private:
 
-	void getIndexArray  (std::vector<int>& indexArray);
+	void getIndexArray  (std::vector<int>& indicesArray);
 	void getVertexArray  (std::vector<float>& vertexArray);
 	void getNormalArray  (std::vector<float>& normalArray);
 	void getTangentArray  (std::vector<float>& tangentArray);
