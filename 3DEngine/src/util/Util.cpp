@@ -6,6 +6,7 @@
 #include "../shape/Box.h"
 #include <ctime>
 #include <IL/il.h>
+#include "MeshRaw.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -90,48 +91,27 @@ Mesh* Util::loadModel(const string& path)
 	ObjLoader oj;
 	clock_t begin = clock();
 	
-	if(!oj.loadObjFile(path))
+	MeshRaw* rawMesh = oj.loadObjFile(path);
+
+	if(rawMesh == NULL)
 		return NULL;
 
 	Mesh* mesh = new Mesh();;
-	vector<float> vertexArray;
-	vector<int> indexArray;
 
-	oj.getVertexArray(vertexArray);
-	oj.getIndexArray(indexArray);
-	mesh->setPositions(vertexArray,indexArray);
+	mesh->setPositions(rawMesh->vertices,rawMesh->faces);
 
-	if( oj.hasTexCoords() )
-	{
-		vector<float> texCoordArray;
-		oj.getTexCoordArray(texCoordArray);
-		mesh->setTextureCoordinates(texCoordArray);
-	}
+	if( rawMesh->hasTexCoords() )
+		mesh->setTextureCoordinates(rawMesh->texCoords);
+	
+	if( rawMesh->hasNormals() )
+		mesh->setNormals(rawMesh->normals);
+	else	
+		Warn("Normal data not present!");		
 
-	if( ! oj.hasNormals() )
-	{		
-		Warn("Normal data not present... computing normals");		
-		if(! oj.computeNormals() )
-			Error("Could not compute normals");
-	}	
-
-	if ( oj.computeTangents() ) 
-	{		
-		vector<float> tangentArray;
-		oj.getTangentArray(tangentArray);
-		mesh->setTangents(tangentArray);
-	}
+	if ( rawMesh->hasTangents() ) 
+		mesh->setTangents(rawMesh->tangents);
 	else
-	{
-		Error("Could not compute tangents");
-	}
-		
-	vector<float> normalArray;
-	oj.getNormalArray(normalArray);
-	mesh->setNormals(normalArray);
-
-
-	//mesh->setColors(vertexArray);
+		Warn("Tangent data not present!");
 
 	clock_t end = clock();
 	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC * 1000;

@@ -58,6 +58,7 @@
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\texture\CubeMapTexture.h" />
     <ClInclude Include="src\texture\Texture.h" />
+    <ClInclude Include="src\util\MeshRaw.h" />
     <ClInclude Include="src\util\ObjLoader.h" />
     <ClInclude Include="src\util\Util.h" />
   </ItemGroup>
@@ -96,6 +97,7 @@
     </ClCompile>
     <ClCompile Include="src\texture\CubeMapTexture.cpp" />
     <ClCompile Include="src\texture\Texture.cpp" />
+    <ClCompile Include="src\util\MeshRaw.cpp" />
     <ClCompile Include="src\util\ObjLoader.cpp" />
     <ClCompile Include="src\util\Util.cpp" />
   </ItemGroup>

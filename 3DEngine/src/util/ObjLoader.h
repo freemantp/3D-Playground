@@ -11,22 +11,18 @@ using glm::vec3;
 using glm::vec4;
 using glm::ivec3;
 
+class MeshRaw;
+
 class ObjLoader
 {
 public:
 
-	bool loadObjFile(const std::string& path);
-	bool loadObj(std::istream& istr);
+	MeshRaw* loadObjFile(const std::string& path);
+	MeshRaw* loadObj(std::istream& istr);
 
 	bool computeNormals();
 	bool computeTangents();
 	
-	void getIndexArray  (std::vector<int>& indexArray);
-	void getVertexArray  (std::vector<float>& vertexArray);
-	void getNormalArray  (std::vector<float>& normalArray);
-	void getTangentArray  (std::vector<float>& tangentArray);
-	void getTexCoordArray(std::vector<float>& texCoordArray);
-
 	int getNumVertices() { return (int)vertices.size();};
 	int getNumNormals() { return (int)normals.size();};
 	int getNumTangents() { return (int)tangents.size();};
@@ -37,6 +33,12 @@ public:
 	bool hasTexCoords();
 
 private:
+
+	void getIndexArray  (std::vector<int>& indexArray);
+	void getVertexArray  (std::vector<float>& vertexArray);
+	void getNormalArray  (std::vector<float>& normalArray);
+	void getTangentArray  (std::vector<float>& tangentArray);
+	void getTexCoordArray(std::vector<float>& texCoordArray);
 
 	void processVertex(const ivec3& v, bool copyNormals, bool copyTexCoords);
 

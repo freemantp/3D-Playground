@@ -4,6 +4,8 @@
 #include <regex>
 #include <sstream>
 #include <glm/core/func_geometric.hpp>
+#include "MeshRaw.h"
+#include "../error.h"
 
 using namespace std;
 using glm::vec2;
@@ -45,9 +47,11 @@ void ObjLoader::parseIdx(string& s,ivec3& indices)
 	indices[idxPtr++] = number - 1;
 }
 
-bool ObjLoader::loadObj(istream& istr)
+MeshRaw* ObjLoader::loadObj(istream& istr)
 {	
 	int lineCount = 0;
+
+	MeshRaw* newMesh = new MeshRaw();
 
 	std::string line;
 	while ( istr.good() )
@@ -99,7 +103,27 @@ bool ObjLoader::loadObj(istream& istr)
 		
 	}
 	cout << "Mesh loaded, f=" << faces.size() <<  " , v=" << vertices.size() / 3 << " , n=" << normals.size() << " ,tex coords=" << texCoords.size() << endl;
-	return true;
+
+	getVertexArray(newMesh->vertices);
+	getIndexArray(newMesh->faces);
+
+	if( hasTexCoords() )
+		getTexCoordArray(newMesh->texCoords);
+
+	if( ! hasNormals() )
+	{		
+		Warn("Normal data not present... computing normals");		
+		if(! computeNormals() )
+			Error("Could not compute normals");
+	}
+	getNormalArray(newMesh->normals);
+
+	if ( computeTangents() ) 
+		getTangentArray(newMesh->tangents);
+	else
+		Error("Could not compute tangents");
+
+	return newMesh;
 }
 
 bool ObjLoader::hasNormals()
@@ -398,24 +422,21 @@ bool ObjLoader::computeTangents()
 
 }
 
-bool ObjLoader::loadObjFile(const string& path)
+MeshRaw* ObjLoader::loadObjFile(const string& path)
 {
 	ifstream myfile;
 	myfile.open(path);
 
-	bool success = true;
+	MeshRaw* newMesh = NULL;
 
 	std::string line;
 	if (myfile.is_open())
 	{
-		success = loadObj(myfile);
+		newMesh = loadObj(myfile);
 		myfile.close();
 	}
 	else 
-	{
 		cerr << "Unable to open OBJ file: "  << path << endl;
-		success = false;
-	}
 
-	return success;
+	return newMesh;
 }
