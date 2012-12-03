@@ -7,8 +7,7 @@
 using namespace GLSLShader;
 
 Mesh::Mesh() 
-	: numIndices(0)
-	, initialized(false)
+	: initialized(false)
 	, normalsSet(false)
 	, tangentsSet(false)
 	, colorsSet(false)
@@ -19,8 +18,7 @@ Mesh::Mesh()
 }
 
 Mesh::Mesh(MeshRaw* rawMesh)
-	: numIndices(0)
-	, initialized(false)
+	: initialized(false)
 	, normalsSet(false)
 	, tangentsSet(false)
 	, colorsSet(false)
@@ -29,8 +27,6 @@ Mesh::Mesh(MeshRaw* rawMesh)
 {
 
 	init();
-
-
 
 	setPositions(rawMesh->vertices,rawMesh->faces, &rawMesh->groupRanges);
 
@@ -46,7 +42,6 @@ Mesh::Mesh(MeshRaw* rawMesh)
 		setTangents(rawMesh->tangents);
 	else
 		Warn("Tangent data not present!");
-
 }
 
 Mesh::~Mesh() 
@@ -95,7 +90,6 @@ bool Mesh::setPositions(const std::vector<float>& positions, const std::vector<i
 {
 	bool success = true;
 
-
 	glBindVertexArray(vaoHandle);
 	
 	//Vertex buffer
@@ -107,9 +101,15 @@ bool Mesh::setPositions(const std::vector<float>& positions, const std::vector<i
 	indexBufferObjects = new GLuint[numIdxBuffers];	
 	glGenBuffers(numIdxBuffers, indexBufferObjects);
 	
-	//Copy index groups, if available
+	//Copy index groups if available, otherwise create one
 	if(hasIndexGroups)
+	{
 		ranges = *indexGroups;
+	}
+	else
+	{
+		ranges.push_back(std::pair<int,int>(0, (int)indices.size() / 3 -1));
+	}
 
 	// Vertex positions
 	glBindBuffer(GL_ARRAY_BUFFER, bufferObjects[Position]);
@@ -130,17 +130,9 @@ bool Mesh::setPositions(const std::vector<float>& positions, const std::vector<i
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[i]);
 		if(glIsBuffer(indexBufferObjects[i]))
 		{		
-			if(hasIndexGroups)
-			{
-				std::pair<int,int>& range = (*indexGroups)[i];
-				int numIndices = (range.second - range.first + 1) * 3;
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, numIndices * sizeof(int), &indices[range.first * 3], GL_STATIC_DRAW);
-			} 
-			else
-			{
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(int), &indices[0], GL_STATIC_DRAW);
-				numIndices = indices.size(); //this is three times the number of triangles to be rendered
-			}
+			std::pair<int,int>& range = ranges[i];
+			int numIndices = (range.second - range.first + 1) * 3;
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, numIndices * sizeof(int), &indices[range.first * 3], GL_STATIC_DRAW);
 		} 
 		else
 		{
@@ -161,12 +153,6 @@ bool Mesh::setPositions(const std::vector<float>& positions, const std::vector<i
 	glBindVertexArray(0);
 
 	return success;
-}
-
-void Mesh::selectIndexGroup(int groupNumber) const
-{
-	glBindVertexArray(vaoHandle);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[groupNumber]);
 }
 
 bool Mesh::setNormals(const std::vector<float>& normals)
@@ -367,19 +353,15 @@ void Mesh::render(const Scene& scene) const
 
 	//Render individual index groups if available
 	int numRanges = (int)ranges.size();
-	if(numRanges > 1)
-	{
-		for(int i=0 ; i < numRanges; i++)
-		{			
-			selectIndexGroup(i);
-			int numElems = (ranges[i].second - ranges[i].first + 1) * 3;
-			glDrawElements(GL_TRIANGLES, (GLsizei)numElems, GL_UNSIGNED_INT, (GLvoid*)NULL);
-			//TODO: use glDrawRangeElements for better performance
-		}
-	}
-	else 
-	{
-		glDrawElements(GL_TRIANGLES, (GLsizei)numIndices, GL_UNSIGNED_INT, (GLvoid*)NULL);
+
+	for(int i=0 ; i < numRanges; i++)
+	{			
+		//Bind i-th index buffer
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[i]);
+			
+		//Here glDrawRangeElements is used to limit the amount of vertex data to be prefetched
+		int numElems = (ranges[i].second - ranges[i].first + 1) * 3;
+		glDrawRangeElements(GL_TRIANGLES, ranges[i].first, ranges[i].second, (GLsizei)numElems, GL_UNSIGNED_INT, (GLvoid*)NULL);
 	}
 
 	glBindVertexArray(0);

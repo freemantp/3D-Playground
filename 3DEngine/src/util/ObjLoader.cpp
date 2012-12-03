@@ -53,7 +53,9 @@ MeshRaw* ObjLoader::loadObj(istream& istr)
 
 	MeshRaw* newMesh = new MeshRaw();
 
-	string groupName;
+	string groupName;	
+	string mtlLib;
+	string currentMtl;
 	int groupFaceStartIdx = 0;
 
 	std::string line;
@@ -66,15 +68,19 @@ MeshRaw* ObjLoader::loadObj(istream& istr)
 		{
 			newMesh->name = line.substr(2);
 		}
-		if(line.substr(0,2) == "g " && faces.size() > 0)
+		if(line.substr(0,2) == "g ")
 		{			
-			int groupEndIndex  = (int)faces.size() - 1;
-			MeshRaw::Range range(groupFaceStartIdx, groupEndIndex);
+			if(faces.size() > 0)
+			{
+				int groupEndIndex  = (int)faces.size() - 1;
+				MeshRaw::Range range(groupFaceStartIdx, groupEndIndex);
 
-			newMesh->addGroup(groupName,range);
+				newMesh->addGroup(groupName,currentMtl,range);
+				
+				//next group
+				groupFaceStartIdx = groupEndIndex + 1;
+			}
 
-			//next group
-			groupFaceStartIdx = groupEndIndex + 1;
 			groupName = line.substr(2);
 
 		}
@@ -120,14 +126,21 @@ MeshRaw* ObjLoader::loadObj(istream& istr)
 			faces.push_back(t);
 
 		}
-		
+		else if(line.substr(0,7) == "mtllib ")
+		{	
+			mtlLib = line.substr(7);
+		}
+		else if(line.substr(0,7) == "usemtl ")
+		{	
+			currentMtl= line.substr(7);
+		}
 	}
 
 	//Complete last index group
 	int groupEndIndex  = (int)faces.size() - 1;
 	MeshRaw::Range range(groupFaceStartIdx, groupEndIndex);
 
-	newMesh->addGroup(groupName,range);
+	newMesh->addGroup(groupName,currentMtl, range);
 
 	cout << "Mesh loaded, f=" << faces.size() <<  " , v=" << vertices.size() / 3 << " , n=" << normals.size() << " ,tex coords=" << texCoords.size() << endl;
 

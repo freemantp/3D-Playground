@@ -27,8 +27,9 @@ bool MeshRaw::hasTexCoords()
 	return texCoords.size() > 0;
 }
 
-
-void MeshRaw::addGroup(string& name, Range idxRange)
+void MeshRaw::addGroup(string& name, string& material, Range idxRange)
 {
 	groupRanges.push_back(idxRange);
+	groupNames.push_back(name);
+	groupMaterial.push_back(material);
 }

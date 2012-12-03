@@ -38,10 +38,8 @@ protected:
 
 	inline void setAttribPointer(const GLSLShader::VertexAttribute& attrib);
 
-	void selectIndexGroup(int groupNumber) const;
-
 	GLuint vaoHandle;
-	size_t numIndices;
+	//size_t numIndices;
 	GLuint* bufferObjects;
 	GLuint* indexBufferObjects;
 	VertexAttribData* vAttribData;

@@ -32,13 +32,13 @@
 
  <objects>
  
-   <!-- <mesh file="head/headtri.obj" material="glossy">
+   <mesh file="head/headtri.obj" material="glossy">
       <position x="0" y="0" z="0"/>
       <transform>
         <translate x="0.0" y="0.55" z="0.0"/>
         <scale x="2.0" y="2.0" z="2.0"/>
       </transform>
-    </mesh>-->
+    </mesh>
    
     <mesh file="rectangle.obj" material="dull">
        <transform>

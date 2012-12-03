@@ -79,7 +79,8 @@ void Scene::render()
 {		
 	
 	//Render skybox
-	skybox->render(*this);
+	if(skybox != NULL)
+		skybox->render(*this);
 	
 	//Render objects
 	std::vector<Shape*>::iterator objIt;
