@@ -20,6 +20,7 @@ public:
 	static Mesh* loadModel(const std::string& path);
 	static unsigned char* loadTexture(const std::string& texturePath, int& width, int& height);
 	static bool loadCubeMapTexture(const std::string& texturePath, unsigned char* imgPointers[], int& width, int& height);
+	static std::string Util::extractBaseFolder(std::string path);
 
 	static Mesh* getDragon();
 	static Mesh* getHorse();

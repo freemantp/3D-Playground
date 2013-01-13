@@ -6,6 +6,7 @@
 #include <glm/core/func_geometric.hpp>
 #include "MeshRaw.h"
 #include "../error.h"
+#include "Util.h"
 
 using namespace std;
 using glm::vec2;
@@ -128,6 +129,10 @@ MeshRaw* ObjLoader::loadObj(istream& istr)
 		}
 		else if(line.substr(0,7) == "mtllib ")
 		{	
+			
+			string input = "/ab/fdfg/dfdf";
+			std::cout << Util::extractBaseFolder(input) << std::endl;
+			
 			mtlLib = line.substr(7);
 		}
 		else if(line.substr(0,7) == "usemtl ")

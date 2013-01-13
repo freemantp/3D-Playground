@@ -5,6 +5,7 @@
 #include "../util/ObjLoader.h"
 #include "../shape/Box.h"
 #include <ctime>
+#include <regex>
 #include <IL/il.h>
 #include "MeshRaw.h"
 
@@ -211,4 +212,12 @@ unsigned char* Util::loadTexture(const std::string& texturePath, int& width, int
 		Error("Could not load texture: " + texturePath);
 
 	return NULL;
+}
+
+std::string Util::extractBaseFolder(std::string path)
+{
+       static std::regex rgx("(.*(/|\\\\))+");
+       std::smatch result;
+       std::regex_search(path, result, rgx);
+       return result[0];
 }
