@@ -10,6 +10,7 @@ UniformBuffer::UniformBuffer(const GLSLProgram* program, std::string bufferName,
 	
 	GLuint programHandle = program->getProgramHandle();
 	GLuint blockIdx = glGetUniformBlockIndex(programHandle,bufferName.c_str());
+	assert(blockIdx !=  GL_INVALID_INDEX);
 
 	//Get mem size the uniform block requires
 	GLint blockSize;
@@ -43,6 +44,7 @@ UniformBuffer::UniformBuffer(const GLSLProgram* program, std::string bufferName,
 
 	glBindBuffer(GL_UNIFORM_BUFFER, uboHandle);
 	glBufferData(GL_UNIFORM_BUFFER, blockSize, blockBuffer,GL_DYNAMIC_DRAW);
+	assert(glGetError() != GL_INVALID_ENUM || glGetError() != GL_INVALID_VALUE);
 
 	delete[] blockBuffer;
 }

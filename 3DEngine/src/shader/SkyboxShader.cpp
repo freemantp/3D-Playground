@@ -10,6 +10,8 @@ SkyboxShader::SkyboxShader(CubeMapTexture* texture)
 	hasVM = true;
 	hasPM = true;
 	hasMVP = false;
+	hasNM = false;
+	hasMVM = false;
 }
 
 

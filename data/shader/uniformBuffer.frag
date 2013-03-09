@@ -1,6 +1,7 @@
 #version 400
 
-// ----------------- declarations -----------------
+/* The sole purpose of this shader is to be able to read parameters 
+   for uniform buffer creation */
 
 const int numLights = 4;
 
@@ -28,11 +29,34 @@ layout (std140) uniform Lights
 	SpotLight  SpotLights[numLights];
 } sceneLights;
 
-//End uniform block declarations
+uniform int NumPointLights;
+uniform int NumSpotLights;
+
+// ----------------- in / out -----------------
+
 
 layout (location = 0) out vec4 FragColor;
 
-void main()
+// ----------------- main -----------------
+void main() 
 {
-	FragColor = vec4(0);
+
+	/* This code is just there so that the compiler doesn't try to optimize stuff away*/
+
+	//Point lights
+	for(int i=0;  i < NumPointLights; i++)
+	{
+		PointLight light = sceneLights.PointLights[i];
+		FragColor += vec4(light.Color,1);
+	}
+
+	//Spot lights
+	for(int i=0;  i < NumSpotLights; i++)
+	{
+		SpotLight light = sceneLights.SpotLights[i];
+		FragColor = vec4(light.Color,1);
+		
+	}
+	
+
 }
