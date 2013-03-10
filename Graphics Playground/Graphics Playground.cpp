@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include <ctime>
 #include <string>
+
 #include "scene/Scene.h"
 #include "GlutInputHandler.h"
 #include "input/WindowEventHandler.h"
 #include "GlutInputHandlerFactory.H"
-
 #include "common.h"
 #include "util/Util.h"
 #include "scene/SceneParser.h"
@@ -27,7 +27,7 @@ bool InitializeGlut(int, char*[]);
 void InitWindow();
 void RenderFunction();
 
-Scene* s;
+Scene::Ptr s;
 //string sceneName = "headScene.xml";
 string sceneName = "manyPlanes.xml";
 //string sceneName = "road.xml";

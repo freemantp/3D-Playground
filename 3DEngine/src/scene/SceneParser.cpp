@@ -36,8 +36,7 @@ SceneParser::SceneParser(InputHandlerFactory& factory)
 
 }
 
-
-Scene* SceneParser::getScene()
+Scene::Ptr SceneParser::getScene()
 {
 	return generatedScene;
 }
@@ -69,7 +68,7 @@ bool SceneParser::parse(const char* xmlDocument)
 			
 			Camera* cam = NULL;
 			parseOk &= parseCamera(&cam,cameraElement);
-			generatedScene = new Scene(factory,cam);
+			generatedScene.reset(new Scene(factory,cam));
 			generatedScene->name = sceneName;
 
 			//Materials

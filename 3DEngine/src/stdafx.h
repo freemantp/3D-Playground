@@ -8,6 +8,9 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
+
+#include <memory>
+
 // TODO: reference additional headers your program requires here
 #include "common.h"
 #include "error.h"

@@ -13,17 +13,19 @@ TimeManager& TimeManager::getInstance()
 	return TimeManager::instance;
 }
 
-void TimeManager::addTimeObserver(TimeObserver* observer)
+void TimeManager::addTimeObserver(TimeObserver::Ptr observer)
 {
 	timeObservers.push_back(observer);
 }
 
 void TimeManager::handleTick()
 {
-	std::vector<TimeObserver*>::const_iterator cit;
-	for(cit = timeObservers.cbegin(); cit != timeObservers.cend(); cit++) 
+	for(auto cit = timeObservers.cbegin(); cit != timeObservers.cend(); cit++) 
 	{
-		(*cit)->timeUpdate(0);
+		if(auto tObserver = cit->lock())
+		{
+			tObserver->timeUpdate(0);
+		}
 	}
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 #include "../light/LightModel.h"
 #include "../animation/TimeObserver.h"
 
@@ -15,11 +16,14 @@ class InputHandlerFactory;
 class LightModel;
 class Skybox;
 
-using std::vector;
+class Scene;
 
 class Scene : public TimeObserver
 {
-public:
+public:		
+
+	typedef std::shared_ptr<Scene> Ptr;
+
 	Scene(InputHandlerFactory& ihf, Camera* cam);
 	~Scene();
 
@@ -36,8 +40,8 @@ public:
 
 	Camera* activeCamera;
 	LightModel lightModel;
-	vector<Shape*> objects;
-	vector<ShaderBase*> materials;
+	std::vector<Shape*> objects;
+	std::vector<ShaderBase*> materials;
 	Skybox* skybox;
 	std::string name;
 
