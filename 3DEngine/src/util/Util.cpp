@@ -87,7 +87,7 @@ void Util::printUniforms(const ShaderBase* shader)
 	std::cout << std::endl;
 }
 
-Mesh* Util::loadModel(const string& path)
+Mesh_ptr Util::loadModel(const string& path)
 {
 	ObjLoader oj;
 	clock_t begin = clock();
@@ -97,7 +97,7 @@ Mesh* Util::loadModel(const string& path)
 	if(rawMesh == NULL)
 		return NULL;
 
-	Mesh* mesh = new Mesh(rawMesh);
+	Mesh_ptr mesh(new Mesh(rawMesh));
 
 	delete rawMesh;
 
@@ -108,32 +108,32 @@ Mesh* Util::loadModel(const string& path)
 	return mesh;
 }
 
-Mesh* Util::getDragon()
+Mesh_ptr Util::getDragon()
 {
-	Mesh* model = Util::loadModel("../data/models/dragon.obj");
+	Mesh_ptr model = Util::loadModel("../data/models/dragon.obj");
 	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.85f,0));
 	model->worldTransform = glm::scale(model->worldTransform,glm::vec3(8,8,8));
 	return model;
 }
 
-Mesh* Util::getHorse()
+Mesh_ptr Util::getHorse()
 {
-	Mesh* model = Util::loadModel("../data/models/horse.obj");
+	Mesh_ptr model = Util::loadModel("../data/models/horse.obj");
 	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.3f,0));
 	model->worldTransform = glm::rotate(model->worldTransform, 270.0f, glm::vec3(0,1,0));
 	return model;
 }
 
-Mesh* Util::getElephant()
+Mesh_ptr Util::getElephant()
 {
-	Mesh* model = Util::loadModel("../data/models/elephant.obj");
+	Mesh_ptr model = Util::loadModel("../data/models/elephant.obj");
 	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.5f,0));
 	return model;
 }
 
-Mesh* Util::getBox()
+Mesh_ptr Util::getBox()
 {
-	Box* box = new Box();
+	Box_ptr box = Box_ptr(new Box());
 	box->init();
 
 	box->worldTransform = glm::translate(box->worldTransform,glm::vec3(-0.5,-0.5f,-0.5));

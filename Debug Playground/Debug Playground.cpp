@@ -57,7 +57,7 @@ void init(int argc, char* argv[])
 	fprintf( stdout, "INFO: OpenGL Version: %s\n", glGetString(GL_VERSION) );
 }
 
-Mesh* loadModel()
+Mesh_ptr loadModel()
 {
 	ObjLoader oj;
 	clock_t begin = clock();
@@ -67,7 +67,7 @@ Mesh* loadModel()
 	if(rawMesh == NULL)
 		return NULL;
 
-	Mesh* mesh = new Mesh();;
+	Mesh_ptr mesh = Mesh_ptr(new Mesh());
 
 	mesh->setPositions(rawMesh->vertices,rawMesh->faces);
 
@@ -124,13 +124,9 @@ int main(int argc, char* argv[])
 	MyInputHandlerFactory myF;
 	Scene s(myF,new PerspectiveCamera(60));
 
-	Mesh* m = loadModel();
+	Mesh_ptr m = loadModel();
 	m->setShader(&shader);
-
 	m->render(s);
-
-	if(m != NULL)
-		delete m;
 
 	getchar();
 	return 0;	

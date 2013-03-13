@@ -48,12 +48,12 @@ Scene::Scene(InputHandlerFactory& ihf, Camera* cam)
 
 Scene::~Scene()
 {
-	//Delete objects
-	std::vector<Shape*>::iterator objIt;
-	for(objIt = objects.begin(); objIt != objects.end(); objIt++)
-	{
-		delete *objIt;
-	}
+	////Delete objects
+	//std::vector<Shape_ptr>::iterator objIt;
+	//for(objIt = objects.begin(); objIt != objects.end(); objIt++)
+	//{
+	//	delete *objIt;
+	//}
 
 	//Delete materials
 	std::vector<ShaderBase*>::iterator mIt;
@@ -65,12 +65,12 @@ Scene::~Scene()
 	delete activeCamera;
 }
 
-void Scene::addShape(Shape* shape)
+void Scene::addShape(Shape_ptr shape)
 {
 	objects.push_back(shape);
 }
 
-void Scene::setSkybox(Skybox* skybox)
+void Scene::setSkybox(Skybox_ptr skybox)
 {
 	this->skybox = skybox;
 }
@@ -83,10 +83,10 @@ void Scene::render()
 		skybox->render(*this);
 	
 	//Render objects
-	std::vector<Shape*>::iterator objIt;
+	std::vector<Shape_ptr>::iterator objIt;
 	for(objIt = objects.begin(); objIt != objects.end(); objIt++)
 	{
-		Shape* s = *objIt;
+		Shape_ptr s = *objIt;
 		s->render(*this);
 	}
 

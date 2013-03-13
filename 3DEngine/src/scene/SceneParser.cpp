@@ -36,7 +36,7 @@ SceneParser::SceneParser(InputHandlerFactory& factory)
 
 }
 
-Scene::Ptr SceneParser::getScene()
+Scene_ptr SceneParser::getScene()
 {
 	return generatedScene;
 }
@@ -237,7 +237,7 @@ bool SceneParser::parseSkybox(XMLElement* skyboxElem)
 		return false;
 	}
 
-	Skybox* sb = new Skybox(texture);
+	Skybox_ptr sb = Skybox_ptr(new Skybox(texture));
 	sb->init();
 	generatedScene->setSkybox(sb);
 
@@ -255,7 +255,7 @@ bool SceneParser::parseObjects(XMLElement* objects)
 	do
 	{
 		string type = objeElem->Name();
-		Shape* s;
+		Shape_ptr s;
 
 		if(type == "mesh")
 		{
@@ -266,7 +266,7 @@ bool SceneParser::parseObjects(XMLElement* objects)
 		}
 		else if(type == "box")
 		{
-			s = new Box();
+			s = Box_ptr(new Box());
 		}
 		else 
 		{

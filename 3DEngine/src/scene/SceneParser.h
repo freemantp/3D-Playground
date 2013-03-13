@@ -3,13 +3,15 @@
 #include <tinyxml2.h>
 #include <map>
 #include <string>
-#include "Scene.h"
+#include "../util/SharedPointer.h"
 
 using tinyxml2::XMLElement;
 
 class ShaderBase;
 class Camera;
 class InputHandlerFactory;
+
+SHARED_PTR_CLASS_DECL(Scene);
 
 class SceneParser
 {
@@ -18,7 +20,7 @@ public:
 	SceneParser(InputHandlerFactory& factory);
 
 	bool parse(const char* xmlDocument);
-	std::shared_ptr<Scene> getScene();
+	Scene_ptr getScene();
 
 protected:
 
@@ -36,7 +38,7 @@ protected:
 	bool parseTransforms(glm::mat4& tMatrix, XMLElement* transformElem);
 
 	std::map<std::string, ShaderBase*> shaders;
-	std::shared_ptr<Scene> generatedScene;
+	Scene_ptr generatedScene;
 
 	InputHandlerFactory& factory;
 

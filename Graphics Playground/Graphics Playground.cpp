@@ -27,7 +27,7 @@ bool InitializeGlut(int, char*[]);
 void InitWindow();
 void RenderFunction();
 
-Scene::Ptr s;
+Scene_ptr s;
 //string sceneName = "headScene.xml";
 string sceneName = "manyPlanes.xml";
 //string sceneName = "road.xml";

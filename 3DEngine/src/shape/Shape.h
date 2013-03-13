@@ -1,10 +1,14 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include "../util/SharedPointer.h"
+
 
 //forward declarations
 class Scene;
 class ShaderBase;
+
+SHARED_PTR_CLASS_DECL(Shape);
 
 class Shape
 {

@@ -5,14 +5,16 @@
 #include <vector>
 
 //forward declarations
-class Scene;
-class MeshRaw;
+SHARED_PTR_CLASS_DECL(MeshRaw);
+SHARED_PTR_CLASS_DECL(Mesh);
 
 class Mesh : public Shape
 {
 public:
+
 	Mesh();
 	Mesh(MeshRaw* rawMesh);
+
 	virtual ~Mesh();
 
 	virtual void render(const Scene& scene) const;

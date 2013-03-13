@@ -13,7 +13,7 @@ TimeManager& TimeManager::getInstance()
 	return TimeManager::instance;
 }
 
-void TimeManager::addTimeObserver(TimeObserver::Ptr observer)
+void TimeManager::addTimeObserver(TimeObserver_ptr observer)
 {
 	timeObservers.push_back(observer);
 }

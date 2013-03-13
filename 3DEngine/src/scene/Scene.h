@@ -1,13 +1,12 @@
 #pragma once
 
 #include <vector>
-#include <memory>
+#include "../util/SharedPointer.h"
 #include "../light/LightModel.h"
 #include "../animation/TimeObserver.h"
 
 //fwd decls
 class Camera;
-class Shape;
 class PointLight;
 class ShaderBase;
 class InspectionCameraAdapter;
@@ -16,21 +15,21 @@ class InputHandlerFactory;
 class LightModel;
 class Skybox;
 
-class Scene;
+SHARED_PTR_CLASS_DECL(Scene);
+SHARED_PTR_CLASS_DECL(Shape);
+SHARED_PTR_CLASS_DECL(Skybox);
 
 class Scene : public TimeObserver
 {
 public:		
-
-	typedef std::shared_ptr<Scene> Ptr;
 
 	Scene(InputHandlerFactory& ihf, Camera* cam);
 	~Scene();
 
 	void render();
 
-	void addShape(Shape* shape);
-	void setSkybox(Skybox* skybox);
+	void addShape(Shape_ptr shape);
+	void setSkybox(Skybox_ptr skybox);
 	void addMaterial(ShaderBase* shape);
 	void setCamera(Camera* shape);
 	void addLight(PointLight* shape);
@@ -40,9 +39,9 @@ public:
 
 	Camera* activeCamera;
 	LightModel lightModel;
-	std::vector<Shape*> objects;
+	std::vector<Shape_ptr> objects;
 	std::vector<ShaderBase*> materials;
-	Skybox* skybox;
+	Skybox_ptr skybox;
 	std::string name;
 
 protected:

@@ -2,8 +2,9 @@
 
 #include <glm/glm.hpp>
 #include "Light.h"
+#include "../util/SharedPointer.h"
 
-class Shape;
+SHARED_PTR_CLASS_DECL(Shape)
 class ConstShader;
 
 class PointLight : public Light
@@ -18,6 +19,6 @@ public:
 protected:
 
 	ConstShader* visShader;
-	Shape* visMesh;
+	Shape_ptr visMesh;
 };
 

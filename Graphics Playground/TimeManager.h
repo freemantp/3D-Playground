@@ -1,9 +1,9 @@
 #pragma once
 
 #include <vector>
-#include <memory>
+#include "util/SharedPointer.h"
 
-class TimeObserver;
+SHARED_PTR_CLASS_DECL(TimeObserver);
 
 class TimeManager
 {
@@ -12,13 +12,13 @@ public:
 	static TimeManager& getInstance();
 	static void tick();
 
-	virtual void addTimeObserver(std::shared_ptr<TimeObserver> observer);
+	virtual void addTimeObserver(TimeObserver_ptr observer);
 
 protected:
 
 	void handleTick();
 
-	std::vector<std::weak_ptr<TimeObserver>> timeObservers;
+	std::vector<TimeObserver_wptr> timeObservers;
 	static TimeManager instance;
 
 private:

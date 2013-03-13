@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\animation\TimeObserver.h" />
     <ClInclude Include="src\camera\Camera.h" />
     <ClInclude Include="src\camera\CameraAdapter.h" />
@@ -60,6 +61,7 @@
     <ClInclude Include="src\texture\Texture.h" />
     <ClInclude Include="src\util\MeshRaw.h" />
     <ClInclude Include="src\util\ObjLoader.h" />
+    <ClInclude Include="src\util\SharedPointer.h" />
     <ClInclude Include="src\util\Util.h" />
   </ItemGroup>
   <ItemGroup>

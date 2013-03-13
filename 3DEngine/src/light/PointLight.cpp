@@ -23,7 +23,6 @@ PointLight::PointLight(void)
 
 PointLight::~PointLight(void)
 {
-	delete visMesh;
 	delete visShader;
 }
 
