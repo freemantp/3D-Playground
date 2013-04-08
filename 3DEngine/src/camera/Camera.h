@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include "../input/ViewportObserver.h"
+#include "../util/SharedPointer.h"
 
 using glm::mat4;
 using glm::vec3;
@@ -12,6 +13,8 @@ struct CameraFrame
 	vec3 viewDir;
 	vec3 sideways;
 };
+
+SHARED_PTR_CLASS_DECL(Camera);
 
 class Camera : public ViewportObserver
 {

@@ -122,7 +122,9 @@ int main(int argc, char* argv[])
 	PhongTextureShader shader("crate.jpg");
 
 	MyInputHandlerFactory myF;
-	Scene s(myF,new PerspectiveCamera(60));
+	Camera_ptr cam(new PerspectiveCamera(60));
+
+	Scene s(myF,cam);
 
 	Mesh_ptr m = loadModel();
 	m->setShader(&shader);

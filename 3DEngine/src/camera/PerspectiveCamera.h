@@ -4,8 +4,9 @@
 
 using glm::vec2;
 
-class PerspectiveCamera :
-	public Camera
+SHARED_PTR_CLASS_DECL(PerspectiveCamera);
+
+class PerspectiveCamera : public Camera
 {
 public:
 	PerspectiveCamera(float fov);

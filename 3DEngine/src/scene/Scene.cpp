@@ -22,12 +22,11 @@
 
 using std::vector;
 
-Scene::Scene(InputHandlerFactory& ihf, Camera* cam)
+Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 	: skybox(NULL)
 {
 
 	setCamera(cam);
-	activeCamera = cam;
 
 	InputHandler& inputHandler = ihf.getInputHandler();
 	WindowEventHandler& winEventHandler = WindowEventHandler::getInstance();
@@ -43,7 +42,7 @@ Scene::Scene(InputHandlerFactory& ihf, Camera* cam)
 		inputHandler.addKeyboardObserver(mAdapter2);
 	}
 
-	winEventHandler.addViewportObserver(cam);
+	winEventHandler.addViewportObserver(cam.get());
 }
 
 Scene::~Scene()
@@ -62,7 +61,6 @@ Scene::~Scene()
 		delete *mIt;
 	}
 
-	delete activeCamera;
 }
 
 void Scene::addShape(Shape_ptr shape)
@@ -154,7 +152,7 @@ void Scene::timeUpdate(long time)
 	activeCamera->setPosition(vec3(newPos.x, newPos.y, newPos.z));
 	activeCamera->updateViewMatrix();*/
 
-	lightModel.updateUniformBuffer(activeCamera);
+	lightModel.updateUniformBuffer(activeCamera.get());
 }
 
 void Scene::addMaterial(ShaderBase* material)
@@ -162,7 +160,7 @@ void Scene::addMaterial(ShaderBase* material)
 	materials.push_back(material);
 }
 
-void Scene::setCamera(Camera* cam)
+void Scene::setCamera(Camera_ptr cam)
 {
 	activeCamera = cam;
 }

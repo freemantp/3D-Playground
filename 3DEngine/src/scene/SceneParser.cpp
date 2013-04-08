@@ -65,9 +65,9 @@ bool SceneParser::parse(const char* xmlDocument)
 
 			if( cameraElement == NULL)
 				return false;
-			
-			Camera* cam = NULL;
-			parseOk &= parseCamera(&cam,cameraElement);
+
+			Camera_ptr cam;
+			parseOk &= parseCamera(cam,cameraElement);
 			generatedScene.reset(new Scene(factory,cam));
 			generatedScene->name = sceneName;
 
@@ -365,7 +365,7 @@ bool SceneParser::parseTransforms(mat4& tMatrix, tinyxml2::XMLElement* transform
 
 }
 
-bool SceneParser::parseCamera(Camera** cam, tinyxml2::XMLElement* camElement)
+bool SceneParser::parseCamera(Camera_ptr& cam, tinyxml2::XMLElement* camElement)
 {
 	bool success = true;
 	string type = camElement->Attribute("type");
@@ -377,7 +377,7 @@ bool SceneParser::parseCamera(Camera** cam, tinyxml2::XMLElement* camElement)
 		if( ! ( success &= getFloatAttrib(camElement,"fov",fov) )  )
 			return false;
 
-		*cam = new PerspectiveCamera(fov);
+		cam.reset(new PerspectiveCamera(fov));
 	}
 	else //unknown camera type
 	{
@@ -390,9 +390,9 @@ bool SceneParser::parseCamera(Camera** cam, tinyxml2::XMLElement* camElement)
 	success &= getVector3( camElement->FirstChildElement("target"),target);
 	success &= getVector3( camElement->FirstChildElement("up"),up);
 
-	(*cam)->setPosition(pos);
-	(*cam)->setTarget(target);
-	(*cam)->setUpVector(up);
+	cam->setPosition(pos);
+	cam->setTarget(target);
+	cam->setUpVector(up);
 
 	return success;
 

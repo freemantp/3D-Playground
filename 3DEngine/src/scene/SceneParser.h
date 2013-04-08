@@ -8,9 +8,9 @@
 using tinyxml2::XMLElement;
 
 class ShaderBase;
-class Camera;
 class InputHandlerFactory;
 
+SHARED_PTR_CLASS_DECL(Camera);
 SHARED_PTR_CLASS_DECL(Scene);
 
 class SceneParser
@@ -33,7 +33,7 @@ protected:
 	bool parseMaterials(XMLElement* materialElement);
 	bool parseObjects(XMLElement* materialElement);
 	bool parseSkybox(XMLElement* skybox);
-	bool parseCamera(Camera** cam, XMLElement* materialElement);
+	bool parseCamera(Camera_ptr& cam, XMLElement* materialElement);
 	bool parseLights(XMLElement* materialElement);
 	bool parseTransforms(glm::mat4& tMatrix, XMLElement* transformElem);
 
