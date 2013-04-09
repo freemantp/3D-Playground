@@ -62,7 +62,7 @@ void GlutInputHandler::handleDrag(const glm::vec2& position)
 {
 	for(auto cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++) 
 	{
-		(*cit)->onMouseDrag(position);
+		(*cit)->OnMouseDrag(position);
 	}
 }
 
@@ -70,7 +70,7 @@ void GlutInputHandler::handleMove(const glm::vec2& position)
 {
 	for(auto cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++) 
 	{
-		(*cit)->onMouseMove(position);
+		(*cit)->OnMouseMove(position);
 	}
 }
 
@@ -94,7 +94,7 @@ void GlutInputHandler::handleClick(int button, int state, const glm::vec2& posit
 
 	for(auto cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++)
 	{
-		(*cit)->onMouseClick(mButton, bState, position);
+		(*cit)->OnMouseClick(mButton, bState, position);
 	}
 }
 
@@ -102,7 +102,7 @@ void GlutInputHandler::handleWheel(int wheel, int direction, const glm::vec2& po
 {
 	for(auto cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++)
 	{
-		(*cit)->onMouseWheel(direction > 0 ? Input::UP : Input::DOWN, position);	
+		(*cit)->OnMouseWheel(direction > 0 ? Input::UP : Input::DOWN, position);	
 	}
 }
 
@@ -152,7 +152,7 @@ void GlutInputHandler::handleKey(unsigned char key, const glm::vec2& position)
 
 	for(auto cit = keyboardObservers.cbegin(); cit != keyboardObservers.cend(); cit++)
 	{
-		(*cit)->onKey(k,m,position);
+		(*cit)->OnKey(k,m,position);
 	}
 }
 
@@ -172,6 +172,6 @@ void GlutInputHandler::handleSpecialKey(int key,const glm::vec2& position)
 
 	for(auto cit = keyboardObservers.cbegin(); cit != keyboardObservers.cend(); cit++)
 	{
-		(*cit)->onKey(k,m,position);
+		(*cit)->OnKey(k,m,position);
 	}
 }

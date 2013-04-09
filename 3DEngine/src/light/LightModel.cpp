@@ -32,12 +32,12 @@ LightModel::~LightModel()
 	
 }
 
-UniformBuffer_ptr LightModel::getLightsBuffer() const
+UniformBuffer_ptr LightModel::GetLightsBuffer() const
 {
 	return lightsBuffer;
 }
 
-void LightModel::updateUniformBuffer(Camera_cptr cam)
+void LightModel::UpdateUniformBuffer(Camera_cptr cam)
 {
 	
 	glm::mat3 directionTransformMatrix	= glm::transpose(glm::inverse(glm::mat3(cam->viewMatrix)));
@@ -49,8 +49,8 @@ void LightModel::updateUniformBuffer(Camera_cptr cam)
 		std::stringstream lightName;
 		lightName << "Lights.PointLights[" << i << "].";
 	
-		lightsBuffer->setElement(lightName.str() + "Position", cam->viewMatrix * pl->getPosition() );
-		lightsBuffer->setElement(lightName.str() + "Color", pl->getColor());
+		lightsBuffer->setElement(lightName.str() + "Position", cam->viewMatrix * pl->GetPosition() );
+		lightsBuffer->setElement(lightName.str() + "Color", pl->GetColor());
 	}
 
 	for(int i=0; i < spotLights.size(); i++)
@@ -60,12 +60,12 @@ void LightModel::updateUniformBuffer(Camera_cptr cam)
 		std::stringstream lightName;
 		lightName << "Lights.SpotLights[" << i << "].";
 	
-		lightsBuffer->setElement(lightName.str() + "Position", cam->viewMatrix * sl->getPosition() );
-		lightsBuffer->setElement(lightName.str() + "Color", sl->getColor());
+		lightsBuffer->setElement(lightName.str() + "Position", cam->viewMatrix * sl->GetPosition() );
+		lightsBuffer->setElement(lightName.str() + "Color", sl->GetColor());
 
-		lightsBuffer->setElement(lightName.str() + "Direction", directionTransformMatrix * sl->getDirection());
-		lightsBuffer->setElement(lightName.str() + "CutoffAngle", sl->getCutoffAngle());
-		lightsBuffer->setElement(lightName.str() + "Exponent", sl->getExponent());
+		lightsBuffer->setElement(lightName.str() + "Direction", directionTransformMatrix * sl->GetDirection());
+		lightsBuffer->setElement(lightName.str() + "CutoffAngle", sl->GetCutoffAngle());
+		lightsBuffer->setElement(lightName.str() + "Exponent", sl->GetExponent());
 	}
 
 }

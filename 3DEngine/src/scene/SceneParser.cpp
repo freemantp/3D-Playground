@@ -388,9 +388,9 @@ bool SceneParser::parseCamera(Camera_ptr& cam, tinyxml2::XMLElement* camElement)
 	success &= getVector3( camElement->FirstChildElement("target"),target);
 	success &= getVector3( camElement->FirstChildElement("up"),up);
 
-	cam->setPosition(pos);
-	cam->setTarget(target);
-	cam->setUpVector(up);
+	cam->SetPosition(pos);
+	cam->SetTarget(target);
+	cam->SetUpVector(up);
 
 	return success;
 
@@ -412,8 +412,8 @@ bool SceneParser::parseLights(tinyxml2::XMLElement* lightsGroupElement)
 			getVector3(lightElem->FirstChildElement("position"),pos);
 			getColorVector3(lightElem->FirstChildElement("color"),color);
 			
-			plight->setPosition(vec4(pos,1.0));
-			plight->setColor(color);
+			plight->SetPosition(vec4(pos,1.0));
+			plight->SetColor(color);
 
 			generatedScene->addLight(plight);
 			
@@ -432,8 +432,8 @@ bool SceneParser::parseLights(tinyxml2::XMLElement* lightsGroupElement)
 
 			SpotLight_ptr slight(new SpotLight(direction,cutoff,exponent));
 
-			slight->setPosition(vec4(pos,1.0));
-			slight->setColor(color);
+			slight->SetPosition(vec4(pos,1.0));
+			slight->SetColor(color);
 
 			generatedScene->addLight(slight);
 		}

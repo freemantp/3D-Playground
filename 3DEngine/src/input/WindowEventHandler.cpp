@@ -34,6 +34,6 @@ void WindowEventHandler::handleResize(int width, int height)
 	//std::vector<ViewportObserver*>::const_iterator cit;
 	for(auto cit = viewportObservers.cbegin(); cit != viewportObservers.cend(); cit++) 
 	{
-		(*cit)->viewportSizeChanged(width,height);
+		(*cit)->ViewportSizeChanged(width,height);
 	}
 }

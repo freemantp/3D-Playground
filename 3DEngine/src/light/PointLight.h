@@ -13,9 +13,9 @@ class PointLight : public Light
 public:
 	PointLight(void);
 	~PointLight(void);
-	virtual void render(const Scene& scene);
-	virtual void setPosition(glm::vec4& pos);
-	virtual void setColor(glm::vec3& color);
+	virtual void Render(const Scene& scene);
+	virtual void SetPosition(glm::vec4& pos);
+	virtual void SetColor(glm::vec3& color);
 
 protected:
 

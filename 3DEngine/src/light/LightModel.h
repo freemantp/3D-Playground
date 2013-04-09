@@ -25,8 +25,8 @@ public:
 	vector<PointLight_ptr> pointLights;
 	vector<SpotLight_ptr> spotLights;
 
-	UniformBuffer_ptr getLightsBuffer() const;
-	void updateUniformBuffer(Camera_cptr cam);
+	UniformBuffer_ptr GetLightsBuffer() const;
+	void UpdateUniformBuffer(Camera_cptr cam);
 
 protected:
 	

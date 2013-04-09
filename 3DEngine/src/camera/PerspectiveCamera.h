@@ -12,14 +12,14 @@ public:
 	PerspectiveCamera(float fov);
 	~PerspectiveCamera();
 
-	void setFov(float fov);
-	void setAspectRatio(float aspectRatio);
+	void SetFov(float fov);
+	void SetAspectRatio(float aspectRatio);
 
-	virtual void viewportSizeChanged(int width, int height);
+	virtual void ViewportSizeChanged(int width, int height);
 
 protected:
 
-	virtual void updateProjectionMatrix();
+	virtual void UpdateProjectionMatrix();
 
 	float fov;
 	float aspectRatio;

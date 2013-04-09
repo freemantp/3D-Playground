@@ -96,17 +96,17 @@ void Scene::render()
 	{
 		for(auto pl_it = lightModel->pointLights.cbegin(); pl_it != lightModel->pointLights.cend(); pl_it++)
 		{
-			(*pl_it)->render(*this);
+			(*pl_it)->Render(*this);
 		}
 
 		for(auto sl_it = lightModel->spotLights.cbegin(); sl_it != lightModel->spotLights.cend(); sl_it++)
 		{
-			(*sl_it)->render(*this);
+			(*sl_it)->Render(*this);
 		}
 	}
 }
 
-void Scene::timeUpdate(long time)
+void Scene::TimeUpdate(long time)
 {
 	//Animate lights
 	int numPLs = (int)lightModel->spotLights.size();
@@ -117,10 +117,10 @@ void Scene::timeUpdate(long time)
 		
 		pl = lightModel->spotLights[0];
 		glm::mat4 lightTransform1 = (glm::rotate(mat4(1.0f), 1.0f, glm::vec3(0.0f,1.0f,0.0f)));
-		pl->setPosition(lightTransform1 * pl->getPosition());
+		pl->SetPosition(lightTransform1 * pl->GetPosition());
 
-		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform1))) * pl->getDirection();
-		pl->setDirection(newDir);
+		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform1))) * pl->GetDirection();
+		pl->SetDirection(newDir);
 		
 	}
 
@@ -128,30 +128,30 @@ void Scene::timeUpdate(long time)
 	{
 		pl = lightModel->spotLights[1];
 		glm::mat4 lightTransform2 = (glm::rotate(mat4(1.0f), 0.5f, glm::normalize(glm::vec3(0.5f,1.0f,0.0f))));
-		pl->setPosition(lightTransform2 * pl->getPosition());
+		pl->SetPosition(lightTransform2 * pl->GetPosition());
 	
-		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform2))) * pl->getDirection();
-		pl->setDirection(newDir);
+		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform2))) * pl->GetDirection();
+		pl->SetDirection(newDir);
 	}
 
 	if(numPLs > 2)
 	{
 		pl = lightModel->spotLights[2];
 		glm::mat4 lightTransform3 = (glm::rotate(mat4(1.0f), 2.0f, glm::vec3(1.0f,0.0f,0.0f)));
-		pl->setPosition(lightTransform3 * pl->getPosition());
+		pl->SetPosition(lightTransform3 * pl->GetPosition());
 	
-		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform3))) * pl->getDirection();
-		pl->setDirection(newDir);
+		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform3))) * pl->GetDirection();
+		pl->SetDirection(newDir);
 	}
 
 	/*glm::mat4 translateM = glm::translate(glm::mat4(1.0f), activeCamera->getFrame().viewDir * 0.01f); 
-	glm::vec4 oldPos = glm::vec4( activeCamera->getPosition(),1.0);
+	glm::vec4 oldPos = glm::vec4( activeCamera->GetPosition(),1.0);
 	glm::vec4 newPos = translateM * oldPos;
 
 	activeCamera->setPosition(vec3(newPos.x, newPos.y, newPos.z));
 	activeCamera->updateViewMatrix();*/
 
-	lightModel->updateUniformBuffer(activeCamera);
+	lightModel->UpdateUniformBuffer(activeCamera);
 }
 
 void Scene::addMaterial(ShaderBase* material)

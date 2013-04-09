@@ -48,7 +48,7 @@ void PhongTextureShader::use(const Scene& scene, const glm::mat4& modelTransform
 		CubeMapTexture_ptr envTex =  scene.skybox->texture;
 		envTex->bindTexture(texUnits[Environment]);
 		setUniform("EnvMapTex",texUnits[Environment]);
-		setUniform("CameraPosWorld",scene.activeCamera->getPosition() );
+		setUniform("CameraPosWorld",scene.activeCamera->GetPosition() );
 		setUniform("EnvReflection",0.5f);
 	}
 }

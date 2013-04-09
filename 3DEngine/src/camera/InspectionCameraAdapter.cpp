@@ -20,18 +20,18 @@ InspectionCameraAdapter::~InspectionCameraAdapter(void)
 }
 
 
-void InspectionCameraAdapter::onMouseMove(const glm::vec2& position)
+void InspectionCameraAdapter::OnMouseMove(const glm::vec2& position)
 {
 	
 }
 
-void InspectionCameraAdapter::onMouseDrag(const glm::vec2& screenPos)
+void InspectionCameraAdapter::OnMouseDrag(const glm::vec2& screenPos)
 {	
 	//std:: cout <<"sp, x=" << screenPos.x << " y=" << screenPos.y << std::endl ;
 	
 	float degreeRatio = 0.25f;
-	const CameraFrame& frame = cam->getFrame();
-	const vec3& target = cam->getTarget();
+	const CameraFrame& frame = cam->GetFrame();
+	const vec3& target = cam->GetTarget();
 
 	//direction of mouse movement on projetion plane
 	vec2 screenDelta = screenPos - lastScreenPos;
@@ -50,31 +50,31 @@ void InspectionCameraAdapter::onMouseDrag(const glm::vec2& screenPos)
 	transformM = glm::translate(transformM,-target);
 
 	//Transform camera position
-	glm::vec4 newPos = transformM * glm::vec4(cam->getPosition(), 1.0f);
+	glm::vec4 newPos = transformM * glm::vec4(cam->GetPosition(), 1.0f);
 	glm::vec4 newUp = transformM * glm::vec4( frame.up, 0.0f);
-	cam->setOrientation(vec3(newPos.x,newPos.y,newPos.z), vec3(newUp.x,newUp.y,newUp.z));
+	cam->SetOrientation(vec3(newPos.x,newPos.y,newPos.z), vec3(newUp.x,newUp.y,newUp.z));
 
 	lastScreenPos = screenPos;
 }
 
-void InspectionCameraAdapter::onMouseClick(Input::MouseButton button, Input::Direction state , const glm::vec2& screenPos)
+void InspectionCameraAdapter::OnMouseClick(Input::MouseButton button, Input::Direction state , const glm::vec2& screenPos)
 {
 	//std:: cout << "click button=" << button << " state=" << state << " x=" << screenPos.x << " y=" << screenPos.y << std::endl;
 	lastScreenPos = screenPos;
 }
 
-void InspectionCameraAdapter::onMouseWheel(Input::Direction direction, const glm::vec2& screenPos)
+void InspectionCameraAdapter::OnMouseWheel(Input::Direction direction, const glm::vec2& screenPos)
 {
-	vec3 dir = cam->getTarget() - cam->getPosition();
+	vec3 dir = cam->GetTarget() - cam->GetPosition();
 	bool up = direction == Input::UP;
 
 	float len = glm::length(dir);
 
-	if(len <= cam->getNearPlane() && up || len >= cam->getFarPlane() && !up)
+	if(len <= cam->GetNearPlane() && up || len >= cam->GetFarPlane() && !up)
 		return;
 	
 	dir = glm::normalize(dir) * 0.2f * (up ? 1.0f : -1.0f);
-	cam->setPosition(cam->getPosition() + dir);
+	cam->SetPosition(cam->GetPosition() + dir);
 
 	lastScreenPos = screenPos;
 }

@@ -32,7 +32,7 @@ public:
 	void addLight(PointLight_ptr shape);
 	void addLight(SpotLight_ptr light);
 
-	virtual void timeUpdate(long time);
+	virtual void TimeUpdate(long time);
 
 	Camera_ptr activeCamera;
 	LightModel_ptr lightModel;

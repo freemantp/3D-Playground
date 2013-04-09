@@ -16,13 +16,13 @@ public:
 
 	Light();
 
-	virtual void render(const Scene& scene) = 0;
+	virtual void Render(const Scene& scene) = 0;
 
-	virtual	vec4& getPosition();
-	virtual void setPosition(vec4& pos);
+	virtual	vec4& GetPosition();
+	virtual void SetPosition(vec4& pos);
 
-	virtual vec3& getColor();
-	virtual void setColor(vec3& pos);
+	virtual vec3& GetColor();
+	virtual void SetColor(vec3& pos);
 
 protected:
 	glm::vec3 color;

@@ -12,5 +12,5 @@ class KeyboardObserver
 {
 public:
 
-	virtual void onKey(const Input::KEY key, const Input::MODIFIER mod, const glm::vec2& position) = 0;
+	virtual void OnKey(const Input::KEY key, const Input::MODIFIER mod, const glm::vec2& position) = 0;
 };

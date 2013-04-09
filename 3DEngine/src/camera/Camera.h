@@ -22,26 +22,26 @@ public:
 
 	Camera(float nearPlane, float farPlane);
 
-	mat4 getViewProjectionTransform() const;
+	mat4 GetViewProjectionTransform() const;
 
-	void updateViewMatrix();
-	virtual void updateProjectionMatrix() = 0;
-	virtual void viewportSizeChanged(int width, int height) = 0;
+	void UpdateViewMatrix();
+	virtual void UpdateProjectionMatrix() = 0;
+	virtual void ViewportSizeChanged(int width, int height) = 0;
 
-	const vec3& getPosition() const;
-	const vec3& getTarget() const;
-	const CameraFrame& getFrame() const;
-	float getNearPlane() const;
-	float getFarPlane() const;
+	const vec3& GetPosition() const;
+	const vec3& GetTarget() const;
+	const CameraFrame& GetFrame() const;
+	float GetNearPlane() const;
+	float GetFarPlane() const;
 
-	void setPosition(const vec3& pos);
-	void setTarget(const vec3& pos);
-	void setUpVector(const vec3& pos);
-	void setOrientation(const vec3& pos, const vec3& up);
-	void setOrientation2(const vec3& target, const vec3& up);
+	void SetPosition(const vec3& pos);
+	void SetTarget(const vec3& pos);
+	void SetUpVector(const vec3& pos);
+	void SetOrientation(const vec3& pos, const vec3& up);
+	void SetOrientation2(const vec3& target, const vec3& up);
 
-	void setNearPlane(float near);
-	void setFarPlane(float fov);
+	void SetNearPlane(float near);
+	void SetFarPlane(float fov);
 
 	mat4 viewMatrix;
 	mat4 projectionMatrix;

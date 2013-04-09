@@ -26,21 +26,21 @@ PointLight::~PointLight(void)
 
 }
 
-void PointLight::setPosition(vec4& pos)
+void PointLight::SetPosition(vec4& pos)
 {
-	Light::setPosition(pos);
+	Light::SetPosition(pos);
 	
 	visMesh->worldTransform = glm::translate(mat4(1.0),vec3(pos.x,pos.y,pos.z));
 	visMesh->worldTransform = glm::scale(visMesh->worldTransform,vec3(0.05));
 }
 
-void PointLight::setColor(vec3& color)
+void PointLight::SetColor(vec3& color)
 {
-	Light::setColor(color);
+	Light::SetColor(color);
 	visShader->color = color;
 }
 
-void PointLight::render(const Scene& scene)
+void PointLight::Render(const Scene& scene)
 {
 	visMesh->render(scene);
 }

@@ -18,10 +18,10 @@ public:
 	InspectionCameraAdapter(Camera_ptr cam);
 	~InspectionCameraAdapter();
 
-	virtual void onMouseMove(const glm::vec2& position);
-	virtual void onMouseDrag(const glm::vec2& position);
-	virtual void onMouseClick(Input::MouseButton button, Input::Direction state, const  glm::vec2& position);
-	virtual void onMouseWheel(Input::Direction direction, const glm::vec2& position);
+	virtual void OnMouseMove(const glm::vec2& position);
+	virtual void OnMouseDrag(const glm::vec2& position);
+	virtual void OnMouseClick(Input::MouseButton button, Input::Direction state, const  glm::vec2& position);
+	virtual void OnMouseWheel(Input::Direction direction, const glm::vec2& position);
 
 protected:
 

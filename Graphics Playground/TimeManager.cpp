@@ -24,7 +24,7 @@ void TimeManager::handleTick()
 	{
 		if(auto tObserver = cit->lock())
 		{
-			tObserver->timeUpdate(0);
+			tObserver->TimeUpdate(0);
 		}
 	}
 }

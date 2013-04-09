@@ -10,12 +10,12 @@ public:
 	
 	SpotLight(const vec3& direction, float cutoffAngle, float exponent);
 
-	virtual vec3& getDirection();
-	virtual void setDirection(const vec3& dir);
-	virtual float getCutoffAngle();
-	virtual void setCutoffAngle(float cutoff);
-	virtual void setExponent(float exponent);
-	virtual float getExponent();
+	virtual vec3& GetDirection();
+	virtual void SetDirection(const vec3& dir);
+	virtual float GetCutoffAngle();
+	virtual void SetCutoffAngle(float cutoff);
+	virtual void SetExponent(float exponent);
+	virtual float GetExponent();
 
 protected:
 

@@ -16,8 +16,8 @@ class MouseObserver
 {
 public:
 
-	virtual void onMouseMove(const glm::vec2& position) = 0;
-	virtual void onMouseDrag(const glm::vec2& position) = 0;
-	virtual void onMouseClick(Input::MouseButton button, Input::Direction state, const glm::vec2& position) = 0;
-	virtual void onMouseWheel(Input::Direction direction, const glm::vec2& position) = 0;
+	virtual void OnMouseMove(const glm::vec2& position) = 0;
+	virtual void OnMouseDrag(const glm::vec2& position) = 0;
+	virtual void OnMouseClick(Input::MouseButton button, Input::Direction state, const glm::vec2& position) = 0;
+	virtual void OnMouseWheel(Input::Direction direction, const glm::vec2& position) = 0;
 };

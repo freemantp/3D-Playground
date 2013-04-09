@@ -12,33 +12,33 @@ SpotLight::SpotLight(const vec3& direction, float cutoffAngle, float exponent)
 }
 
 
-vec3& SpotLight::getDirection() 
+vec3& SpotLight::GetDirection() 
 { 
 	return direction; 
 }
 
-void SpotLight::setDirection(const vec3& dir) 
+void SpotLight::SetDirection(const vec3& dir) 
 { 
 	direction = glm::normalize(dir); 
 }
 
-float SpotLight::getCutoffAngle() 
+float SpotLight::GetCutoffAngle() 
 { 
 	return cutoffAngle; 
 }
 
 
-void SpotLight::setCutoffAngle(float cutoff) 
+void SpotLight::SetCutoffAngle(float cutoff) 
 { 
 	this->cutoffAngle = cutoff; 
 }
 
-void SpotLight::setExponent(float exponent) 
+void SpotLight::SetExponent(float exponent) 
 { 
 	this->exponent = exponent; 
 }
 
-float SpotLight::getExponent() { 
+float SpotLight::GetExponent() { 
 	return exponent; 
 }
 

@@ -6,22 +6,22 @@ Light::Light() : color(vec3(1,1,1))
 
 }
 
-vec4& Light::getPosition()
+vec4& Light::GetPosition()
 {
 	return position;
 }
 
-void Light::setPosition(vec4& pos)
+void Light::SetPosition(vec4& pos)
 {
 	position = pos;
 }
 
-vec3& Light::getColor()
+vec3& Light::GetColor()
 {
 	return color;
 }
 
-void Light::setColor(vec3& color)
+void Light::SetColor(vec3& color)
 {
 	this->color = color;
 }

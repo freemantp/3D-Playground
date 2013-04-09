@@ -9,12 +9,12 @@ Camera::Camera(float nearPlane, float farPlane)
 
 }
 
-mat4 Camera::getViewProjectionTransform() const
+mat4 Camera::GetViewProjectionTransform() const
 {
 	return projectionMatrix * viewMatrix;
 }
 
-void Camera::updateViewMatrix()
+void Camera::UpdateViewMatrix()
 {
 	//Update view matrix
 	viewMatrix = glm::lookAt( position, target, frame.up);
@@ -24,61 +24,61 @@ void Camera::updateViewMatrix()
 	frame.sideways = glm::normalize(glm::cross(frame.viewDir, frame.up ) );
 }
 
-const vec3& Camera::getPosition() const
+const vec3& Camera::GetPosition() const
 {
 	return position;
 }
 
-void Camera::setPosition(const vec3& pos)
+void Camera::SetPosition(const vec3& pos)
 {
 	position = pos;
-	updateViewMatrix();
+	UpdateViewMatrix();
 }
 
-void Camera::setTarget(const vec3& pos)
+void Camera::SetTarget(const vec3& pos)
 {
 	target = pos;
-	updateViewMatrix();
+	UpdateViewMatrix();
 }
 
-void Camera::setUpVector(const vec3& up)
+void Camera::SetUpVector(const vec3& up)
 {
 	frame.up = up;
-	updateViewMatrix();
+	UpdateViewMatrix();
 }
 
 
-void Camera::setOrientation(const vec3& pos, const vec3& up)
+void Camera::SetOrientation(const vec3& pos, const vec3& up)
 {
 	position = pos;
 	frame.up = up;
-	updateViewMatrix();
+	UpdateViewMatrix();
 }
 
-void Camera::setOrientation2(const vec3& target, const vec3& up)
+void Camera::SetOrientation2(const vec3& target, const vec3& up)
 {
 	this->target = target;
 	this->frame.up = up;
 
-	updateViewMatrix();
+	UpdateViewMatrix();
 }
 
-const vec3& Camera::getTarget() const
+const vec3& Camera::GetTarget() const
 {
 	return target;
 }
 
-const CameraFrame& Camera::getFrame() const
+const CameraFrame& Camera::GetFrame() const
 {
 	return frame;
 }
 
-float Camera::getNearPlane() const
+float Camera::GetNearPlane() const
 {
 	return nearP;
 }
 
-float Camera::getFarPlane() const
+float Camera::GetFarPlane() const
 {
 	return farP;
 }

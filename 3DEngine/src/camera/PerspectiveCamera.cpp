@@ -14,8 +14,8 @@ PerspectiveCamera::PerspectiveCamera(float fov)
 	target =    vec3(0.0f, 0.0f, 0.0f);
 	frame.up =  vec3(0.0f, 1.0f, 0.0f);
 
-	updateViewMatrix();
-	updateProjectionMatrix();
+	UpdateViewMatrix();
+	UpdateProjectionMatrix();
 }
 
 PerspectiveCamera::~PerspectiveCamera()
@@ -23,24 +23,24 @@ PerspectiveCamera::~PerspectiveCamera()
 
 }
 
-void PerspectiveCamera::updateProjectionMatrix()
+void PerspectiveCamera::UpdateProjectionMatrix()
 {
 	projectionMatrix  = glm::perspective(fov, aspectRatio, nearP, farP);
 }
 
-void PerspectiveCamera::setAspectRatio(float aspectRatio)
+void PerspectiveCamera::SetAspectRatio(float aspectRatio)
 {
 	this->aspectRatio = aspectRatio;
-	updateProjectionMatrix();
+	UpdateProjectionMatrix();
 }
 
-void PerspectiveCamera::setFov(float fov)
+void PerspectiveCamera::SetFov(float fov)
 {
 	this->fov = fov;
-	updateProjectionMatrix();
+	UpdateProjectionMatrix();
 }
 
-void PerspectiveCamera::viewportSizeChanged(int width, int height)
+void PerspectiveCamera::ViewportSizeChanged(int width, int height)
 {
-	setAspectRatio((float)width / height);
+	SetAspectRatio((float)width / height);
 }
