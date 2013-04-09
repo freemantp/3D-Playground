@@ -6,7 +6,7 @@
 
 SHARED_PTR_CLASS_DECL(Shape)
 SHARED_PTR_CLASS_DECL(PointLight);
-class ConstShader;
+SHARED_PTR_CLASS_DECL(ConstShader);
 
 class PointLight : public Light
 {
@@ -19,7 +19,7 @@ public:
 
 protected:
 
-	ConstShader* visShader;
+	ConstShader_ptr visShader;
 	Shape_ptr visMesh;
 };
 

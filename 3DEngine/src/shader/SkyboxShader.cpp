@@ -2,7 +2,7 @@
 #include "SkyboxShader.h"
 #include "../texture/CubeMapTexture.h"
 
-SkyboxShader::SkyboxShader(CubeMapTexture* texture)
+SkyboxShader::SkyboxShader(CubeMapTexture_ptr texture)
 	: texture(texture)
 	, texUnit(0)
 	, ShaderBase("skyboxShader")

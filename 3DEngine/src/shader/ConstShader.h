@@ -2,6 +2,8 @@
 
 #include "ShaderBase.h"
 
+SHARED_PTR_CLASS_DECL(ConstShader)
+
 class ConstShader : public ShaderBase
 {
 public:

@@ -301,7 +301,7 @@ void Mesh::init()
 	}
 }
 
-void Mesh::setShader(ShaderBase* shader)
+void Mesh::setShader(ShaderBase_ptr shader)
 {
 	Shape::setShader(shader);
 

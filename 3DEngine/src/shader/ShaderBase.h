@@ -5,6 +5,8 @@
 class Scene;
 class Camera;
 
+SHARED_PTR_CLASS_DECL(ShaderBase)
+
 class ShaderBase : public GLSLProgram
 {
 

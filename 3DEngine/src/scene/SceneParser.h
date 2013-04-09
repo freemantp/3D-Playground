@@ -7,11 +7,11 @@
 
 using tinyxml2::XMLElement;
 
-class ShaderBase;
 class InputHandlerFactory;
 
 SHARED_PTR_CLASS_DECL(Camera);
 SHARED_PTR_CLASS_DECL(Scene);
+SHARED_PTR_CLASS_DECL(ShaderBase);
 
 class SceneParser
 {
@@ -37,7 +37,7 @@ protected:
 	bool parseLights(XMLElement* materialElement);
 	bool parseTransforms(glm::mat4& tMatrix, XMLElement* transformElem);
 
-	std::map<std::string, ShaderBase*> shaders;
+	std::map<std::string, ShaderBase_ptr> shaders;
 	Scene_ptr generatedScene;
 
 	InputHandlerFactory& factory;

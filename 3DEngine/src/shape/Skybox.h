@@ -2,22 +2,22 @@
 #include "Box.h"
 #include <string>
 
-class CubeMapTexture;
-
 SHARED_PTR_CLASS_DECL(Skybox);
+SHARED_PTR_CLASS_DECL(CubeMapTexture);
+
 
 class Skybox : public Box
 {
 public:
 
 	
-	Skybox(CubeMapTexture* texture);
+	Skybox(CubeMapTexture_ptr texture);
 	~Skybox();
 
-	CubeMapTexture* texture;
+	CubeMapTexture_ptr texture;
 protected:		
 	
-	virtual void setShader(ShaderBase* shader);
+	virtual void setShader(ShaderBase_ptr shader);
 
 	
 

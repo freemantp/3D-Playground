@@ -2,8 +2,9 @@
 
 #include "ShaderBase.h"
 
-class ColorShader :
-	public ShaderBase
+SHARED_PTR_CLASS_DECL(ColorShader)
+
+class ColorShader :	public ShaderBase
 {
 public:
 	ColorShader();

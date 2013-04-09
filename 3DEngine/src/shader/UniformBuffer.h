@@ -6,7 +6,7 @@
 #include "../util/SharedPointer.h"
 
 SHARED_PTR_CLASS_DECL(UniformBuffer);
-class GLSLProgram;
+SHARED_PTR_CLASS_DECL(GLSLProgram)
 
 using glm::vec3;
 using glm::vec4;

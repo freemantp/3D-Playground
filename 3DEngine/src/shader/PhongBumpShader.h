@@ -2,10 +2,10 @@
 
 #include "PhongShader.h"
 
-class Texture;
+SHARED_PTR_CLASS_DECL(Texture)
+SHARED_PTR_CLASS_DECL(PhongBumpShader)
 
-class PhongBumpShader :
-	public PhongShader
+class PhongBumpShader :public PhongShader
 {
 public:
 	PhongBumpShader(const string& textureFile, const std::string& normalMap, bool isNormalMap);
@@ -21,7 +21,7 @@ protected:
 	static const int numTextures = 3;
 
 	GLuint texUnits[numTextures];
-	Texture* textures[numTextures];
+	Texture_ptr textures[numTextures];
 	bool isNormalMap;
 	bool hasSpecularMap;
 

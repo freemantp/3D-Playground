@@ -2,10 +2,10 @@
 
 #include "PhongShader.h"
 
-class Texture;
+SHARED_PTR_CLASS_DECL(Texture)
+SHARED_PTR_CLASS_DECL(PhongTextureShader)
 
-class PhongTextureShader :
-	public PhongShader
+class PhongTextureShader : public PhongShader
 {
 public:
 	PhongTextureShader(const string& textureFile);
@@ -20,7 +20,7 @@ protected:
 	static const int numTextures = 2;
 
 	GLuint texUnits[numTextures];
-	Texture* textures[numTextures];
+	Texture_ptr textures[numTextures];
 
 };
 

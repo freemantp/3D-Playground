@@ -26,7 +26,7 @@ public:
 	bool setTextureCoordinates(const std::vector<float>& texCoords);
 	bool setColors(const std::vector<float>& colors);
 
-	virtual void setShader(ShaderBase* shader);
+	virtual void setShader(ShaderBase_ptr shader);
 
 	bool isInitialized() { return initialized; };
 	bool mapVertexAttribute(GLSLShader::VertexAttribute attrib, GLuint channel);

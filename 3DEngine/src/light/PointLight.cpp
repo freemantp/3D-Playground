@@ -15,7 +15,7 @@ PointLight::PointLight(void)
 	visMesh = Util::getBox();
 	visMesh->init();
 
-	visShader = new ConstShader(color);
+	visShader.reset(new ConstShader(color));
 
 	visMesh->setShader(visShader);
 }
@@ -23,7 +23,7 @@ PointLight::PointLight(void)
 
 PointLight::~PointLight(void)
 {
-	delete visShader;
+
 }
 
 void PointLight::setPosition(vec4& pos)

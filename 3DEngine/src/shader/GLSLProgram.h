@@ -5,6 +5,8 @@
 
 #include "../stdafx.h"
 #include "../enums.h"
+#include "../util/SharedPointer.h"
+
 
 using std::string;
 using glm::vec2;
@@ -21,6 +23,9 @@ namespace GLSLShader
 		TESSELATION_CONTROL, TESSELATION_EVALUATION
 	};
 };
+
+
+SHARED_PTR_CLASS_DECL(GLSLProgram)
 
 /**
 * \class GLSLProgram

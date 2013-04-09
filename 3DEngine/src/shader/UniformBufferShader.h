@@ -2,8 +2,9 @@
 
 #include "ShaderBase.h"
 
-class UniformBufferShader :
-	public ShaderBase
+SHARED_PTR_CLASS_DECL(UniformBufferShader)
+
+class UniformBufferShader : public ShaderBase
 {
 public:
 	UniformBufferShader();

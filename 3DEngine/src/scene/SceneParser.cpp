@@ -27,7 +27,7 @@ using tinyxml2::XMLNode;
 using std::string;
 using std::vector;
 
-typedef std::pair<string,ShaderBase*> ShaderKeyVal;
+typedef std::pair<string,ShaderBase_ptr> ShaderKeyVal;
 
 SceneParser::SceneParser(InputHandlerFactory& factory) 
 	: factory(factory)
@@ -127,12 +127,11 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 	{
 		string shaderName = materialElement->Attribute("shader");
 
-		ShaderBase* shader;
+		ShaderBase_ptr shader;
 		
 		if(shaderName == "phong")
 		{			
-			
-			PhongShader* ps;
+			PhongShader_ptr ps;
 
 			XMLElement* subElem = materialElement->FirstChildElement("texture");
 			//Load textured version if available
@@ -144,13 +143,13 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 				subElem = materialElement->FirstChildElement("bumpMap");
 				if(subElem == nullptr)
 				{
-					ps = new PhongTextureShader(texFile);
+					ps.reset(new PhongTextureShader(texFile));
 				}
 				else 
 				{
 					string bumpMapFile(subElem->Attribute("file"));
 					string type(subElem->Attribute("type"));
-					ps = new PhongBumpShader(texFile,bumpMapFile, type == "normal");
+					ps.reset(new PhongBumpShader(texFile,bumpMapFile, type == "normal"));
 				}
 
 				//specular mapping
@@ -158,14 +157,13 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 				if(subElem != nullptr)
 				{
 					string specMapFile(subElem->Attribute("file"));
-					PhongBumpShader* pbs = static_cast<PhongBumpShader*>(ps);
+					PhongBumpShader_ptr pbs = std::static_pointer_cast<PhongBumpShader>(ps);
 					pbs->setSpecularMap(specMapFile);
 				}
-
 			}
 			else
 			{
-				ps = new PhongShader();
+				ps.reset(new PhongShader());
 			}		
 			
 			//Load common phong attributes
@@ -185,11 +183,11 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 		}
 		else if(shaderName == "color")
 		{
-			shader = new ColorShader();
+			shader.reset(new ColorShader());
 		}
 		else if(shaderName == "const")
 		{
-			ConstShader* cshader = new ConstShader(vec3(1.0));
+			ConstShader_ptr cshader(new ConstShader(vec3(1.0)));
 			
 			XMLElement* subElem;
 			if ( (subElem = materialElement->FirstChildElement("color")) != nullptr )
@@ -218,19 +216,19 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 
 bool SceneParser::parseSkybox(XMLElement* skyboxElem)
 {
-	CubeMapTexture* texture;
+	CubeMapTexture_ptr texture;
 
 	const char* path = skyboxElem->Attribute("cubeMapFile");
 	if( (path = skyboxElem->Attribute("cubeMapFile")) != nullptr )
 	{
 		//Single file cube map
-		texture = new CubeMapTexture(Config::TEXTURE_BASE_PATH + path);
+		texture.reset(new CubeMapTexture(Config::TEXTURE_BASE_PATH + path));
 	}
 	else if( (path = skyboxElem->Attribute("cubeMapFolder")) != nullptr )
 	{
 		//Cube map consisting of 6 files
 		string type = skyboxElem->Attribute("type");
-		texture = new CubeMapTexture(Config::TEXTURE_BASE_PATH + path, type);
+		texture.reset(new CubeMapTexture(Config::TEXTURE_BASE_PATH + path, type));
 	}
 	else
 	{
@@ -280,7 +278,7 @@ bool SceneParser::parseObjects(XMLElement* objects)
 
 		if(shaderName != nullptr)
 		{
-			ShaderBase* material = shaders[shaderName];
+			ShaderBase_ptr material = shaders[shaderName];
 
 			if(material != nullptr)		
 			{

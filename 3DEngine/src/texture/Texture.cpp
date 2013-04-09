@@ -23,7 +23,8 @@ Texture::Texture(const std::string& texturePath)
 
 Texture::~Texture()
 {
-	glDeleteTextures(1, &texObject);
+	if(glIsTexture(texObject))
+		glDeleteTextures(1, &texObject);
 }
 
 void Texture::bindTexture(int textureUnit)

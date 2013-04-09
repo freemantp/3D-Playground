@@ -10,8 +10,9 @@ namespace GLSLShader
 	};
 };
 
-class PhongShader :
-	public ShaderBase
+SHARED_PTR_CLASS_DECL(PhongShader)
+
+class PhongShader : public ShaderBase
 {
 public:
 	PhongShader();

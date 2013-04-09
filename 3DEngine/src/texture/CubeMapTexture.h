@@ -1,7 +1,9 @@
 #pragma once
 
-
 #include <string>
+#include "../util/SharedPointer.h"
+
+SHARED_PTR_CLASS_DECL(CubeMapTexture);
 
 class CubeMapTexture
 {

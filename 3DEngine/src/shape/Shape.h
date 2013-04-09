@@ -6,9 +6,9 @@
 
 //forward declarations
 class Scene;
-class ShaderBase;
 
 SHARED_PTR_CLASS_DECL(Shape);
+SHARED_PTR_CLASS_DECL(ShaderBase);
 
 class Shape
 {
@@ -19,9 +19,9 @@ public:
 
 	virtual void init() = 0;
 	virtual void render(const Scene& scene) const = 0;
-	virtual void setShader(ShaderBase* shader);
+	virtual void setShader(ShaderBase_ptr shader);
 
-	ShaderBase* getShader()
+	ShaderBase_ptr getShader()
 	{
 		return shaderProgram;
 	}
@@ -34,6 +34,6 @@ public:
 	glm::mat4 worldTransform;
 
 protected:
-	ShaderBase* shaderProgram;
+	ShaderBase_ptr shaderProgram;
 };
 

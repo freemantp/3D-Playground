@@ -19,7 +19,7 @@ PhongTextureShader::PhongTextureShader(const string& albedoTexFile)
 	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,&maxTexUnits);
 
 	//Create albedo texture and specify texUnit 0
-	textures[Albedo] = new Texture( Config::TEXTURE_BASE_PATH + albedoTexFile );
+	textures[Albedo].reset(new Texture( Config::TEXTURE_BASE_PATH + albedoTexFile ));
 	texUnits[Albedo] = 0;
 
 	texUnits[Environment] = 1;
@@ -29,8 +29,7 @@ PhongTextureShader::PhongTextureShader(const string& albedoTexFile)
 
 PhongTextureShader::~PhongTextureShader()
 {
-	for(int i=0; i < numTextures; i++)
-		delete textures[i];
+
 }
 
 void PhongTextureShader::use(const Scene& scene, const glm::mat4& modelTransform)
@@ -46,7 +45,7 @@ void PhongTextureShader::use(const Scene& scene, const glm::mat4& modelTransform
 
 	if(scene.skybox != nullptr)
 	{
-		CubeMapTexture* envTex =  scene.skybox->texture;
+		CubeMapTexture_ptr envTex =  scene.skybox->texture;
 		envTex->bindTexture(texUnits[Environment]);
 		setUniform("EnvMapTex",texUnits[Environment]);
 		setUniform("CameraPosWorld",scene.activeCamera->getPosition() );
