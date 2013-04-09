@@ -18,12 +18,12 @@ GlutInputHandler& GlutInputHandler::getInstance()
 	return GlutInputHandler::instance;
 }
 
-void GlutInputHandler::addMouseObserver(MouseObserver* observer)
+void GlutInputHandler::addMouseObserver(MouseObserver_ptr observer)
 {
 	mouseObservers.push_back(observer);
 }
 
-void GlutInputHandler::addKeyboardObserver(KeyboardObserver* observer)
+void GlutInputHandler::addKeyboardObserver(KeyboardObserver_ptr observer)
 {
 	keyboardObservers.push_back(observer);
 }
@@ -60,8 +60,7 @@ void GlutInputHandler::specialKey(int key, int x, int y)
 
 void GlutInputHandler::handleDrag(const glm::vec2& position)
 {
-	std::vector<MouseObserver*>::const_iterator cit;
-	for(cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++) 
+	for(auto cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++) 
 	{
 		(*cit)->onMouseDrag(position);
 	}
@@ -69,8 +68,7 @@ void GlutInputHandler::handleDrag(const glm::vec2& position)
 
 void GlutInputHandler::handleMove(const glm::vec2& position)
 {
-	std::vector<MouseObserver*>::const_iterator cit;
-	for(cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++) 
+	for(auto cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++) 
 	{
 		(*cit)->onMouseMove(position);
 	}
@@ -94,8 +92,7 @@ void GlutInputHandler::handleClick(int button, int state, const glm::vec2& posit
 		break;
 	}	
 
-	std::vector<MouseObserver*>::const_iterator cit;
-	for(cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++)
+	for(auto cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++)
 	{
 		(*cit)->onMouseClick(mButton, bState, position);
 	}
@@ -103,8 +100,7 @@ void GlutInputHandler::handleClick(int button, int state, const glm::vec2& posit
 
 void GlutInputHandler::handleWheel(int wheel, int direction, const glm::vec2& position)
 {
-	std::vector<MouseObserver*>::const_iterator cit;
-	for(cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++)
+	for(auto cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++)
 	{
 		(*cit)->onMouseWheel(direction > 0 ? Input::UP : Input::DOWN, position);	
 	}
@@ -154,8 +150,7 @@ void GlutInputHandler::handleKey(unsigned char key, const glm::vec2& position)
 	if(k == Input::F)
 		glutFullScreenToggle();
 
-	std::vector<KeyboardObserver*>::const_iterator cit;
-	for(cit = keyboardObservers.cbegin(); cit != keyboardObservers.cend(); cit++)
+	for(auto cit = keyboardObservers.cbegin(); cit != keyboardObservers.cend(); cit++)
 	{
 		(*cit)->onKey(k,m,position);
 	}
@@ -175,8 +170,7 @@ void GlutInputHandler::handleSpecialKey(int key,const glm::vec2& position)
 		default: return; break;
 	}
 
-	std::vector<KeyboardObserver*>::const_iterator cit;
-	for(cit = keyboardObservers.cbegin(); cit != keyboardObservers.cend(); cit++)
+	for(auto cit = keyboardObservers.cbegin(); cit != keyboardObservers.cend(); cit++)
 	{
 		(*cit)->onKey(k,m,position);
 	}

@@ -1,6 +1,9 @@
 #pragma once
 
-class Camera;
+#include "../util/SharedPointer.h"
+
+SHARED_PTR_CLASS_DECL(CameraAdapter);
+SHARED_PTR_CLASS_DECL(Camera);
 
 using glm::vec2;
 
@@ -8,9 +11,9 @@ class CameraAdapter
 {
 
 protected:
-	CameraAdapter(Camera& cam) :cam(cam) {  };
+	CameraAdapter(Camera_ptr cam) : cam(cam) {  };
 
-	Camera& cam;
+	Camera_ptr cam;
 
 };
 

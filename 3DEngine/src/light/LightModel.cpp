@@ -37,14 +37,14 @@ UniformBuffer* LightModel::getLightsBuffer() const
 	return lightsBuffer;
 }
 
-void LightModel::updateUniformBuffer(const Camera* cam)
+void LightModel::updateUniformBuffer(Camera_cptr cam)
 {
 	
 	glm::mat3 directionTransformMatrix	= glm::transpose(glm::inverse(glm::mat3(cam->viewMatrix)));
 	
 	for(int i=0; i < pointLights.size(); i++)
 	{
-		PointLight* pl = pointLights[i];
+		PointLight_ptr pl = pointLights[i];
 
 		std::stringstream lightName;
 		lightName << "Lights.PointLights[" << i << "].";
@@ -55,7 +55,7 @@ void LightModel::updateUniformBuffer(const Camera* cam)
 
 	for(int i=0; i < spotLights.size(); i++)
 	{
-		SpotLight* sl = spotLights[i];
+		SpotLight_ptr sl = spotLights[i];
 
 		std::stringstream lightName;
 		lightName << "Lights.SpotLights[" << i << "].";

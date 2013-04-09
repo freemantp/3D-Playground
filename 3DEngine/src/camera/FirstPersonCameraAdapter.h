@@ -10,7 +10,7 @@ class KeyboardObserver;
 class FirstPersonCameraAdapter : public CameraAdapter, public MouseObserver, public KeyboardObserver
 {
 public:
-	FirstPersonCameraAdapter(Camera& cam);
+	FirstPersonCameraAdapter(Camera_ptr cam);
 	~FirstPersonCameraAdapter();
 
 	virtual void onMouseMove(const glm::vec2& position);

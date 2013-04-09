@@ -5,6 +5,7 @@
 #include "../util/SharedPointer.h"
 
 SHARED_PTR_CLASS_DECL(Shape)
+SHARED_PTR_CLASS_DECL(PointLight);
 class ConstShader;
 
 class PointLight : public Light

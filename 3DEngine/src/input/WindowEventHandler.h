@@ -1,8 +1,9 @@
 #pragma once
 
 #include <vector>
+#include "../util/SharedPointer.h"
 
-class ViewportObserver;
+SHARED_PTR_CLASS_DECL(ViewportObserver);
 
 class WindowEventHandler
 {
@@ -10,7 +11,7 @@ public:
 	static WindowEventHandler& getInstance();
 	static void resize(int width, int height);
 
-	void addViewportObserver(ViewportObserver* observer);
+	void addViewportObserver(ViewportObserver_ptr observer);
 
 
 protected:
@@ -19,7 +20,7 @@ protected:
 
 	void handleResize(int width, int height);
 
-	std::vector<ViewportObserver*> viewportObservers;
+	std::vector<ViewportObserver_ptr> viewportObservers;
 	static WindowEventHandler instance;
 };
 

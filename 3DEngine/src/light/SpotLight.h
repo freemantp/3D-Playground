@@ -2,10 +2,12 @@
 
 #include "PointLight.h"
 
-class SpotLight :
-	public PointLight
+SHARED_PTR_CLASS_DECL(SpotLight);
+
+class SpotLight : public PointLight
 {
 public:
+	
 	SpotLight(const vec3& direction, float cutoffAngle, float exponent);
 
 	virtual vec3& getDirection();

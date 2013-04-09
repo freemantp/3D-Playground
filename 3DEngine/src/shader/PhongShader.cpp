@@ -65,7 +65,7 @@ void PhongShader::setLightAndModel(const Scene& scene)
 	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, shadeFunc);
 
 	//set lights
-	setUniform("NumPointLights", (int)scene.lightModel.pointLights.size());
-	setUniform("NumSpotLights", (int)scene.lightModel.spotLights.size());
-	scene.lightModel.getLightsBuffer()->bindToShader(this,"Lights");
+	setUniform("NumPointLights", (int)scene.lightModel->pointLights.size());
+	setUniform("NumSpotLights", (int)scene.lightModel->spotLights.size());
+	scene.lightModel->getLightsBuffer()->bindToShader(this,"Lights");
 }

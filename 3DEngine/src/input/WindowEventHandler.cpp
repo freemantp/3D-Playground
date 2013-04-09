@@ -15,7 +15,7 @@ WindowEventHandler& WindowEventHandler::getInstance()
 	return instance;
 }
 
-void WindowEventHandler::addViewportObserver(ViewportObserver* observer)
+void WindowEventHandler::addViewportObserver(ViewportObserver_ptr observer)
 {
 	viewportObservers.push_back(observer);
 }
@@ -31,8 +31,8 @@ void WindowEventHandler::handleResize(int width, int height)
 	glViewport(0, 0, width, height);
 	
 	//Notify observers
-	std::vector<ViewportObserver*>::const_iterator cit;
-	for(cit = viewportObservers.cbegin(); cit != viewportObservers.cend(); cit++) 
+	//std::vector<ViewportObserver*>::const_iterator cit;
+	for(auto cit = viewportObservers.cbegin(); cit != viewportObservers.cend(); cit++) 
 	{
 		(*cit)->viewportSizeChanged(width,height);
 	}

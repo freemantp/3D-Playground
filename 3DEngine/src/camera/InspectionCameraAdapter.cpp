@@ -9,7 +9,7 @@
 using glm::vec3;
 using glm::vec4;
 
-InspectionCameraAdapter::InspectionCameraAdapter(Camera& cam) 
+InspectionCameraAdapter::InspectionCameraAdapter(Camera_ptr cam) 
 	: CameraAdapter(cam)
 {
 
@@ -30,8 +30,8 @@ void InspectionCameraAdapter::onMouseDrag(const glm::vec2& screenPos)
 	//std:: cout <<"sp, x=" << screenPos.x << " y=" << screenPos.y << std::endl ;
 	
 	float degreeRatio = 0.25f;
-	const CameraFrame& frame = cam.getFrame();
-	const vec3& target = cam.getTarget();
+	const CameraFrame& frame = cam->getFrame();
+	const vec3& target = cam->getTarget();
 
 	//direction of mouse movement on projetion plane
 	vec2 screenDelta = screenPos - lastScreenPos;
@@ -50,9 +50,9 @@ void InspectionCameraAdapter::onMouseDrag(const glm::vec2& screenPos)
 	transformM = glm::translate(transformM,-target);
 
 	//Transform camera position
-	glm::vec4 newPos = transformM * glm::vec4(cam.getPosition(), 1.0f);
+	glm::vec4 newPos = transformM * glm::vec4(cam->getPosition(), 1.0f);
 	glm::vec4 newUp = transformM * glm::vec4( frame.up, 0.0f);
-	cam.setOrientation(vec3(newPos.x,newPos.y,newPos.z), vec3(newUp.x,newUp.y,newUp.z));
+	cam->setOrientation(vec3(newPos.x,newPos.y,newPos.z), vec3(newUp.x,newUp.y,newUp.z));
 
 	lastScreenPos = screenPos;
 }
@@ -65,16 +65,16 @@ void InspectionCameraAdapter::onMouseClick(Input::MouseButton button, Input::Dir
 
 void InspectionCameraAdapter::onMouseWheel(Input::Direction direction, const glm::vec2& screenPos)
 {
-	vec3 dir = cam.getTarget() - cam.getPosition();
+	vec3 dir = cam->getTarget() - cam->getPosition();
 	bool up = direction == Input::UP;
 
 	float len = glm::length(dir);
 
-	if(len <= cam.getNearPlane() && up || len >= cam.getFarPlane() && !up)
+	if(len <= cam->getNearPlane() && up || len >= cam->getFarPlane() && !up)
 		return;
 	
 	dir = glm::normalize(dir) * 0.2f * (up ? 1.0f : -1.0f);
-	cam.setPosition(cam.getPosition() + dir);
+	cam->setPosition(cam->getPosition() + dir);
 
 	lastScreenPos = screenPos;
 }

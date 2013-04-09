@@ -1,6 +1,9 @@
 #pragma once;
 
 #include <glm/glm.hpp>
+#include "../util/SharedPointer.h"
+
+SHARED_PTR_CLASS_DECL(Light);
 
 class Scene;
 

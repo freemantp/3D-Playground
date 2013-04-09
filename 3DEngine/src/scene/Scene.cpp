@@ -28,21 +28,23 @@ Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 
 	setCamera(cam);
 
+	lightModel.reset(new LightModel());
+
 	InputHandler& inputHandler = ihf.getInputHandler();
 	WindowEventHandler& winEventHandler = WindowEventHandler::getInstance();
 
 	if(true)
 	{
-		mAdapter  = new InspectionCameraAdapter (*cam);
+		mAdapter.reset(new InspectionCameraAdapter (cam));
 		inputHandler.addMouseObserver(mAdapter);
 	} else
 	{
-		mAdapter2 = new FirstPersonCameraAdapter(*cam);
+		mAdapter2.reset(new FirstPersonCameraAdapter(cam));
 		inputHandler.addMouseObserver(mAdapter2);
 		inputHandler.addKeyboardObserver(mAdapter2);
 	}
 
-	winEventHandler.addViewportObserver(cam.get());
+	winEventHandler.addViewportObserver(cam);
 }
 
 Scene::~Scene()
@@ -92,18 +94,14 @@ void Scene::render()
 
 	if(renderLights)
 	{
-		std::vector<PointLight*>::const_iterator lIt;
-		for(lIt = lightModel.pointLights.cbegin(); lIt != lightModel.pointLights.cend(); lIt++)
+		for(auto pl_it = lightModel->pointLights.cbegin(); pl_it != lightModel->pointLights.cend(); pl_it++)
 		{
-			Light* l = *lIt;
-			l->render(*this);
+			(*pl_it)->render(*this);
 		}
 
-		std::vector<SpotLight*>::const_iterator slIt;
-		for(slIt = lightModel.spotLights.cbegin(); slIt != lightModel.spotLights.cend(); slIt++)
+		for(auto sl_it = lightModel->spotLights.cbegin(); sl_it != lightModel->spotLights.cend(); sl_it++)
 		{
-			Light* l = *slIt;
-			l->render(*this);
+			(*sl_it)->render(*this);
 		}
 	}
 }
@@ -111,12 +109,13 @@ void Scene::render()
 void Scene::timeUpdate(long time)
 {
 	//Animate lights
-	int numPLs = (int)lightModel.spotLights.size();
-	SpotLight* pl;
+	int numPLs = (int)lightModel->spotLights.size();
+	SpotLight_ptr pl;
 
 	if(numPLs > 0)
 	{
-		pl = static_cast<SpotLight*>(lightModel.spotLights[0]);
+		
+		pl = lightModel->spotLights[0];
 		glm::mat4 lightTransform1 = (glm::rotate(mat4(1.0f), 1.0f, glm::vec3(0.0f,1.0f,0.0f)));
 		pl->setPosition(lightTransform1 * pl->getPosition());
 
@@ -127,7 +126,7 @@ void Scene::timeUpdate(long time)
 
 	if(numPLs > 1)
 	{
-		pl = static_cast<SpotLight*>(lightModel.spotLights[1]);
+		pl = lightModel->spotLights[1];
 		glm::mat4 lightTransform2 = (glm::rotate(mat4(1.0f), 0.5f, glm::normalize(glm::vec3(0.5f,1.0f,0.0f))));
 		pl->setPosition(lightTransform2 * pl->getPosition());
 	
@@ -137,7 +136,7 @@ void Scene::timeUpdate(long time)
 
 	if(numPLs > 2)
 	{
-		pl = static_cast<SpotLight*>(lightModel.spotLights[2]);
+		pl = lightModel->spotLights[2];
 		glm::mat4 lightTransform3 = (glm::rotate(mat4(1.0f), 2.0f, glm::vec3(1.0f,0.0f,0.0f)));
 		pl->setPosition(lightTransform3 * pl->getPosition());
 	
@@ -152,7 +151,7 @@ void Scene::timeUpdate(long time)
 	activeCamera->setPosition(vec3(newPos.x, newPos.y, newPos.z));
 	activeCamera->updateViewMatrix();*/
 
-	lightModel.updateUniformBuffer(activeCamera.get());
+	lightModel->updateUniformBuffer(activeCamera);
 }
 
 void Scene::addMaterial(ShaderBase* material)
@@ -165,12 +164,12 @@ void Scene::setCamera(Camera_ptr cam)
 	activeCamera = cam;
 }
 
-void Scene::addLight(PointLight* light)
+void Scene::addLight(PointLight_ptr light)
 {
-	lightModel.pointLights.push_back(light);
+	lightModel->pointLights.push_back(light);
 }
 
-void Scene::addLight(SpotLight* light)
+void Scene::addLight(SpotLight_ptr light)
 {
-	lightModel.spotLights.push_back(light);
+	lightModel->spotLights.push_back(light);
 }

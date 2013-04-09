@@ -18,8 +18,8 @@ public:
 	static void key(unsigned char key, int x, int y);
 	static void specialKey(int key, int x, int y);
 
-	virtual void addMouseObserver(MouseObserver* observer);
-	virtual void addKeyboardObserver(KeyboardObserver* observer);
+	virtual void addMouseObserver(MouseObserver_ptr observer);
+	virtual void addKeyboardObserver(KeyboardObserver_ptr observer);
 
 protected:
 
@@ -32,8 +32,8 @@ protected:
 	void handleKey(unsigned char key, const glm::vec2& position);
 	void handleSpecialKey(int key, const glm::vec2& position);
 
-	std::vector<MouseObserver*> mouseObservers;
-	std::vector<KeyboardObserver*> keyboardObservers;
+	std::vector<MouseObserver_ptr> mouseObservers;
+	std::vector<KeyboardObserver_ptr> keyboardObservers;
 	static GlutInputHandler instance;
 
 };

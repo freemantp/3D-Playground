@@ -1,11 +1,13 @@
 #pragma once;
 
-class MouseObserver;
-class KeyboardObserver;
+#include "../util/SharedPointer.h"
+
+SHARED_PTR_CLASS_DECL(MouseObserver);
+SHARED_PTR_CLASS_DECL(KeyboardObserver);
 
 class InputHandler
 {
 public:
-	virtual void addMouseObserver(MouseObserver* observer) = 0;
-	virtual void addKeyboardObserver(KeyboardObserver* observer) = 0;
+	virtual void addMouseObserver(MouseObserver_ptr observer) = 0;
+	virtual void addKeyboardObserver(KeyboardObserver_ptr observer) = 0;
 };

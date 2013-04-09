@@ -6,18 +6,16 @@
 #include "../animation/TimeObserver.h"
 
 //fwd decls
-class PointLight;
 class ShaderBase;
-class InspectionCameraAdapter;
-class FirstPersonCameraAdapter;
 class InputHandlerFactory;
-class LightModel;
 class Skybox;
 
 SHARED_PTR_CLASS_DECL(Camera);
 SHARED_PTR_CLASS_DECL(Scene);
 SHARED_PTR_CLASS_DECL(Shape);
 SHARED_PTR_CLASS_DECL(Skybox);
+SHARED_PTR_CLASS_DECL(InspectionCameraAdapter);
+SHARED_PTR_CLASS_DECL(FirstPersonCameraAdapter);
 
 class Scene : public TimeObserver
 {
@@ -32,13 +30,13 @@ public:
 	void setSkybox(Skybox_ptr skybox);
 	void addMaterial(ShaderBase* shape);
 	void setCamera(Camera_ptr cam);
-	void addLight(PointLight* shape);
-	void addLight(SpotLight* light);
+	void addLight(PointLight_ptr shape);
+	void addLight(SpotLight_ptr light);
 
 	virtual void timeUpdate(long time);
 
 	Camera_ptr activeCamera;
-	LightModel lightModel;
+	LightModel_ptr lightModel;
 	std::vector<Shape_ptr> objects;
 	std::vector<ShaderBase*> materials;
 	Skybox_ptr skybox;
@@ -46,8 +44,8 @@ public:
 
 protected:
 
-	InspectionCameraAdapter* mAdapter;
-	FirstPersonCameraAdapter* mAdapter2;
+	InspectionCameraAdapter_ptr mAdapter;
+	FirstPersonCameraAdapter_ptr mAdapter2;
 	
 
 };

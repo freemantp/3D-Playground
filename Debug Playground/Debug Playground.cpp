@@ -96,8 +96,8 @@ class MyInputHandler : public InputHandler
 public:
 	MyInputHandler() { };
 
-	virtual void addMouseObserver(MouseObserver* observer) {};
-	virtual void addKeyboardObserver(KeyboardObserver* observer) {};
+	virtual void addMouseObserver(MouseObserver_ptr observer) {};
+	virtual void addKeyboardObserver(KeyboardObserver_ptr observer) {};
 };
 
 

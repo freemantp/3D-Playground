@@ -408,11 +408,12 @@ bool SceneParser::parseLights(tinyxml2::XMLElement* lightsGroupElement)
 
 		if(lightType == "point")
 		{
-			PointLight* plight = new PointLight();
+			PointLight_ptr plight(new PointLight());
 			vec3 pos, color;
+
 			getVector3(lightElem->FirstChildElement("position"),pos);
 			getColorVector3(lightElem->FirstChildElement("color"),color);
-
+			
 			plight->setPosition(vec4(pos,1.0));
 			plight->setColor(color);
 
@@ -431,7 +432,7 @@ bool SceneParser::parseLights(tinyxml2::XMLElement* lightsGroupElement)
 			getFloatAttrib(lightElem,"cutoff",cutoff);
 			getFloatAttrib(lightElem,"exponent",exponent);
 
-			SpotLight* slight = new SpotLight(direction,cutoff,exponent);
+			SpotLight_ptr slight(new SpotLight(direction,cutoff,exponent));
 
 			slight->setPosition(vec4(pos,1.0));
 			slight->setColor(color);

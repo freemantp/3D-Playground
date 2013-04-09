@@ -15,7 +15,7 @@ class Camera;
 class InspectionCameraAdapter : public CameraAdapter, public MouseObserver
 {
 public:
-	InspectionCameraAdapter(Camera& cam);
+	InspectionCameraAdapter(Camera_ptr cam);
 	~InspectionCameraAdapter();
 
 	virtual void onMouseMove(const glm::vec2& position);
