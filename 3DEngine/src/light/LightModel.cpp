@@ -23,16 +23,16 @@ LightModel::LightModel()
 	
 	};
 	
-	lightsBuffer = new UniformBuffer(unformBufferShader,"Lights", elemNames, numElems);
+	lightsBuffer.reset(new UniformBuffer(unformBufferShader,"Lights", elemNames, numElems));
 
 }
 
 LightModel::~LightModel()
 {
-	delete lightsBuffer;
+	
 }
 
-UniformBuffer* LightModel::getLightsBuffer() const
+UniformBuffer_ptr LightModel::getLightsBuffer() const
 {
 	return lightsBuffer;
 }

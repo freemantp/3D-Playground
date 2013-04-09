@@ -20,7 +20,7 @@ public:
 	virtual void render(const Scene& scene) const;
 	virtual void init(); 
 
-	bool setPositions(const std::vector<float>& positions, const std::vector<int>& indices, std::vector<std::pair<int,int> >* indexGroups = NULL);
+	bool setPositions(const std::vector<float>& positions, const std::vector<int>& indices, std::vector<std::pair<int,int> >* indexGroups = nullptr);
 	bool setNormals(const std::vector<float>& normals);
 	bool setTangents(const std::vector<float>& tangents);
 	bool setTextureCoordinates(const std::vector<float>& texCoords);

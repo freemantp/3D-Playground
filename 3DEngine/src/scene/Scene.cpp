@@ -23,7 +23,7 @@
 using std::vector;
 
 Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
-	: skybox(NULL)
+	: skybox(nullptr)
 {
 
 	setCamera(cam);
@@ -79,7 +79,7 @@ void Scene::render()
 {		
 	
 	//Render skybox
-	if(skybox != NULL)
+	if(skybox != nullptr)
 		skybox->render(*this);
 	
 	//Render objects

@@ -49,7 +49,7 @@ bool GLSLProgram::compileShaderFromString( const string& source,
 	}
 
 	const GLchar * c_code = source.c_str();
-	glShaderSource( shaderHandle, 1, &c_code, NULL );
+	glShaderSource( shaderHandle, 1, &c_code, nullptr );
 
 	// Compile the shader
 	glCompileShader(shaderHandle );

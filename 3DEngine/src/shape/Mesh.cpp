@@ -83,7 +83,7 @@ void Mesh::setAttribPointer(const VertexAttribute& attrib)
 {
 	GLuint channel = vAttribData[attrib].channel;
 	GLint size = vAttribData[attrib].size;
-	glVertexAttribPointer( channel, size,  GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL );
+	glVertexAttribPointer( channel, size,  GL_FLOAT, GL_FALSE, 0, (GLubyte *)nullptr );
 }
 
 bool Mesh::setPositions(const std::vector<float>& positions, const std::vector<int>& indices, vector<std::pair<int,int> > *indexGroups)
@@ -96,7 +96,7 @@ bool Mesh::setPositions(const std::vector<float>& positions, const std::vector<i
 	glGenBuffers(1, &bufferObjects[Position]);
 
 	//Allocate mem for index buffer handles
-	bool hasIndexGroups =  indexGroups != NULL;
+	bool hasIndexGroups =  indexGroups != nullptr;
 	int numIdxBuffers = hasIndexGroups ? (int)indexGroups->size() : 1;
 	indexBufferObjects = new GLuint[numIdxBuffers];	
 	glGenBuffers(numIdxBuffers, indexBufferObjects);
@@ -344,7 +344,7 @@ void Mesh::setShader(ShaderBase* shader)
 
 void Mesh::render(const Scene& scene) const
 {
-	if(NULL != shaderProgram) 
+	if(nullptr != shaderProgram) 
 	{	
 		shaderProgram->use(scene, worldTransform);
 	}
@@ -361,12 +361,12 @@ void Mesh::render(const Scene& scene) const
 			
 		//Here glDrawRangeElements is used to limit the amount of vertex data to be prefetched
 		int numElems = (ranges[i].second - ranges[i].first + 1) * 3;
-		glDrawRangeElements(GL_TRIANGLES, ranges[i].first, ranges[i].second, (GLsizei)numElems, GL_UNSIGNED_INT, (GLvoid*)NULL);
+		glDrawRangeElements(GL_TRIANGLES, ranges[i].first, ranges[i].second, (GLsizei)numElems, GL_UNSIGNED_INT, (GLvoid*)nullptr);
 	}
 
 	glBindVertexArray(0);
 
-	if(NULL != shaderProgram)
+	if(nullptr != shaderProgram)
 	{
 		shaderProgram->unuse();
 	}

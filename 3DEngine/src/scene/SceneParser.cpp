@@ -31,7 +31,7 @@ typedef std::pair<string,ShaderBase*> ShaderKeyVal;
 
 SceneParser::SceneParser(InputHandlerFactory& factory) 
 	: factory(factory)
-	, generatedScene(NULL)
+	, generatedScene(nullptr)
 {
 
 }
@@ -63,7 +63,7 @@ bool SceneParser::parse(const char* xmlDocument)
 			//Camera
 			XMLElement* cameraElement = root->FirstChildElement("camera");
 
-			if( cameraElement == NULL)
+			if( cameraElement == nullptr)
 				return false;
 
 			Camera_ptr cam;
@@ -73,7 +73,7 @@ bool SceneParser::parse(const char* xmlDocument)
 
 			//Materials
 			XMLElement* materialsElement = root->FirstChildElement("materials");
-			if( cameraElement != NULL) 
+			if( cameraElement != nullptr) 
 			{
 				if( ! parseMaterials(materialsElement) )
 					return false;
@@ -81,7 +81,7 @@ bool SceneParser::parse(const char* xmlDocument)
 
 			//Lights
 			XMLElement* lightsElement = root->FirstChildElement("lights");
-			if( lightsElement != NULL)
+			if( lightsElement != nullptr)
 			{
 				if( ! parseLights(lightsElement) )
 					return false;
@@ -89,7 +89,7 @@ bool SceneParser::parse(const char* xmlDocument)
 
 			//Skybox
 			XMLElement* skyboxElement = root->FirstChildElement("skybox");
-			if( skyboxElement != NULL)
+			if( skyboxElement != nullptr)
 			{
 				if( ! parseSkybox(skyboxElement) )
 					return false;
@@ -97,7 +97,7 @@ bool SceneParser::parse(const char* xmlDocument)
 
 			//Objects
 			XMLElement* objectsElement = root->FirstChildElement("objects");
-			if( objectsElement != NULL)
+			if( objectsElement != nullptr)
 			{
 				if( ! parseObjects(objectsElement) )
 					return false;
@@ -136,13 +136,13 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 
 			XMLElement* subElem = materialElement->FirstChildElement("texture");
 			//Load textured version if available
-			if(subElem != NULL)
+			if(subElem != nullptr)
 			{
 				string texFile(subElem->Attribute("file"));
 			
 				//bump mapping
 				subElem = materialElement->FirstChildElement("bumpMap");
-				if(subElem == NULL)
+				if(subElem == nullptr)
 				{
 					ps = new PhongTextureShader(texFile);
 				}
@@ -155,7 +155,7 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 
 				//specular mapping
 				subElem = materialElement->FirstChildElement("specularMap");
-				if(subElem != NULL)
+				if(subElem != nullptr)
 				{
 					string specMapFile(subElem->Attribute("file"));
 					PhongBumpShader* pbs = static_cast<PhongBumpShader*>(ps);
@@ -169,16 +169,16 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 			}		
 			
 			//Load common phong attributes
-			if ( (subElem = materialElement->FirstChildElement("ambientReflect")) != NULL )
+			if ( (subElem = materialElement->FirstChildElement("ambientReflect")) != nullptr )
 				getColorVector3(subElem,ps->ambientReflection);
 
-			if ( (subElem = materialElement->FirstChildElement("diffuseReflect")) != NULL )
+			if ( (subElem = materialElement->FirstChildElement("diffuseReflect")) != nullptr )
 				getColorVector3(subElem,ps->diffuseReflection);
 
-			if ( (subElem = materialElement->FirstChildElement("glossyReflect")) != NULL )
+			if ( (subElem = materialElement->FirstChildElement("glossyReflect")) != nullptr )
 				getColorVector3(subElem,ps->glossyReflection);
 
-			if ( (subElem = materialElement->FirstChildElement("shininess")) != NULL )
+			if ( (subElem = materialElement->FirstChildElement("shininess")) != nullptr )
 				getIntAttrib(subElem,"value",ps->shininess);
 
 			shader = ps;
@@ -192,7 +192,7 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 			ConstShader* cshader = new ConstShader(vec3(1.0));
 			
 			XMLElement* subElem;
-			if ( (subElem = materialElement->FirstChildElement("color")) != NULL )
+			if ( (subElem = materialElement->FirstChildElement("color")) != nullptr )
 				getColorVector3(subElem,cshader->color);
 
 			shader = cshader;
@@ -221,12 +221,12 @@ bool SceneParser::parseSkybox(XMLElement* skyboxElem)
 	CubeMapTexture* texture;
 
 	const char* path = skyboxElem->Attribute("cubeMapFile");
-	if( (path = skyboxElem->Attribute("cubeMapFile")) != NULL )
+	if( (path = skyboxElem->Attribute("cubeMapFile")) != nullptr )
 	{
 		//Single file cube map
 		texture = new CubeMapTexture(Config::TEXTURE_BASE_PATH + path);
 	}
-	else if( (path = skyboxElem->Attribute("cubeMapFolder")) != NULL )
+	else if( (path = skyboxElem->Attribute("cubeMapFolder")) != nullptr )
 	{
 		//Cube map consisting of 6 files
 		string type = skyboxElem->Attribute("type");
@@ -249,7 +249,7 @@ bool SceneParser::parseObjects(XMLElement* objects)
 	//Meshes
 	XMLElement* objeElem = objects->FirstChildElement();
 	
-	if(objeElem == NULL)
+	if(objeElem == nullptr)
 		return false;
 
 	do
@@ -261,7 +261,7 @@ bool SceneParser::parseObjects(XMLElement* objects)
 		{
 			string file = objeElem->Attribute("file");
 			s = Util::loadModel("../data/models/"+file);
-			if(s == NULL)
+			if(s == nullptr)
 				return false;
 		}
 		else if(type == "box")
@@ -278,11 +278,11 @@ bool SceneParser::parseObjects(XMLElement* objects)
 
 		const char* shaderName = objeElem->Attribute("material");
 
-		if(shaderName != NULL)
+		if(shaderName != nullptr)
 		{
 			ShaderBase* material = shaders[shaderName];
 
-			if(material != NULL)		
+			if(material != nullptr)		
 			{
 				s->setShader(material);
 			}
@@ -291,7 +291,7 @@ bool SceneParser::parseObjects(XMLElement* objects)
 
 		XMLElement* transformsElem = objeElem->FirstChildElement("transform");
 
-		if(transformsElem != NULL)
+		if(transformsElem != nullptr)
 		{
 			mat4 tMatrix;
 			parseTransforms(tMatrix,transformsElem);
@@ -452,7 +452,7 @@ bool SceneParser::parseLights(tinyxml2::XMLElement* lightsGroupElement)
 
 bool SceneParser::getVector3(XMLElement* element, vec3& vec)
 {
-	if(element == NULL)
+	if(element == nullptr)
 		return false;
 	
 	bool success = true;
@@ -466,7 +466,7 @@ bool SceneParser::getVector3(XMLElement* element, vec3& vec)
 
 bool SceneParser::getColorVector3(XMLElement* element, vec3& vec)
 {
-	if(element == NULL)
+	if(element == nullptr)
 		return false;
 	
 	bool success = true;
@@ -481,7 +481,7 @@ bool SceneParser::getColorVector3(XMLElement* element, vec3& vec)
 
 bool SceneParser::getFloatAttrib(XMLElement* element, const char* attribName, float& value)
 {
-	if(element == NULL)
+	if(element == nullptr)
 		return false;
 	
 	std::istringstream isstr(element->Attribute(attribName));
@@ -490,7 +490,7 @@ bool SceneParser::getFloatAttrib(XMLElement* element, const char* attribName, fl
 
 bool SceneParser::getIntAttrib(XMLElement* element, const char* attribName, int& value)
 {
-	if(element == NULL)
+	if(element == nullptr)
 		return false;
 	
 	std::istringstream isstr(element->Attribute(attribName));

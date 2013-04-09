@@ -64,8 +64,8 @@ Mesh_ptr loadModel()
 	
 	MeshRaw* rawMesh = oj.loadObjFile("E:\\Development\\Graphics Playground\\data\\models\\rectangle.obj");
 
-	if(rawMesh == NULL)
-		return NULL;
+	if(rawMesh == nullptr)
+		return nullptr;
 
 	Mesh_ptr mesh = Mesh_ptr(new Mesh());
 

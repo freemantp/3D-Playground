@@ -467,7 +467,7 @@ MeshRaw* ObjLoader::loadObjFile(const string& path)
 	ifstream myfile;
 	myfile.open(path);
 
-	MeshRaw* newMesh = NULL;
+	MeshRaw* newMesh = nullptr;
 
 	std::string line;
 	if (myfile.is_open())

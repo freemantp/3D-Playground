@@ -94,8 +94,8 @@ Mesh_ptr Util::loadModel(const string& path)
 	
 	MeshRaw* rawMesh = oj.loadObjFile(path);
 
-	if(rawMesh == NULL)
-		return NULL;
+	if(rawMesh == nullptr)
+		return nullptr;
 
 	Mesh_ptr mesh(new Mesh(rawMesh));
 
@@ -211,7 +211,7 @@ unsigned char* Util::loadTexture(const std::string& texturePath, int& width, int
 	else
 		Error("Could not load texture: " + texturePath);
 
-	return NULL;
+	return nullptr;
 }
 
 std::string Util::extractBaseFolder(std::string path)

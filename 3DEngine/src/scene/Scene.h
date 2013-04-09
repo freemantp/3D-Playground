@@ -8,7 +8,6 @@
 //fwd decls
 class ShaderBase;
 class InputHandlerFactory;
-class Skybox;
 
 SHARED_PTR_CLASS_DECL(Camera);
 SHARED_PTR_CLASS_DECL(Scene);
