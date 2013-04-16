@@ -3,7 +3,7 @@
 #include "UniformBuffer.h"
 #include "GLSLProgram.h"
 
-UniformBuffer::UniformBuffer(const GLSLProgram* program, std::string bufferName, const GLchar* elemNames[], const int numElems)
+UniformBuffer::UniformBuffer(const GLSLProgram_ptr program, std::string bufferName, const GLchar* elemNames[], const int numElems)
 {	
 	if( ! program->isLinked () )
 		Error("[UniformBuffer] Program is not linked");
@@ -54,7 +54,7 @@ UniformBuffer::~UniformBuffer(void)
 	
 }
 
-void UniformBuffer::printUniforms(const GLSLProgram* program, const GLchar* elemNames[],GLuint* indices, GLint* eOffsets, int numElems)
+void UniformBuffer::printUniforms(const GLSLProgram_ptr program, const GLchar* elemNames[],GLuint* indices, GLint* eOffsets, int numElems)
 {
 
 	std::vector<std::string> ll = program->getUniformAttributes();
@@ -88,7 +88,7 @@ void UniformBuffer::setElement(const string& name, float v)
 	setElement(name, &v, sizeof(GLfloat));
 }
 
-void UniformBuffer::bindToShader(GLSLProgram* program, std::string bufferName)
+void UniformBuffer::bindToShader(GLSLProgram_ptr program, std::string bufferName)
 {
 	glBindBuffer(GL_UNIFORM_BUFFER, uboHandle);
 	GLuint blockIdx = glGetUniformBlockIndex(program->getProgramHandle(), bufferName.c_str());

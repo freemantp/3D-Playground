@@ -13,6 +13,7 @@ namespace GLSLShader
 SHARED_PTR_CLASS_DECL(PhongShader)
 
 class PhongShader : public ShaderBase
+				  , public std::enable_shared_from_this<PhongShader>
 {
 public:
 	PhongShader();

@@ -67,5 +67,5 @@ void PhongShader::setLightAndModel(const Scene& scene)
 	//set lights
 	setUniform("NumPointLights", (int)scene.lightModel->pointLights.size());
 	setUniform("NumSpotLights", (int)scene.lightModel->spotLights.size());
-	scene.lightModel->GetLightsBuffer()->bindToShader(this,"Lights");
+	scene.lightModel->GetLightsBuffer()->bindToShader(shared_from_this(),"Lights");
 }

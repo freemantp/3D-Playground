@@ -9,7 +9,7 @@
 LightModel::LightModel()
 {
 	
-	UniformBufferShader* unformBufferShader = new UniformBufferShader();
+	UniformBufferShader_ptr unformBufferShader(new UniformBufferShader());
 
 	const int numElems = 28;
 	const GLchar* elemNames[] = {"Lights.PointLights[0].Position","Lights.PointLights[0].Color",
