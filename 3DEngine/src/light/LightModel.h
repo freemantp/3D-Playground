@@ -28,9 +28,11 @@ public:
 	UniformBuffer_ptr GetLightsBuffer() const;
 	void UpdateUniformBuffer(Camera_cptr cam);
 
+	bool IsValid();
+
 protected:
 	
 	UniformBuffer_ptr lightsBuffer;
-
+	bool valid;
 };
 

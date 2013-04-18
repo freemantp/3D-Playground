@@ -344,7 +344,7 @@ void Mesh::setShader(ShaderBase_ptr shader)
 
 void Mesh::render(const Scene& scene) const
 {
-	if(nullptr != shaderProgram) 
+	if(shaderProgram) 
 	{	
 		shaderProgram->use(scene, worldTransform);
 	}
@@ -366,7 +366,7 @@ void Mesh::render(const Scene& scene) const
 
 	glBindVertexArray(0);
 
-	if(nullptr != shaderProgram)
+	if(shaderProgram)
 	{
 		shaderProgram->unuse();
 	}

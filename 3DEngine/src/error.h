@@ -5,6 +5,16 @@
 #include <string>
 #include <sstream>
 
+inline void Info(const char* msg) 
+{
+	std::cout << "INFO:  " << msg << std::endl;
+}
+
+inline void Info(const std::string& msg) 
+{
+	std::cout << "INFO:  " << msg << std::endl;
+}
+
 inline void Error(const char* errorMsg) 
 {
 	std::cerr << "ERROR: " << errorMsg << std::endl;

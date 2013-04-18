@@ -30,6 +30,11 @@ Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 
 	lightModel.reset(new LightModel());
 
+	if(!lightModel->IsValid())
+	{
+		throw std::exception("Could not create light model");
+	}
+
 	InputHandler& inputHandler = ihf.getInputHandler();
 	WindowEventHandler& winEventHandler = WindowEventHandler::getInstance();
 

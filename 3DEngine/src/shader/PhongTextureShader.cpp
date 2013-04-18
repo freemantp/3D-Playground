@@ -43,7 +43,7 @@ void PhongTextureShader::use(const Scene& scene, const glm::mat4& modelTransform
 	textures[Albedo]->bindTexture(texUnits[Albedo]);
 	setUniform("AlbedoTex", texUnits[Albedo]);
 
-	if(scene.skybox != nullptr)
+	if(scene.skybox)
 	{
 		CubeMapTexture_ptr envTex =  scene.skybox->texture;
 		envTex->bindTexture(texUnits[Environment]);

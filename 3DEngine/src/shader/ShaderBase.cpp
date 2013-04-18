@@ -108,6 +108,8 @@ GLint ShaderBase::getAttributeChannel(GLSLShader::VertexAttribute attribute)
 
 bool ShaderBase::loadShader(const string& shaderName)
 {
+	Info("Loading shader " + shaderName );
+
 	string vertexShaderSource = Util::loadTextFile( Config::SHADER_BASE_PATH + shaderName + ".vert");
 	string fragmentShaderSource = Util::loadTextFile( Config::SHADER_BASE_PATH + shaderName + ".frag");
 

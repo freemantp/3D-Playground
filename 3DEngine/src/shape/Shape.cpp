@@ -2,7 +2,7 @@
 #include "Shape.h"
 
 
-Shape::Shape(): shaderProgram(nullptr)
+Shape::Shape()
 { 
 
 }

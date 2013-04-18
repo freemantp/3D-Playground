@@ -31,7 +31,6 @@ typedef std::pair<string,ShaderBase_ptr> ShaderKeyVal;
 
 SceneParser::SceneParser(InputHandlerFactory& factory) 
 	: factory(factory)
-	, generatedScene(nullptr)
 {
 
 }
@@ -47,12 +46,7 @@ bool SceneParser::parse(const char* xmlDocument)
 	
 	tinyxml2::XMLDocument doc;
 	if(doc.Parse(xmlDocument) == tinyxml2::XML_NO_ERROR)
-	{
-		vector<Shape*> shapes;
-		vector<ShaderBase*> materials;
-		vector<Camera*> cameras;
-		vector<Light*> lights;
-		
+	{	
 		XMLElement* root = doc.RootElement();
 
 		if( strcmp( root->Name(), "scene" ) == 0 )
@@ -68,8 +62,16 @@ bool SceneParser::parse(const char* xmlDocument)
 
 			Camera_ptr cam;
 			parseOk &= parseCamera(cam,cameraElement);
-			generatedScene.reset(new Scene(factory,cam));
-			generatedScene->name = sceneName;
+			try
+			{
+				generatedScene.reset(new Scene(factory,cam));
+				generatedScene->name = sceneName;
+			}
+			catch (std::exception* e)
+			{
+				Error(e->what());
+				return false;
+			}			
 
 			//Materials
 			XMLElement* materialsElement = root->FirstChildElement("materials");
