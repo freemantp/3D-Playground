@@ -14,6 +14,8 @@
     <ProjectGuid>{DA4B601E-A925-458C-B800-EFE14BC4E69B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>DebugPlayground</RootNamespace>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -92,5 +94,6 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\freeglut.redist.2.8.1.1\build\native\freeglut.redist.targets" Condition="Exists('..\packages\freeglut.redist.2.8.1.1\build\native\freeglut.redist.targets')" />
     <Import Project="..\packages\freeglut.2.8.1.1\build\native\freeglut.targets" Condition="Exists('..\packages\freeglut.2.8.1.1\build\native\freeglut.targets')" />
+    <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   </ImportGroup>
 </Project>

@@ -22,6 +22,8 @@
     <ProjectGuid>{8DBA3C59-335F-4432-B3F0-92D4C1CD52B9}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>GraphicsPlayground</RootNamespace>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -168,5 +170,6 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\freeglut.redist.2.8.1.1\build\native\freeglut.redist.targets" Condition="Exists('..\packages\freeglut.redist.2.8.1.1\build\native\freeglut.redist.targets')" />
     <Import Project="..\packages\freeglut.2.8.1.1\build\native\freeglut.targets" Condition="Exists('..\packages\freeglut.2.8.1.1\build\native\freeglut.targets')" />
+    <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   </ImportGroup>
 </Project>
