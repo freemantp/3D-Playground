@@ -73,7 +73,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\3DEngine\src;C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;C:\Development\tinyxml2\include;C:\Development\DevIL-SDK-x64-1.7.8\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\3DEngine\src;C:\Development\glew-1.9.0\include;C:\Development\tinyxml2\include;C:\Development\DevIL-SDK-x64-1.7.8\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\Debug;C:\Development\glew-1.9.0\lib;C:\Development\tinyxml2\include;C:\Development\tinyxml2\lib\Debug;C:\Development\DevIL-SDK-x64-1.7.8\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -81,7 +81,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\3DEngine\src;C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;$(SolutionDir)\ObjLoader;C:\Development\tinyxml2\include;C:\Development\DevIL-SDK-x64-1.7.8\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\3DEngine\src;C:\Development\glew-1.9.0\include;$(SolutionDir)\ObjLoader;C:\Development\tinyxml2\include;C:\Development\DevIL-SDK-x64-1.7.8\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\Release;C:\Development\glew-1.9.0\lib;C:\Development\tinyxml2\lib\Release;C:\Development\DevIL-SDK-x64-1.7.8\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -168,8 +168,9 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
     <Import Project="..\packages\freeglut.redist.2.8.1.1\build\native\freeglut.redist.targets" Condition="Exists('..\packages\freeglut.redist.2.8.1.1\build\native\freeglut.redist.targets')" />
     <Import Project="..\packages\freeglut.2.8.1.1\build\native\freeglut.targets" Condition="Exists('..\packages\freeglut.2.8.1.1\build\native\freeglut.targets')" />
-    <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+    <Import Project="..\packages\glm.0.9.4.4\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.4.4\build\native\glm.targets')" />
   </ImportGroup>
 </Project>

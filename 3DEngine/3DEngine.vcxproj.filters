@@ -379,6 +379,7 @@
     <None Include="..\data\shader\skyboxShader.vert">
       <Filter>data\shaders\specialized</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\data\scenes\boxScene.xml">

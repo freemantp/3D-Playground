@@ -136,6 +136,7 @@
     <None Include="..\data\shader\skyboxShader.vert" />
     <None Include="..\data\shader\uniformBuffer.frag" />
     <None Include="..\data\shader\uniformBuffer.vert" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\data\scenes\boxScene.xml" />
@@ -155,6 +156,8 @@
     <ProjectGuid>{32FFB0D3-DAA7-436A-9E9A-44391510D878}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>My3DEngine</RootNamespace>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -204,10 +207,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <SourcePath>${ProjectDir}\src;$(SourcePath)</SourcePath>
-    <IncludePath>C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;C:\Development\tinyxml2\include;C:\Development\DevIL-SDK-x64-1.7.8\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Development\glew-1.9.0\include;C:\Development\tinyxml2\include;C:\Development\DevIL-SDK-x64-1.7.8\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Development\glm-0.9.3.4;C:\Development\glew-1.9.0\include;C:\Development\tinyxml2\include;C:\Development\DevIL-SDK-x64-1.7.8\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Development\glew-1.9.0\include;C:\Development\tinyxml2\include;C:\Development\DevIL-SDK-x64-1.7.8\include;$(IncludePath)</IncludePath>
     <SourcePath>${ProjectDir}\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -268,5 +271,7 @@
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+    <Import Project="..\packages\glm.0.9.4.4\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.4.4\build\native\glm.targets')" />
   </ImportGroup>
 </Project>
