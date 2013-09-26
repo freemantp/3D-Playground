@@ -9,3 +9,5 @@ data/texture
 Thumbs.db
 packages/
 .nuget/NuGet.exe
+3DEngine/Debug/
+Graphics Playground/Debug/
