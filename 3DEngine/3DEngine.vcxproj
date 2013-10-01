@@ -269,9 +269,9 @@
     <Import Project="..\packages\glm.0.9.4.4\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.4.4\build\native\glm.targets')" />
     <Import Project="..\packages\glew.redist.1.9.0.1\build\native\glew.redist.targets" Condition="Exists('..\packages\glew.redist.1.9.0.1\build\native\glew.redist.targets')" />
     <Import Project="..\packages\glew.1.9.0.1\build\native\glew.targets" Condition="Exists('..\packages\glew.1.9.0.1\build\native\glew.targets')" />
-    <Import Project="..\packages\tinyxml2.redist.1.0.11.2\build\native\tinyxml2.redist.targets" Condition="Exists('..\packages\tinyxml2.redist.1.0.11.2\build\native\tinyxml2.redist.targets')" />
-    <Import Project="..\packages\tinyxml2.1.0.11.2\build\native\tinyxml2.targets" Condition="Exists('..\packages\tinyxml2.1.0.11.2\build\native\tinyxml2.targets')" />
     <Import Project="..\packages\DevIL.redist.1.7.8\build\native\DevIL.redist.targets" Condition="Exists('..\packages\DevIL.redist.1.7.8\build\native\DevIL.redist.targets')" />
     <Import Project="..\packages\DevIL.1.7.8\build\native\DevIL.targets" Condition="Exists('..\packages\DevIL.1.7.8\build\native\DevIL.targets')" />
+    <Import Project="..\packages\tinyxml2.redist.1.0.11.2\build\native\tinyxml2.redist.targets" Condition="Exists('..\packages\tinyxml2.redist.1.0.11.2\build\native\tinyxml2.redist.targets')" />
+    <Import Project="..\packages\tinyxml2.1.0.11.2\build\native\tinyxml2.targets" Condition="Exists('..\packages\tinyxml2.1.0.11.2\build\native\tinyxml2.targets')" />
   </ImportGroup>
 </Project>
