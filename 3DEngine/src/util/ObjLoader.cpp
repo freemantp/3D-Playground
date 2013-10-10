@@ -433,13 +433,21 @@ bool ObjLoader::computeTangents()
 			vec3 sdir = R[0];
 			vec3 tdir = R[1];
 
-			tangents_tmp[v1Idx.x] += sdir;
-			tangents_tmp[v2Idx.x] += sdir;
-			tangents_tmp[v3Idx.x] += sdir;
+			
 
-			bitangents[v1Idx.x] += tdir;
-			bitangents[v2Idx.x] += tdir;
-			bitangents[v3Idx.x] += tdir;
+			if(!_isnan(sdir.x) && !_isnan(sdir.y) && !_isnan(sdir.z))
+			{
+				tangents_tmp[v1Idx.x] += sdir;
+				tangents_tmp[v2Idx.x] += sdir;
+				tangents_tmp[v3Idx.x] += sdir;
+			}
+
+			if(!_isnan(tdir.x) && !_isnan(tdir.y) && !_isnan(tdir.z))
+			{
+				bitangents[v1Idx.x] += tdir;
+				bitangents[v2Idx.x] += tdir;
+				bitangents[v3Idx.x] += tdir;
+			}
 		}
 		else
 		{
