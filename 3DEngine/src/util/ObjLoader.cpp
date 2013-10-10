@@ -147,7 +147,7 @@ MeshRaw* ObjLoader::loadObj(istream& istr)
 
 	newMesh->addGroup(groupName,currentMtl, range);
 
-	cout << "Mesh loaded, f=" << faces.size() <<  " , v=" << vertices.size() / 3 << " , n=" << normals.size() << " ,tex coords=" << texCoords.size() << endl;
+	cout << "Mesh loaded, f=" << faces.size() <<  " , v=" << vertices.size() << " , n=" << normals.size() << " ,tex coords=" << texCoords.size() << endl;
 
 	getVertexArray(newMesh->vertices);
 	getIndexArray(newMesh->faces);
@@ -406,7 +406,7 @@ bool ObjLoader::computeTangents()
 		ivec3 v2Idx = faces[i].v2;
 		ivec3 v3Idx = faces[i].v3;
 		
-		if(v1Idx.y >= 0 && v2Idx.y >= 0 && v3Idx.y)
+		if(v1Idx.y >= 0 && v2Idx.y >= 0 && v3Idx.y >= 0)
 		{
 
 			vec2& tc1 = texCoords[v1Idx.y];

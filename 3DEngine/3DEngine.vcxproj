@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\data\scenes\boxScene.xml" />
+    <Xml Include="..\data\scenes\envHorse.xml" />
     <Xml Include="..\data\scenes\headScene.xml">
       <SubType>Designer</SubType>
     </Xml>
