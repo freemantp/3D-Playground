@@ -19,6 +19,7 @@
     <material name="car" shader="phong">
       <texture file="Car/car_out_d.dds"/>
       <shininess value="0"/>
+      <envMapReflection value="0.1"/>
     </material>
   </materials>
 
@@ -43,7 +44,7 @@
 
   </lights>
 
-  <!--<skybox cubeMapFile="cubeMap/Sunset.jpg"/>-->
+  <skybox cubeMapFile="cubeMap/stormydays.jpg"/>
 
   <objects>
 
@@ -54,8 +55,7 @@
       </transform>
     </mesh>
 
-  
-     <!--<mesh file="GAZ M24 VOLGA/GAZ M24 VOLGA.obj" material="car">
+     <!--<mesh file="GAZ M24 VOLGA/GAZ M24 VOLGA.obj">
       <transform>
         <translate x="0.2" y="0.0" z="-2.0"/>
         <scale x="0.075" y="0.075" z="0.075"/>

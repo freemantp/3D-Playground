@@ -126,7 +126,7 @@ void main()
 
 	//Environment mapping
 	if(EnvReflection > 0) {
-		FragColor = mix (FragColor, texture(EnvMapTex, ReflectDir), EnvReflection);
+		FragColor = mix (albedo, texture(EnvMapTex, ReflectDir), EnvReflection);
 	}
 
 }

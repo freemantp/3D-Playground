@@ -145,7 +145,15 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 				subElem = materialElement->FirstChildElement("bumpMap");
 				if(subElem == nullptr)
 				{
-					ps.reset(new PhongTextureShader(texFile));
+					auto pts = new PhongTextureShader(texFile);
+
+					if ( (subElem = materialElement->FirstChildElement("envMapReflection")) != nullptr )
+					{
+						float envMapRefl; 
+						getFloatAttrib(subElem,"value",envMapRefl);
+						pts->SetEnvMapReflection(envMapRefl);
+					}
+					ps.reset(pts);
 				}
 				else 
 				{

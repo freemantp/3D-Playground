@@ -25,7 +25,8 @@ void main()
 	vec3 normalWorld   = vec3(ModelMatrix * vec4(VertexNormal, 0.0));
 	vec3 camDirectionWorld = normalize( CameraPosWorld - positionWorld);
 
-	ReflectDir = reflect(-camDirectionWorld, normalWorld);
+	ReflectDir = reflect(camDirectionWorld, normalWorld);
+	ReflectDir.y *= -1; //Why so?
 
 	TexCoord = VertexTexCoord;
     gl_Position = MVP * vec4( VertexPosition, 1.0 );

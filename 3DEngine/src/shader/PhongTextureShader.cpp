@@ -13,7 +13,8 @@
 
 
 PhongTextureShader::PhongTextureShader(const string& albedoTexFile)
-: PhongShader("phongTexShader")
+	: PhongShader("phongTexShader")
+	, envMapReflection(0)
 {
 	GLint maxTexUnits;
 	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,&maxTexUnits);
@@ -41,7 +42,7 @@ void PhongTextureShader::use(const Scene& scene, const glm::mat4& modelTransform
 
 	//Bind albedo texture to texture unit 0
 	textures[Albedo]->bindTexture(texUnits[Albedo]);
-	setUniform("AlbedoTex", texUnits[Albedo]);
+	setUniform("AlbedoTex", texUnits[Albedo]);	
 
 	if(scene.skybox)
 	{
@@ -49,6 +50,6 @@ void PhongTextureShader::use(const Scene& scene, const glm::mat4& modelTransform
 		envTex->bindTexture(texUnits[Environment]);
 		setUniform("EnvMapTex",texUnits[Environment]);
 		setUniform("CameraPosWorld",scene.activeCamera->GetPosition() );
-		setUniform("EnvReflection",0.5f);
+		setUniform("EnvReflection",m_EnvMapReflection);
 	}
 }

@@ -59,6 +59,7 @@
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\texture\CubeMapTexture.h" />
     <ClInclude Include="src\texture\Texture.h" />
+    <ClInclude Include="src\util\gettersetter.h" />
     <ClInclude Include="src\util\MeshRaw.h" />
     <ClInclude Include="src\util\ObjLoader.h" />
     <ClInclude Include="src\util\SharedPointer.h" />

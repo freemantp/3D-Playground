@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PhongShader.h"
+#include "../util/gettersetter.h"
 
 SHARED_PTR_CLASS_DECL(Texture)
 SHARED_PTR_CLASS_DECL(PhongTextureShader)
@@ -13,6 +14,7 @@ public:
 
 	virtual void use(const Scene& scene, const glm::mat4& modelTransform);
 
+	GETSET(float,EnvMapReflection)
 
 protected:
 
@@ -21,6 +23,8 @@ protected:
 
 	GLuint texUnits[numTextures];
 	Texture_ptr textures[numTextures];
+
+	float envMapReflection;
 
 };
 

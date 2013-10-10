@@ -228,6 +228,9 @@
     <ClInclude Include="src\util\SharedPointer.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\gettersetter.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
