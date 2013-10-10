@@ -173,7 +173,7 @@ MeshRaw* ObjLoader::loadObj(istream& istr)
 
 bool ObjLoader::hasNormals()
 {
-	return normals.size() > 0;
+	return normals.size() == vertices.size();
 }
 
 bool ObjLoader::hasTangents()
@@ -314,28 +314,23 @@ void ObjLoader::getTexCoordArray(vector<float>& texCoordArray)
 
 	float* txRaw = &texCoordArray[0];
 
+	auto processTexCoords = [this,txRaw,processedDictionary](ivec3& v) 
+	{
+		if( ! processedDictionary[v.x] && v.y >= 0)
+		{
+			vec2& tx  = texCoords [v.y];
+			copyVec2( &txRaw[v.x * 2], tx);
+			processedDictionary[v.x] = true;
+		}
+	};
+
 	for(int i = 0; i < faces.size(); i++)
 	{
 		Tri& t = faces[i];
 
-		if( ! processedDictionary[t.v1.x])
-		{
-			vec2& tx  = texCoords [t.v1.y];
-			copyVec2( &txRaw[t.v1.x * 2], tx);
-			processedDictionary[t.v1.x] = true;
-		}
-		if( ! processedDictionary[t.v2.x])
-		{
-			vec2& tx  = texCoords  [t.v2.y];
-			copyVec2( &txRaw[t.v2.x * 2], tx);
-			processedDictionary[t.v2.x] = true;
-		}
-		if( ! processedDictionary[t.v3.x])
-		{
-			vec2& tx  = texCoords  [t.v3.y];
-			copyVec2( &txRaw[t.v3.x * 2], tx);
-			processedDictionary[t.v3.x] = true;
-		}
+		processTexCoords(t.v1);
+		processTexCoords(t.v2);
+		processTexCoords(t.v3);
 	}
 	
 	delete[] processedDictionary;
@@ -411,37 +406,47 @@ bool ObjLoader::computeTangents()
 		ivec3 v2Idx = faces[i].v2;
 		ivec3 v3Idx = faces[i].v3;
 		
-		vec3& v1 = vertices[v1Idx.x];
-		vec3& v2 = vertices[v2Idx.x];
-		vec3& v3 = vertices[v3Idx.x];
+		if(v1Idx.y >= 0 && v2Idx.y >= 0 && v3Idx.y)
+		{
 
-		vec2& tc1 = texCoords[v1Idx.y];
-		vec2& tc2 = texCoords[v2Idx.y];
-		vec2& tc3 = texCoords[v3Idx.y];
+			vec2& tc1 = texCoords[v1Idx.y];
+			vec2& tc2 = texCoords[v2Idx.y];
+			vec2& tc3 = texCoords[v3Idx.y];
+
+			vec3& v1 = vertices[v1Idx.x];
+			vec3& v2 = vertices[v2Idx.x];
+			vec3& v3 = vertices[v3Idx.x];
 		
-		//difference vectors
-		vec3 q1 = v2-v1;
-		vec3 q2 = v3-v1;
+			//difference vectors
+			vec3 q1 = v2-v1;
+			vec3 q2 = v3-v1;
 
-		//difference tex coords
-		vec2 dTc1 = tc2 - tc1;
-		vec2 dTc2 = tc3 - tc1;
+			//difference tex coords
+			vec2 dTc1 = tc2 - tc1;
+			vec2 dTc2 = tc3 - tc1;
 		
-		//Sove for tangents and bitangents
-		glm::mat3x2 Q = glm::transpose(glm::mat2x3(q1,q2));
-		glm::mat2 TX_1= glm::inverse(glm::mat2(dTc1,dTc2));
-		glm::mat2x3 R = glm::transpose(TX_1 * Q);
+			//Sove for tangents and bitangents
+			glm::mat3x2 Q = glm::transpose(glm::mat2x3(q1,q2));
+			glm::mat2 TX_1= glm::inverse(glm::mat2(dTc1,dTc2));
+			glm::mat2x3 R = glm::transpose(TX_1 * Q);
 
-		vec3 sdir = R[0];
-		vec3 tdir = R[1];
+			vec3 sdir = R[0];
+			vec3 tdir = R[1];
 
-		tangents_tmp[v1Idx.x] += sdir;
-		tangents_tmp[v2Idx.x] += sdir;
-		tangents_tmp[v3Idx.x] += sdir;
+			tangents_tmp[v1Idx.x] += sdir;
+			tangents_tmp[v2Idx.x] += sdir;
+			tangents_tmp[v3Idx.x] += sdir;
 
-		bitangents[v1Idx.x] += tdir;
-		bitangents[v2Idx.x] += tdir;
-		bitangents[v3Idx.x] += tdir;
+			bitangents[v1Idx.x] += tdir;
+			bitangents[v2Idx.x] += tdir;
+			bitangents[v3Idx.x] += tdir;
+		}
+		else
+		{
+			tangents.clear();
+			bitangents.clear();
+			return false;
+		}
 	}
 
 	//Orthogonalize and normalize

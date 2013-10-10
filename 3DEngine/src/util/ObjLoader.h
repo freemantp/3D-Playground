@@ -18,7 +18,6 @@ class ObjLoader
 public:
 
 	MeshRaw* loadObjFile(const std::string& path);
-	MeshRaw* loadObj(std::istream& istr);
 
 	bool computeNormals();
 	bool computeTangents();
@@ -31,6 +30,9 @@ public:
 	bool hasNormals();
 	bool hasTangents();
 	bool hasTexCoords();
+
+protected:
+	MeshRaw* loadObj(std::istream& istr);
 
 private:
 
