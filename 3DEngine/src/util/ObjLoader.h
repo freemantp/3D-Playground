@@ -1,8 +1,9 @@
 #pragma once
 
+#include "../util/SharedPointer.h"
+
 #include <string>
 #include <iostream>
-
 #include <vector>
 #include <glm/glm.hpp>
 
@@ -11,13 +12,34 @@ using glm::vec3;
 using glm::vec4;
 using glm::ivec3;
 
-class MeshRaw;
+SHARED_PTR_CLASS_DECL(ObjMaterial);
+SHARED_PTR_CLASS_DECL(ObjLoader);
+SHARED_PTR_CLASS_DECL(MeshRaw);
+
+
+class ObjMaterial
+{
+public:
+	static ObjMaterial_ptr Create(std::string name);
+	
+protected:
+	ObjMaterial(std::string name);
+public:
+	std::string name;
+	glm::vec3 ambient;
+	glm::vec3 diffuse;
+	glm::vec3 specular;
+	float opacity;
+	float shininess;
+	std::string texture;
+	bool specularEnabled;
+};
 
 class ObjLoader
 {
 public:
 
-	MeshRaw* loadObjFile(const std::string& path);
+	MeshRaw_ptr loadObjFile(const std::string& path);
 
 	bool computeNormals();
 	bool computeTangents();
@@ -32,7 +54,8 @@ public:
 	bool hasTexCoords();
 
 protected:
-	MeshRaw* loadObj(std::istream& istr);
+	MeshRaw_ptr loadObj(std::istream& istr);
+	bool loadMtllib(std::istream& istr, MeshRaw_ptr newMesh);
 
 private:
 
@@ -66,6 +89,7 @@ private:
 	std::vector<vec2> texCoords;
 	std::vector<Tri> faces;
 
+	std::string currentFile;
 };
 
 	

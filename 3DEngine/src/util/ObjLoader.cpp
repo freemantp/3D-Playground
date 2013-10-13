@@ -13,6 +13,20 @@ using glm::vec2;
 using glm::vec3;
 using glm::ivec3;
 
+
+ObjMaterial_ptr ObjMaterial::Create(std::string name)
+{
+	return ObjMaterial_ptr(new ObjMaterial(name));
+}
+
+ObjMaterial::ObjMaterial(std::string theName)
+	: opacity(1)
+	, specularEnabled(true)
+	, name(theName)
+{
+
+}
+
 void ObjLoader::parseIdx(string& s,ivec3& indices)
 {
 	string::const_iterator sit;
@@ -48,14 +62,13 @@ void ObjLoader::parseIdx(string& s,ivec3& indices)
 	indices[idxPtr++] = number - 1;
 }
 
-MeshRaw* ObjLoader::loadObj(istream& istr)
+MeshRaw_ptr ObjLoader::loadObj(istream& istr)
 {	
 	int lineCount = 0;
 
-	MeshRaw* newMesh = new MeshRaw();
+	MeshRaw_ptr newMesh = MeshRaw::Create();
 
 	string groupName;	
-	string mtlLib;
 	string currentMtl;
 	int groupFaceStartIdx = 0;
 
@@ -128,12 +141,16 @@ MeshRaw* ObjLoader::loadObj(istream& istr)
 
 		}
 		else if(line.substr(0,7) == "mtllib ")
-		{	
-			
-			string input = "/ab/fdfg/dfdf";
-			std::cout << Util::extractBaseFolder(input) << std::endl;
-			
-			mtlLib = line.substr(7);
+		{			
+			std::string mtlFile =  Util::extractBaseFolder(currentFile) + line.substr(7);
+
+			std::ifstream mtlFileStream(mtlFile);
+			if(mtlFileStream && loadMtllib(mtlFileStream,newMesh))
+				std::cout << "Material lib loaded: " << mtlFile << std::endl;
+			else
+				std::cout << "Could not load mtllib: " << mtlFile << std::endl;
+
+
 		}
 		else if(line.substr(0,7) == "usemtl ")
 		{	
@@ -169,6 +186,67 @@ MeshRaw* ObjLoader::loadObj(istream& istr)
 		Error("Could not compute tangents");
 
 	return newMesh;
+}
+
+bool ObjLoader::loadMtllib(std::istream& istr, MeshRaw_ptr newMesh)
+{
+	std::string line;
+
+	ObjMaterial_ptr mat;
+
+	while ( istr.good() )
+	{
+		getline (istr,line);
+		if(line.substr(0,6) == "newmtl")
+		{
+			if(mat)
+				newMesh->materials.push_back(mat);
+
+			mat = ObjMaterial::Create(line.substr(6));
+		}
+		if(mat)
+		{
+			if(line.substr(0,2) == "Ka")
+			{
+				istringstream s(line.substr(2));
+				vec3 v;
+				s >> mat->ambient.r; s >>  mat->ambient.g; s >>  mat->ambient.b;
+			}
+			else if(line.substr(0,2) == "Kd")
+			{
+				istringstream s(line.substr(2));
+				vec3 v;
+				s >> mat->diffuse.r; s >>  mat->diffuse.g; s >>  mat->diffuse.b;
+			}
+			else if(line.substr(0,2) == "Ks")
+			{
+				istringstream s(line.substr(2));
+				vec3 v;
+				s >> mat->specular.r; s >>  mat->specular.g; s >>  mat->specular.b;
+			}
+			else if(line.substr(0,1) == "d")
+			{
+				istringstream s(line.substr(1));
+				vec3 v;
+				s >> mat->opacity;
+			}
+			else if(line.substr(0,2) == "Ns")
+			{
+				istringstream s(line.substr(2));
+				vec3 v;
+				s >> mat->shininess;
+			}
+			else if(line.substr(0,5) == "illum")
+			{
+				istringstream s(line.substr(5));
+				int illuminationModel;
+				s >> illuminationModel;
+				mat->specularEnabled = illuminationModel > 1;
+			}
+		}
+
+	}
+	return newMesh->materials.size() > 0;
 }
 
 bool ObjLoader::hasNormals()
@@ -408,7 +486,6 @@ bool ObjLoader::computeTangents()
 		
 		if(v1Idx.y >= 0 && v2Idx.y >= 0 && v3Idx.y >= 0)
 		{
-
 			vec2& tc1 = texCoords[v1Idx.y];
 			vec2& tc2 = texCoords[v2Idx.y];
 			vec2& tc3 = texCoords[v3Idx.y];
@@ -432,8 +509,6 @@ bool ObjLoader::computeTangents()
 
 			vec3 sdir = R[0];
 			vec3 tdir = R[1];
-
-			
 
 			if(!_isnan(sdir.x) && !_isnan(sdir.y) && !_isnan(sdir.z))
 			{
@@ -475,12 +550,14 @@ bool ObjLoader::computeTangents()
 
 }
 
-MeshRaw* ObjLoader::loadObjFile(const string& path)
+MeshRaw_ptr ObjLoader::loadObjFile(const string& path)
 {
+	currentFile = path;
+
 	ifstream myfile;
 	myfile.open(path);
 
-	MeshRaw* newMesh = nullptr;
+	MeshRaw_ptr newMesh;
 
 	std::string line;
 	if (myfile.is_open())

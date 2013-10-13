@@ -13,7 +13,7 @@ class Mesh : public Shape
 public:
 
 	Mesh();
-	Mesh(MeshRaw* rawMesh);
+	Mesh(MeshRaw_ptr rawMesh);
 
 	virtual ~Mesh();
 

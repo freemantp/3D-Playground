@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../util/SharedPointer.h"
+
 #include <vector>
 #include <string>
 #include <glm/glm.hpp>
@@ -11,11 +13,16 @@ using glm::vec3;
 using glm::vec4;
 using glm::ivec3;
 
+SHARED_PTR_CLASS_DECL(MeshRaw);
+SHARED_PTR_CLASS_DECL(ObjMaterial);
+
 class MeshRaw
 {
 public:
-	MeshRaw(void);
-	~MeshRaw(void);
+
+	static MeshRaw_ptr Create() { return MeshRaw_ptr(new MeshRaw());}
+
+	~MeshRaw();
 
 	typedef std::pair<int,int> Range;
 
@@ -33,7 +40,11 @@ public:
 	vector<Range> groupRanges;
 	vector<string> groupMaterial;
 	vector<string> groupNames;
+	std::vector<ObjMaterial_ptr> materials;
 	string name;
+
+protected:
+	MeshRaw();
 
 };
 

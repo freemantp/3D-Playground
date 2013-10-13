@@ -204,7 +204,6 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 				getColorVector3(subElem,cshader->color);
 
 			shader = cshader;
-		
 		}
 		else
 		{
@@ -296,7 +295,6 @@ bool SceneParser::parseObjects(XMLElement* objects)
 			}
 		}
 
-
 		XMLElement* transformsElem = objeElem->FirstChildElement("transform");
 
 		if(transformsElem != nullptr)
@@ -306,9 +304,7 @@ bool SceneParser::parseObjects(XMLElement* objects)
 			s->worldTransform = tMatrix;
 		}
 
-		generatedScene->addShape(s);
-
-		
+		generatedScene->addShape(s);		
 	} 
 	while (objeElem = objeElem->NextSiblingElement());
 	
@@ -485,7 +481,6 @@ bool SceneParser::getColorVector3(XMLElement* element, vec3& vec)
 
 	return success;
 }
-
 
 bool SceneParser::getFloatAttrib(XMLElement* element, const char* attribName, float& value)
 {

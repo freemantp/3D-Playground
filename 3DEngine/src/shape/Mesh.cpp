@@ -17,7 +17,7 @@ Mesh::Mesh()
 	init();
 }
 
-Mesh::Mesh(MeshRaw* rawMesh)
+Mesh::Mesh(MeshRaw_ptr rawMesh)
 	: initialized(false)
 	, normalsSet(false)
 	, tangentsSet(false)
@@ -355,7 +355,7 @@ void Mesh::render(const Scene& scene) const
 	int numRanges = (int)ranges.size();
 
 	for(int i=0 ; i < numRanges; i++)
-	{			
+	{					
 		//Bind i-th index buffer
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[i]);
 			
