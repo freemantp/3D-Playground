@@ -3,6 +3,19 @@
 #include "MeshRaw.h"
 
 
+ObjMaterial_ptr ObjMaterial::Create(std::string name)
+{
+	return ObjMaterial_ptr(new ObjMaterial(name));
+}
+
+ObjMaterial::ObjMaterial(std::string theName)
+	: opacity(1)
+	, specularEnabled(true)
+	, name(theName)
+{
+
+}
+
 MeshRaw::MeshRaw(void)
 {
 }

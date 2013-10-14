@@ -2,6 +2,7 @@
 #include "Mesh.h"
 #include "../scene/Scene.h"
 #include "../shader/ShaderBase.h"
+#include "../shader/PhongShader.h"
 #include "../util/MeshRaw.h"
 
 using namespace GLSLShader;
@@ -29,6 +30,26 @@ Mesh::Mesh(MeshRaw_ptr rawMesh)
 	init();
 
 	setPositions(rawMesh->vertices,rawMesh->faces, &rawMesh->groupRanges);
+
+	// TODO: Refactor this (ugly, inefficient hack)
+	for(auto matName : rawMesh->groupMaterial)
+	{
+		bool found = false;
+
+		for(ObjMaterial_ptr mat : rawMesh->materials)
+		{
+			std::string mn = mat->name;
+
+			if(matName == mn)
+			{
+				materials.push_back(mat);
+				found = true;
+			}
+		}
+
+		if(!found)
+			materials.push_back(ObjMaterial_ptr());
+	}
 
 	if( rawMesh->hasTexCoords() )
 		setTextureCoordinates(rawMesh->texCoords);
@@ -344,10 +365,7 @@ void Mesh::setShader(ShaderBase_ptr shader)
 
 void Mesh::render(const Scene& scene) const
 {
-	if(shaderProgram) 
-	{	
-		shaderProgram->use(scene, worldTransform);
-	}
+
 	
 	glBindVertexArray(vaoHandle);
 
@@ -355,7 +373,28 @@ void Mesh::render(const Scene& scene) const
 	int numRanges = (int)ranges.size();
 
 	for(int i=0 ; i < numRanges; i++)
-	{					
+	{			
+
+		if(shaderProgram) 
+		{	
+			//TODO: make this work with any shader
+			if(i < materials.size())
+			{
+				if (auto ps = std::dynamic_pointer_cast<PhongShader>(shaderProgram))
+				{
+					if(ObjMaterial_ptr mat = materials[i])
+					{
+						ps->ambientReflection = mat->ambient;
+						ps->diffuseReflection = mat->diffuse;
+						ps->glossyReflection = mat->specular;
+						ps->shininess = static_cast<int>(mat->shininess);
+					}
+				}
+			
+			}
+			shaderProgram->use(scene, worldTransform);
+		}
+
 		//Bind i-th index buffer
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[i]);
 			

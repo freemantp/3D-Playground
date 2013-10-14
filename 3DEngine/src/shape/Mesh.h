@@ -3,10 +3,13 @@
 #include "Shape.h"
 #include "../enums.h"
 #include <vector>
+#include <map>
+#include <string>
 
 //forward declarations
 SHARED_PTR_CLASS_DECL(MeshRaw);
 SHARED_PTR_CLASS_DECL(Mesh);
+SHARED_PTR_CLASS_DECL(ObjMaterial);
 
 class Mesh : public Shape
 {
@@ -16,6 +19,8 @@ public:
 	Mesh(MeshRaw_ptr rawMesh);
 
 	virtual ~Mesh();
+
+	
 
 	virtual void render(const Scene& scene) const;
 	virtual void init(); 
@@ -47,6 +52,7 @@ protected:
 	VertexAttribData* vAttribData;
 
 	std::vector< std::pair<int,int> > ranges;
+	std::vector<ObjMaterial_ptr> materials;
 
 	bool normalsSet,tangentsSet,colorsSet,texCoordsSet;
 

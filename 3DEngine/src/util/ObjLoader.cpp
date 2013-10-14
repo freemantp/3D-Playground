@@ -14,19 +14,6 @@ using glm::vec3;
 using glm::ivec3;
 
 
-ObjMaterial_ptr ObjMaterial::Create(std::string name)
-{
-	return ObjMaterial_ptr(new ObjMaterial(name));
-}
-
-ObjMaterial::ObjMaterial(std::string theName)
-	: opacity(1)
-	, specularEnabled(true)
-	, name(theName)
-{
-
-}
-
 void ObjLoader::parseIdx(string& s,ivec3& indices)
 {
 	string::const_iterator sit;
@@ -200,11 +187,13 @@ bool ObjLoader::loadMtllib(std::istream& istr, MeshRaw_ptr newMesh)
 		if(line.substr(0,6) == "newmtl")
 		{
 			if(mat)
+			{
 				newMesh->materials.push_back(mat);
+			}
 
-			mat = ObjMaterial::Create(line.substr(6));
+			mat = ObjMaterial::Create(line.substr(7));
 		}
-		if(mat)
+		else if(mat)
 		{
 			if(line.substr(0,2) == "Ka")
 			{
@@ -235,6 +224,7 @@ bool ObjLoader::loadMtllib(std::istream& istr, MeshRaw_ptr newMesh)
 				istringstream s(line.substr(2));
 				vec3 v;
 				s >> mat->shininess;
+				 mat->shininess *= 10;
 			}
 			else if(line.substr(0,5) == "illum")
 			{
@@ -246,6 +236,8 @@ bool ObjLoader::loadMtllib(std::istream& istr, MeshRaw_ptr newMesh)
 		}
 
 	}
+	
+	newMesh->materials.push_back(mat);
 	return newMesh->materials.size() > 0;
 }
 

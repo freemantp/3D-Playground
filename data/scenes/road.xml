@@ -17,7 +17,6 @@
     </material>
 
     <material name="car" shader="phong">
-      <texture file="Car/car_out_d.dds"/>
       <shininess value="0"/>
       <envMapReflection value="0.1"/>
     </material>

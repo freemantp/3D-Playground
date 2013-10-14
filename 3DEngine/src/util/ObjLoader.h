@@ -17,23 +17,7 @@ SHARED_PTR_CLASS_DECL(ObjLoader);
 SHARED_PTR_CLASS_DECL(MeshRaw);
 
 
-class ObjMaterial
-{
-public:
-	static ObjMaterial_ptr Create(std::string name);
-	
-protected:
-	ObjMaterial(std::string name);
-public:
-	std::string name;
-	glm::vec3 ambient;
-	glm::vec3 diffuse;
-	glm::vec3 specular;
-	float opacity;
-	float shininess;
-	std::string texture;
-	bool specularEnabled;
-};
+
 
 class ObjLoader
 {
