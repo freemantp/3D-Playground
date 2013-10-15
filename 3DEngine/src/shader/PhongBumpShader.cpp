@@ -19,11 +19,11 @@ PhongBumpShader::PhongBumpShader(const string& albedoTexFile, const string& Bump
 	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,&maxTexUnits);
 
 	//Create albedo texture and specify texUnit 0
-	textures[Albedo].reset(new Texture( Config::TEXTURE_BASE_PATH + albedoTexFile ));
+	textures[Albedo] = Texture::Create( Config::TEXTURE_BASE_PATH + albedoTexFile );
 	texUnits[Albedo] = 0;
 
 	//Create albedo texture and specify texUnit 0
-	textures[BumpMap].reset(new Texture( Config::TEXTURE_BASE_PATH + BumpMapTex ));
+	textures[BumpMap] = Texture::Create( Config::TEXTURE_BASE_PATH + BumpMapTex );
 	texUnits[BumpMap] = 1;
 
 	texUnits[Specular] = 2;
@@ -36,7 +36,7 @@ PhongBumpShader::~PhongBumpShader()
 
 void PhongBumpShader::setSpecularMap(const string& specularMap)
 {
-	textures[Specular].reset(new Texture( Config::TEXTURE_BASE_PATH + specularMap ));
+	textures[Specular]= Texture::Create( Config::TEXTURE_BASE_PATH +  specularMap );
 	hasSpecularMap = true;
 }
 

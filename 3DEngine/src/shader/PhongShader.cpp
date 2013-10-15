@@ -3,6 +3,8 @@
 #include "../camera/Camera.h"
 #include "../scene/Scene.h"
 #include "../light/PointLight.h"
+#include "../shape/Skybox.h"
+#include "../texture/CubeMapTexture.h"
 #include "UniformBuffer.h"
 
 PhongShader::PhongShader()
@@ -13,8 +15,12 @@ PhongShader::PhongShader()
 
 PhongShader::PhongShader(const string& shaderName)
 	: ShaderBase(shaderName)
+	, envMapReflection(1)
 {
+	hasMM = true;
+
 	init();
+
 }
 
 void PhongShader::init()
@@ -68,4 +74,15 @@ void PhongShader::setLightAndModel(const Scene& scene)
 	setUniform("NumPointLights", (int)scene.lightModel->pointLights.size());
 	setUniform("NumSpotLights", (int)scene.lightModel->spotLights.size());
 	scene.lightModel->GetLightsBuffer()->bindToShader(shared_from_this(),"Lights");
+
+	if(scene.skybox)
+	{
+		const int skymapTexUnit = 0;
+
+		CubeMapTexture_ptr envTex =  scene.skybox->texture;
+		envTex->bindTexture(skymapTexUnit);
+		setUniform("EnvMapTex",skymapTexUnit);
+		setUniform("CameraPosWorld",scene.activeCamera->GetPosition() );
+		setUniform("EnvReflection",m_EnvMapReflection);
+	}
 }

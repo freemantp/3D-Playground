@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ShaderBase.h"
+#include "../util/gettersetter.h"
 
 namespace GLSLShader 
 {
@@ -12,14 +13,17 @@ namespace GLSLShader
 
 SHARED_PTR_CLASS_DECL(PhongShader)
 
-class PhongShader : public ShaderBase
-				  , public std::enable_shared_from_this<PhongShader>
+class PhongShader 
+	: public ShaderBase
+	, public std::enable_shared_from_this<PhongShader>
 {
 public:
 	PhongShader();
 	virtual ~PhongShader(void);
 
 	virtual void use(const Scene& scene, const glm::mat4& modelTransform);
+
+	GETSET(float,EnvMapReflection)
 
 	vec3 ambientReflection;
 	vec3 diffuseReflection;
@@ -35,6 +39,8 @@ protected:
 	void setLightAndModel(const Scene& scene);
 
 	virtual void init();
+
+	float envMapReflection;
 
 	GLuint blinnSubroutineIdx;
 	GLuint phongSubroutineIdx;

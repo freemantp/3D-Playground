@@ -3,6 +3,11 @@
 
 #include "../util/Util.h"
 
+Texture_ptr Texture::Create(const std::string& texturePath)
+{
+	return Texture_ptr(new Texture(texturePath));
+}
+
 Texture::Texture(const std::string& texturePath)
 {
 	//Generate texture object

@@ -35,6 +35,8 @@ layout (std140) uniform Lights
 
 uniform int NumPointLights;
 uniform int NumSpotLights;
+uniform samplerCube EnvMapTex;
+uniform float EnvReflection; //[0,1]
 
 //Subroutine declaration
 subroutine float shadeModelType(in vec3 s, in vec3 v, in vec3 normal);
@@ -47,6 +49,7 @@ subroutine uniform shadeModelType shadeModel;
 //input from previous stage
 in vec3 Position;
 in vec3 Normal;
+in vec3 ReflectDir;
 
 //Blinn-Phong model
 subroutine( shadeModelType )
@@ -109,6 +112,15 @@ void main()
 			float spotFactor = pow( dot( -s , light.Direction), light.Exponent);
 			FragColor += spotFactor * vec4( light.Color * shade(Position,normal,s), 1.0  );
 		}
+	}
+
+	vec4 albedo = vec4(1,0,1,1);
+
+	FragColor = texture(EnvMapTex, ReflectDir);
+
+	//Environment mapping
+	if(EnvReflection > 0) {
+		FragColor = mix (albedo, texture(EnvMapTex, ReflectDir), EnvReflection);
 	}
 
 }

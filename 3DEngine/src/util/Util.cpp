@@ -221,3 +221,14 @@ std::string Util::extractBaseFolder(std::string path)
        std::regex_search(path, result, rgx);
        return result[0];
 }
+
+bool Util::fileExists (const std::string& name) {
+	std::ifstream f(name.c_str());
+	if (f.good()) {
+		f.close();
+		return true;
+	} else {
+		f.close();
+		return false;
+	}   
+}

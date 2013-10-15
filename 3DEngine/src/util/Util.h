@@ -22,6 +22,7 @@ public:
 	static unsigned char* loadTexture(const std::string& texturePath, int& width, int& height);
 	static bool loadCubeMapTexture(const std::string& texturePath, unsigned char* imgPointers[], int& width, int& height);
 	static std::string Util::extractBaseFolder(std::string path);
+	static bool fileExists (const std::string& name);
 
 	static Mesh_ptr getDragon();
 	static Mesh_ptr getHorse();

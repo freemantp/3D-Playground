@@ -11,16 +11,22 @@
 #include "../texture/Texture.h"
 #include  <IL/il.h>
 
+#include <stdexcept>
 
-PhongTextureShader::PhongTextureShader(const string& albedoTexFile)
+
+PhongTextureShader::PhongTextureShader(const string& albedoTexFile /*= ""*/)
 	: PhongShader("phongTexShader")
 	, envMapReflection(0)
 {
-	GLint maxTexUnits;
-	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,&maxTexUnits);
+	//GLint maxTexUnits;
+	//glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,&maxTexUnits);
 
+	std::string albedoTexFilePath = Config::TEXTURE_BASE_PATH + albedoTexFile;
+	if(!Util::fileExists(albedoTexFilePath))
+		throw std::runtime_error("textture file does not exist");
+	
 	//Create albedo texture and specify texUnit 0
-	textures[Albedo].reset(new Texture( Config::TEXTURE_BASE_PATH + albedoTexFile ));
+	textures[Albedo] = Texture::Create( albedoTexFile );
 	texUnits[Albedo] = 0;
 
 	texUnits[Environment] = 1;
