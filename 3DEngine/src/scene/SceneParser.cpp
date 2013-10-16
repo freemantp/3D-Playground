@@ -146,13 +146,6 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 				if(subElem == nullptr)
 				{
 					auto pts = new PhongTextureShader(texFile);
-
-					if ( (subElem = materialElement->FirstChildElement("envMapReflection")) != nullptr )
-					{
-						float envMapRefl; 
-						getFloatAttrib(subElem,"value",envMapRefl);
-						pts->SetEnvMapReflection(envMapRefl);
-					}
 					ps.reset(pts);
 				}
 				else 
@@ -174,7 +167,15 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 			else
 			{
 				ps.reset(new PhongShader());
-			}		
+			}
+
+			
+			if ( (subElem = materialElement->FirstChildElement("envMapReflection")) != nullptr )
+			{
+				float envMapRefl; 
+				getFloatAttrib(subElem,"value",envMapRefl);
+				ps->SetEnvMapReflection(envMapRefl);
+			}
 			
 			//Load common phong attributes
 			if ( (subElem = materialElement->FirstChildElement("ambientReflect")) != nullptr )

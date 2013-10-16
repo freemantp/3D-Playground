@@ -10,17 +10,16 @@
 PhongShader::PhongShader()
 : ShaderBase("phongShader")
 {
+	hasMM = true;
 	init();
 }
 
 PhongShader::PhongShader(const string& shaderName)
 	: ShaderBase(shaderName)
-	, envMapReflection(1)
+	, m_EnvMapReflection(1)
 {
 	hasMM = true;
-
 	init();
-
 }
 
 void PhongShader::init()

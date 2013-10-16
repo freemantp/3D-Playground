@@ -19,7 +19,9 @@ class PhongShader
 {
 public:
 	PhongShader();
-	virtual ~PhongShader(void);
+	PhongShader(const string& shaderName);
+
+	virtual ~PhongShader();
 
 	virtual void use(const Scene& scene, const glm::mat4& modelTransform);
 
@@ -34,13 +36,11 @@ public:
 
 protected:
 
-	PhongShader(const string& shaderName);
+	
 
 	void setLightAndModel(const Scene& scene);
 
 	virtual void init();
-
-	float envMapReflection;
 
 	GLuint blinnSubroutineIdx;
 	GLuint phongSubroutineIdx;

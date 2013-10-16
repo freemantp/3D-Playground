@@ -22,7 +22,7 @@ void main()
 
 	//Transform to world space
 	vec3 positionWorld = vec3(ModelMatrix * vec4(VertexPosition, 1.0));
-	vec3 normalWorld   = normalize(vec3(ModelMatrix * vec4(VertexNormal, 0.0)));
+	vec3 normalWorld  = normalize(vec3(ModelMatrix * vec4(VertexNormal, 0.0)));
 	vec3 camDirectionWorld = normalize( CameraPosWorld - positionWorld);
 
 	ReflectDir = reflect(camDirectionWorld, normalWorld);

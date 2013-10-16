@@ -88,6 +88,7 @@ vec3 shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir)
 void main()
 {
 	vec3 normal = normalize(Normal);
+	vec4 fragmentColor = vec4(0,0,0,1);
 
 	//Point lights
 	for(int i=0; i < NumPointLights; i++)
@@ -95,7 +96,7 @@ void main()
 		PointLight light = pLights.PointLights[i];
 
 		vec3 s = normalize( vec3(light.Position) - Position);
-		FragColor += vec4( light.Color * shade(Position,normal,s), 1.0  );		
+		fragmentColor += vec4( light.Color * shade(Position,normal,s), 1.0  );		
 	}
 
 	//Spot lights
@@ -110,17 +111,16 @@ void main()
 		if( angle  < cutoff)
 		{		
 			float spotFactor = pow( dot( -s , light.Direction), light.Exponent);
-			FragColor += spotFactor * vec4( light.Color * shade(Position,normal,s), 1.0  );
+			fragmentColor += spotFactor * vec4( light.Color * shade(Position,normal,s), 1.0  );
 		}
 	}
 
-	vec4 albedo = vec4(1,0,1,1);
-
-	FragColor = texture(EnvMapTex, ReflectDir);
-
 	//Environment mapping
-	if(EnvReflection > 0) {
-		FragColor = mix (albedo, texture(EnvMapTex, ReflectDir), EnvReflection);
+	if(Material.Shininess > 0.0) 
+	{
+		float reflectionRatio = clamp(Material.Shininess / 30.0, 0.0, 1.0);
+		fragmentColor = mix (fragmentColor, texture(EnvMapTex, ReflectDir), reflectionRatio);
 	}
 
+	FragColor = fragmentColor;
 }

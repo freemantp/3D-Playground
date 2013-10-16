@@ -224,7 +224,6 @@ bool ObjLoader::loadMtllib(std::istream& istr, MeshRaw_ptr newMesh)
 				istringstream s(line.substr(2));
 				vec3 v;
 				s >> mat->shininess;
-				 mat->shininess *= 10;
 			}
 			else if(line.substr(0,5) == "illum")
 			{
