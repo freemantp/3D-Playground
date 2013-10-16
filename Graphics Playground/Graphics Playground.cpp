@@ -70,6 +70,15 @@ void initGL()
 	/* Use depth buffering for hidden surface elimination. */
 	glEnable(GL_DEPTH_TEST);
 
+
+	glEnable(GL_MULTISAMPLE);
+	glHint(GL_MULTISAMPLE_FILTER_HINT_NV, GL_NICEST);
+
+	GLint  iMultiSample = 0;
+	GLint  iNumSamples = 0;
+	glGetIntegerv(GL_SAMPLE_BUFFERS, &iMultiSample);
+	glGetIntegerv(GL_SAMPLES, &iNumSamples);
+
 }
 
 bool Initialize()
@@ -128,7 +137,7 @@ bool InitializeGlut(int argc, char* argv[])
 
 	glutInitWindowSize(CurrentWidth, CurrentHeight);
 
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
 
 	return true;
 }
