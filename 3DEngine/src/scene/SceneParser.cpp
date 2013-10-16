@@ -170,12 +170,7 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 			}
 
 			
-			if ( (subElem = materialElement->FirstChildElement("envMapReflection")) != nullptr )
-			{
-				float envMapRefl; 
-				getFloatAttrib(subElem,"value",envMapRefl);
-				ps->SetEnvMapReflection(envMapRefl);
-			}
+	
 			
 			//Load common phong attributes
 			if ( (subElem = materialElement->FirstChildElement("ambientReflect")) != nullptr )

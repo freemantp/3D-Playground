@@ -67,22 +67,22 @@ float phong(in vec3 s, in vec3 v, in vec3 normal)
 	return pow( max( dot(r,v), 0.0), Material.Shininess );
 }
 
-vec3 shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir)
+void shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir, 
+		   inout vec3 ambient, inout vec3 diffuse, inout vec3 specular  )
 {	
 	vec3 v = normalize(-position);
 	
 	float sDotN = max(dot(lightDir,normal), 0.0);
 
-	vec3 ambient = Material.AmbientReflectivity;
-	vec3 diffuse = Material.DiffuseReflectivity * sDotN;
-	vec3 specular = vec3(0);
+	ambient = Material.AmbientReflectivity;
+	diffuse = Material.DiffuseReflectivity * sDotN;
+	specular = vec3(0);
 
 	if(sDotN > 0)
 	{
 		specular = Material.SpecularReflectivity * shadeModel(lightDir,v,normal) ;
 	}
 
-	return ambient + diffuse + specular;
 }
 
 void main()
@@ -90,13 +90,24 @@ void main()
 	vec3 normal = normalize(Normal);
 	vec4 fragmentColor = vec4(0,0,0,1);
 
+	vec3 ambient = vec3(0,0,0);
+	vec3 diffuse = vec3(0,0,0);
+	vec3 specular = vec3(0,0,0);
+
+	vec3 ambientCurrent, diffuseCurrent, specularCurrent;
+
 	//Point lights
 	for(int i=0; i < NumPointLights; i++)
 	{	
 		PointLight light = pLights.PointLights[i];
 
 		vec3 s = normalize( vec3(light.Position) - Position);
-		fragmentColor += vec4( light.Color * shade(Position,normal,s), 1.0  );		
+		shade(Position,normal,s,ambientCurrent, diffuseCurrent, specularCurrent);
+
+		ambient  += ambientCurrent  * light.Color;
+		diffuse  += diffuseCurrent  * light.Color;
+		specular += specularCurrent * light.Color;
+
 	}
 
 	//Spot lights
@@ -110,17 +121,27 @@ void main()
 		
 		if( angle  < cutoff)
 		{		
+			shade(Position,normal,s,ambientCurrent, diffuseCurrent, specularCurrent);
+
 			float spotFactor = pow( dot( -s , light.Direction), light.Exponent);
-			fragmentColor += spotFactor * vec4( light.Color * shade(Position,normal,s), 1.0  );
+
+			ambient  += spotFactor * ambientCurrent  * light.Color;
+			diffuse  += spotFactor * diffuseCurrent  * light.Color;
+			specular += spotFactor * specularCurrent * light.Color;
 		}
 	}
+
+	
 
 	//Environment mapping
 	if(Material.Shininess > 0.0) 
 	{
 		float reflectionRatio = clamp(Material.Shininess / 30.0, 0.0, 1.0);
-		fragmentColor = mix (fragmentColor, texture(EnvMapTex, ReflectDir), reflectionRatio);
+		vec3 cubeMapColor = texture(EnvMapTex, ReflectDir).xyz;
+
+		specular *= cubeMapColor;
+		ambient  *= cubeMapColor;
 	}
 
-	FragColor = fragmentColor;
+	FragColor = vec4(ambient + diffuse + specular,1.0);
 }

@@ -25,8 +25,6 @@ public:
 
 	virtual void use(const Scene& scene, const glm::mat4& modelTransform);
 
-	GETSET(float,EnvMapReflection)
-
 	vec3 ambientReflection;
 	vec3 diffuseReflection;
 	vec3 glossyReflection;
@@ -35,8 +33,6 @@ public:
 	GLSLShader::PhongShadeModel shadeModel;
 
 protected:
-
-	
 
 	void setLightAndModel(const Scene& scene);
 

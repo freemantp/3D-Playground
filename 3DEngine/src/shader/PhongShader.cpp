@@ -16,9 +16,7 @@ PhongShader::PhongShader()
 
 PhongShader::PhongShader(const string& shaderName)
 	: ShaderBase(shaderName)
-	, m_EnvMapReflection(1)
-{
-	hasMM = true;
+{	
 	init();
 }
 
@@ -50,6 +48,16 @@ void PhongShader::use(const Scene& scene, const glm::mat4& modelTransform)
 	setUniform("Material.SpecularReflectivity", glossyReflection );
 	setUniform("Material.Shininess", shininess);
 
+	if(scene.skybox)
+	{
+		const int skymapTexUnit = 0;
+
+		CubeMapTexture_ptr envTex =  scene.skybox->texture;
+		envTex->bindTexture(skymapTexUnit);
+		setUniform("EnvMapTex",skymapTexUnit);
+		setUniform("CameraPosWorld",scene.activeCamera->GetPosition() );
+	}
+
 	setLightAndModel(scene);
 }
 
@@ -73,15 +81,4 @@ void PhongShader::setLightAndModel(const Scene& scene)
 	setUniform("NumPointLights", (int)scene.lightModel->pointLights.size());
 	setUniform("NumSpotLights", (int)scene.lightModel->spotLights.size());
 	scene.lightModel->GetLightsBuffer()->bindToShader(shared_from_this(),"Lights");
-
-	if(scene.skybox)
-	{
-		const int skymapTexUnit = 0;
-
-		CubeMapTexture_ptr envTex =  scene.skybox->texture;
-		envTex->bindTexture(skymapTexUnit);
-		setUniform("EnvMapTex",skymapTexUnit);
-		setUniform("CameraPosWorld",scene.activeCamera->GetPosition() );
-		setUniform("EnvReflection",m_EnvMapReflection);
-	}
 }
