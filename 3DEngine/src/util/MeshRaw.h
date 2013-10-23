@@ -30,7 +30,13 @@ public:
 	glm::vec3 specular;
 	float opacity;
 	float shininess;
-	std::string texture;
+	std::string ambientColorTexture;
+	std::string diffuseColorTexture;
+	std::string specularColorTexture;
+	std::string specularHightlightTexture;
+	std::string alphaMapTexture;
+	std::string bumpMapTexture;
+	std::string displacementMapTexture;
 	bool specularEnabled;
 };
 

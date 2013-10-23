@@ -152,7 +152,7 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 				{
 					string bumpMapFile(subElem->Attribute("file"));
 					string type(subElem->Attribute("type"));
-					ps.reset(new PhongBumpShader(texFile,bumpMapFile, type == "normal"));
+					ps = PhongBumpShader::Create(texFile,bumpMapFile, type == "normal");
 				}
 
 				//specular mapping

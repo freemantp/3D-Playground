@@ -24,6 +24,8 @@ public:
 	static std::string Util::extractBaseFolder(std::string path);
 	static bool fileExists (const std::string& name);
 
+	static void beep();
+
 	static Mesh_ptr getDragon();
 	static Mesh_ptr getHorse();
 	static Mesh_ptr getElephant();

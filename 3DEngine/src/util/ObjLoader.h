@@ -16,9 +16,6 @@ SHARED_PTR_CLASS_DECL(ObjMaterial);
 SHARED_PTR_CLASS_DECL(ObjLoader);
 SHARED_PTR_CLASS_DECL(MeshRaw);
 
-
-
-
 class ObjLoader
 {
 public:

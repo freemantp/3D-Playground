@@ -9,6 +9,10 @@
 #include "../texture/Texture.h"
 #include  <IL/il.h>
 
+PhongBumpShader_ptr PhongBumpShader::Create(const string& textureFile, const std::string& normalMap, bool isNormalMap)
+{
+	return PhongBumpShader_ptr(new PhongBumpShader(textureFile,normalMap,isNormalMap));
+}
 
 PhongBumpShader::PhongBumpShader(const string& albedoTexFile, const string& BumpMapTex, bool isNormalMap)
 : isNormalMap(isNormalMap)

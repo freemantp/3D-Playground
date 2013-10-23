@@ -161,7 +161,7 @@ MeshRaw_ptr ObjLoader::loadObj(istream& istr)
 
 	if( ! hasNormals() )
 	{		
-		Warn("Normal data not present... computing normals");		
+		Info("Normal data not present... computing normals");		
 		if(! computeNormals() )
 			Error("Could not compute normals");
 	}
@@ -232,10 +232,42 @@ bool ObjLoader::loadMtllib(std::istream& istr, MeshRaw_ptr newMesh)
 				s >> illuminationModel;
 				mat->specularEnabled = illuminationModel > 1;
 			}
+			else if(line.substr(0,6) == "map_Ka")
+			{
+				mat->ambientColorTexture = line.substr(7);
+			}
+			else if(line.substr(0,6) == "map_Kd")
+			{
+				mat->diffuseColorTexture = line.substr(7);
+			}
+			else if(line.substr(0,6) == "map_Ks")
+			{
+				mat->specularColorTexture = line.substr(7);
+			}
+			else if(line.substr(0,6) == "map_Ns")
+			{
+				mat->specularHightlightTexture = line.substr(7);
+			}
+			else if(line.substr(0,5) == "map_d")
+			{
+				mat->alphaMapTexture = line.substr(6);
+			}
+			else if(line.substr(0,8) == "map_bump")
+			{
+				mat->bumpMapTexture = line.substr(7);
+			}
+			else if(line.substr(0,4) == "bump")
+			{
+				mat->bumpMapTexture = line.substr(5);
+			}
+			else if(line.substr(0,4) == "disp")
+			{
+				mat->displacementMapTexture = line.substr(5);
+			}
+
 		}
 
-	}
-	
+	}	
 	newMesh->materials.push_back(mat);
 	return newMesh->materials.size() > 0;
 }

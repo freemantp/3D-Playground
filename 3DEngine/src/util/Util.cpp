@@ -8,6 +8,7 @@
 #include <regex>
 #include <IL/il.h>
 #include "MeshRaw.h"
+#include <Windows.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -231,4 +232,9 @@ bool Util::fileExists (const std::string& name) {
 		f.close();
 		return false;
 	}   
+}
+
+void Util::beep()
+{
+	Beep( 440, 300 );
 }
