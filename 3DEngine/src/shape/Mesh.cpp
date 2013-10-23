@@ -62,7 +62,7 @@ void Mesh::initFromRawMesh(MeshRaw_ptr rawMesh)
 
 		if(materials.size() > 0)
 		{
-			//setShader(PhongBumpShader::C
+
 		}
 
 		if( rawMesh->hasTexCoords() )

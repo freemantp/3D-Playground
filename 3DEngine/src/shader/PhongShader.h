@@ -18,8 +18,8 @@ class PhongShader
 	, public std::enable_shared_from_this<PhongShader>
 {
 public:
-	PhongShader();
-	PhongShader(const string& shaderName);
+
+	static PhongShader_ptr Create();
 
 	virtual ~PhongShader();
 
@@ -33,6 +33,9 @@ public:
 	GLSLShader::PhongShadeModel shadeModel;
 
 protected:
+
+	PhongShader();
+	PhongShader(const string& shaderName);
 
 	void setLightAndModel(const Scene& scene);
 

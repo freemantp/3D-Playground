@@ -7,6 +7,11 @@
 #include "../texture/CubeMapTexture.h"
 #include "UniformBuffer.h"
 
+PhongShader_ptr PhongShader::Create()
+{
+	return PhongShader_ptr(new PhongShader());
+}
+
 PhongShader::PhongShader()
 : ShaderBase("phongShader")
 {

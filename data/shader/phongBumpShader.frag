@@ -37,6 +37,7 @@ uniform sampler2D SpecularTex;
 uniform mat4 ViewMatrix;
 uniform bool isNormalMap;
 uniform bool hasSpecularMap;
+uniform bool hasBumpMap;
 uniform int	Shininess;
 
 //Subroutine declaration
@@ -107,15 +108,22 @@ vec3 bump_normal(vec3 fragVertex, vec3 fragNormal, float value)
 vec3 getNormal()
 {
 	vec3 normal;
-	if(isNormalMap)
+	if(hasBumpMap)
 	{
-		// fetch normal from normal map, expand to the [-1, 1] range, and normalize
-		normal = normalize(2.0 * texture2D (BumpmapTex, TexCoord).rgb - 1.0);
+		if(isNormalMap)
+		{
+			// fetch normal from normal map, expand to the [-1, 1] range, and normalize
+			normal = normalize(2.0 * texture2D (BumpmapTex, TexCoord).rgb - 1.0);
+		}
+		else
+		{
+			float bumpVal = texture(BumpmapTex, TexCoord).r;
+			normal = bump_normal(PositionEYE,NormalEYE,bumpVal);
+		}
 	}
 	else
 	{
-		float bumpVal = texture(BumpmapTex, TexCoord).r;
-		normal = bump_normal(PositionEYE,NormalEYE,bumpVal);
+		normal = NormalEYE;
 	}
 	return normal;
 }
@@ -150,6 +158,5 @@ void main()
 			FragColor += spotFactor * vec4(light.Color * albedo * shade(normal,ViewDirection,lightDir,TexCoord),1);
 		}
 	}
-	
 
 }

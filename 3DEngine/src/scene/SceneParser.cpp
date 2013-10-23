@@ -6,7 +6,6 @@
 
 #include "../shader/PhongShader.h"
 #include "../shader/PhongTextureShader.h"
-#include "../shader/PhongBumpShader.h"
 #include "../shader/ColorShader.h"
 #include "../shader/ConstShader.h"
 #include "../texture/CubeMapTexture.h"
@@ -55,23 +54,27 @@ bool SceneParser::parse(const char* xmlDocument)
 			std::cout << "Parsing scene \"" << sceneName << "\":" << std::endl;
 
 			//Camera
-			XMLElement* cameraElement = root->FirstChildElement("camera");
+			XMLElement* cameraElement;
 
-			if( cameraElement == nullptr)
-				return false;
-
-			Camera_ptr cam;
-			parseOk &= parseCamera(cam,cameraElement);
-			try
+			if(cameraElement = root->FirstChildElement("camera"))
 			{
-				generatedScene.reset(new Scene(factory,cam));
-				generatedScene->name = sceneName;
+				Camera_ptr cam;
+				parseOk &= parseCamera(cam,cameraElement);
+				try
+				{
+					generatedScene = Scene::Create(factory,cam);
+					generatedScene->name = sceneName;
+				}
+				catch (std::exception* e)
+				{
+					Error(e->what());
+					return false;
+				}		
 			}
-			catch (std::exception* e)
+			else
 			{
-				Error(e->what());
 				return false;
-			}			
+			}
 
 			//Materials
 			XMLElement* materialsElement = root->FirstChildElement("materials");
@@ -98,8 +101,7 @@ bool SceneParser::parse(const char* xmlDocument)
 			}
 
 			//Objects
-			XMLElement* objectsElement = root->FirstChildElement("objects");
-			if( objectsElement != nullptr)
+			if( XMLElement* objectsElement = root->FirstChildElement("objects"))
 			{
 				if( ! parseObjects(objectsElement) )
 					return false;
@@ -134,55 +136,47 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 		if(shaderName == "phong")
 		{			
 			PhongShader_ptr ps;
+			XMLElement* subElem;
 
-			XMLElement* subElem = materialElement->FirstChildElement("texture");
 			//Load textured version if available
-			if(subElem != nullptr)
+			if(subElem = materialElement->FirstChildElement("texture"))
 			{
 				string texFile(subElem->Attribute("file"));
 			
-				//bump mapping
-				subElem = materialElement->FirstChildElement("bumpMap");
-				if(subElem == nullptr)
-				{
-					auto pts = new PhongTextureShader(texFile);
-					ps.reset(pts);
-				}
-				else 
+				auto pbs = PhongTextureShader::Create(texFile);
+
+				//bump mapping		
+				if(subElem = materialElement->FirstChildElement("bumpMap"))
 				{
 					string bumpMapFile(subElem->Attribute("file"));
 					string type(subElem->Attribute("type"));
-					ps = PhongBumpShader::Create(texFile,bumpMapFile, type == "normal");
+					pbs->setBumpMap(bumpMapFile, type == "normal");
 				}
 
-				//specular mapping
-				subElem = materialElement->FirstChildElement("specularMap");
-				if(subElem != nullptr)
+				//specular mapping				
+				if(subElem = materialElement->FirstChildElement("specularMap"))
 				{
 					string specMapFile(subElem->Attribute("file"));
-					PhongBumpShader_ptr pbs = std::static_pointer_cast<PhongBumpShader>(ps);
 					pbs->setSpecularMap(specMapFile);
 				}
+				ps = pbs;
 			}
 			else
 			{
-				ps.reset(new PhongShader());
+				ps = PhongShader::Create();
 			}
-
-			
-	
 			
 			//Load common phong attributes
-			if ( (subElem = materialElement->FirstChildElement("ambientReflect")) != nullptr )
+			if ( subElem = materialElement->FirstChildElement("ambientReflect") )
 				getColorVector3(subElem,ps->ambientReflection);
 
-			if ( (subElem = materialElement->FirstChildElement("diffuseReflect")) != nullptr )
+			if ( subElem = materialElement->FirstChildElement("diffuseReflect") )
 				getColorVector3(subElem,ps->diffuseReflection);
 
-			if ( (subElem = materialElement->FirstChildElement("glossyReflect")) != nullptr )
+			if ( subElem = materialElement->FirstChildElement("glossyReflect"))
 				getColorVector3(subElem,ps->glossyReflection);
 
-			if ( (subElem = materialElement->FirstChildElement("shininess")) != nullptr )
+			if ( subElem = materialElement->FirstChildElement("shininess") )
 				getIntAttrib(subElem,"value",ps->shininess);
 
 			shader = ps;
@@ -196,7 +190,7 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 			ConstShader_ptr cshader(new ConstShader(vec3(1.0)));
 			
 			XMLElement* subElem;
-			if ( (subElem = materialElement->FirstChildElement("color")) != nullptr )
+			if ( subElem = materialElement->FirstChildElement("color") )
 				getColorVector3(subElem,cshader->color);
 
 			shader = cshader;
@@ -224,12 +218,12 @@ bool SceneParser::parseSkybox(XMLElement* skyboxElem)
 	CubeMapTexture_ptr texture;
 
 	const char* path = skyboxElem->Attribute("cubeMapFile");
-	if( (path = skyboxElem->Attribute("cubeMapFile")) != nullptr )
+	if( path = skyboxElem->Attribute("cubeMapFile"))
 	{
 		//Single file cube map
 		texture.reset(new CubeMapTexture(Config::TEXTURE_BASE_PATH + path));
 	}
-	else if( (path = skyboxElem->Attribute("cubeMapFolder")) != nullptr )
+	else if( path = skyboxElem->Attribute("cubeMapFolder") )
 	{
 		//Cube map consisting of 6 files
 		string type = skyboxElem->Attribute("type");

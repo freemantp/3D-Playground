@@ -20,8 +20,9 @@ class Scene : public TimeObserver
 {
 public:		
 
-	Scene(InputHandlerFactory& ihf, Camera_ptr cam);
-	~Scene();
+	static Scene_ptr Create(InputHandlerFactory& ihf, Camera_ptr cam);
+
+	virtual ~Scene();
 
 	void render();
 
@@ -42,6 +43,8 @@ public:
 	std::string name;
 
 protected:
+
+	Scene(InputHandlerFactory& ihf, Camera_ptr cam);
 
 	InspectionCameraAdapter_ptr mAdapter;
 	FirstPersonCameraAdapter_ptr mAdapter2;

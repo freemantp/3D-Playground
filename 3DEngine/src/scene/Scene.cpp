@@ -22,6 +22,11 @@
 
 using std::vector;
 
+Scene_ptr Scene::Create(InputHandlerFactory& ihf, Camera_ptr cam)
+{
+	return Scene_ptr(new Scene(ihf,cam));
+}
+
 Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 	: skybox(nullptr)
 {

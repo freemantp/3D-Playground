@@ -2,8 +2,6 @@
 #include "PhongTextureShader.h"
 #include "../camera/Camera.h"
 #include "../scene/Scene.h"
-#include "../shape/Skybox.h"
-#include "../texture/CubeMapTexture.h"
 #include "../light/PointLight.h"
 #include "UniformBuffer.h"
 #include "../util/Util.h"
@@ -11,32 +9,45 @@
 #include "../texture/Texture.h"
 #include  <IL/il.h>
 
-#include <stdexcept>
-
-
-PhongTextureShader::PhongTextureShader(const string& albedoTexFile /*= ""*/)
-	: PhongShader("phongTexShader")
-	, envMapReflection(0)
+PhongTextureShader_ptr PhongTextureShader::Create(const string& textureFile)
 {
-	//GLint maxTexUnits;
-	//glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,&maxTexUnits);
+	return PhongTextureShader_ptr(new PhongTextureShader(textureFile));
+}
 
-	std::string albedoTexFilePath = Config::TEXTURE_BASE_PATH + albedoTexFile;
-	if(!Util::fileExists(albedoTexFilePath))
-		throw std::runtime_error("textture file does not exist");
-	
+PhongTextureShader::PhongTextureShader(const string& albedoTexFile)
+: hasBumpMap(false)
+, hasSpecularMap(false)
+, PhongShader("phongBumpShader")
+{
+	GLint maxTexUnits;
+	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,&maxTexUnits);
+
 	//Create albedo texture and specify texUnit 0
-	textures[Albedo] = Texture::Create( albedoTexFile );
+	textures[Albedo] = Texture::Create( Config::TEXTURE_BASE_PATH + albedoTexFile );
+
 	texUnits[Albedo] = 0;
-
-	texUnits[Environment] = 1;
-
-	hasMM = true;
+	texUnits[BumpMap] = 1;
+	texUnits[Specular] = 2;
 }
 
 PhongTextureShader::~PhongTextureShader()
 {
 
+}
+
+void PhongTextureShader::setBumpMap(const std::string& textureFile, bool isNormalMap)
+{
+	this->isNormalMap = isNormalMap;
+
+	//Create albedo texture and specify texUnit 0
+	textures[BumpMap] = Texture::Create( Config::TEXTURE_BASE_PATH + textureFile );
+	hasBumpMap = true;
+}
+
+void PhongTextureShader::setSpecularMap(const string& textureFile)
+{
+	textures[Specular]= Texture::Create( Config::TEXTURE_BASE_PATH +  textureFile );
+	hasSpecularMap = true;
 }
 
 void PhongTextureShader::use(const Scene& scene, const glm::mat4& modelTransform)
@@ -48,14 +59,23 @@ void PhongTextureShader::use(const Scene& scene, const glm::mat4& modelTransform
 
 	//Bind albedo texture to texture unit 0
 	textures[Albedo]->bindTexture(texUnits[Albedo]);
-	setUniform("AlbedoTex", texUnits[Albedo]);	
+	setUniform("AlbedoTex", texUnits[Albedo]);
 
-	if(scene.skybox)
+	if(hasBumpMap)
 	{
-		CubeMapTexture_ptr envTex =  scene.skybox->texture;
-		envTex->bindTexture(texUnits[Environment]);
-		setUniform("EnvMapTex",texUnits[Environment]);
-		setUniform("CameraPosWorld",scene.activeCamera->GetPosition() );
-		setUniform("EnvReflection",m_EnvMapReflection);
+		//Bind normal texture to texture unit 1
+		textures[BumpMap]->bindTexture(texUnits[BumpMap]);
+		setUniform("BumpmapTex", texUnits[BumpMap]);
+		setUniform("isNormalMap",isNormalMap);
+		setUniform("hasBumpMap",hasBumpMap);
 	}
+
+	if(hasSpecularMap)
+	{
+		//Bind specular texture to texture unit 2
+		textures[Specular]->bindTexture(texUnits[Specular]);
+		setUniform("SpecularTex", texUnits[Specular]);
+		setUniform("hasSpecularMap",hasSpecularMap);
+	}
+
 }

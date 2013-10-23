@@ -5,59 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Source Files\shapes">
-      <UniqueIdentifier>{62c21ffa-71f1-499c-b137-bf3cff67cd41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\shapes">
-      <UniqueIdentifier>{bfc9ce7b-82d8-49b0-ac0f-edf48984a2d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\shaders">
-      <UniqueIdentifier>{07fae743-8281-4fe5-a62f-86666be46839}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\shaders">
-      <UniqueIdentifier>{64af6127-b2d8-460e-ac70-eb551538cd76}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\util">
-      <UniqueIdentifier>{5e104c5f-1d2a-4848-9988-b04bfa383fbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\util">
-      <UniqueIdentifier>{70a0c7ef-f91b-488a-81cd-736423dd5069}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\core">
-      <UniqueIdentifier>{30d20ed6-5b6e-4b3c-bc63-46458e28da9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\input">
-      <UniqueIdentifier>{ad8b9210-b2c4-4a09-a8dd-706df8b45ef7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\input">
-      <UniqueIdentifier>{919d7c7a-f3d6-493e-a773-35232a39d9e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\light">
-      <UniqueIdentifier>{0c7985d2-32fb-4114-9cc4-442e9f2301bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\light">
-      <UniqueIdentifier>{a3c4db3f-a56e-4ba2-a6c0-4f410e7756db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\camera">
-      <UniqueIdentifier>{0f698d31-c7cb-4772-820b-426f9d1b8332}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\camera">
-      <UniqueIdentifier>{e12e4c9b-c5d5-4a44-864a-3b1b8b5ffa9b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\scene">
-      <UniqueIdentifier>{0dd71ba4-022b-44c6-9e06-f9b0b04cc544}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\scene">
-      <UniqueIdentifier>{ceed5300-3960-4a87-b087-3cdb4a1b1b57}</UniqueIdentifier>
-    </Filter>
     <Filter Include="data">
       <UniqueIdentifier>{16113422-2689-4bb2-bd5d-cd4ab8d0f29a}</UniqueIdentifier>
     </Filter>
@@ -76,94 +23,151 @@
     <Filter Include="data\shaders\const">
       <UniqueIdentifier>{72f28301-0593-4e4e-a92d-78dd53cdb11c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\animation">
-      <UniqueIdentifier>{d2bf620c-605a-4827-a643-8040e1e610bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\animation">
-      <UniqueIdentifier>{8f9148b3-2a15-4874-abe4-3657d8d34fb6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\texture">
-      <UniqueIdentifier>{5f45893d-2a56-48eb-93b2-58c0c0b6fa6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\texture">
-      <UniqueIdentifier>{0b710b89-fe25-4b56-85cf-82a69c8c84ea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="data\scenes">
       <UniqueIdentifier>{fd416fe8-c161-49b3-bc12-1bb782d5dc03}</UniqueIdentifier>
     </Filter>
     <Filter Include="data\shaders\specialized">
       <UniqueIdentifier>{c8ce3269-5f14-4980-9f96-0d3d20106c5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\animation">
+      <UniqueIdentifier>{d2bf620c-605a-4827-a643-8040e1e610bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\camera">
+      <UniqueIdentifier>{0f698d31-c7cb-4772-820b-426f9d1b8332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{30d20ed6-5b6e-4b3c-bc63-46458e28da9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\input">
+      <UniqueIdentifier>{ad8b9210-b2c4-4a09-a8dd-706df8b45ef7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\light">
+      <UniqueIdentifier>{a3c4db3f-a56e-4ba2-a6c0-4f410e7756db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scene">
+      <UniqueIdentifier>{ceed5300-3960-4a87-b087-3cdb4a1b1b57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shaders">
+      <UniqueIdentifier>{07fae743-8281-4fe5-a62f-86666be46839}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shapes">
+      <UniqueIdentifier>{bfc9ce7b-82d8-49b0-ac0f-edf48984a2d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\texture">
+      <UniqueIdentifier>{0b710b89-fe25-4b56-85cf-82a69c8c84ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{5e104c5f-1d2a-4848-9988-b04bfa383fbe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\error.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\enums.h">
-      <Filter>Header Files\core</Filter>
+      <Filter>Source Files\core</Filter>
     </ClInclude>
     <ClInclude Include="src\shader\ShaderBase.h">
-      <Filter>Header Files\shaders</Filter>
+      <Filter>Source Files\shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\shader\GLSLProgram.h">
-      <Filter>Header Files\shaders</Filter>
+      <Filter>Source Files\shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\input\MouseObserver.h">
-      <Filter>Header Files\input</Filter>
+      <Filter>Source Files\input</Filter>
     </ClInclude>
     <ClInclude Include="src\light\PointLight.h">
-      <Filter>Header Files\light</Filter>
+      <Filter>Source Files\light</Filter>
     </ClInclude>
     <ClInclude Include="src\camera\Camera.h">
-      <Filter>Header Files\camera</Filter>
+      <Filter>Source Files\camera</Filter>
     </ClInclude>
     <ClInclude Include="src\camera\PerspectiveCamera.h">
-      <Filter>Header Files\camera</Filter>
+      <Filter>Source Files\camera</Filter>
     </ClInclude>
     <ClInclude Include="src\input\KeyboardObserver.h">
-      <Filter>Header Files\input</Filter>
+      <Filter>Source Files\input</Filter>
     </ClInclude>
     <ClInclude Include="src\camera\CameraAdapter.h">
-      <Filter>Header Files\camera</Filter>
+      <Filter>Source Files\camera</Filter>
     </ClInclude>
     <ClInclude Include="src\camera\FirstPersonCameraAdapter.h">
-      <Filter>Header Files\camera</Filter>
+      <Filter>Source Files\camera</Filter>
     </ClInclude>
     <ClInclude Include="src\camera\InspectionCameraAdapter.h">
-      <Filter>Header Files\camera</Filter>
+      <Filter>Source Files\camera</Filter>
     </ClInclude>
     <ClInclude Include="src\shader\ColorShader.h">
-      <Filter>Header Files\shaders</Filter>
+      <Filter>Source Files\shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\shader\PhongShader.h">
-      <Filter>Header Files\shaders</Filter>
+      <Filter>Source Files\shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\input\ViewportObserver.h">
-      <Filter>Header Files\input</Filter>
+      <Filter>Source Files\input</Filter>
     </ClInclude>
     <ClInclude Include="src\input\WindowEventHandler.h">
-      <Filter>Header Files\input</Filter>
+      <Filter>Source Files\input</Filter>
     </ClInclude>
     <ClInclude Include="src\shape\Box.h">
-      <Filter>Header Files\shapes</Filter>
+      <Filter>Source Files\shapes</Filter>
     </ClInclude>
     <ClInclude Include="src\shape\Mesh.h">
-      <Filter>Header Files\shapes</Filter>
+      <Filter>Source Files\shapes</Filter>
     </ClInclude>
     <ClInclude Include="src\shape\Shape.h">
-      <Filter>Header Files\shapes</Filter>
+      <Filter>Source Files\shapes</Filter>
     </ClInclude>
     <ClInclude Include="src\shape\Triangle.h">
-      <Filter>Header Files\shapes</Filter>
+      <Filter>Source Files\shapes</Filter>
     </ClInclude>
     <ClInclude Include="src\light\Light.h">
-      <Filter>Header Files\light</Filter>
+      <Filter>Source Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\Scene.h">
+      <Filter>Source Files\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\SceneParser.h">
+      <Filter>Source Files\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\Util.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\light\LightModel.h">
+      <Filter>Source Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\UniformBuffer.h">
+      <Filter>Source Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\animation\TimeObserver.h">
+      <Filter>Source Files\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\ConstShader.h">
+      <Filter>Source Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\light\SpotLight.h">
+      <Filter>Source Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\UniformBufferShader.h">
+      <Filter>Source Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\texture\Texture.h">
+      <Filter>Source Files\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\ObjLoader.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\texture\CubeMapTexture.h">
+      <Filter>Source Files\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shape\Skybox.h">
+      <Filter>Source Files\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\MeshRaw.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\SharedPointer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\gettersetter.h">
+      <Filter>Source Files\util</Filter>
     </ClInclude>
     <ClInclude Include="src\input\InputHandler.h">
       <Filter>Source Files\input</Filter>
@@ -171,87 +175,27 @@
     <ClInclude Include="src\input\InputHandlerFactory.h">
       <Filter>Source Files\input</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\Scene.h">
-      <Filter>Header Files\scene</Filter>
+    <ClInclude Include="src\common.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\SceneParser.h">
-      <Filter>Header Files\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\Util.h">
-      <Filter>Header Files\util</Filter>
-    </ClInclude>
-    <ClInclude Include="src\light\LightModel.h">
-      <Filter>Header Files\light</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\UniformBuffer.h">
-      <Filter>Header Files\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="src\animation\TimeObserver.h">
-      <Filter>Header Files\animation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\PhongTextureShader.h">
-      <Filter>Header Files\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\ConstShader.h">
-      <Filter>Header Files\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="src\light\SpotLight.h">
-      <Filter>Header Files\light</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\UniformBufferShader.h">
-      <Filter>Header Files\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="src\texture\Texture.h">
-      <Filter>Header Files\texture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\PhongBumpShader.h">
-      <Filter>Header Files\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\ObjLoader.h">
-      <Filter>Header Files\util</Filter>
-    </ClInclude>
-    <ClInclude Include="src\texture\CubeMapTexture.h">
-      <Filter>Header Files\texture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shape\Skybox.h">
-      <Filter>Header Files\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\SkyboxShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\MeshRaw.h">
-      <Filter>Header Files\util</Filter>
+    <ClInclude Include="src\error.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\SharedPointer.h">
-      <Filter>Header Files\util</Filter>
+    <ClInclude Include="src\shader\SkyboxShader.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\gettersetter.h">
-      <Filter>Header Files\util</Filter>
+    <ClInclude Include="src\stdafx.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\PhongTextureShader.h">
+      <Filter>Source Files\shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\ShaderBase.cpp">
-      <Filter>Source Files\shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\GLSLProgram.cpp">
-      <Filter>Source Files\shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="src\common.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\light\PointLight.cpp">
-      <Filter>Source Files\light</Filter>
-    </ClCompile>
     <ClCompile Include="src\camera\Camera.cpp">
-      <Filter>Source Files\camera</Filter>
-    </ClCompile>
-    <ClCompile Include="src\camera\PerspectiveCamera.cpp">
       <Filter>Source Files\camera</Filter>
     </ClCompile>
     <ClCompile Include="src\camera\FirstPersonCameraAdapter.cpp">
@@ -260,14 +204,53 @@
     <ClCompile Include="src\camera\InspectionCameraAdapter.cpp">
       <Filter>Source Files\camera</Filter>
     </ClCompile>
+    <ClCompile Include="src\camera\PerspectiveCamera.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input\WindowEventHandler.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\light\Light.cpp">
+      <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\light\LightModel.cpp">
+      <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\light\PointLight.cpp">
+      <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\light\SpotLight.cpp">
+      <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\Scene.cpp">
+      <Filter>Source Files\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\SceneParser.cpp">
+      <Filter>Source Files\scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\shader\ColorShader.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\ConstShader.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\GLSLProgram.cpp">
       <Filter>Source Files\shaders</Filter>
     </ClCompile>
     <ClCompile Include="src\shader\PhongShader.cpp">
       <Filter>Source Files\shaders</Filter>
     </ClCompile>
-    <ClCompile Include="src\input\WindowEventHandler.cpp">
-      <Filter>Source Files\input</Filter>
+    <ClCompile Include="src\shader\ShaderBase.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\SkyboxShader.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\UniformBuffer.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\UniformBufferShader.cpp">
+      <Filter>Source Files\shaders</Filter>
     </ClCompile>
     <ClCompile Include="src\shape\Box.cpp">
       <Filter>Source Files\shapes</Filter>
@@ -278,58 +261,34 @@
     <ClCompile Include="src\shape\Shape.cpp">
       <Filter>Source Files\shapes</Filter>
     </ClCompile>
-    <ClCompile Include="src\shape\Triangle.cpp">
+    <ClCompile Include="src\shape\Skybox.cpp">
       <Filter>Source Files\shapes</Filter>
     </ClCompile>
-    <ClCompile Include="src\scene\Scene.cpp">
-      <Filter>Source Files\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scene\SceneParser.cpp">
-      <Filter>Source Files\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\Util.cpp">
-      <Filter>Source Files\util</Filter>
-    </ClCompile>
-    <ClCompile Include="src\light\Light.cpp">
-      <Filter>Source Files\light</Filter>
-    </ClCompile>
-    <ClCompile Include="src\light\LightModel.cpp">
-      <Filter>Source Files\light</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\UniformBuffer.cpp">
-      <Filter>Source Files\shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="src\light\SpotLight.cpp">
-      <Filter>Source Files\light</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\PhongTextureShader.cpp">
-      <Filter>Source Files\shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\ConstShader.cpp">
-      <Filter>Source Files\shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\UniformBufferShader.cpp">
-      <Filter>Source Files\shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="src\texture\Texture.cpp">
-      <Filter>Source Files\texture</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\PhongBumpShader.cpp">
-      <Filter>Source Files\shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\ObjLoader.cpp">
-      <Filter>Source Files\util</Filter>
+    <ClCompile Include="src\shape\Triangle.cpp">
+      <Filter>Source Files\shapes</Filter>
     </ClCompile>
     <ClCompile Include="src\texture\CubeMapTexture.cpp">
       <Filter>Source Files\texture</Filter>
     </ClCompile>
-    <ClCompile Include="src\shape\Skybox.cpp">
-      <Filter>Source Files\shapes</Filter>
+    <ClCompile Include="src\texture\Texture.cpp">
+      <Filter>Source Files\texture</Filter>
     </ClCompile>
     <ClCompile Include="src\util\MeshRaw.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader\SkyboxShader.cpp">
+    <ClCompile Include="src\util\ObjLoader.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\Util.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\PhongTextureShader.cpp">
       <Filter>Source Files\shaders</Filter>
     </ClCompile>
   </ItemGroup>
@@ -363,12 +322,6 @@
     </None>
     <None Include="..\data\shader\uniformBuffer.frag">
       <Filter>data\shaders\specialized</Filter>
-    </None>
-    <None Include="..\data\shader\phongTexShader.frag">
-      <Filter>data\shaders\phong</Filter>
-    </None>
-    <None Include="..\data\shader\phongTexShader.vert">
-      <Filter>data\shaders\phong</Filter>
     </None>
     <None Include="..\data\shader\phongBumpShader.frag">
       <Filter>data\shaders\phong</Filter>

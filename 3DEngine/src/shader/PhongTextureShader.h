@@ -1,30 +1,35 @@
 #pragma once
 
 #include "PhongShader.h"
-#include "../util/gettersetter.h"
 
 SHARED_PTR_CLASS_DECL(Texture)
 SHARED_PTR_CLASS_DECL(PhongTextureShader)
 
-class PhongTextureShader : public PhongShader
+class PhongTextureShader :public PhongShader
 {
 public:
-	PhongTextureShader(const string& textureFile);
+
+	static PhongTextureShader_ptr Create(const string& textureFile);
+	
 	virtual ~PhongTextureShader();
 
 	virtual void use(const Scene& scene, const glm::mat4& modelTransform);
+	virtual void setSpecularMap(const std::string& specularMap);
+	virtual void setBumpMap(const std::string& textureFile, bool isNormalMap);
 
-	GETSET(float,EnvMapReflection)
 
 protected:
 
-	enum TextureType {Albedo, Environment};
-	static const int numTextures = 2;
+	PhongTextureShader(const string& textureFile);
+
+	enum TextureType {Albedo, BumpMap, Specular};
+	static const int numTextures = 3;
 
 	GLuint texUnits[numTextures];
 	Texture_ptr textures[numTextures];
-
-	float envMapReflection;
+	bool isNormalMap;
+	bool hasBumpMap;
+	bool hasSpecularMap;
 
 };
 
