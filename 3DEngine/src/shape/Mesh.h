@@ -10,17 +10,14 @@
 SHARED_PTR_CLASS_DECL(MeshRaw);
 SHARED_PTR_CLASS_DECL(Mesh);
 SHARED_PTR_CLASS_DECL(ObjMaterial);
-
+ 
 class Mesh : public Shape
 {
 public:
 
-	Mesh();
-	Mesh(MeshRaw_ptr rawMesh);
+	static Mesh_ptr Create(MeshRaw_ptr);
 
 	virtual ~Mesh();
-
-	
 
 	virtual void render(const Scene& scene) const;
 	virtual void init(); 
@@ -38,10 +35,17 @@ public:
 
 protected:
 
+	Mesh(MeshRaw_ptr rawMesh);
+	Mesh();
+
+	void initFromRawMesh(MeshRaw_ptr rawMesh);
+
 	struct VertexAttribData {
 		GLuint channel;
 		GLint  size;
 	};
+
+
 
 	inline void setAttribPointer(const GLSLShader::VertexAttribute& attrib);
 

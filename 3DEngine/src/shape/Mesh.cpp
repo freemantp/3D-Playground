@@ -7,6 +7,11 @@
 
 using namespace GLSLShader;
 
+Mesh_ptr Mesh::Create(MeshRaw_ptr mesh)
+{
+	return Mesh_ptr(new Mesh(mesh));
+}
+
 Mesh::Mesh() 
 	: initialized(false)
 	, normalsSet(false)
@@ -28,41 +33,51 @@ Mesh::Mesh(MeshRaw_ptr rawMesh)
 {
 
 	init();
+	initFromRawMesh(rawMesh);
+	
+}
 
-	setPositions(rawMesh->vertices,rawMesh->faces, &rawMesh->groupRanges);
-
-	// TODO: Refactor this (ugly, inefficient hack)
-	for(auto matName : rawMesh->groupMaterial)
+void Mesh::initFromRawMesh(MeshRaw_ptr rawMesh)
+{
+	if(rawMesh)
 	{
-		bool found = false;
+		setPositions(rawMesh->vertices,rawMesh->faces, &rawMesh->groupRanges);
 
-		for(ObjMaterial_ptr mat : rawMesh->materials)
+		// TODO: Refactor this (ugly, inefficient hack)
+		for(auto matName : rawMesh->groupMaterial)
 		{
-			std::string mn = mat->name;
+			bool found = false;
 
-			if(matName == mn)
+			for(ObjMaterial_ptr mat : rawMesh->materials)
 			{
-				materials.push_back(mat);
-				found = true;
+				std::string mn = mat->name;
+
+				if(matName == mn)
+				{
+					materials.push_back(mat);
+					found = true;
+				}
 			}
 		}
 
-		if(!found)
-			materials.push_back(ObjMaterial_ptr());
-	}
+		if(materials.size() > 0)
+		{
+			//setShader(PhongBumpShader::C
+		}
 
-	if( rawMesh->hasTexCoords() )
-		setTextureCoordinates(rawMesh->texCoords);
+		if( rawMesh->hasTexCoords() )
+			setTextureCoordinates(rawMesh->texCoords);
 	
-	if( rawMesh->hasNormals() )
-		setNormals(rawMesh->normals);
-	else	
-		Warn("Normal data not present!");		
+		if( rawMesh->hasNormals() )
+			setNormals(rawMesh->normals);
+		else	
+			Warn("Normal data not present!");		
 
-	if ( rawMesh->hasTangents() ) 
-		setTangents(rawMesh->tangents);
-	else
-		Warn("Tangent data not present!");
+		if ( rawMesh->hasTangents() ) 
+			setTangents(rawMesh->tangents);
+		else
+			Warn("Tangent data not present!");
+	}
 }
 
 Mesh::~Mesh() 
@@ -365,8 +380,6 @@ void Mesh::setShader(ShaderBase_ptr shader)
 
 void Mesh::render(const Scene& scene) const
 {
-
-	
 	glBindVertexArray(vaoHandle);
 
 	//Render individual index groups if available
@@ -374,7 +387,6 @@ void Mesh::render(const Scene& scene) const
 
 	for(int i=0 ; i < numRanges; i++)
 	{			
-
 		if(shaderProgram) 
 		{	
 			//TODO: make this work with any shader

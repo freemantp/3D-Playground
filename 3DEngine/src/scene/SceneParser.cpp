@@ -249,60 +249,61 @@ bool SceneParser::parseSkybox(XMLElement* skyboxElem)
 
 bool SceneParser::parseObjects(XMLElement* objects)
 {
-	//Meshes
-	XMLElement* objeElem = objects->FirstChildElement();
-	
-	if(objeElem == nullptr)
-		return false;
-
-	do
+	//Parse children of 'objects'
+	if(XMLElement* objeElem = objects->FirstChildElement())
 	{
-		string type = objeElem->Name();
-		Shape_ptr s;
-
-		if(type == "mesh")
+		do
 		{
-			string file = objeElem->Attribute("file");
-			s = Util::loadModel("../data/models/"+file);
-			if(s == nullptr)
-				return false;
-		}
-		else if(type == "box")
-		{
-			s = Box_ptr(new Box());
-		}
-		else 
-		{
-			Error("Object of type " + type + " not supported");
-			continue;
-		}
+			string type = objeElem->Name();
+			Shape_ptr shape;
 
-		s->init();
-
-		const char* shaderName = objeElem->Attribute("material");
-
-		if(shaderName != nullptr)
-		{
-			ShaderBase_ptr material = shaders[shaderName];
-
-			if(material != nullptr)		
+			if(type == "mesh")
 			{
-				s->setShader(material);
+				string file = objeElem->Attribute("file");
+				shape = Util::loadModel("../data/models/"+file);
+				if(!shape)
+					return false;
 			}
-		}
+			else if(type == "box")
+			{
+				shape = Box_ptr(new Box());
+			}
+			else 
+			{
+				Error("Object of type " + type + " not supported");
+				continue;
+			}
 
-		XMLElement* transformsElem = objeElem->FirstChildElement("transform");
+			shape->init();
 
-		if(transformsElem != nullptr)
-		{
-			mat4 tMatrix;
-			parseTransforms(tMatrix,transformsElem);
-			s->worldTransform = tMatrix;
-		}
+			//See if a material is specified
+			if(const char* materialName = objeElem->Attribute("material"))
+			{
+				if(shape->getShader())
+				{
+					Warn("The shape already has a material assigned, ignoring specified material");	
+				}
+				else
+				{
+					if(ShaderBase_ptr material = shaders[materialName])		
+						shape->setShader(material);
+					else
+						Warn("The specified material " + string(materialName) +" is not defined");	
+				}
+			}
 
-		generatedScene->addShape(s);		
-	} 
-	while (objeElem = objeElem->NextSiblingElement());
+			// Parse transform node
+			if(XMLElement* transformsElem = objeElem->FirstChildElement("transform"))
+			{
+				mat4 tMatrix;
+				parseTransforms(tMatrix,transformsElem);
+				shape->worldTransform = tMatrix;
+			}
+
+			generatedScene->addShape(shape);		
+		} 
+		while (objeElem = objeElem->NextSiblingElement());
+	}
 	
 	return true;
 }
