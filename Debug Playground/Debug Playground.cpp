@@ -1,136 +1,35 @@
 // Debug Playground.cpp : Defines the entry point for the console application.
 //
 
-#include <GL/glew.h>
-#include <glm/glm.hpp>
-#include <GL/freeglut.h>
-#include  <IL/il.h>
-#include <iostream>
-#include <vector>
-#include <ctime>
 
-using std::vector;
-
-#include "util/Util.h"
+#include <util/Util.h>
 #include "util/ObjLoader.h"
-#include "camera/PerspectiveCamera.h"
-#include "shader/PhongTextureShader.h"
-#include "shape/Mesh.h"
-#include "scene/Scene.h"
-#include "input/InputHandlerFactory.h"
 #include "util/MeshRaw.h"
 
-void init(int argc, char* argv[])
-{
-	//GLUT
-	glutInit(&argc, argv);
-
-	glutInitContextVersion(4, 2);
-	glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
-	glutInitContextProfile(GLUT_CORE_PROFILE);
-
-	glutSetOption(
-		GLUT_ACTION_ON_WINDOW_CLOSE,
-		GLUT_ACTION_GLUTMAINLOOP_RETURNS
-		);
-
-	glutInitWindowSize(800, 800);
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	//Window
-	int	WindowHandle = glutCreateWindow("Debug Session");
-	glutHideWindow();
-
-	glutReportErrors();
-
-	//Glew
-	glewExperimental=GL_TRUE;
-	GLenum err=glewInit();
-	glGetError();
-	if(err != GLEW_OK)
-	{
-		//Problem: glewInit failed, something is seriously wrong.
-		std::cout<<"glewInit failed, aborting." << std::endl;
-	}
-
-	ilInit();
-
-	fprintf( stdout, "INFO: OpenGL Version: %s\n", glGetString(GL_VERSION) );
-}
-
-Mesh_ptr loadModel()
-{
-	ObjLoader oj;
-	clock_t begin = clock();
-	
-	MeshRaw* rawMesh = oj.loadObjFile("E:\\Development\\Graphics Playground\\data\\models\\rectangle.obj");
-
-	if(rawMesh == nullptr)
-		return nullptr;
-
-	Mesh_ptr mesh = Mesh_ptr(new Mesh());
-
-	mesh->setPositions(rawMesh->vertices,rawMesh->faces);
-
-	if( rawMesh->hasTexCoords() )
-		mesh->setTextureCoordinates(rawMesh->texCoords);
-	
-	if( rawMesh->hasNormals() )
-		mesh->setNormals(rawMesh->normals);
-	else	
-		Warn("Normal data not present!");		
-
-	if ( rawMesh->hasTangents() ) 
-		mesh->setTangents(rawMesh->tangents);
-	else
-		Warn("Tangent data not present!");
-
-	clock_t end = clock();
-	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC * 1000;
-	std::cout << "time [msec]: " << elapsed_secs << std::endl;
-
-	return mesh;
-}
-
-class MyInputHandler : public InputHandler
-{
-public:
-	MyInputHandler() { };
-
-	virtual void addMouseObserver(MouseObserver_ptr observer) {};
-	virtual void addKeyboardObserver(KeyboardObserver_ptr observer) {};
-};
-
-
-class MyInputHandlerFactory : public InputHandlerFactory
-{
-public:
-	virtual InputHandler& getInputHandler() 
-	{
-		return instance;	
-	};
-protected:
-	static MyInputHandler instance;
-};
-
-MyInputHandler MyInputHandlerFactory::instance = MyInputHandler();
+#include <regex>
+#include <string>
 
 int main(int argc, char* argv[])
 {
 
-	init(argc, argv);
+	std::string l1 =  "v -4479.864258 -2150.956055 10633.285156";
+	std::string l2 =  "v  -4480.626465 -2191.785156 10581.707031";
+	std::string l3 =  "v  -4537.026855 -2182.099854 10623.152344";
 
-	PhongTextureShader_ptr shader(new PhongTextureShader("crate.jpg"));
+	   
+	std::regex vertex_rgx("\\s*v((:?\\s+-?\\d+\\.?\\d+){3})");
+	   std::regex face_rgx("^\\s*f((:?\\s\\d+/?\\d*/?\\d*){3})$");
+       std::smatch result;
+       std::regex_search(l1, result, vertex_rgx);
 
-	MyInputHandlerFactory myF;
-	Camera_ptr cam(new PerspectiveCamera(60));
 
-	Scene s(myF,cam);
+	    if(std::regex_search(l1, result, vertex_rgx))
+	   // if(std::regex_search(l4, result, face_rgx))
+		{
+			std::cout << result.size() << std::endl;
+			std::cout << result[1] << std::endl;
+		}
 
-	Mesh_ptr m = loadModel();
-	m->setShader(shader);
-	m->render(s);
-
-	getchar();
 	return 0;	
 
 }

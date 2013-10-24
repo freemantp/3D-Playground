@@ -43,13 +43,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\3DEngine\src;C:\Development\glew-1.9.0\include;C:\Development\DevIL-SDK-x64-1.7.8\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\x64\Debug;C:\Development\glew-1.9.0\lib;C:\Development\tinyxml2\include;C:\Development\tinyxml2\lib\Debug;C:\Development\DevIL-SDK-x64-1.7.8\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\3DEngine\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\3DEngine\src;C:\Development\glew-1.9.0\include;C:\Development\DevIL-SDK-x64-1.7.8\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\x64\Release;C:\Development\glew-1.9.0\lib;C:\Development\tinyxml2\lib\Release;C:\Development\DevIL-SDK-x64-1.7.8\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\3DEngine\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\x64\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -61,7 +61,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>3DEngine.lib;glew32.lib;tinyxml2.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>3DEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -78,7 +78,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>3DEngine.lib;glew32.lib;tinyxml2.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>3DEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -96,5 +96,9 @@
     <Import Project="..\packages\freeglut.redist.2.8.1.1\build\native\freeglut.redist.targets" Condition="Exists('..\packages\freeglut.redist.2.8.1.1\build\native\freeglut.redist.targets')" />
     <Import Project="..\packages\freeglut.2.8.1.1\build\native\freeglut.targets" Condition="Exists('..\packages\freeglut.2.8.1.1\build\native\freeglut.targets')" />
     <Import Project="..\packages\glm.0.9.4.4\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.4.4\build\native\glm.targets')" />
+    <Import Project="..\packages\glew.redist.1.9.0.1\build\native\glew.redist.targets" Condition="Exists('..\packages\glew.redist.1.9.0.1\build\native\glew.redist.targets')" />
+    <Import Project="..\packages\glew.1.9.0.1\build\native\glew.targets" Condition="Exists('..\packages\glew.1.9.0.1\build\native\glew.targets')" />
+    <Import Project="..\packages\DevIL.redist.1.7.8\build\native\DevIL.redist.targets" Condition="Exists('..\packages\DevIL.redist.1.7.8\build\native\DevIL.redist.targets')" />
+    <Import Project="..\packages\DevIL.1.7.8\build\native\DevIL.targets" Condition="Exists('..\packages\DevIL.1.7.8\build\native\DevIL.targets')" />
   </ImportGroup>
 </Project>
