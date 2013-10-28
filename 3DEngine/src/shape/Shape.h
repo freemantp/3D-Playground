@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include "../util/SharedPointer.h"
+#include "../rendering/Renderable.h"
 
 
 //forward declarations
@@ -10,7 +11,7 @@ class Scene;
 SHARED_PTR_CLASS_DECL(Shape);
 SHARED_PTR_CLASS_DECL(ShaderBase);
 
-class Shape
+class Shape : public Renderable
 {
 public:
 
@@ -18,7 +19,7 @@ public:
 	virtual ~Shape();
 
 	virtual void init() = 0;
-	virtual void render(const Scene& scene) const = 0;
+	
 	virtual void setShader(ShaderBase_ptr shader);
 
 	ShaderBase_ptr getShader()

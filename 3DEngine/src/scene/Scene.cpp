@@ -90,14 +90,14 @@ void Scene::render()
 	
 	//Render skybox
 	if(skybox != nullptr)
-		skybox->render(*this);
+		skybox->Render(*this);
 	
 	//Render objects
 	std::vector<Shape_ptr>::iterator objIt;
 	for(objIt = objects.begin(); objIt != objects.end(); objIt++)
 	{
 		Shape_ptr s = *objIt;
-		s->render(*this);
+		s->Render(*this);
 	}
 
 	bool renderLights = true;

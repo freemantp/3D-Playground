@@ -378,7 +378,7 @@ void Mesh::setShader(ShaderBase_ptr shader)
 	}
 }
 
-void Mesh::render(const Scene& scene) const
+void Mesh::Render(const Scene& scene) const
 {
 	glBindVertexArray(vaoHandle);
 

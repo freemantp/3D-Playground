@@ -10,7 +10,6 @@ class Skybox : public Box
 {
 public:
 
-	
 	Skybox(CubeMapTexture_ptr texture);
 	~Skybox();
 

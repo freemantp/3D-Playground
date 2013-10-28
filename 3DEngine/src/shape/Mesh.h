@@ -19,7 +19,7 @@ public:
 
 	virtual ~Mesh();
 
-	virtual void render(const Scene& scene) const;
+	virtual void Render(const Scene& scene) const;
 	virtual void init(); 
 
 	bool setPositions(const std::vector<float>& positions, const std::vector<int>& indices, std::vector<std::pair<int,int> >* indexGroups = nullptr);

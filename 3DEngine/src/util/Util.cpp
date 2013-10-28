@@ -95,7 +95,7 @@ Mesh_ptr Util::loadModel(const string& path)
 	ObjLoader oj;
 	clock_t begin = clock();
 	
-	if(MeshRaw_ptr rawMesh = oj.LoadMeshFromObjFile(path))
+	if(MeshRaw_ptr rawMesh = oj.loadObjFile(path))
 	{
 		Mesh_ptr mesh = Mesh::Create(rawMesh);
 

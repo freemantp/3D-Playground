@@ -59,6 +59,9 @@
     <Filter Include="Source Files\util">
       <UniqueIdentifier>{5e104c5f-1d2a-4848-9988-b04bfa383fbe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\rendering">
+      <UniqueIdentifier>{37270fe2-da46-499a-b15d-c4d630bdf31a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\enums.h">
@@ -175,24 +178,28 @@
     <ClInclude Include="src\input\InputHandlerFactory.h">
       <Filter>Source Files\input</Filter>
     </ClInclude>
-    <ClInclude Include="src\common.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\error.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\SkyboxShader.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\stdafx.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="src\shader\PhongTextureShader.h">
       <Filter>Source Files\shaders</Filter>
     </ClInclude>
+    <ClInclude Include="src\texture\GeometryBuffer.h">
+      <Filter>Source Files\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\SkyboxShader.h">
+      <Filter>Source Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\error.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rendering\Renderable.h">
+      <Filter>Source Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\GBufferShader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -282,14 +289,20 @@
     <ClCompile Include="src\util\Util.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="src\common.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\shader\PhongTextureShader.cpp">
       <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture\GeometryBuffer.cpp">
+      <Filter>Source Files\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\common.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\GBufferShader.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -336,6 +349,12 @@
       <Filter>data\shaders\specialized</Filter>
     </None>
     <None Include="packages.config" />
+    <None Include="..\data\shader\gBufferShader.frag">
+      <Filter>data\shaders\specialized</Filter>
+    </None>
+    <None Include="..\data\shader\gBufferShader.vert">
+      <Filter>data\shaders\specialized</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\data\scenes\boxScene.xml">
