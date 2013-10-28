@@ -2,13 +2,15 @@
 #include <ctime>
 #include <string>
 
-#include "scene/Scene.h"
+#include <rendering/Renderer.h>
+#include <scene/SceneParser.h>
+#include <scene/Scene.h>
+#include <util/Util.h>
+#include <input/WindowEventHandler.h>
+#include <common.h>
+
 #include "GlutInputHandler.h"
-#include "input/WindowEventHandler.h"
 #include "GlutInputHandlerFactory.H"
-#include "common.h"
-#include "util/Util.h"
-#include "scene/SceneParser.h"
 #include "TimeManager.h"
 
 
@@ -27,7 +29,7 @@ bool InitializeGlut(int, char*[]);
 void InitWindow();
 void RenderFunction();
 
-Scene_ptr s;
+Renderer_ptr renderer;
 //string sceneName = "headScene.xml";
 //string sceneName = "manyPlanes.xml";
 string sceneName = "road.xml";
@@ -101,11 +103,14 @@ bool Initialize()
 
 	const char* data = Util::loadTextFile(Config::SCENE_BASE_PATH  + sceneName.c_str());
 	
+	renderer = Renderer::Create();
+
 	GlutInputHandlerFactory gihf;
 	SceneParser sp(gihf);	
 	if(sp.parse(data))
 	{
-		s = sp.getScene();
+		auto s = sp.getScene();
+		renderer->SetScene(s);
 		TimeManager::getInstance().addTimeObserver(s);
 
 		string windowTitle = string(WINDOW_TITLE_PREFIX) + " - " + s->name;
@@ -173,7 +178,7 @@ void RenderFunction()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	s->render();
+	renderer->Render();
 
 	glutSwapBuffers();
 	glutPostRedisplay();

@@ -200,6 +200,9 @@
       <Filter>Source Files\rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\shader\GBufferShader.h" />
+    <ClInclude Include="src\rendering\Renderer.h">
+      <Filter>Source Files\rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -303,6 +306,9 @@
     </ClCompile>
     <ClCompile Include="src\shader\GBufferShader.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rendering\Renderer.cpp">
+      <Filter>Source Files\rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
