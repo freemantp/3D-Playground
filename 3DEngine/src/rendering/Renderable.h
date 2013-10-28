@@ -1,9 +1,11 @@
 #pragma once;
 
-class Scene;
+#include "../util/SharedPointer.h"
+
+SHARED_PTR_CLASS_DECL(Scene);
 
 class Renderable
 {
 public:
-	virtual void Render(const Scene& scene) const = 0;
+	virtual void Render(const Scene_ptr scene) const = 0;
 };

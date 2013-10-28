@@ -38,6 +38,7 @@
     <ClInclude Include="src\light\LightModel.h" />
     <ClInclude Include="src\light\PointLight.h" />
     <ClInclude Include="src\light\SpotLight.h" />
+    <ClInclude Include="src\rendering\GeometryBuffer.h" />
     <ClInclude Include="src\rendering\Renderable.h" />
     <ClInclude Include="src\rendering\Renderer.h" />
     <ClInclude Include="src\scene\Scene.h" />
@@ -59,7 +60,6 @@
     <ClInclude Include="src\shape\Triangle.h" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\texture\CubeMapTexture.h" />
-    <ClInclude Include="src\texture\GeometryBuffer.h" />
     <ClInclude Include="src\texture\Texture.h" />
     <ClInclude Include="src\util\gettersetter.h" />
     <ClInclude Include="src\util\MeshRaw.h" />
@@ -78,6 +78,7 @@
     <ClCompile Include="src\light\LightModel.cpp" />
     <ClCompile Include="src\light\PointLight.cpp" />
     <ClCompile Include="src\light\SpotLight.cpp" />
+    <ClCompile Include="src\rendering\GeometryBuffer.cpp" />
     <ClCompile Include="src\rendering\Renderer.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\scene\SceneParser.cpp" />
@@ -102,7 +103,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\texture\CubeMapTexture.cpp" />
-    <ClCompile Include="src\texture\GeometryBuffer.cpp" />
     <ClCompile Include="src\texture\Texture.cpp" />
     <ClCompile Include="src\util\MeshRaw.cpp" />
     <ClCompile Include="src\util\ObjLoader.cpp" />

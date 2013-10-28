@@ -12,7 +12,7 @@ ConstShader::ConstShader(vec3& color)
 }
 
 
-void ConstShader::use(const Scene& scene, const glm::mat4& modelTransform)
+void ConstShader::use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {	
 	ShaderBase::use(scene,modelTransform);
 	

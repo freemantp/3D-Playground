@@ -90,14 +90,14 @@ void Scene::render()
 	
 	//Render skybox
 	if(skybox != nullptr)
-		skybox->Render(*this);
+		skybox->Render(shared_from_this());
 	
 	//Render objects
 	std::vector<Shape_ptr>::iterator objIt;
 	for(objIt = objects.begin(); objIt != objects.end(); objIt++)
 	{
 		Shape_ptr s = *objIt;
-		s->Render(*this);
+		s->Render(shared_from_this());
 	}
 
 	bool renderLights = true;
@@ -106,12 +106,12 @@ void Scene::render()
 	{
 		for(auto pl_it = lightModel->pointLights.cbegin(); pl_it != lightModel->pointLights.cend(); pl_it++)
 		{
-			(*pl_it)->Render(*this);
+			(*pl_it)->Render(shared_from_this());
 		}
 
 		for(auto sl_it = lightModel->spotLights.cbegin(); sl_it != lightModel->spotLights.cend(); sl_it++)
 		{
-			(*sl_it)->Render(*this);
+			(*sl_it)->Render(shared_from_this());
 		}
 	}
 }

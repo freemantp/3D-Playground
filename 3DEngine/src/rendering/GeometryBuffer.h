@@ -5,8 +5,7 @@
 
 SHARED_PTR_CLASS_DECL(GeometryBuffer);
 SHARED_PTR_CLASS_DECL(GBufferShader);
-
-class Scene;
+SHARED_PTR_CLASS_DECL(Scene);
 
 
 class GeometryBuffer
@@ -18,7 +17,7 @@ public:
 	virtual ~GeometryBuffer();
 
 	/// 
-	void StartGBufferComp(const Scene& scene, const glm::mat4& modelTransform);
+	void StartGBufferComp(Scene_ptr scene);
 	
 	
 	void EndGBufferComp();

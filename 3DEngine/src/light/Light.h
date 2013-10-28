@@ -4,6 +4,7 @@
 #include "../util/SharedPointer.h"
 
 SHARED_PTR_CLASS_DECL(Light);
+SHARED_PTR_CLASS_DECL(Scene);
 
 class Scene;
 
@@ -16,7 +17,7 @@ public:
 
 	Light();
 
-	virtual void Render(const Scene& scene) = 0;
+	virtual void Render(const Scene_ptr scene) = 0;
 
 	virtual	vec4& GetPosition();
 	virtual void SetPosition(vec4& pos);

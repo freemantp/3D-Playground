@@ -16,7 +16,9 @@ SHARED_PTR_CLASS_DECL(Skybox);
 SHARED_PTR_CLASS_DECL(InspectionCameraAdapter);
 SHARED_PTR_CLASS_DECL(FirstPersonCameraAdapter);
 
-class Scene : public TimeObserver
+class Scene 
+	: public TimeObserver
+	, public std::enable_shared_from_this<Scene>
 {
 public:		
 

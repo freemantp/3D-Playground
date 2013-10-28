@@ -50,7 +50,7 @@ void PhongTextureShader::setSpecularMap(const string& textureFile)
 	hasSpecularMap = true;
 }
 
-void PhongTextureShader::use(const Scene& scene, const glm::mat4& modelTransform)
+void PhongTextureShader::use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {	
 	ShaderBase::use(scene,modelTransform);
 

@@ -44,7 +44,7 @@ PhongShader::~PhongShader(void)
 {
 }
 
-void PhongShader::use(const Scene& scene, const glm::mat4& modelTransform)
+void PhongShader::use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {	
 	ShaderBase::use(scene,modelTransform);
 
@@ -53,20 +53,20 @@ void PhongShader::use(const Scene& scene, const glm::mat4& modelTransform)
 	setUniform("Material.SpecularReflectivity", glossyReflection );
 	setUniform("Material.Shininess", shininess);
 
-	if(scene.skybox)
+	if(scene->skybox)
 	{
 		const int skymapTexUnit = 0;
 
-		CubeMapTexture_ptr envTex =  scene.skybox->texture;
+		CubeMapTexture_ptr envTex =  scene->skybox->texture;
 		envTex->bindTexture(skymapTexUnit);
 		setUniform("EnvMapTex",skymapTexUnit);
-		setUniform("CameraPosWorld",scene.activeCamera->GetPosition() );
+		setUniform("CameraPosWorld",scene->activeCamera->GetPosition() );
 	}
 
 	setLightAndModel(scene);
 }
 
-void PhongShader::setLightAndModel(const Scene& scene)
+void PhongShader::setLightAndModel(const Scene_ptr scene)
 {
 	GLuint* shadeFunc;
 
@@ -83,7 +83,7 @@ void PhongShader::setLightAndModel(const Scene& scene)
 	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, shadeFunc);
 
 	//set lights
-	setUniform("NumPointLights", (int)scene.lightModel->pointLights.size());
-	setUniform("NumSpotLights", (int)scene.lightModel->spotLights.size());
-	scene.lightModel->GetLightsBuffer()->bindToShader(shared_from_this(),"Lights");
+	setUniform("NumPointLights", (int)scene->lightModel->pointLights.size());
+	setUniform("NumSpotLights", (int)scene->lightModel->spotLights.size());
+	scene->lightModel->GetLightsBuffer()->bindToShader(shared_from_this(),"Lights");
 }

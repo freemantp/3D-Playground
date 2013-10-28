@@ -55,11 +55,11 @@ void ShaderBase::afterUniformSet()
 		glUseProgram(currentProgram);
 }
 
-void ShaderBase::updateTransforms(const Camera& cam, const glm::mat4& modelTransform)
+void ShaderBase::updateTransforms(const Camera_ptr cam, const glm::mat4& modelTransform)
 {
-	glm::mat4 modelViewMatrix = cam.viewMatrix * modelTransform;
+	glm::mat4 modelViewMatrix = cam->viewMatrix * modelTransform;
 	
-	glm::mat4 mvpMatrix = cam.projectionMatrix * modelViewMatrix;
+	glm::mat4 mvpMatrix = cam->projectionMatrix * modelViewMatrix;
 	glm::mat3 normalMatrix	= glm::transpose(glm::inverse(glm::mat3(modelViewMatrix)));
 	
 	beforeUniformSet();
@@ -71,11 +71,11 @@ void ShaderBase::updateTransforms(const Camera& cam, const glm::mat4& modelTrans
 	if(hasMVM)
 		setUniform("ModelViewMatrix", modelViewMatrix);		
 	if(hasVM)
-		setUniform("ViewMatrix",  cam.viewMatrix);		
+		setUniform("ViewMatrix",  cam->viewMatrix);		
 	if(hasMM)
 		setUniform("ModelMatrix",  modelTransform);		
 	if(hasPM)
-		setUniform("ProjectionMatrix", cam.projectionMatrix);		
+		setUniform("ProjectionMatrix", cam->projectionMatrix);		
 	
 	
 	afterUniformSet();
@@ -140,8 +140,8 @@ bool ShaderBase::loadShader( const string& vertexSource,
 
 }
 
-void ShaderBase::use(const Scene& scene, const glm::mat4& modelTransform)
+void ShaderBase::use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {
 	GLSLProgram::use();
-	updateTransforms(*scene.activeCamera,modelTransform);
+	updateTransforms(scene->activeCamera,modelTransform);
 }

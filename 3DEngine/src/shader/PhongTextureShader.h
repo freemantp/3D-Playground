@@ -13,7 +13,7 @@ public:
 	
 	virtual ~PhongTextureShader();
 
-	virtual void use(const Scene& scene, const glm::mat4& modelTransform);
+	virtual void use(const Scene_ptr scene, const glm::mat4& modelTransform);
 	virtual void setSpecularMap(const std::string& specularMap);
 	virtual void setBumpMap(const std::string& textureFile, bool isNormalMap);
 

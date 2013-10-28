@@ -103,7 +103,7 @@ bool Initialize()
 
 	const char* data = Util::loadTextFile(Config::SCENE_BASE_PATH  + sceneName.c_str());
 	
-	renderer = Renderer::Create();
+	renderer = Renderer::Create(CurrentWidth,CurrentHeight);
 
 	GlutInputHandlerFactory gihf;
 	SceneParser sp(gihf);	

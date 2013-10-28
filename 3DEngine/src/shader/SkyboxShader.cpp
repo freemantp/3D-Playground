@@ -20,7 +20,7 @@ SkyboxShader::~SkyboxShader(void)
 }
 
 
-void SkyboxShader::use(const Scene& scene, const glm::mat4& modelTransform)
+void SkyboxShader::use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {	
 	ShaderBase::use(scene,modelTransform);
 

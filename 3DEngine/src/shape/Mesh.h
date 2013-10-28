@@ -10,6 +10,7 @@
 SHARED_PTR_CLASS_DECL(MeshRaw);
 SHARED_PTR_CLASS_DECL(Mesh);
 SHARED_PTR_CLASS_DECL(ObjMaterial);
+SHARED_PTR_CLASS_DECL(Scene);
  
 class Mesh : public Shape
 {
@@ -19,7 +20,7 @@ public:
 
 	virtual ~Mesh();
 
-	virtual void Render(const Scene& scene) const;
+	virtual void Render(const Scene_ptr scene) const;
 	virtual void init(); 
 
 	bool setPositions(const std::vector<float>& positions, const std::vector<int>& indices, std::vector<std::pair<int,int> >* indexGroups = nullptr);

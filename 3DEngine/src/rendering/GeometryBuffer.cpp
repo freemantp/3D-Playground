@@ -3,6 +3,7 @@
 #include "../shader/GBufferShader.h"
 
 #include <GL/glew.h>
+#include <glm/core/type.hpp>
 
 GeometryBuffer_ptr GeometryBuffer::Create(int width, int height)
 {
@@ -56,10 +57,11 @@ GeometryBuffer::~GeometryBuffer()
 	glDeleteFramebuffers(1,&m_DeferredFboHandle);
 }
 
- void GeometryBuffer::StartGBufferComp(const Scene& scene, const glm::mat4& modelTransform)
+ void GeometryBuffer::StartGBufferComp(Scene_ptr scene)
  {	 
 	 glBindFramebuffer(GL_FRAMEBUFFER, m_DeferredFboHandle);
-	 m_Shader->use(scene, modelTransform);
+	 //glm::mat4 m;
+	 //m_Shader->use(scene, m);
  }
 
  void GeometryBuffer::EndGBufferComp()

@@ -40,7 +40,7 @@ void PointLight::SetColor(vec3& color)
 	visShader->color = color;
 }
 
-void PointLight::Render(const Scene& scene)
+void PointLight::Render(const Scene_ptr scene)
 {
 	visMesh->Render(scene);
 }

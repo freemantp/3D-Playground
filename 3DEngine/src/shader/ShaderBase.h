@@ -2,10 +2,9 @@
 
 #include "GLSLProgram.h"
 
-class Scene;
-class Camera;
-
 SHARED_PTR_CLASS_DECL(ShaderBase)
+SHARED_PTR_CLASS_DECL(Scene)
+SHARED_PTR_CLASS_DECL(Camera)
 
 class ShaderBase : public GLSLProgram
 {
@@ -16,7 +15,7 @@ public:
 
 	GLint getAttributeChannel(GLSLShader::VertexAttribute attribute);
 
-	virtual void use(const Scene& cam, const glm::mat4& modelTransform);
+	virtual void use(const Scene_ptr cam, const glm::mat4& modelTransform);
 	const string& getName() const;
 	
 
@@ -26,10 +25,10 @@ protected:
 
 	virtual void init();
 
-	bool loadShader( const string& vertexSource, const string& fragmentSource);
+	bool loadShader(const string& vertexSource, const string& fragmentSource);
 	bool loadShader(const string& shaderName);	
 
-	void updateTransforms(const Camera& cam, const glm::mat4& modelTransform);
+	void updateTransforms(const Camera_ptr cam, const glm::mat4& modelTransform);
 
 	GLint getCurentProgram();
 	

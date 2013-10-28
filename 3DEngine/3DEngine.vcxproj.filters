@@ -184,9 +184,6 @@
     <ClInclude Include="src\shader\PhongTextureShader.h">
       <Filter>Source Files\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="src\texture\GeometryBuffer.h">
-      <Filter>Source Files\texture</Filter>
-    </ClInclude>
     <ClInclude Include="src\shader\SkyboxShader.h">
       <Filter>Source Files\shaders</Filter>
     </ClInclude>
@@ -201,6 +198,9 @@
     </ClInclude>
     <ClInclude Include="src\shader\GBufferShader.h" />
     <ClInclude Include="src\rendering\Renderer.h">
+      <Filter>Source Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rendering\GeometryBuffer.h">
       <Filter>Source Files\rendering</Filter>
     </ClInclude>
   </ItemGroup>
@@ -298,9 +298,6 @@
     <ClCompile Include="src\shader\PhongTextureShader.cpp">
       <Filter>Source Files\shaders</Filter>
     </ClCompile>
-    <ClCompile Include="src\texture\GeometryBuffer.cpp">
-      <Filter>Source Files\texture</Filter>
-    </ClCompile>
     <ClCompile Include="src\common.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
@@ -308,6 +305,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\rendering\Renderer.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rendering\GeometryBuffer.cpp">
       <Filter>Source Files\rendering</Filter>
     </ClCompile>
   </ItemGroup>

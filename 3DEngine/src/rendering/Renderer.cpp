@@ -1,15 +1,17 @@
 #include "stdafx.h"
 #include "Renderer.h"
+#include "GeometryBuffer.h"
 #include  "../scene/Scene.h"
 
 #include <GL/glew.h>
 
-Renderer_ptr Renderer::Create()
+Renderer_ptr Renderer::Create(int width, int height)
 {
-	return Renderer_ptr(new Renderer());
+	return Renderer_ptr(new Renderer(width,height));
 }
 
-Renderer::Renderer()
+Renderer::Renderer(int width, int height)
+	: m_gBuffer(GeometryBuffer::Create(width,height))
 {
 }
 
@@ -31,5 +33,8 @@ void Renderer::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	if(m_Scene)
+	{
+		//m_gBuffer->StartGBufferComp(m_Scene,
 		m_Scene->render();
+	}
 }
