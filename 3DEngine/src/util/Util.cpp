@@ -6,6 +6,8 @@
 #include "../shape/Box.h"
 #include <ctime>
 #include <regex>
+#include <cctype>
+#include <functional> 
 #include <IL/il.h>
 #include "MeshRaw.h"
 #include <Windows.h>
@@ -93,12 +95,11 @@ Mesh_ptr Util::loadModel(const string& path)
 	ObjLoader oj;
 	clock_t begin = clock();
 	
-	if(MeshRaw_ptr rawMesh = oj.loadObjFile(path))
+	if(MeshRaw_ptr rawMesh = oj.LoadMeshFromObjFile(path))
 	{
 		Mesh_ptr mesh = Mesh::Create(rawMesh);
 
-		clock_t end = clock();
-		double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC * 1000;
+		double elapsed_secs = double(clock() - begin) / CLOCKS_PER_SEC * 1000;
 		std::cout << "time [msec]: " << elapsed_secs << std::endl;
 		return mesh;
 	}
@@ -235,4 +236,24 @@ bool Util::fileExists (const std::string& name) {
 void Util::beep()
 {
 	Beep( 440, 300 );
+}
+
+
+
+// trim from start
+static inline std::string &ltrim(std::string &s) {
+        s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+        return s;
+}
+
+// trim from end
+static inline std::string &rtrim(std::string &s) {
+        s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+        return s;
+}
+
+
+void Util::Trim(std::string& str)
+{
+	ltrim(rtrim(str));
 }

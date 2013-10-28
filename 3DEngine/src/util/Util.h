@@ -31,5 +31,8 @@ public:
 	static Mesh_ptr getElephant();
 	static Mesh_ptr getBox();
 
+	static void Trim(std::string& str);
+
+
 
 };
