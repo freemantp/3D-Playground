@@ -60,9 +60,14 @@ void main() {
     
 	ivec2 fragCoords = ivec2(gl_FragCoord.xy);
 
+	//mat3 envRotMat = mat3(
+	//   0,0,1, // first column (not row!)
+	//   0,1,0, // second column
+	//   -1,0,0  // third column
+	//);
 	//Rotate coordinate frame to be oriented with the cubemap
-	vec3 rotatedWsNormal = /*-envRotMat * */ NormalWs;
-	rotatedWsNormal.z *= -1;
+	vec3 rotatedWsNormal = /*envRotMat **/  NormalWs;
+	//rotatedWsNormal.z *= -1;
 
 	float transferCoeff[9];
 	computeDiffuseTransferCoeffs(rotatedWsNormal,transferCoeff);
@@ -78,9 +83,7 @@ void main() {
 		}
 	}
 
-	FragColor = vec4(diffuseShade * exposure,1.0); 
-	FragColor = vec4(0.5,0.5,0.5,1);
-	//FragColor = vec4(vec3(1.0) - exp(-diffuseShade * exposure),1.0);
+	FragColor = vec4(vec3(1.0) - exp(-diffuseShade * exposure),1.0);
 	
 	
 

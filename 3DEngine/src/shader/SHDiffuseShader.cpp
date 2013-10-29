@@ -5,6 +5,8 @@
 #include "../light/PointLight.h"
 #include "../shape/Skybox.h"
 #include "../texture/CubeMapTexture.h"
+#include "../util/Util.h"
+#include "../util/ShCoeffParser.h"
 #include "UniformBuffer.h"
 
 ShDiffuseShader_ptr ShDiffuseShader::Create()
@@ -15,19 +17,16 @@ ShDiffuseShader_ptr ShDiffuseShader::Create()
 ShDiffuseShader::ShDiffuseShader()
 : ShaderBase("diffuseSH")
 {
-	hasMM = true;
-	init();
-}
-
-ShDiffuseShader::ShDiffuseShader(const string& shaderName)
-	: ShaderBase(shaderName)
-{	
+	hasMVP = true;
+	hasMVM = false;
 	init();
 }
 
 void ShDiffuseShader::init()
 {
-
+	const char* data = Util::loadTextFile(Config::DATA_BASE_PATH + "sh/grace.xml");
+	m_ShCoeffs= ShCoeffParser::Parse(data);
+	delete[] data;
 }
 
 ShDiffuseShader::~ShDiffuseShader(void)
@@ -38,20 +37,19 @@ void ShDiffuseShader::use(const Scene_ptr scene, const glm::mat4& modelTransform
 {	
 	ShaderBase::use(scene,modelTransform);
 
-	//setUniform("Material.AmbientReflectivity", ambientReflection );
-	//setUniform("Material.DiffuseReflectivity", diffuseReflection );
-	//setUniform("Material.SpecularReflectivity", glossyReflection );
-	//setUniform("Material.Shininess", shininess);
+	const int numShBands = 3;
+	const float exposure = 1.0f;
+	setUniform("numShBands", numShBands);
+	setUniform("exposure", exposure);
 
-	//if(scene->skybox)
-	//{
-	//	const int skymapTexUnit = 0;
+	float shCoeffs[9*3];
 
-	//	CubeMapTexture_ptr envTex =  scene->skybox->texture;
-	//	envTex->bindTexture(skymapTexUnit);
-	//	setUniform("EnvMapTex",skymapTexUnit);
-	//	setUniform("CameraPosWorld",scene->activeCamera->GetPosition() );
-	//}
+	for(int i=0; i<9 ;i++)
+	{
+		memcpy(shCoeffs+i*3,&(m_ShCoeffs->m_Coeffs[i]).x,3*sizeof(float));
+	}
+	
+	setUniformArray("shLightCoeffs",shCoeffs,3,9);
 
 }
 

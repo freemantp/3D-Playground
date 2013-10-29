@@ -4,10 +4,26 @@
 #include "../util/gettersetter.h"
 
 SHARED_PTR_CLASS_DECL(ShDiffuseShader)
+SHARED_PTR_CLASS_DECL(ShDiffuseShaderCoeffs)
 
-class ShDiffuseShader 
-	: public ShaderBase
-	, public std::enable_shared_from_this<ShDiffuseShader>
+class ShDiffuseShaderCoeffs 
+{
+public:
+
+	static ShDiffuseShaderCoeffs_ptr Create()
+	{
+		return ShDiffuseShaderCoeffs_ptr(new ShDiffuseShaderCoeffs());
+	}
+
+	std::string name;
+	std::vector<glm::vec3> m_Coeffs;
+
+protected:
+	ShDiffuseShaderCoeffs() {};
+
+};
+
+class ShDiffuseShader : public ShaderBase
 {
 public:
 
@@ -20,9 +36,10 @@ public:
 protected:
 
 	ShDiffuseShader();
-	ShDiffuseShader(const string& shaderName);
 
 	virtual void init();
+
+	ShDiffuseShaderCoeffs_ptr m_ShCoeffs;
 
 };
 
