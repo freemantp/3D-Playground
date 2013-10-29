@@ -62,6 +62,9 @@
     <Filter Include="Source Files\rendering">
       <UniqueIdentifier>{37270fe2-da46-499a-b15d-c4d630bdf31a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data\shaders\sh">
+      <UniqueIdentifier>{8dd0adde-c49a-435a-b399-51831c255c7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\enums.h">
@@ -196,12 +199,17 @@
     <ClInclude Include="src\rendering\Renderable.h">
       <Filter>Source Files\rendering</Filter>
     </ClInclude>
-    <ClInclude Include="src\shader\GBufferShader.h" />
     <ClInclude Include="src\rendering\Renderer.h">
       <Filter>Source Files\rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\rendering\GeometryBuffer.h">
       <Filter>Source Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\GBufferShader.h">
+      <Filter>Source Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\SHDiffuseShader.h">
+      <Filter>Source Files\shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -301,14 +309,17 @@
     <ClCompile Include="src\common.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader\GBufferShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\rendering\Renderer.cpp">
       <Filter>Source Files\rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\rendering\GeometryBuffer.cpp">
       <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\GBufferShader.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\SHDiffuseShader.cpp">
+      <Filter>Source Files\shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -361,6 +372,12 @@
     <None Include="..\data\shader\gBufferShader.vert">
       <Filter>data\shaders\specialized</Filter>
     </None>
+    <None Include="..\data\shader\diffuseSH.frag">
+      <Filter>data\shaders\sh</Filter>
+    </None>
+    <None Include="..\data\shader\diffuseSH.vert">
+      <Filter>data\shaders\sh</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\data\scenes\boxScene.xml">
@@ -382,6 +399,9 @@
       <Filter>data\scenes</Filter>
     </Xml>
     <Xml Include="..\data\scenes\envHorse.xml">
+      <Filter>data\scenes</Filter>
+    </Xml>
+    <Xml Include="..\data\scenes\shScene.xml">
       <Filter>data\scenes</Filter>
     </Xml>
   </ItemGroup>

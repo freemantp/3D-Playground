@@ -8,6 +8,7 @@
 #include "../shader/PhongTextureShader.h"
 #include "../shader/ColorShader.h"
 #include "../shader/ConstShader.h"
+#include "../shader/SHDiffuseShader.h"
 #include "../texture/CubeMapTexture.h"
 
 #include "../util/Util.h"
@@ -194,6 +195,10 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 				getColorVector3(subElem,cshader->color);
 
 			shader = cshader;
+		}
+		else if (shaderName == "diffuseSH")
+		{
+			shader = ShDiffuseShader::Create();
 		}
 		else
 		{

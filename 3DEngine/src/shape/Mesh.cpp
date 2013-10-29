@@ -389,9 +389,9 @@ void Mesh::Render(const Scene_ptr scene) const
 	{			
 		if(shaderProgram) 
 		{	
-			//TODO: make this work with any shader
 			if(i < materials.size())
 			{
+				//TODO: make this work with any shader
 				if (auto ps = std::dynamic_pointer_cast<PhongShader>(shaderProgram))
 				{
 					if(ObjMaterial_ptr mat = materials[i])
@@ -401,8 +401,7 @@ void Mesh::Render(const Scene_ptr scene) const
 						ps->glossyReflection = mat->specular;
 						ps->shininess = static_cast<int>(mat->shininess);
 					}
-				}
-			
+				}	
 			}
 			shaderProgram->use(scene, worldTransform);
 		}

@@ -93,10 +93,8 @@ void Scene::render()
 		skybox->Render(shared_from_this());
 	
 	//Render objects
-	std::vector<Shape_ptr>::iterator objIt;
-	for(objIt = objects.begin(); objIt != objects.end(); objIt++)
+	for(Shape_ptr s : objects)
 	{
-		Shape_ptr s = *objIt;
 		s->Render(shared_from_this());
 	}
 

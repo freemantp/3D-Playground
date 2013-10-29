@@ -1,7 +1,8 @@
 #version 400
 
-layout (location = 0) out vec4 PositionData;
-layout (location = 1) out vec4 NormalData;
+layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec3 PositionData;
+layout (location = 2) out vec3 NormalData;
 
 
 uniform sampler2D PositionTex, NormalTex, ColorTex;
@@ -13,4 +14,5 @@ void main()
 {
 	PositionData = Position;
 	NormalData = Normal;
+	FragColor = vec4(1,1,1,1);
 }
