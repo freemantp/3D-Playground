@@ -4,7 +4,7 @@
 //
 
 #pragma once
-
+//#define GLM_SWIZZLE GLM_SWIZZLE_XYZW
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 

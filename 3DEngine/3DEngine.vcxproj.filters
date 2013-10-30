@@ -65,6 +65,9 @@
     <Filter Include="data\shaders\sh">
       <UniqueIdentifier>{8dd0adde-c49a-435a-b399-51831c255c7b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\math">
+      <UniqueIdentifier>{77edf59b-308f-4c53-9f04-66087e885491}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\enums.h">
@@ -217,6 +220,9 @@
     <ClInclude Include="src\util\XmlUtils.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="src\math\HaltonSphere.h">
+      <Filter>Source Files\math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -332,6 +338,9 @@
     </ClCompile>
     <ClCompile Include="src\util\XmlUtils.cpp">
       <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\HaltonSphere.cpp">
+      <Filter>Source Files\math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
