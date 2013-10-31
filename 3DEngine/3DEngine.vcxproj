@@ -25,7 +25,7 @@
     <ClInclude Include="src\camera\FirstPersonCameraAdapter.h" />
     <ClInclude Include="src\camera\InspectionCameraAdapter.h" />
     <ClInclude Include="src\camera\PerspectiveCamera.h" />
-    <ClInclude Include="src\common.h" />
+    <ClInclude Include="src\config.h" />
     <ClInclude Include="src\enums.h" />
     <ClInclude Include="src\error.h" />
     <ClInclude Include="src\input\InputHandler.h" />

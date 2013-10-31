@@ -7,7 +7,7 @@ SHARED_PTR_CLASS_DECL(ConstShader)
 class ConstShader : public ShaderBase
 {
 public:
-	ConstShader(vec3& color);
+	ConstShader(glm::vec3& color);
 
 	virtual void use(const Scene_ptr scene, const glm::mat4& modelTransform);
 

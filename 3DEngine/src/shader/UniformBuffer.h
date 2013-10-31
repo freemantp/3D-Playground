@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include <glm/glm.hpp>
+#include <GL/glew.h>
 #include "../util/SharedPointer.h"
 
 SHARED_PTR_CLASS_DECL(UniformBuffer);

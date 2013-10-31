@@ -1,19 +1,6 @@
 #pragma once
 
-#include <cmath>
-#include <cfloat>
 #include <string>
-
-#define M_PI       3.14159265358979323846f
-
-inline float Radians(float deg) {
-    return ((float)M_PI/180.f) * deg;
-}
-
-
-inline float Degrees(float rad) {
-    return (180.f/(float)M_PI) * rad;
-}
 
 class Config {
 

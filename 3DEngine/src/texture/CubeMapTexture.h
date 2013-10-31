@@ -2,6 +2,7 @@
 
 #include <string>
 #include "../util/SharedPointer.h"
+#include <GL/glew.h>
 
 SHARED_PTR_CLASS_DECL(CubeMapTexture);
 

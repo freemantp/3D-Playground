@@ -1,7 +1,8 @@
-#pragma once
 #pragma once;
 
 #include <vector>
+#include <GL/glew.h>
+
 #include "../util/SharedPointer.h"
 
 SHARED_PTR_CLASS_DECL(Camera);

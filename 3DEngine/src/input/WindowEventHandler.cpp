@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "WindowEventHandler.h"
 #include "ViewportObserver.h"
-
+#include <GL/glew.h>
 
 WindowEventHandler WindowEventHandler::instance = WindowEventHandler();
 

@@ -20,6 +20,7 @@
 #include "../shape/Skybox.h"
 
 #include "../light/SpotLight.h"
+#include "../config.h"
 
 using tinyxml2::XMLDocument;
 using tinyxml2::XMLElement;

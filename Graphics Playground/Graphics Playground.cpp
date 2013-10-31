@@ -7,7 +7,7 @@
 #include <scene/Scene.h>
 #include <util/Util.h>
 #include <input/WindowEventHandler.h>
-#include <common.h>
+#include <config.h>
 
 #include "GlutInputHandler.h"
 #include "GlutInputHandlerFactory.H"

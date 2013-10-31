@@ -2,7 +2,7 @@
 #include "ConstShader.h"
 
 
-ConstShader::ConstShader(vec3& color)
+ConstShader::ConstShader(glm::vec3& color)
 	: ShaderBase("constShader")
 {
 	hasNM = false;

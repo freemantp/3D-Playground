@@ -4,6 +4,7 @@
 #include "../camera/Camera.h"
 #include "../util/Util.h"
 #include "../scene/Scene.h"
+#include "../config.h"
 
 ShaderBase::ShaderBase(const string& shaderName)
 	: hasMVP(true)

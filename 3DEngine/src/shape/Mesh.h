@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <GL/glew.h>
 
 //forward declarations
 SHARED_PTR_CLASS_DECL(MeshRaw);
