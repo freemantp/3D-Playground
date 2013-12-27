@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include "../util/SharedPointer.h"
+#include <glm/glm.hpp>
 
 using tinyxml2::XMLElement;
 

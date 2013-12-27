@@ -2,8 +2,6 @@
 #include "GeometryBuffer.h"
 #include "../shader/GBufferShader.h"
 
-#include <glm/core/type.hpp>
-
 GeometryBuffer_ptr GeometryBuffer::Create(int width, int height)
 {
 	return GeometryBuffer_ptr(new GeometryBuffer(width,height));

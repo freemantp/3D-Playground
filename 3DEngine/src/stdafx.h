@@ -4,12 +4,10 @@
 //
 
 #pragma once
+
 //#define GLM_SWIZZLE GLM_SWIZZLE_XYZW
-#include <glm/glm.hpp>
+//#include <glm/glm.hpp>
 #include <glload/gl_4_3.h>
 
-#include <memory>
-
 // TODO: reference additional headers your program requires here
-#include "common.h"
 #include "error.h"

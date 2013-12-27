@@ -1,12 +1,15 @@
 #pragma once;
 
-#include <glm/core/type.hpp>
+#include <glm/glm.hpp>
 #include <vector>
 #include <random>
+#include <glm/gtc/constants.hpp>
 
 /**
   See Sampling with Hammersley and Halton Points 
   http://www.cse.cuhk.edu.hk/~ttwong/papers/udpoint/udpoints.html
+
+  \TODO: This might be obsolete because of glm::sphericalRand
 */
 class HaltonSphere
 {

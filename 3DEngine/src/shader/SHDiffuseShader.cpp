@@ -8,6 +8,7 @@
 #include "../util/Util.h"
 #include "../util/ShCoeffParser.h"
 #include "UniformBuffer.h"
+#include "../config.h"
 
 ShDiffuseShader_ptr ShDiffuseShader::Create()
 {

@@ -5,6 +5,7 @@
 #include "../light/PointLight.h"
 #include "UniformBuffer.h"
 #include "../util/Util.h"
+#include "../config.h"
 
 #include "../texture/Texture.h"
 

@@ -6,7 +6,7 @@
 #include "../stdafx.h"
 #include "../enums.h"
 #include "../util/SharedPointer.h"
-
+#include <glm/glm.hpp>
 
 using std::string;
 using glm::vec2;

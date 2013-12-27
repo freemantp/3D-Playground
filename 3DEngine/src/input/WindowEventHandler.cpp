@@ -2,7 +2,6 @@
 #include "WindowEventHandler.h"
 #include "ViewportObserver.h"
 
-
 WindowEventHandler WindowEventHandler::instance = WindowEventHandler();
 
 WindowEventHandler::WindowEventHandler()

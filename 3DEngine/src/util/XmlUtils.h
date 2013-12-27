@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glm/core/type.hpp>
+#include <glm/glm.hpp>
 #include <tinyxml2.h>
 
 
