@@ -1,22 +1,25 @@
 #include "stdafx.h"
+
 #include "Util.h"
-#include <fstream>
-#include "../shader/ShaderBase.h"
+#include "MeshRaw.h"
+
 #include "../util/ObjLoader.h"
+
 #include "../shape/Box.h"
+#include "../shape/Mesh.h"
+
+#include "../shader/ShaderBase.h"
+#include "../shader/GLSLProgram.h"
+
+#include <fstream>
 #include <ctime>
 #include <regex>
 #include <cctype>
 #include <functional> 
-#include <IL/il.h>
-#include "MeshRaw.h"
 #include <Windows.h>
 
+#include <glimg/glimg.h>
 #include <glm/gtc/matrix_transform.hpp>
-
-
-#include "../shape/Mesh.h"
-#include "../shader/GLSLProgram.h"
 
 using std::string;
 using std::vector;
@@ -143,40 +146,29 @@ Mesh_ptr Util::getBox()
 
 bool Util::loadCubeMapTexture(const std::string& texturePath, unsigned char* imgPointers[], int& width, int& height)
 {
-	//Load  image
-	if( ilLoadImage(texturePath.c_str()) == IL_TRUE )
+	if(auto imgSet = loadTexture(texturePath))
 	{
-		if( ilConvertImage(IL_RGBA,IL_UNSIGNED_BYTE) == IL_TRUE )
+		if (imgSet->GetFaceCount() == 1)
 		{
-			ILubyte* imgData = ilGetData();
-			int w =  ilGetInteger(IL_IMAGE_WIDTH);
-			int h =  ilGetInteger(IL_IMAGE_HEIGHT);
+			auto image = imgSet->GetImage(0);
+			auto format = image.GetFormat();
+			if (format.Order() == glimg::ORDER_RGBA && format.Components() == glimg::FMT_COLOR_RGBA)
+			{
+				//		//Copy subimage pixel data
+				//		ilCopyPixels(width,0,0, width, height, 1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[0]);
+				//		ilCopyPixels(0,height,0 , width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[1]);
+				//		ilCopyPixels(1*width,height,0, width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[2]);
+				//		ilCopyPixels(2*width,height,0, width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[3]);
+				//		ilCopyPixels(3*width,height,0, width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[4]);
+				//		ilCopyPixels(width,2*height,0, width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[5]);
 
-			//subimage sizes
-			width = w / 4;
-			height = h / 3;
-			int bytesPerSubimage = w * h * sizeof(ILubyte) * 4;
-
-			//Allocate memory
-			imgPointers[0] = new unsigned char[bytesPerSubimage];
-			imgPointers[1] = new unsigned char[bytesPerSubimage];
-			imgPointers[2] = new unsigned char[bytesPerSubimage];
-			imgPointers[3] = new unsigned char[bytesPerSubimage];
-			imgPointers[4] = new unsigned char[bytesPerSubimage];
-			imgPointers[5] = new unsigned char[bytesPerSubimage];
-
-			//Copy subimage pixel data
-			ilCopyPixels(width,0,0, width, height, 1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[0]);
-			ilCopyPixels(0,height,0 , width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[1]);
-			ilCopyPixels(1*width,height,0, width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[2]);
-			ilCopyPixels(2*width,height,0, width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[3]);
-			ilCopyPixels(3*width,height,0, width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[4]);
-			ilCopyPixels(width,2*height,0, width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[5]);
-
-			return true;
-		} 
-		else 
-			Error("Could not convert texture: " + texturePath);
+				Warn("Noop");
+			}
+			else
+			{
+				Error("Wrong image format");
+			}
+		}
 	}
 	else
 		Error("Could not load texture: " + texturePath);
@@ -184,34 +176,20 @@ bool Util::loadCubeMapTexture(const std::string& texturePath, unsigned char* img
 	return false;
 }
 
-
-/// Loads an image as RGBA texture
-unsigned char* Util::loadTexture(const std::string& texturePath, int& width, int& height)
+std::unique_ptr<glimg::ImageSet> Util::loadTexture(const std::string& texturePath)
 {
-	//Load  image
-	if( ilLoadImage(texturePath.c_str()) == IL_TRUE )
+
+	std::unique_ptr<glimg::ImageSet> imgSet;
+	try
 	{
-		if( ilConvertImage(IL_RGBA,IL_UNSIGNED_BYTE) == IL_TRUE )
-		{
-			ILubyte* imgData = ilGetData();
-			width =  ilGetInteger(IL_IMAGE_WIDTH);
-			height =  ilGetInteger(IL_IMAGE_HEIGHT);
-
-			int numBytes = width * height * sizeof(ILubyte) * 4;
-
-			//Return a copy because the image gets destroyed after this function returns
-			ILubyte* dataCopy = new ILubyte[numBytes];
-			memcpy(dataCopy,imgData,numBytes);
-
-			return dataCopy;
-		} 
-		else 
-			Error("Could not convert texture: " + texturePath);
+		imgSet.reset(glimg::loaders::stb::LoadFromFile(texturePath));
 	}
-	else
-		Error("Could not load texture: " + texturePath);
+	catch (glimg::loaders::stb::StbLoaderException)
+	{
+		Error("Loading of " + texturePath + "failed");
+	}
 
-	return nullptr;
+	return imgSet;
 }
 
 std::string Util::extractBaseFolder(std::string path)

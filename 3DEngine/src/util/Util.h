@@ -9,6 +9,11 @@ SHARED_PTR_CLASS_DECL(Mesh);
 class GLSLProgram;
 class ShaderBase;
 
+namespace glimg
+{
+	class ImageSet;
+}
+
 class Util
 {
 public:
@@ -19,7 +24,8 @@ public:
 	static void printStrings(const std::vector<std::string> strings);
 	static void printUniforms(const ShaderBase* shader);
 	static Mesh_ptr loadModel(const std::string& path);
-	static unsigned char* loadTexture(const std::string& texturePath, int& width, int& height);
+
+	static std::unique_ptr<glimg::ImageSet> loadTexture(const std::string& texturePath);
 	static bool loadCubeMapTexture(const std::string& texturePath, unsigned char* imgPointers[], int& width, int& height);
 	static std::string Util::extractBaseFolder(std::string path);
 	static bool fileExists (const std::string& name);

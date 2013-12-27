@@ -7,7 +7,6 @@
 #include "../util/Util.h"
 
 #include "../texture/Texture.h"
-#include  <IL/il.h>
 
 PhongTextureShader_ptr PhongTextureShader::Create(const string& textureFile)
 {

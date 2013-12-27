@@ -4,8 +4,7 @@
 //
 
 #pragma once
-
-#include <GL/glew.h>
+#include <glload/gl_4_3.h>
 #include <glm/glm.hpp>
 #include <GL/freeglut.h>	
 #include <cstdio>

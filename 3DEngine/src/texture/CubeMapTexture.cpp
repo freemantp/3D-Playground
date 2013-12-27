@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
 #include "CubeMapTexture.h"
-#include <GL/glew.h>
 #include "../util/Util.h"
 #include "../error.h"
 
@@ -40,15 +39,19 @@ CubeMapTexture::CubeMapTexture(const std::string& cubeMapTexture)
 	unsigned char* subImages[6];
 	int width = 0;
 	int height = 0;
-	Util::loadCubeMapTexture(cubeMapTexture,subImages,width,height);
 
-	for(int i=0; i < 6; i++)
+	if (Util::loadCubeMapTexture(cubeMapTexture, subImages, width, height))
 	{
-		glTexImage2D(targets[i], 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, subImages[i]);
-		delete[] subImages[i];
+		for (int i = 0; i < 6; i++)
+		{
+			glTexImage2D(targets[i], 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, subImages[i]);
+			delete[] subImages[i];
+		}
+
+		initTexture();
 	}
 
-	initTexture();
+
 }
 
 CubeMapTexture::CubeMapTexture(const std::string& textureBasePath, const std::string& imageExtension)
@@ -69,19 +72,19 @@ CubeMapTexture::CubeMapTexture(const std::string& textureBasePath, const std::st
 	glGenTextures(1, &texObject);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texObject);
 
-	for(int i=0; i < 6; i++)
-	{
-		std::string fileName = textureBasePath + "/" + suffixes[i] + "." + imageExtension;
+	//for(int i=0; i < 6; i++)
+	//{
+	//	std::string fileName = textureBasePath + "/" + suffixes[i] + "." + imageExtension;
 
-		int width = 0, height = 0;
-		unsigned char* imageData =  Util::loadTexture(fileName,width,height);
+	//	int width = 0, height = 0;
+	//	unsigned char* imageData =  Util::loadTexture(fileName,width,height);
 
-		glTexImage2D(targets[i], 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+	//	glTexImage2D(targets[i], 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
 
-		delete[] imageData;
-	}
+	//	delete[] imageData;
+	//}
 
-	initTexture();
+	//initTexture();
 
 }
 

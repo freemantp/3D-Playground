@@ -3,7 +3,6 @@
 #include "GeometryBuffer.h"
 #include  "../scene/Scene.h"
 
-#include <GL/glew.h>
 
 Renderer_ptr Renderer::Create(int width, int height)
 {

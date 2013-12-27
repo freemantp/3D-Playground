@@ -5,9 +5,8 @@
 
 #pragma once
 //#define GLM_SWIZZLE GLM_SWIZZLE_XYZW
-#include <GL/glew.h>
 #include <glm/glm.hpp>
-
+#include <glload/gl_4_3.h>
 
 #include <memory>
 

@@ -68,7 +68,7 @@ void PhongShader::use(const Scene_ptr scene, const glm::mat4& modelTransform)
 
 void PhongShader::setLightAndModel(const Scene_ptr scene)
 {
-	GLuint* shadeFunc;
+	GLuint* shadeFunc = 0;
 
 	switch (shadeModel)
 	{
@@ -78,6 +78,9 @@ void PhongShader::setLightAndModel(const Scene_ptr scene)
 	case GLSLShader::BLINN_PHONG:
 		shadeFunc = &blinnSubroutineIdx;
 		break;
+	default:
+		Error("Unsupported shade func type");
+		return;
 	}
 
 	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, shadeFunc);

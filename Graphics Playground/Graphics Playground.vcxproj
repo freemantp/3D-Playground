@@ -35,7 +35,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -73,8 +73,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\3DEngine\src;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\x64\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\3DEngine\src;D:\Libraries\glsdk_0_5_2\glload\include;D:\Libraries\glsdk_0_5_2\glimg\include;D:\Libraries\glsdk_0_5_2\boost;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\x64\Debug;D:\Libraries\glsdk_0_5_2\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -106,7 +106,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>3DEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glloadD.lib;glimgD.lib;3DEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -170,13 +170,9 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
     <Import Project="..\packages\glm.0.9.4.4\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.4.4\build\native\glm.targets')" />
-    <Import Project="..\packages\glew.redist.1.9.0.1\build\native\glew.redist.targets" Condition="Exists('..\packages\glew.redist.1.9.0.1\build\native\glew.redist.targets')" />
-    <Import Project="..\packages\glew.1.9.0.1\build\native\glew.targets" Condition="Exists('..\packages\glew.1.9.0.1\build\native\glew.targets')" />
-    <Import Project="..\packages\DevIL.redist.1.7.8\build\native\DevIL.redist.targets" Condition="Exists('..\packages\DevIL.redist.1.7.8\build\native\DevIL.redist.targets')" />
-    <Import Project="..\packages\DevIL.1.7.8\build\native\DevIL.targets" Condition="Exists('..\packages\DevIL.1.7.8\build\native\DevIL.targets')" />
-    <Import Project="..\packages\freeglut.redist.2.8.1.15\build\native\freeglut.redist.targets" Condition="Exists('..\packages\freeglut.redist.2.8.1.15\build\native\freeglut.redist.targets')" />
-    <Import Project="..\packages\freeglut.2.8.1.15\build\native\freeglut.targets" Condition="Exists('..\packages\freeglut.2.8.1.15\build\native\freeglut.targets')" />
-    <Import Project="..\packages\tinyxml2.redist.1.0.11.2\build\native\tinyxml2.redist.targets" Condition="Exists('..\packages\tinyxml2.redist.1.0.11.2\build\native\tinyxml2.redist.targets')" />
-    <Import Project="..\packages\tinyxml2.1.0.11.2\build\native\tinyxml2.targets" Condition="Exists('..\packages\tinyxml2.1.0.11.2\build\native\tinyxml2.targets')" />
+    <Import Project="..\packages\freeglut.redist.2.8.1.1\build\native\freeglut.redist.targets" Condition="Exists('..\packages\freeglut.redist.2.8.1.1\build\native\freeglut.redist.targets')" />
+    <Import Project="..\packages\freeglut.2.8.1\build\native\freeglut.targets" Condition="Exists('..\packages\freeglut.2.8.1\build\native\freeglut.targets')" />
+    <Import Project="..\packages\tinyxml2.redist.1.0.12\build\native\tinyxml2.redist.targets" Condition="Exists('..\packages\tinyxml2.redist.1.0.12\build\native\tinyxml2.redist.targets')" />
+    <Import Project="..\packages\tinyxml2.1.0.12\build\native\tinyxml2.targets" Condition="Exists('..\packages\tinyxml2.1.0.12\build\native\tinyxml2.targets')" />
   </ImportGroup>
 </Project>

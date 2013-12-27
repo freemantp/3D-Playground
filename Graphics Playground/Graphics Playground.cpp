@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <glload/gl_load.hpp>
 #include <ctime>
 #include <string>
 
@@ -13,8 +14,6 @@
 #include "GlutInputHandlerFactory.H"
 #include "TimeManager.h"
 
-
-#include  <IL/il.h>
 
 using std::string;
 
@@ -31,10 +30,10 @@ void RenderFunction();
 
 Renderer_ptr renderer;
 //string sceneName = "headScene.xml";
-//string sceneName = "manyPlanes.xml";
+string sceneName = "manyPlanes.xml";
 //string sceneName = "road.xml";
 //string sceneName = "simpleScene.xml";
-string sceneName = "shScene.xml";
+//string sceneName = "shScene.xml";
 //string sceneName = "ogreScene.xml";
 
 int main(int argc, char* argv[])
@@ -61,11 +60,8 @@ int main(int argc, char* argv[])
 
 void initGL()
 {
-	glewExperimental=GL_TRUE;
-	GLenum err=glewInit();
-	glGetError(); //dummy call, see http://www.opengl.org/wiki/OpenGL_Loading_Library#GLEW
-
-	if(err != GLEW_OK)
+	glload::LoadTest tst = glload::LoadFunctions();
+	if (!tst)
 	{
 		//Problem: glewInit failed, something is seriously wrong.
 		std::cout<<"glewInit failed, aborting." << std::endl;
@@ -96,7 +92,6 @@ bool Initialize()
 	
 	InitWindow();
 	initGL();
-	ilInit();
 
 	fprintf( stdout, "INFO: OpenGL Version: %s\n", glGetString(GL_VERSION) );
 
@@ -125,8 +120,6 @@ bool Initialize()
 	}
 
 	return true;
-
-
 }
 
 bool InitializeGlut(int argc, char* argv[])
