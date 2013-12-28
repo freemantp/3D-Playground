@@ -186,7 +186,7 @@ std::unique_ptr<glimg::ImageSet> Util::loadTexture(const std::string& texturePat
 	}
 	catch (glimg::loaders::stb::StbLoaderException)
 	{
-		Error("Loading of " + texturePath + "failed");
+		Error("Loading of " + texturePath + " failed");
 	}
 
 	return imgSet;
