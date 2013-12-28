@@ -44,7 +44,7 @@
   </lights>
 
   <skybox cubeMapFile="cubeMap/stormydays.jpg"/>
-  <!--<skybox cubeMapFolder="cubeMap/test" type="jpg"/>-->
+  <!--<skybox cubeMapFolder="cubeMap/desert" type="jpg"/>-->
 
   <objects>
 

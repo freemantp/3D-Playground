@@ -139,52 +139,19 @@ Mesh_ptr Util::getBox()
 	Box_ptr box = Box_ptr(new Box());
 	box->init();
 
-	box->worldTransform = glm::translate(box->worldTransform,glm::vec3(-0.5,-0.5f,-0.5));
-	
+	box->worldTransform = glm::translate(box->worldTransform, glm::vec3(-0.5, -0.5f, -0.5));
+
 	return box;
 }
 
-bool Util::loadCubeMapTexture(const std::string& texturePath, unsigned char* imgPointers[], int& width, int& height)
+std::unique_ptr<glimg::ImageSet> Util::loadImage(const std::string& texturePath)
 {
-	if(auto imgSet = loadTexture(texturePath))
-	{
-		if (imgSet->GetFaceCount() == 1)
-		{
-			auto image = imgSet->GetImage(0);
-			auto format = image.GetFormat();
-			if (format.Order() == glimg::ORDER_RGBA && format.Components() == glimg::FMT_COLOR_RGBA)
-			{
-				//		//Copy subimage pixel data
-				//		ilCopyPixels(width,0,0, width, height, 1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[0]);
-				//		ilCopyPixels(0,height,0 , width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[1]);
-				//		ilCopyPixels(1*width,height,0, width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[2]);
-				//		ilCopyPixels(2*width,height,0, width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[3]);
-				//		ilCopyPixels(3*width,height,0, width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[4]);
-				//		ilCopyPixels(width,2*height,0, width, height,1 , IL_RGBA, IL_UNSIGNED_BYTE, imgPointers[5]);
-
-				Warn("Noop");
-			}
-			else
-			{
-				Error("Wrong image format");
-			}
-		}
-	}
-	else
-		Error("Could not load texture: " + texturePath);
-
-	return false;
-}
-
-std::unique_ptr<glimg::ImageSet> Util::loadTexture(const std::string& texturePath)
-{
-
 	std::unique_ptr<glimg::ImageSet> imgSet;
 	try
 	{
 		imgSet.reset(glimg::loaders::stb::LoadFromFile(texturePath));
 	}
-	catch (glimg::loaders::stb::StbLoaderException)
+	catch (glimg::loaders::stb::StbLoaderException &e)
 	{
 		Error("Loading of " + texturePath + " failed");
 	}
@@ -215,8 +182,6 @@ void Util::beep()
 {
 	Beep( 440, 300 );
 }
-
-
 
 // trim from start
 static inline std::string &ltrim(std::string &s) {

@@ -25,8 +25,7 @@ public:
 	static void printUniforms(const ShaderBase* shader);
 	static Mesh_ptr loadModel(const std::string& path);
 
-	static std::unique_ptr<glimg::ImageSet> loadTexture(const std::string& texturePath);
-	static bool loadCubeMapTexture(const std::string& texturePath, unsigned char* imgPointers[], int& width, int& height);
+	static std::unique_ptr<glimg::ImageSet> loadImage(const std::string& texturePath);
 	static std::string Util::extractBaseFolder(std::string path);
 	static bool fileExists (const std::string& name);
 

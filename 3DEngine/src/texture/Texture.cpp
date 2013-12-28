@@ -13,7 +13,7 @@ Texture_ptr Texture::Create(const std::string& texturePath)
 
 Texture::Texture(const std::string& texturePath)
 {
-	if (std::unique_ptr<glimg::ImageSet> imageSet = Util::loadTexture(texturePath))
+	if (std::unique_ptr<glimg::ImageSet> imageSet = Util::loadImage(texturePath))
 	{
 		try
 		{

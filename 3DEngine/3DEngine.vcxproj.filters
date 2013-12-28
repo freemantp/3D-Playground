@@ -220,9 +220,7 @@
     <ClInclude Include="src\math\HaltonSphere.h">
       <Filter>Source Files\math</Filter>
     </ClInclude>
-    <ClInclude Include="src\config.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
+    <ClInclude Include="src\common.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
