@@ -18,16 +18,16 @@ public:
 	Shape();
 	virtual ~Shape();
 
-	virtual void init() = 0;
+	virtual void Init() = 0;
 	
-	virtual void setShader(ShaderBase_ptr shader);
+	virtual void SetShader(ShaderBase_ptr shader);
 
-	ShaderBase_ptr getShader()
+	ShaderBase_ptr GetShader()
 	{
 		return shaderProgram;
 	}
 
-	void setWorldTransform(glm::mat4 transf)
+	void SetWorldTransform(glm::mat4 transf)
 	{
 		worldTransform = transf;
 	}

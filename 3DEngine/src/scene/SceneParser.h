@@ -21,22 +21,22 @@ public:
 	SceneParser(InputHandlerFactory& factory);
 
 	bool parse(const char* xmlDocument);
-	Scene_ptr getScene();
+	Scene_ptr GetScene();
 
 protected:
 
 	
-	inline bool getIntAttrib(XMLElement* element, const char* attribName, int& value);
-	inline bool getFloatAttrib(XMLElement* element, const char* attribName, float& value);
-	bool getVector3(XMLElement* element, glm::vec3& vec);
-	bool getColorVector3(XMLElement* element, glm::vec3& vec);
+	inline bool GetIntAttrib(XMLElement* element, const char* attribName, int& value);
+	inline bool GetFloatAttrib(XMLElement* element, const char* attribName, float& value);
+	bool GetVector3(XMLElement* element, glm::vec3& vec);
+	bool GetColorVector3(XMLElement* element, glm::vec3& vec);
 
-	bool parseMaterials(XMLElement* materialElement);
-	bool parseObjects(XMLElement* materialElement);
-	bool parseSkybox(XMLElement* skybox);
-	bool parseCamera(Camera_ptr& cam, XMLElement* materialElement);
-	bool parseLights(XMLElement* materialElement);
-	bool parseTransforms(glm::mat4& tMatrix, XMLElement* transformElem);
+	bool ParseMaterials(XMLElement* materialElement);
+	bool ParseObjects(XMLElement* materialElement);
+	bool ParseSkybox(XMLElement* skybox);
+	bool ParseCamera(Camera_ptr& cam, XMLElement* materialElement);
+	bool ParseLights(XMLElement* materialElement);
+	bool ParseTransforms(glm::mat4& tMatrix, XMLElement* transformElem);
 
 	std::map<std::string, ShaderBase_ptr> shaders;
 	Scene_ptr generatedScene;

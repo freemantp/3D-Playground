@@ -36,7 +36,7 @@ SceneParser::SceneParser(InputHandlerFactory& factory)
 
 }
 
-Scene_ptr SceneParser::getScene()
+Scene_ptr SceneParser::GetScene()
 {
 	return generatedScene;
 }
@@ -61,7 +61,7 @@ bool SceneParser::parse(const char* xmlDocument)
 			if(cameraElement = root->FirstChildElement("camera"))
 			{
 				Camera_ptr cam;
-				parseOk &= parseCamera(cam,cameraElement);
+				parseOk &= ParseCamera(cam,cameraElement);
 				try
 				{
 					generatedScene = Scene::Create(factory,cam);
@@ -82,7 +82,7 @@ bool SceneParser::parse(const char* xmlDocument)
 			XMLElement* materialsElement = root->FirstChildElement("materials");
 			if( cameraElement != nullptr) 
 			{
-				if( ! parseMaterials(materialsElement) )
+				if( ! ParseMaterials(materialsElement) )
 					return false;
 			}
 
@@ -90,7 +90,7 @@ bool SceneParser::parse(const char* xmlDocument)
 			XMLElement* lightsElement = root->FirstChildElement("lights");
 			if( lightsElement != nullptr)
 			{
-				if( ! parseLights(lightsElement) )
+				if( ! ParseLights(lightsElement) )
 					return false;
 			}
 
@@ -98,14 +98,14 @@ bool SceneParser::parse(const char* xmlDocument)
 			XMLElement* skyboxElement = root->FirstChildElement("skybox");
 			if( skyboxElement != nullptr)
 			{
-				if( ! parseSkybox(skyboxElement) )
+				if( ! ParseSkybox(skyboxElement) )
 					return false;
 			}
 
 			//Objects
 			if( XMLElement* objectsElement = root->FirstChildElement("objects"))
 			{
-				if( ! parseObjects(objectsElement) )
+				if( ! ParseObjects(objectsElement) )
 					return false;
 			}
 
@@ -125,7 +125,7 @@ bool SceneParser::parse(const char* xmlDocument)
 	return parseOk;
 }
 
-bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
+bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 {
 	XMLElement* materialElement = materialsGroupElement->FirstChildElement("material");
 
@@ -152,14 +152,14 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 				{
 					string bumpMapFile(subElem->Attribute("file"));
 					string type(subElem->Attribute("type"));
-					pbs->setBumpMap(bumpMapFile, type == "normal");
+					pbs->SetBumpMap(bumpMapFile, type == "normal");
 				}
 
 				//specular mapping				
 				if(subElem = materialElement->FirstChildElement("specularMap"))
 				{
 					string specMapFile(subElem->Attribute("file"));
-					pbs->setSpecularMap(specMapFile);
+					pbs->SetSpecularMap(specMapFile);
 				}
 				ps = pbs;
 			}
@@ -170,16 +170,16 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 			
 			//Load common phong attributes
 			if ( subElem = materialElement->FirstChildElement("ambientReflect") )
-				getColorVector3(subElem,ps->ambientReflection);
+				GetColorVector3(subElem,ps->ambientReflection);
 
 			if ( subElem = materialElement->FirstChildElement("diffuseReflect") )
-				getColorVector3(subElem,ps->diffuseReflection);
+				GetColorVector3(subElem,ps->diffuseReflection);
 
 			if ( subElem = materialElement->FirstChildElement("glossyReflect"))
-				getColorVector3(subElem,ps->glossyReflection);
+				GetColorVector3(subElem,ps->glossyReflection);
 
 			if ( subElem = materialElement->FirstChildElement("shininess") )
-				getIntAttrib(subElem,"value",ps->shininess);
+				GetIntAttrib(subElem,"value",ps->shininess);
 
 			shader = ps;
 		}
@@ -193,7 +193,7 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 			
 			XMLElement* subElem;
 			if ( subElem = materialElement->FirstChildElement("color") )
-				getColorVector3(subElem,cshader->color);
+				GetColorVector3(subElem,cshader->color);
 
 			shader = cshader;
 		}
@@ -219,7 +219,7 @@ bool SceneParser::parseMaterials(XMLElement* materialsGroupElement)
 	return true;
 }
 
-bool SceneParser::parseSkybox(XMLElement* skyboxElem)
+bool SceneParser::ParseSkybox(XMLElement* skyboxElem)
 {
 	CubeMapTexture_ptr texture;
 
@@ -241,13 +241,13 @@ bool SceneParser::parseSkybox(XMLElement* skyboxElem)
 	}
 
 	Skybox_ptr sb = Skybox_ptr(new Skybox(texture));
-	sb->init();
-	generatedScene->setSkybox(sb);
+	sb->Init();
+	generatedScene->SetSkybox(sb);
 
 	return true;
 }
 
-bool SceneParser::parseObjects(XMLElement* objects)
+bool SceneParser::ParseObjects(XMLElement* objects)
 {
 	//Parse children of 'objects'
 	if(XMLElement* objeElem = objects->FirstChildElement())
@@ -260,7 +260,7 @@ bool SceneParser::parseObjects(XMLElement* objects)
 			if(type == "mesh")
 			{
 				string file = objeElem->Attribute("file");
-				shape = Util::loadModel("../data/models/"+file);
+				shape = Util::LoadModel("../data/models/"+file);
 				if(!shape)
 					return false;
 			}
@@ -274,19 +274,19 @@ bool SceneParser::parseObjects(XMLElement* objects)
 				continue;
 			}
 
-			shape->init();
+			shape->Init();
 
 			//See if a material is specified
 			if(const char* materialName = objeElem->Attribute("material"))
 			{
-				if(shape->getShader())
+				if(shape->GetShader())
 				{
 					Warn("The shape already has a material assigned, ignoring specified material");	
 				}
 				else
 				{
 					if(ShaderBase_ptr material = shaders[materialName])		
-						shape->setShader(material);
+						shape->SetShader(material);
 					else
 						Warn("The specified material " + string(materialName) +" is not defined");	
 				}
@@ -296,11 +296,11 @@ bool SceneParser::parseObjects(XMLElement* objects)
 			if(XMLElement* transformsElem = objeElem->FirstChildElement("transform"))
 			{
 				mat4 tMatrix;
-				parseTransforms(tMatrix,transformsElem);
+				ParseTransforms(tMatrix,transformsElem);
 				shape->worldTransform = tMatrix;
 			}
 
-			generatedScene->addShape(shape);		
+			generatedScene->AddShape(shape);		
 		} 
 		while (objeElem = objeElem->NextSiblingElement());
 	}
@@ -308,7 +308,7 @@ bool SceneParser::parseObjects(XMLElement* objects)
 	return true;
 }
 
-bool SceneParser::parseTransforms(mat4& tMatrix, tinyxml2::XMLElement* transformElem)
+bool SceneParser::ParseTransforms(mat4& tMatrix, tinyxml2::XMLElement* transformElem)
 {
 	
 	bool success = true;
@@ -321,7 +321,7 @@ bool SceneParser::parseTransforms(mat4& tMatrix, tinyxml2::XMLElement* transform
 		if(type == "translate")
 		{
 			vec3 transl;
-			if( getVector3(transform,transl) )
+			if( GetVector3(transform,transl) )
 			{
 				tMatrix = glm::translate(tMatrix,transl);
 			}
@@ -335,7 +335,7 @@ bool SceneParser::parseTransforms(mat4& tMatrix, tinyxml2::XMLElement* transform
 		{
 			vec3 axis;
 			float angle;
-			if( getVector3(transform,axis) && getFloatAttrib(transform, "angle",angle) )
+			if( GetVector3(transform,axis) && GetFloatAttrib(transform, "angle",angle) )
 			{
 				tMatrix = glm::rotate(tMatrix,angle,axis);
 			}
@@ -348,7 +348,7 @@ bool SceneParser::parseTransforms(mat4& tMatrix, tinyxml2::XMLElement* transform
 		else if(type == "scale")
 		{
 			vec3 factors;
-			if( getVector3(transform,factors) )
+			if( GetVector3(transform,factors) )
 			{
 				tMatrix = glm::scale(tMatrix,factors);
 			}
@@ -366,7 +366,7 @@ bool SceneParser::parseTransforms(mat4& tMatrix, tinyxml2::XMLElement* transform
 
 }
 
-bool SceneParser::parseCamera(Camera_ptr& cam, tinyxml2::XMLElement* camElement)
+bool SceneParser::ParseCamera(Camera_ptr& cam, tinyxml2::XMLElement* camElement)
 {
 	bool success = true;
 	string type = camElement->Attribute("type");
@@ -375,7 +375,7 @@ bool SceneParser::parseCamera(Camera_ptr& cam, tinyxml2::XMLElement* camElement)
 	{
 		float fov;
 
-		if( ! ( success &= getFloatAttrib(camElement,"fov",fov) )  )
+		if( ! ( success &= GetFloatAttrib(camElement,"fov",fov) )  )
 			return false;
 
 		cam.reset(new PerspectiveCamera(fov));
@@ -387,9 +387,9 @@ bool SceneParser::parseCamera(Camera_ptr& cam, tinyxml2::XMLElement* camElement)
 	}
 
 	vec3 pos, target, up;
-	success &= getVector3( camElement->FirstChildElement("position"),pos);
-	success &= getVector3( camElement->FirstChildElement("target"),target);
-	success &= getVector3( camElement->FirstChildElement("up"),up);
+	success &= GetVector3( camElement->FirstChildElement("position"),pos);
+	success &= GetVector3( camElement->FirstChildElement("target"),target);
+	success &= GetVector3( camElement->FirstChildElement("up"),up);
 
 	cam->SetPosition(pos);
 	cam->SetTarget(target);
@@ -399,7 +399,7 @@ bool SceneParser::parseCamera(Camera_ptr& cam, tinyxml2::XMLElement* camElement)
 
 }
 
-bool SceneParser::parseLights(tinyxml2::XMLElement* lightsGroupElement)
+bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 {
 	XMLElement* lightElem = lightsGroupElement->FirstChildElement("light");
 
@@ -412,13 +412,13 @@ bool SceneParser::parseLights(tinyxml2::XMLElement* lightsGroupElement)
 			PointLight_ptr plight(new PointLight());
 			vec3 pos, color;
 
-			getVector3(lightElem->FirstChildElement("position"),pos);
-			getColorVector3(lightElem->FirstChildElement("color"),color);
+			GetVector3(lightElem->FirstChildElement("position"),pos);
+			GetColorVector3(lightElem->FirstChildElement("color"),color);
 			
 			plight->SetPosition(vec4(pos,1.0));
 			plight->SetColor(color);
 
-			generatedScene->addLight(plight);
+			generatedScene->AddLight(plight);
 			
 		}
 		else if(lightType == "spot")
@@ -426,19 +426,19 @@ bool SceneParser::parseLights(tinyxml2::XMLElement* lightsGroupElement)
 			
 			vec3 pos, color, direction;
 			float cutoff, exponent = 5;
-			getVector3(lightElem->FirstChildElement("position"),pos);
-			getVector3(lightElem->FirstChildElement("direction"),direction);
-			getColorVector3(lightElem->FirstChildElement("color"),color);
+			GetVector3(lightElem->FirstChildElement("position"),pos);
+			GetVector3(lightElem->FirstChildElement("direction"),direction);
+			GetColorVector3(lightElem->FirstChildElement("color"),color);
 
-			getFloatAttrib(lightElem,"cutoff",cutoff);
-			getFloatAttrib(lightElem,"exponent",exponent);
+			GetFloatAttrib(lightElem,"cutoff",cutoff);
+			GetFloatAttrib(lightElem,"exponent",exponent);
 
 			SpotLight_ptr slight(new SpotLight(direction,cutoff,exponent));
 
 			slight->SetPosition(vec4(pos,1.0));
 			slight->SetColor(color);
 
-			generatedScene->addLight(slight);
+			generatedScene->AddLight(slight);
 		}
 		else
 		{
@@ -451,35 +451,35 @@ bool SceneParser::parseLights(tinyxml2::XMLElement* lightsGroupElement)
 	return true;
 }
 
-bool SceneParser::getVector3(XMLElement* element, vec3& vec)
+bool SceneParser::GetVector3(XMLElement* element, vec3& vec)
 {
 	if(element == nullptr)
 		return false;
 	
 	bool success = true;
 
-	success &= getFloatAttrib(element,"x",vec.x);
-	success &= getFloatAttrib(element,"y",vec.y);
-	success &= getFloatAttrib(element,"z",vec.z);
+	success &= GetFloatAttrib(element,"x",vec.x);
+	success &= GetFloatAttrib(element,"y",vec.y);
+	success &= GetFloatAttrib(element,"z",vec.z);
 
 	return success;
 }
 
-bool SceneParser::getColorVector3(XMLElement* element, vec3& vec)
+bool SceneParser::GetColorVector3(XMLElement* element, vec3& vec)
 {
 	if(element == nullptr)
 		return false;
 	
 	bool success = true;
 
-	success &= getFloatAttrib(element,"r",vec.x);
-	success &= getFloatAttrib(element,"g",vec.y);
-	success &= getFloatAttrib(element,"b",vec.z);
+	success &= GetFloatAttrib(element,"r",vec.x);
+	success &= GetFloatAttrib(element,"g",vec.y);
+	success &= GetFloatAttrib(element,"b",vec.z);
 
 	return success;
 }
 
-bool SceneParser::getFloatAttrib(XMLElement* element, const char* attribName, float& value)
+bool SceneParser::GetFloatAttrib(XMLElement* element, const char* attribName, float& value)
 {
 	if(element == nullptr)
 		return false;
@@ -488,7 +488,7 @@ bool SceneParser::getFloatAttrib(XMLElement* element, const char* attribName, fl
 	return !(isstr >> value).fail();
 }
 
-bool SceneParser::getIntAttrib(XMLElement* element, const char* attribName, int& value)
+bool SceneParser::GetIntAttrib(XMLElement* element, const char* attribName, int& value)
 {
 	if(element == nullptr)
 		return false;

@@ -20,36 +20,36 @@ class ObjLoader
 {
 public:
 
-	MeshRaw_ptr loadObjFile(const std::string& path);
+	MeshRaw_ptr LoadObjFile(const std::string& path);
 
-	bool computeNormals();
-	bool computeTangents();
+	bool ComputeNormals();
+	bool ComputeTangents();
 	
-	int getNumVertices() { return (int)vertices.size();};
-	int getNumNormals() { return (int)normals.size();};
-	int getNumTangents() { return (int)tangents.size();};
-	int getNumTexCoords() { return (int)texCoords.size();};
+	int GetNumVertices() { return (int)vertices.size();};
+	int GetNumNormals() { return (int)normals.size();};
+	int GetNumTangents() { return (int)tangents.size();};
+	int GetNumTexCoords() { return (int)texCoords.size();};
 
-	bool hasNormals();
-	bool hasTangents();
-	bool hasTexCoords();
+	bool HasNormals();
+	bool HasTangents();
+	bool HasTexCoords();
 
 protected:
-	MeshRaw_ptr loadObj(std::istream& istr);
-	bool loadMtllib(std::istream& istr, MeshRaw_ptr newMesh);
+	MeshRaw_ptr LoadObj(std::istream& istr);
+	bool LoadMtllib(std::istream& istr, MeshRaw_ptr newMesh);
 
 private:
 
-	void getIndexArray  (std::vector<int>& indicesArray);
-	void getVertexArray  (std::vector<float>& vertexArray);
-	void getNormalArray  (std::vector<float>& normalArray);
-	void getTangentArray  (std::vector<float>& tangentArray);
-	void getTexCoordArray(std::vector<float>& texCoordArray);
+	void GetIndexArray  (std::vector<int>& indicesArray);
+	void GetVertexArray  (std::vector<float>& vertexArray);
+	void GetNormalArray  (std::vector<float>& normalArray);
+	void GetTangentArray  (std::vector<float>& tangentArray);
+	void GetTexCoordArray(std::vector<float>& texCoordArray);
 
-	void processVertex(const ivec3& v, bool copyNormals, bool copyTexCoords);
+	void ProcessVertex(const ivec3& v, bool copyNormals, bool copyTexCoords);
 
 	/// parses a face string and stores indices in an ivec x=vertex, y=texCoord, z=normal 
-	void parseIdx(std::string& s,ivec3& indices);
+	void ParseIdx(std::string& s,ivec3& indices);
 
 	struct Tri {
 

@@ -23,9 +23,9 @@ CubeMapTexture::CubeMapTexture(const std::string& cubeMapTexture)
 	*/
 
 	CubeMapTextureRawData cmtrd;
-	if (loadCubeMapFromFile(cubeMapTexture,cmtrd))
+	if (LoadCubemapImages(cubeMapTexture,cmtrd))
 	{
-		setTextureImages(cmtrd);
+		LoadCubeTextures(cmtrd);
 		for (int i = 0; i < 6; i++)
 		{
 			delete[] cmtrd.imageData[i];
@@ -45,7 +45,7 @@ CubeMapTexture::CubeMapTexture(const std::string& textureBasePath, const std::st
 	{
 		std::string fileName = textureBasePath + "/" + suffixes[i] + "." + imageExtension;
 
-		if (images[i] = Util::loadImage(fileName))
+		if (images[i] = Util::LoadImage(fileName))
 		{
 			auto img = images[i]->GetImage(0);
 			auto dim = img.GetDimensions();
@@ -60,10 +60,10 @@ CubeMapTexture::CubeMapTexture(const std::string& textureBasePath, const std::st
 			Error("Could not load texture: " + fileName);
 	}
 
-	setTextureImages(cmtrd);
+	LoadCubeTextures(cmtrd);
 }
 
-bool CubeMapTexture::setTextureImages(const CubeMapTextureRawData& cubemaps)
+void CubeMapTexture::LoadCubeTextures(const CubeMapTextureRawData& cubemaps)
 {
 	GLuint targets[] = {
 		GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
@@ -85,15 +85,12 @@ bool CubeMapTexture::setTextureImages(const CubeMapTextureRawData& cubemaps)
 		glTexImage2D(targets[i], 0, format, cubemaps.width, cubemaps.height, 0, format, GL_UNSIGNED_BYTE, cubemaps.imageData[i]);
 	}
 
-	initTexture();
-
-
-	return true;
+	InitTextureParams();
 }
 
-bool CubeMapTexture::loadCubeMapFromFile(const std::string& texturePath, CubeMapTextureRawData& cubeMap)
+bool CubeMapTexture::LoadCubemapImages(const std::string& texturePath, CubeMapTextureRawData& cubeMap)
 {
-	if (auto imgSet = Util::loadImage(texturePath))
+	if (auto imgSet = Util::LoadImage(texturePath))
 	{
 		if (imgSet->GetFaceCount() == 1)
 		{
@@ -176,7 +173,7 @@ bool CubeMapTexture::loadCubeMapFromFile(const std::string& texturePath, CubeMap
 	return false;
 }
 
-void CubeMapTexture::initTexture()
+void CubeMapTexture::InitTextureParams()
 {
 	glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -191,7 +188,7 @@ CubeMapTexture::~CubeMapTexture()
 }
 
 
-void CubeMapTexture::bindTexture(int textureUnit)
+void CubeMapTexture::BindTexture(int textureUnit)
 {
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texObject);

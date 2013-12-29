@@ -58,11 +58,11 @@ GeometryBuffer::~GeometryBuffer()
  {	 
 	 glBindFramebuffer(GL_FRAMEBUFFER, m_DeferredFboHandle);
 	 //glm::mat4 m;
-	 //m_Shader->use(scene, m);
+	 //m_Shader->Use(scene, m);
  }
 
  void GeometryBuffer::EndGBufferComp()
  {
-	 m_Shader->unuse();
+	 m_Shader->UnUse();
 	 glBindFramebuffer(GL_FRAMEBUFFER, 0);
  }

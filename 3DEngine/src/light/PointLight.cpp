@@ -12,12 +12,12 @@ using glm::vec3;
 PointLight::PointLight(void)
 	: Light()
 {
-	visMesh = Util::getBox();
-	visMesh->init();
+	visMesh = Util::GetBox();
+	visMesh->Init();
 
 	visShader.reset(new ConstShader(color));
 
-	visMesh->setShader(visShader);
+	visMesh->SetShader(visShader);
 }
 
 

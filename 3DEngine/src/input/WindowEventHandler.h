@@ -11,14 +11,14 @@ public:
 	static WindowEventHandler& getInstance();
 	static void resize(int width, int height);
 
-	void addViewportObserver(ViewportObserver_ptr observer);
+	void AddViewportObserver(ViewportObserver_ptr observer);
 
 
 protected:
 
 	WindowEventHandler();
 
-	void handleResize(int width, int height);
+	void HandleResize(int width, int height);
 
 	std::vector<ViewportObserver_ptr> viewportObservers;
 	static WindowEventHandler instance;

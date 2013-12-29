@@ -20,7 +20,7 @@ Mesh::Mesh()
 	, texCoordsSet(false)
 	, Shape() 
 {
-	init();
+	Init();
 }
 
 Mesh::Mesh(MeshRaw_ptr rawMesh)
@@ -32,16 +32,16 @@ Mesh::Mesh(MeshRaw_ptr rawMesh)
 	, Shape() 
 {
 
-	init();
-	initFromRawMesh(rawMesh);
+	Init();
+	InitFromRawMesh(rawMesh);
 	
 }
 
-void Mesh::initFromRawMesh(MeshRaw_ptr rawMesh)
+void Mesh::InitFromRawMesh(MeshRaw_ptr rawMesh)
 {
 	if(rawMesh)
 	{
-		setPositions(rawMesh->vertices,rawMesh->faces, &rawMesh->groupRanges);
+		SetPositions(rawMesh->vertices,rawMesh->faces, &rawMesh->groupRanges);
 
 		// TODO: Refactor this (ugly, inefficient hack)
 		for(auto matName : rawMesh->groupMaterial)
@@ -65,16 +65,16 @@ void Mesh::initFromRawMesh(MeshRaw_ptr rawMesh)
 
 		}
 
-		if( rawMesh->hasTexCoords() )
-			setTextureCoordinates(rawMesh->texCoords);
+		if( rawMesh->HasTexCoords() )
+			SetTextureCoordinates(rawMesh->texCoords);
 	
-		if( rawMesh->hasNormals() )
-			setNormals(rawMesh->normals);
+		if( rawMesh->HasNormals() )
+			SetNormals(rawMesh->normals);
 		else	
 			Warn("Normal data not present!");		
 
-		if ( rawMesh->hasTangents() ) 
-			setTangents(rawMesh->tangents);
+		if ( rawMesh->HasTangents() ) 
+			SetTangents(rawMesh->tangents);
 		else
 			Warn("Tangent data not present!");
 	}
@@ -87,7 +87,7 @@ Mesh::~Mesh()
 	delete[] vAttribData;
 }
 
-bool Mesh::mapVertexAttribute(VertexAttribute attrib, GLuint channel)
+bool Mesh::MapVertexAttribute(VertexAttribute attrib, GLuint channel)
 {
 	if ( attrib == Index) //Indices are NOT a vertex attribute!
 		return false;
@@ -122,7 +122,7 @@ void Mesh::setAttribPointer(const VertexAttribute& attrib)
 	glVertexAttribPointer( channel, size,  GL_FLOAT, GL_FALSE, 0, (GLubyte *)nullptr );
 }
 
-bool Mesh::setPositions(const std::vector<float>& positions, const std::vector<int>& indices, vector<std::pair<int,int> > *indexGroups)
+bool Mesh::SetPositions(const std::vector<float>& positions, const std::vector<int>& indices, IntPairVector *indexGroups)
 {
 	bool success = true;
 
@@ -191,7 +191,7 @@ bool Mesh::setPositions(const std::vector<float>& positions, const std::vector<i
 	return success;
 }
 
-bool Mesh::setNormals(const std::vector<float>& normals)
+bool Mesh::SetNormals(const std::vector<float>& normals)
 {
 	glBindVertexArray(vaoHandle);
 	bool success = false;
@@ -218,7 +218,7 @@ bool Mesh::setNormals(const std::vector<float>& normals)
 	return success;
 }
 
-bool Mesh::setTangents(const std::vector<float>& tangents)
+bool Mesh::SetTangents(const std::vector<float>& tangents)
 {	
 	glBindVertexArray(vaoHandle);
 	bool success = false;
@@ -245,7 +245,7 @@ bool Mesh::setTangents(const std::vector<float>& tangents)
 	return success;
 }
 
-bool Mesh::setTextureCoordinates(const std::vector<float>& texCoords)
+bool Mesh::SetTextureCoordinates(const std::vector<float>& texCoords)
 {
 	glBindVertexArray(vaoHandle);
 	glGenBuffers(1, &bufferObjects[TextureCoord]);
@@ -273,7 +273,7 @@ bool Mesh::setTextureCoordinates(const std::vector<float>& texCoords)
 	return success;
 }
 
-bool Mesh::setColors(const std::vector<float>& colors)
+bool Mesh::SetColors(const std::vector<float>& colors)
 {
 	glBindVertexArray(vaoHandle);
 	bool success = false;
@@ -300,7 +300,7 @@ bool Mesh::setColors(const std::vector<float>& colors)
 	return success;
 }
 
-void Mesh::init()
+void Mesh::Init()
 {
 	if( ! initialized )
 	{
@@ -330,49 +330,49 @@ void Mesh::init()
 		vAttribData[Color].channel = 4;
 		vAttribData[Color].size = 3;
 
-		vAttribData[Index].channel = 999; //unused
+		vAttribData[Index].channel = 999; //UnUsed
 		vAttribData[Index].size = 3;
 
 		initialized = true;
 	}
 }
 
-void Mesh::setShader(ShaderBase_ptr shader)
+void Mesh::SetShader(ShaderBase_ptr shader)
 {
-	Shape::setShader(shader);
+	Shape::SetShader(shader);
 
-	GLint channel = shader->getAttributeChannel(GLSLShader::Position);
+	GLint channel = shader->GetAttributeChannel(GLSLShader::Position);
 	if(channel >= 0)
-		mapVertexAttribute(GLSLShader::Position, channel );
+		MapVertexAttribute(GLSLShader::Position, channel );
 
-	channel = shader->getAttributeChannel(GLSLShader::Normal);
+	channel = shader->GetAttributeChannel(GLSLShader::Normal);
 	if(channel >= 0) {
-		mapVertexAttribute(GLSLShader::Normal, channel );
+		MapVertexAttribute(GLSLShader::Normal, channel );
 		if(!normalsSet)
 			Warn("Shader uses normal vertex attribute, but no normals were set");
 	}
 
-	channel = shader->getAttributeChannel(GLSLShader::Tangent);
+	channel = shader->GetAttributeChannel(GLSLShader::Tangent);
 	if(channel >= 0) 
 	{
-		mapVertexAttribute(GLSLShader::Tangent, channel );
+		MapVertexAttribute(GLSLShader::Tangent, channel );
 		if(!tangentsSet)
 			Warn("Shader uses tangent vertex attribute, but no tangents were set");
 	}
 
 
-	channel = shader->getAttributeChannel(GLSLShader::Color);
+	channel = shader->GetAttributeChannel(GLSLShader::Color);
 	if(channel >= 0)
 	{
-		mapVertexAttribute(GLSLShader::Color, channel );
+		MapVertexAttribute(GLSLShader::Color, channel );
 		if(!colorsSet)
 			Warn("Shader uses color vertex attribute, but no colors were set");
 	}
 
-	channel = shader->getAttributeChannel(GLSLShader::TextureCoord);
+	channel = shader->GetAttributeChannel(GLSLShader::TextureCoord);
 	if(channel >= 0)
 	{
-		mapVertexAttribute(GLSLShader::TextureCoord, channel );
+		MapVertexAttribute(GLSLShader::TextureCoord, channel );
 		if(!texCoordsSet)
 			Warn("Shader uses tex coord vertex attribute, but no tex coords were set");
 	}
@@ -403,7 +403,7 @@ void Mesh::Render(const Scene_ptr scene) const
 					}
 				}	
 			}
-			shaderProgram->use(scene, worldTransform);
+			shaderProgram->Use(scene, worldTransform);
 		}
 
 		//Bind i-th index buffer
@@ -418,7 +418,7 @@ void Mesh::Render(const Scene_ptr scene) const
 
 	if(shaderProgram)
 	{
-		shaderProgram->unuse();
+		shaderProgram->UnUse();
 	}
 }
 

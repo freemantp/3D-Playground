@@ -23,7 +23,7 @@ public:
 
 	virtual ~PhongShader();
 
-	virtual void use(const Scene_ptr scene, const glm::mat4& modelTransform);
+	virtual void Use(const Scene_ptr scene, const glm::mat4& modelTransform);
 
 	vec3 ambientReflection;
 	vec3 diffuseReflection;
@@ -37,9 +37,9 @@ protected:
 	PhongShader();
 	PhongShader(const string& shaderName);
 
-	void setLightAndModel(const Scene_ptr scene);
+	void SetLightAndModel(const Scene_ptr scene);
 
-	virtual void init();
+	virtual void Init();
 
 	GLuint blinnSubroutineIdx;
 	GLuint phongSubroutineIdx;

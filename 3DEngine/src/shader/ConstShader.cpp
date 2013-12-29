@@ -12,9 +12,9 @@ ConstShader::ConstShader(glm::vec3& color)
 }
 
 
-void ConstShader::use(const Scene_ptr scene, const glm::mat4& modelTransform)
+void ConstShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {	
-	ShaderBase::use(scene,modelTransform);
+	ShaderBase::Use(scene,modelTransform);
 	
-	setUniform("Color", color);
+	SetUniform("Color", color);
 }

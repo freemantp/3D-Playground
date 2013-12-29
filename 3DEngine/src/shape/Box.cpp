@@ -2,9 +2,9 @@
 #include "Box.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-void Box::init() {
+void Box::Init() {
 
-	Mesh::init();
+	Mesh::Init();
 
 	enum {Position, Color, Index};
 
@@ -124,9 +124,9 @@ void Box::init() {
 	std::vector<float> tex(textureData, textureData+24*2);
 	std::vector<int> idx(indexData, indexData+36);
 
-	setPositions(pos,idx);
-	setNormals(normal);
-	setTextureCoordinates(tex);
+	SetPositions(pos,idx);
+	SetNormals(normal);
+	SetTextureCoordinates(tex);
 
 
 }

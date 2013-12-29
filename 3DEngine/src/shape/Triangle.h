@@ -10,6 +10,6 @@ public:
 	Triangle();
 	virtual ~Triangle();
 
-	virtual void init();
+	virtual void Init();
 };
 

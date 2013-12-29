@@ -11,9 +11,9 @@ Triangle::~Triangle()
 {
 }
 
-void Triangle::init()  {
+void Triangle::Init()  {
 
-	Mesh::init();
+	Mesh::Init();
 
 	float positionData[] = {
         -0.8f, -0.8f, 0.0f,
@@ -38,8 +38,8 @@ void Triangle::init()  {
 	std::vector<int> idx(indices, indices+3);
 
 	
-	setPositions(pos,idx);
-	setNormals(norm);
-	setColors(col);
+	SetPositions(pos,idx);
+	SetNormals(norm);
+	SetColors(col);
 
 }

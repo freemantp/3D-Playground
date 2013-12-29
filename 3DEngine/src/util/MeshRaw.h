@@ -50,9 +50,9 @@ public:
 
 	typedef std::pair<int,int> Range;
 
-	bool hasNormals();
-	bool hasTangents();
-	bool hasTexCoords();
+	bool HasNormals();
+	bool HasTangents();
+	bool HasTexCoords();
 
 	void addGroup(string& name, string& material, Range idxRange);
 

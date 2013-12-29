@@ -11,7 +11,7 @@ Skybox::Skybox(CubeMapTexture_ptr texture)
 {
 	worldTransform = glm::scale(glm::mat4(1.0),glm::vec3(50,50,50));
 	SkyboxShader_ptr shader(new SkyboxShader(texture));
-	setShader(shader);
+	SetShader(shader);
 }
 
 Skybox::~Skybox()
@@ -19,7 +19,7 @@ Skybox::~Skybox()
 	
 }
 
-void Skybox::setShader(ShaderBase_ptr shader)
+void Skybox::SetShader(ShaderBase_ptr shader)
 {
-	Box::setShader(shader);
+	Box::SetShader(shader);
 }

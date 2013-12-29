@@ -13,27 +13,27 @@ public:
 
 	virtual ~ShaderBase();
 
-	GLint getAttributeChannel(GLSLShader::VertexAttribute attribute);
+	GLint GetAttributeChannel(GLSLShader::VertexAttribute attribute);
 
-	virtual void use(const Scene_ptr cam, const glm::mat4& modelTransform);
-	const string& getName() const;
+	virtual void Use(const Scene_ptr cam, const glm::mat4& modelTransform);
+	const string& GetName() const;
 	
 
 protected:
 
 	ShaderBase(const string& shaderName);
 
-	virtual void init();
+	virtual void Init();
 
-	bool loadShader(const string& vertexSource, const string& fragmentSource);
-	bool loadShader(const string& shaderName);	
+	bool LoadShader(const string& vertexSource, const string& fragmentSource);
+	bool LoadShader(const string& shaderName);	
 
-	void updateTransforms(const Camera_ptr cam, const glm::mat4& modelTransform);
+	void UpdateTransforms(const Camera_ptr cam, const glm::mat4& modelTransform);
 
-	GLint getCurentProgram();
+	GLint GetCurentProgram();
 	
-	void beforeUniformSet();
-	void afterUniformSet();
+	void BeforeUniformSet();
+	void AfterUniformSet();
 
 	bool hasMVP, hasNM, hasMVM, hasVM, hasMM, hasPM;
 

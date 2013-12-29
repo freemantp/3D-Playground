@@ -14,7 +14,7 @@ using glm::vec3;
 using glm::ivec3;
 
 
-void ObjLoader::parseIdx(string& s,ivec3& indices)
+void ObjLoader::ParseIdx(string& s,ivec3& indices)
 {
 	string::const_iterator sit;
 	stringstream ss;
@@ -49,7 +49,7 @@ void ObjLoader::parseIdx(string& s,ivec3& indices)
 	indices[idxPtr++] = number - 1;
 }
 
-MeshRaw_ptr ObjLoader::loadObj(istream& istr)
+MeshRaw_ptr ObjLoader::LoadObj(istream& istr)
 {	
 	int lineCount = 0;
 
@@ -119,9 +119,9 @@ MeshRaw_ptr ObjLoader::loadObj(istream& istr)
 			istringstream data(sub);
 			data >> s1; data >> s2; data >> s3;
 
-			parseIdx(s1,v1);
-			parseIdx(s2,v2);
-			parseIdx(s3,v3);
+			ParseIdx(s1,v1);
+			ParseIdx(s2,v2);
+			ParseIdx(s3,v3);
 
 			Tri t(v1,v2,v3);
 			faces.push_back(t);
@@ -129,10 +129,10 @@ MeshRaw_ptr ObjLoader::loadObj(istream& istr)
 		}
 		else if(line.substr(0,7) == "mtllib ")
 		{			
-			std::string mtlFile =  Util::extractBaseFolder(currentFile) + line.substr(7);
+			std::string mtlFile =  Util::ExtractBaseFolder(currentFile) + line.substr(7);
 
 			std::ifstream mtlFileStream(mtlFile);
-			if(mtlFileStream && loadMtllib(mtlFileStream,newMesh))
+			if(mtlFileStream && LoadMtllib(mtlFileStream,newMesh))
 				std::cout << "Material lib loaded: " << mtlFile << std::endl;
 			else
 				std::cout << "Could not load mtllib: " << mtlFile << std::endl;
@@ -153,29 +153,29 @@ MeshRaw_ptr ObjLoader::loadObj(istream& istr)
 
 	cout << "Mesh loaded, f=" << faces.size() <<  " , v=" << vertices.size() << " , n=" << normals.size() << " ,tex coords=" << texCoords.size() << endl;
 
-	getVertexArray(newMesh->vertices);
-	getIndexArray(newMesh->faces);
+	GetVertexArray(newMesh->vertices);
+	GetIndexArray(newMesh->faces);
 
-	if( hasTexCoords() )
-		getTexCoordArray(newMesh->texCoords);
+	if( HasTexCoords() )
+		GetTexCoordArray(newMesh->texCoords);
 
-	if( ! hasNormals() )
+	if( ! HasNormals() )
 	{		
 		Info("Normal data not present... computing normals");		
-		if(! computeNormals() )
+		if(! ComputeNormals() )
 			Error("Could not compute normals");
 	}
-	getNormalArray(newMesh->normals);
+	GetNormalArray(newMesh->normals);
 
-	if ( computeTangents() ) 
-		getTangentArray(newMesh->tangents);
+	if ( ComputeTangents() ) 
+		GetTangentArray(newMesh->tangents);
 	else
 		Error("Could not compute tangents");
 
 	return newMesh;
 }
 
-bool ObjLoader::loadMtllib(std::istream& istr, MeshRaw_ptr newMesh)
+bool ObjLoader::LoadMtllib(std::istream& istr, MeshRaw_ptr newMesh)
 {
 	std::string line;
 
@@ -272,29 +272,29 @@ bool ObjLoader::loadMtllib(std::istream& istr, MeshRaw_ptr newMesh)
 	return newMesh->materials.size() > 0;
 }
 
-bool ObjLoader::hasNormals()
+bool ObjLoader::HasNormals()
 {
 	return normals.size() == vertices.size();
 }
 
-bool ObjLoader::hasTangents()
+bool ObjLoader::HasTangents()
 {
 	return tangents.size() > 0;
 }
 
-bool ObjLoader::hasTexCoords()
+bool ObjLoader::HasTexCoords()
 {
 	return texCoords.size() > 0;
 }
 
 ///Copy vertex data
-void ObjLoader::getVertexArray (vector<float>& vertexArray)
+void ObjLoader::GetVertexArray (vector<float>& vertexArray)
 {
 	vertexArray.resize(vertices.size() * 3, 0.0f);
 	memcpy(&vertexArray[0], &vertices[0],  vertices.size() * 3 * sizeof(float));
 }
 
-void ObjLoader::getIndexArray(vector<int>& indicesArray)
+void ObjLoader::GetIndexArray(vector<int>& indicesArray)
 {
 	size_t numIndices = faces.size() * 3;
 
@@ -327,7 +327,7 @@ void ObjLoader::copyVec2(float* target, const vec2& v)
 	memcpy( target, &v.x, 2 * sizeof(float));	
 }
 
-void ObjLoader::getNormalArray (vector<float>& normalArray)
+void ObjLoader::GetNormalArray (vector<float>& normalArray)
 {
 	//Lookup directory, holds information about vertices that are already processed
 	bool* processedDictionary = new bool[vertices.size()];
@@ -365,7 +365,7 @@ void ObjLoader::getNormalArray (vector<float>& normalArray)
 	delete[] processedDictionary;
 }
 
-void ObjLoader::getTangentArray (vector<float>& tangentArray)
+void ObjLoader::GetTangentArray (vector<float>& tangentArray)
 {
 	//Lookup directory, holds information about vertices that are already processed
 	bool* processedDictionary = new bool[vertices.size()];
@@ -403,7 +403,7 @@ void ObjLoader::getTangentArray (vector<float>& tangentArray)
 	delete[] processedDictionary;
 }
 
-void ObjLoader::getTexCoordArray(vector<float>& texCoordArray)
+void ObjLoader::GetTexCoordArray(vector<float>& texCoordArray)
 {
 //Lookup directory, holds information about vertices that are already processed
 
@@ -437,11 +437,11 @@ void ObjLoader::getTexCoordArray(vector<float>& texCoordArray)
 	delete[] processedDictionary;
 }
 
-bool ObjLoader::computeNormals()
+bool ObjLoader::ComputeNormals()
 {
 	//see http://mrl.nyu.edu/~perlin/courses/fall2002/meshnormals.html
 
-	//Reinit normals to zero
+	//ReInit normals to zero
 	normals.clear();
 	normals.resize(vertices.size());
 
@@ -483,14 +483,14 @@ bool ObjLoader::computeNormals()
 }
 
 
-bool ObjLoader::computeTangents()
+bool ObjLoader::ComputeTangents()
 {
 	//see http://www.terathon.com/code/tangent.html for details
 
-	if(! (hasNormals() && hasTexCoords()) )
+	if(! (HasNormals() && HasTexCoords()) )
 		return false;
 	
-	//Reinit normals to zero
+	//ReInit normals to zero
 	tangents.clear();
 	tangents.resize(vertices.size());
 
@@ -573,7 +573,7 @@ bool ObjLoader::computeTangents()
 
 }
 
-MeshRaw_ptr ObjLoader::loadObjFile(const string& path)
+MeshRaw_ptr ObjLoader::LoadObjFile(const string& path)
 {
 	currentFile = path;
 
@@ -585,7 +585,7 @@ MeshRaw_ptr ObjLoader::loadObjFile(const string& path)
 	std::string line;
 	if (myfile.is_open())
 	{
-		newMesh = loadObj(myfile);
+		newMesh = LoadObj(myfile);
 		myfile.close();
 	}
 	else 

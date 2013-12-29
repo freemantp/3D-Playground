@@ -21,25 +21,27 @@ public:
 	virtual ~Mesh();
 
 	virtual void Render(const Scene_ptr scene) const;
-	virtual void init(); 
+	virtual void Init(); 
 
-	bool setPositions(const std::vector<float>& positions, const std::vector<int>& indices, std::vector<std::pair<int,int> >* indexGroups = nullptr);
-	bool setNormals(const std::vector<float>& normals);
-	bool setTangents(const std::vector<float>& tangents);
-	bool setTextureCoordinates(const std::vector<float>& texCoords);
-	bool setColors(const std::vector<float>& colors);
+	typedef std::vector<std::pair<int, int> > IntPairVector;
 
-	virtual void setShader(ShaderBase_ptr shader);
+	bool SetPositions(const std::vector<float>& positions, const std::vector<int>& indices, IntPairVector* indexGroups = nullptr);
+	bool SetNormals(const std::vector<float>& normals);
+	bool SetTangents(const std::vector<float>& tangents);
+	bool SetTextureCoordinates(const std::vector<float>& texCoords);
+	bool SetColors(const std::vector<float>& colors);
 
-	bool isInitialized() { return initialized; };
-	bool mapVertexAttribute(GLSLShader::VertexAttribute attrib, GLuint channel);
+	virtual void SetShader(ShaderBase_ptr shader);
+
+	bool IsInitialized() { return initialized; };
+	bool MapVertexAttribute(GLSLShader::VertexAttribute attrib, GLuint channel);
 
 protected:
 
 	Mesh(MeshRaw_ptr rawMesh);
 	Mesh();
 
-	void initFromRawMesh(MeshRaw_ptr rawMesh);
+	void InitFromRawMesh(MeshRaw_ptr rawMesh);
 
 	struct VertexAttribData {
 		GLuint channel;

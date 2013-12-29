@@ -28,16 +28,16 @@ public:
 	CubeMapTexture(const std::string& textureBasePath, const std::string& imageExtension);
 	~CubeMapTexture();
 
-	void bindTexture(int textureUnit);
+	void BindTexture(int textureUnit);
 
 protected:
 
-	bool setTextureImages(const CubeMapTextureRawData& cubemaps);
+	void LoadCubeTextures(const CubeMapTextureRawData& cubemaps);
 
-	/// Loads a cube map from a single file
-	static bool loadCubeMapFromFile(const std::string& texturePath, CubeMapTextureRawData& cubeMap);
+	/// Loads a cube map image from a single file
+	static bool LoadCubemapImages(const std::string& texturePath, CubeMapTextureRawData& cubeMap);
 
-	void initTexture();
+	void InitTextureParams();
 
 	GLuint texObject;
 };

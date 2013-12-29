@@ -16,73 +16,73 @@ ShaderBase::ShaderBase(const string& shaderName)
 	, shaderName(shaderName)
 	, GLSLProgram()
 {
-	loadShader(shaderName);
-	init();
+	LoadShader(shaderName);
+	Init();
 }
 
 ShaderBase::~ShaderBase()
 {
 }
 
-void ShaderBase::init()
+void ShaderBase::Init()
 {
 
 }
 
-GLint ShaderBase::getCurentProgram()
+GLint ShaderBase::GetCurentProgram()
 {
 	GLint currentProgram;
 	glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
 	return currentProgram;
 }
 
-const string& ShaderBase::getName() const
+const string& ShaderBase::GetName() const
 { 
 	return shaderName; 
 }
 
-void ShaderBase::beforeUniformSet()
+void ShaderBase::BeforeUniformSet()
 {
-	currentProgram = getCurentProgram();
+	currentProgram = GetCurentProgram();
 
 	if(currentProgram != programHandle)
-		GLSLProgram::use();
+		GLSLProgram::Use();
 
 }
 
-void ShaderBase::afterUniformSet()
+void ShaderBase::AfterUniformSet()
 {
 	if(currentProgram != programHandle)
 		glUseProgram(currentProgram);
 }
 
-void ShaderBase::updateTransforms(const Camera_ptr cam, const glm::mat4& modelTransform)
+void ShaderBase::UpdateTransforms(const Camera_ptr cam, const glm::mat4& modelTransform)
 {
 	glm::mat4 modelViewMatrix = cam->viewMatrix * modelTransform;
 	
 	glm::mat4 mvpMatrix = cam->projectionMatrix * modelViewMatrix;
 	glm::mat3 normalMatrix	= glm::transpose(glm::inverse(glm::mat3(modelViewMatrix)));
 	
-	beforeUniformSet();
+	BeforeUniformSet();
 
 	if(hasMVP)
-		setUniform("MVP", mvpMatrix);
+		SetUniform("MVP", mvpMatrix);
 	if(hasNM)
-		setUniform("NormalMatrix", normalMatrix);		
+		SetUniform("NormalMatrix", normalMatrix);		
 	if(hasMVM)
-		setUniform("ModelViewMatrix", modelViewMatrix);		
+		SetUniform("ModelViewMatrix", modelViewMatrix);		
 	if(hasVM)
-		setUniform("ViewMatrix",  cam->viewMatrix);		
+		SetUniform("ViewMatrix",  cam->viewMatrix);		
 	if(hasMM)
-		setUniform("ModelMatrix",  modelTransform);		
+		SetUniform("ModelMatrix",  modelTransform);		
 	if(hasPM)
-		setUniform("ProjectionMatrix", cam->projectionMatrix);		
+		SetUniform("ProjectionMatrix", cam->projectionMatrix);		
 	
 	
-	afterUniformSet();
+	AfterUniformSet();
 }
 
-GLint ShaderBase::getAttributeChannel(GLSLShader::VertexAttribute attribute)
+GLint ShaderBase::GetAttributeChannel(GLSLShader::VertexAttribute attribute)
 {
 	
 	switch(attribute)
@@ -107,33 +107,33 @@ GLint ShaderBase::getAttributeChannel(GLSLShader::VertexAttribute attribute)
 	}
 }
 
-bool ShaderBase::loadShader(const string& shaderName)
+bool ShaderBase::LoadShader(const string& shaderName)
 {
 	Info("Loading shader " + shaderName );
 
-	string vertexShaderSource = Util::loadTextFile( Config::SHADER_BASE_PATH + shaderName + ".vert");
-	string fragmentShaderSource = Util::loadTextFile( Config::SHADER_BASE_PATH + shaderName + ".frag");
+	string vertexShaderSource = Util::LoadTextFile( Config::SHADER_BASE_PATH + shaderName + ".vert");
+	string fragmentShaderSource = Util::LoadTextFile( Config::SHADER_BASE_PATH + shaderName + ".frag");
 
-	return loadShader(vertexShaderSource, fragmentShaderSource);
+	return LoadShader(vertexShaderSource, fragmentShaderSource);
 }
 
-bool ShaderBase::loadShader( const string& vertexSource, 
+bool ShaderBase::LoadShader( const string& vertexSource, 
 							 const string& fragmentSource)
 {
-	if (!this->compileShaderFromString(vertexSource, GLSLShader::VERTEX))  
+	if (!this->CompileShaderFromString(vertexSource, GLSLShader::VERTEX))  
 	{
-		Error("--- Vertex Shader ---\n" + this->log());
+		Error("--- Vertex Shader ---\n" + this->Log());
 		return false;
 	}
 
-	if (!this->compileShaderFromString(fragmentSource, GLSLShader::FRAGMENT)) 
+	if (!this->CompileShaderFromString(fragmentSource, GLSLShader::FRAGMENT)) 
 	{
-		Error("--- Fragment Shader ---\n" + this->log());
+		Error("--- Fragment Shader ---\n" + this->Log());
 		return false;
 	}
 
-	if (!this->link()) {
-		Error("--- Linker ---\n" + this->log());
+	if (!this->Link()) {
+		Error("--- Linker ---\n" + this->Log());
 		return false;
 	}
 
@@ -141,8 +141,8 @@ bool ShaderBase::loadShader( const string& vertexSource,
 
 }
 
-void ShaderBase::use(const Scene_ptr scene, const glm::mat4& modelTransform)
+void ShaderBase::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {
-	GLSLProgram::use();
-	updateTransforms(scene->activeCamera,modelTransform);
+	GLSLProgram::Use();
+	UpdateTransforms(scene->activeCamera,modelTransform);
 }

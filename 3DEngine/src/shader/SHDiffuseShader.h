@@ -31,13 +31,13 @@ public:
 
 	virtual ~ShDiffuseShader();
 
-	virtual void use(const Scene_ptr scene, const glm::mat4& modelTransform);
+	virtual void Use(const Scene_ptr scene, const glm::mat4& modelTransform);
 
 protected:
 
 	ShDiffuseShader();
 
-	virtual void init();
+	virtual void Init();
 
 	ShDiffuseShaderCoeffs_ptr m_ShCoeffs;
 

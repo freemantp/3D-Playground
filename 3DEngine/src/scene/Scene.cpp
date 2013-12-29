@@ -31,7 +31,7 @@ Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 	: skybox(nullptr)
 {
 
-	setCamera(cam);
+	SetCamera(cam);
 
 	lightModel.reset(new LightModel());
 
@@ -40,21 +40,21 @@ Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 		throw std::exception("Could not create light model");
 	}
 
-	InputHandler& inputHandler = ihf.getInputHandler();
+	InputHandler& inputHandler = ihf.GetInputHandler();
 	WindowEventHandler& winEventHandler = WindowEventHandler::getInstance();
 
 	if(true)
 	{
 		mAdapter.reset(new InspectionCameraAdapter (cam));
-		inputHandler.addMouseObserver(mAdapter);
+		inputHandler.AddMouseObserver(mAdapter);
 	} else
 	{
 		mAdapter2.reset(new FirstPersonCameraAdapter(cam));
-		inputHandler.addMouseObserver(mAdapter2);
-		inputHandler.addKeyboardObserver(mAdapter2);
+		inputHandler.AddMouseObserver(mAdapter2);
+		inputHandler.AddKeyboardObserver(mAdapter2);
 	}
 
-	winEventHandler.addViewportObserver(cam);
+	winEventHandler.AddViewportObserver(cam);
 }
 
 Scene::~Scene()
@@ -75,12 +75,12 @@ Scene::~Scene()
 
 }
 
-void Scene::addShape(Shape_ptr shape)
+void Scene::AddShape(Shape_ptr shape)
 {
 	objects.push_back(shape);
 }
 
-void Scene::setSkybox(Skybox_ptr skybox)
+void Scene::SetSkybox(Skybox_ptr skybox)
 {
 	this->skybox = skybox;
 }
@@ -162,22 +162,22 @@ void Scene::TimeUpdate(long time)
 	lightModel->UpdateUniformBuffer(activeCamera);
 }
 
-void Scene::addMaterial(ShaderBase* material)
+void Scene::AddMaterial(ShaderBase* material)
 {
 	materials.push_back(material);
 }
 
-void Scene::setCamera(Camera_ptr cam)
+void Scene::SetCamera(Camera_ptr cam)
 {
 	activeCamera = cam;
 }
 
-void Scene::addLight(PointLight_ptr light)
+void Scene::AddLight(PointLight_ptr light)
 {
 	lightModel->pointLights.push_back(light);
 }
 
-void Scene::addLight(SpotLight_ptr light)
+void Scene::AddLight(SpotLight_ptr light)
 {
 	lightModel->spotLights.push_back(light);
 }

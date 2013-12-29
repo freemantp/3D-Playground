@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <scene name="Simple scene">
 
-  <!-- initial camera position -->
+  <!-- Initial camera position -->
   <camera type="perspective" fov="50.0">
     <position x="0.0" y="1.0" z="1.0"/>
     <target   x="0.0" y="0.3" z="0.0"/>

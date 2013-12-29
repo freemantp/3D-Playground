@@ -20,12 +20,12 @@ ShDiffuseShader::ShDiffuseShader()
 {
 	hasMVP = true;
 	hasMVM = false;
-	init();
+	Init();
 }
 
-void ShDiffuseShader::init()
+void ShDiffuseShader::Init()
 {
-	const char* data = Util::loadTextFile(Config::DATA_BASE_PATH + "sh/grace.xml");
+	const char* data = Util::LoadTextFile(Config::DATA_BASE_PATH + "sh/grace.xml");
 	m_ShCoeffs= ShCoeffParser::Parse(data);
 	delete[] data;
 }
@@ -34,14 +34,14 @@ ShDiffuseShader::~ShDiffuseShader(void)
 {
 }
 
-void ShDiffuseShader::use(const Scene_ptr scene, const glm::mat4& modelTransform)
+void ShDiffuseShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {	
-	ShaderBase::use(scene,modelTransform);
+	ShaderBase::Use(scene,modelTransform);
 
 	const int numShBands = 3;
 	const float exposure = 1.0f;
-	setUniform("numShBands", numShBands);
-	setUniform("exposure", exposure);
+	SetUniform("numShBands", numShBands);
+	SetUniform("exposure", exposure);
 
 	float shCoeffs[9*3];
 
@@ -50,7 +50,7 @@ void ShDiffuseShader::use(const Scene_ptr scene, const glm::mat4& modelTransform
 		memcpy(shCoeffs+i*3,&(m_ShCoeffs->m_Coeffs[i]).x,3*sizeof(float));
 	}
 	
-	setUniformArray("shLightCoeffs",shCoeffs,3,9);
+	SetUniformArray("shLightCoeffs",shCoeffs,3,9);
 
 }
 

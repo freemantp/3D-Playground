@@ -35,7 +35,7 @@ PhongTextureShader::~PhongTextureShader()
 
 }
 
-void PhongTextureShader::setBumpMap(const std::string& textureFile, bool isNormalMap)
+void PhongTextureShader::SetBumpMap(const std::string& textureFile, bool isNormalMap)
 {
 	this->isNormalMap = isNormalMap;
 
@@ -44,38 +44,38 @@ void PhongTextureShader::setBumpMap(const std::string& textureFile, bool isNorma
 	hasBumpMap = true;
 }
 
-void PhongTextureShader::setSpecularMap(const string& textureFile)
+void PhongTextureShader::SetSpecularMap(const string& textureFile)
 {
 	textures[Specular]= Texture::Create( Config::TEXTURE_BASE_PATH +  textureFile );
 	hasSpecularMap = true;
 }
 
-void PhongTextureShader::use(const Scene_ptr scene, const glm::mat4& modelTransform)
+void PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {	
-	ShaderBase::use(scene,modelTransform);
+	ShaderBase::Use(scene,modelTransform);
 
-	setLightAndModel(scene);
-	setUniform("Shininess", shininess);
+	SetLightAndModel(scene);
+	SetUniform("Shininess", shininess);
 
 	//Bind albedo texture to texture unit 0
-	textures[Albedo]->bindTexture(texUnits[Albedo]);
-	setUniform("AlbedoTex", texUnits[Albedo]);
+	textures[Albedo]->BindTexture(texUnits[Albedo]);
+	SetUniform("AlbedoTex", texUnits[Albedo]);
 
 	if(hasBumpMap)
 	{
 		//Bind normal texture to texture unit 1
-		textures[BumpMap]->bindTexture(texUnits[BumpMap]);
-		setUniform("BumpmapTex", texUnits[BumpMap]);
-		setUniform("isNormalMap",isNormalMap);
-		setUniform("hasBumpMap",hasBumpMap);
+		textures[BumpMap]->BindTexture(texUnits[BumpMap]);
+		SetUniform("BumpmapTex", texUnits[BumpMap]);
+		SetUniform("isNormalMap",isNormalMap);
+		SetUniform("hasBumpMap",hasBumpMap);
 	}
 
 	if(hasSpecularMap)
 	{
 		//Bind specular texture to texture unit 2
-		textures[Specular]->bindTexture(texUnits[Specular]);
-		setUniform("SpecularTex", texUnits[Specular]);
-		setUniform("hasSpecularMap",hasSpecularMap);
+		textures[Specular]->BindTexture(texUnits[Specular]);
+		SetUniform("SpecularTex", texUnits[Specular]);
+		SetUniform("hasSpecularMap",hasSpecularMap);
 	}
 
 }

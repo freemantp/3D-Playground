@@ -26,17 +26,17 @@ MeshRaw::~MeshRaw(void)
 	
 }
 
-bool MeshRaw::hasNormals()
+bool MeshRaw::HasNormals()
 {
 	return normals.size() > 0;
 }
 
-bool MeshRaw::hasTangents()
+bool MeshRaw::HasTangents()
 {
 	return tangents.size() > 0;
 }
 
-bool MeshRaw::hasTexCoords()
+bool MeshRaw::HasTexCoords()
 {
 	return texCoords.size() > 0;
 }

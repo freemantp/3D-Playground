@@ -9,7 +9,7 @@ class ConstShader : public ShaderBase
 public:
 	ConstShader(glm::vec3& color);
 
-	virtual void use(const Scene_ptr scene, const glm::mat4& modelTransform);
+	virtual void Use(const Scene_ptr scene, const glm::mat4& modelTransform);
 
 	glm::vec3 color;
 

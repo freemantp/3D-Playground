@@ -9,7 +9,7 @@ public:
 	GlutInputHandlerFactory(void);
 	~GlutInputHandlerFactory(void);
 
-	virtual InputHandler& getInputHandler();
+	virtual InputHandler& GetInputHandler();
 
 };
 

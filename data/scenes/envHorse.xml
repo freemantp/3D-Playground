@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <scene name="Road">
 
-  <!-- initial camera position -->
+  <!-- Initial camera position -->
   <camera type="perspective" fov="70.0">
     <position x="0.0" y="0.0" z="6.0"/>
     <target   x="0.0" y="0.0" z="0.0"/>

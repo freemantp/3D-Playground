@@ -16,7 +16,7 @@ public:
 	CubeMapTexture_ptr texture;
 protected:		
 	
-	virtual void setShader(ShaderBase_ptr shader);
+	virtual void SetShader(ShaderBase_ptr shader);
 
 	
 

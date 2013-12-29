@@ -18,12 +18,12 @@ GlutInputHandler& GlutInputHandler::getInstance()
 	return GlutInputHandler::instance;
 }
 
-void GlutInputHandler::addMouseObserver(MouseObserver_ptr observer)
+void GlutInputHandler::AddMouseObserver(MouseObserver_ptr observer)
 {
 	mouseObservers.push_back(observer);
 }
 
-void GlutInputHandler::addKeyboardObserver(KeyboardObserver_ptr observer)
+void GlutInputHandler::AddKeyboardObserver(KeyboardObserver_ptr observer)
 {
 	keyboardObservers.push_back(observer);
 }

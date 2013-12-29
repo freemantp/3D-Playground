@@ -6,9 +6,9 @@
 UniformBuffer::UniformBuffer(const GLSLProgram_ptr program, std::string bufferName, const GLchar* elemNames[], const int numElems)
 {	
 	if( ! program->isLinked () )
-		Error("[UniformBuffer] Program is not linked");
+		Error("[UniformBuffer] Program is not Linked");
 	
-	GLuint programHandle = program->getProgramHandle();
+	GLuint programHandle = program->GetProgramHandle();
 	GLuint blockIdx = glGetUniformBlockIndex(programHandle,bufferName.c_str());
 	assert(blockIdx !=  GL_INVALID_INDEX);
 
@@ -27,7 +27,7 @@ UniformBuffer::UniformBuffer(const GLSLProgram_ptr program, std::string bufferNa
 	glGetUniformIndices(programHandle,numElems,elemNames,indices);
 	glGetActiveUniformsiv(programHandle, numElems, indices, GL_UNIFORM_OFFSET, eOffsets);
 
-	//printUniforms(program,elemNames, indices,eOffsets,numElems);
+	//PrintUniforms(program,elemNames, indices,eOffsets,numElems);
 
 	//Save offsets with element names as key
 	for(int i=0; i < numElems; i++)
@@ -54,10 +54,10 @@ UniformBuffer::~UniformBuffer(void)
 	
 }
 
-void UniformBuffer::printUniforms(const GLSLProgram_ptr program, const GLchar* elemNames[],GLuint* indices, GLint* eOffsets, int numElems)
+void UniformBuffer::PrintUniforms(const GLSLProgram_ptr program, const GLchar* elemNames[],GLuint* indices, GLint* eOffsets, int numElems)
 {
 
-	std::vector<std::string> ll = program->getUniformAttributes();
+	std::vector<std::string> ll = program->GetUniformAttributes();
 	std::cout << "Indices:" << std::endl;
 	for(int i=0; i < numElems; i++)
 	{
@@ -66,31 +66,31 @@ void UniformBuffer::printUniforms(const GLSLProgram_ptr program, const GLchar* e
 	std::cout << std::endl;
 }
 
-void UniformBuffer::setElement(const string& name, const void* ptr, const GLsizei numBytes)
+void UniformBuffer::SetElement(const string& name, const void* ptr, const GLsizei numBytes)
 {
 	glBindBuffer(GL_UNIFORM_BUFFER, uboHandle);
 	glBufferSubData(GL_UNIFORM_BUFFER, offsets[name], numBytes, ptr);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void UniformBuffer::setElement(const string& name, const vec3& v)
+void UniformBuffer::SetElement(const string& name, const vec3& v)
 {
-	setElement(name, &v[0],3 * sizeof(GLfloat));
+	SetElement(name, &v[0],3 * sizeof(GLfloat));
 }
 
-void UniformBuffer::setElement(const string& name, const vec4& v)
+void UniformBuffer::SetElement(const string& name, const vec4& v)
 {
-	setElement(name, &v[0],4 * sizeof(GLfloat));
+	SetElement(name, &v[0],4 * sizeof(GLfloat));
 }
 
-void UniformBuffer::setElement(const string& name, float v)
+void UniformBuffer::SetElement(const string& name, float v)
 {
-	setElement(name, &v, sizeof(GLfloat));
+	SetElement(name, &v, sizeof(GLfloat));
 }
 
-void UniformBuffer::bindToShader(GLSLProgram_ptr program, std::string bufferName)
+void UniformBuffer::BindToShader(GLSLProgram_ptr program, std::string bufferName)
 {
 	glBindBuffer(GL_UNIFORM_BUFFER, uboHandle);
-	GLuint blockIdx = glGetUniformBlockIndex(program->getProgramHandle(), bufferName.c_str());
+	GLuint blockIdx = glGetUniformBlockIndex(program->GetProgramHandle(), bufferName.c_str());
 	glBindBufferBase(GL_UNIFORM_BUFFER, blockIdx, uboHandle);
 }

@@ -24,7 +24,7 @@
 using std::string;
 using std::vector;
 
-unsigned long Util::getFileLength(std::ifstream& file)
+unsigned long Util::GetFileLength(std::ifstream& file)
 {
 	if(!file.good()) return 0;
 
@@ -36,45 +36,45 @@ unsigned long Util::getFileLength(std::ifstream& file)
 	return len;
 }
 
-const char* Util::loadTextFile(const string& s)
+const char* Util::LoadTextFile(const string& s)
 {
-	return loadTextFile((char*)s.c_str());
+	return LoadTextFile((char*)s.c_str());
 }
 
-const char* Util::loadTextFile(char* filename)
+const char* Util::LoadTextFile(char* filename)
 {
 	std::ifstream file;
 	file.open(filename, std::ios::in);
 	/*if(!file) 
 	return -1;*/
 
-	unsigned long len = getFileLength(file);
+	unsigned long len = GetFileLength(file);
 
 	/*if (len==0) 
 	return -2;   // "Empty File" */
 
-	GLubyte* ShaderSource = (GLubyte*) new char[len+1];
-	/*if (ShaderSource == 0) 
+	GLubyte* shaderSource = (GLubyte*) new char[len+1];
+	/*if (shaderSource == 0) 
 	return -3;   // can't reserve memory*/
 
-	ShaderSource[len] = 0;  // len isn't always strlen cause some characters are stripped in ascii read...
+	shaderSource[len] = 0;  // len isn't always strlen cause some characters are stripped in ascii read...
 	// it is important to 0-terminate the real length later, len is just max possible value...
 	unsigned int i=0;
 	while (file.good())
 	{
-		ShaderSource[i] = file.get();       // get character from file.
+		shaderSource[i] = file.get();       // get character from file.
 		if (!file.eof())
 			i++;
 	}
 
-	ShaderSource[i] = 0;  // 0 terminate it.
+	shaderSource[i] = 0;  // 0 terminate it.
 
 	file.close();
 
-	return (const char*)ShaderSource;
+	return (const char*)shaderSource;
 }
 
-void Util::printStrings(const std::vector<string> strings)
+void Util::PrintStrings(const std::vector<string> strings)
 {
 	std::vector<string>::const_iterator stringsIterator;
 
@@ -86,19 +86,19 @@ void Util::printStrings(const std::vector<string> strings)
 	}
 }
 
-void Util::printUniforms(const ShaderBase* shader)
+void Util::PrintUniforms(const ShaderBase* shader)
 {
-	std::cout << shader->getName() << std::endl << "------------------" << std::endl;
-	printStrings(shader->getUniformAttributes());
+	std::cout << shader->GetName() << std::endl << "------------------" << std::endl;
+	PrintStrings(shader->GetUniformAttributes());
 	std::cout << std::endl;
 }
 
-Mesh_ptr Util::loadModel(const string& path)
+Mesh_ptr Util::LoadModel(const string& path)
 {
 	ObjLoader oj;
 	clock_t begin = clock();
 	
-	if(MeshRaw_ptr rawMesh = oj.loadObjFile(path))
+	if(MeshRaw_ptr rawMesh = oj.LoadObjFile(path))
 	{
 		Mesh_ptr mesh = Mesh::Create(rawMesh);
 
@@ -111,40 +111,40 @@ Mesh_ptr Util::loadModel(const string& path)
 	
 }
 
-Mesh_ptr Util::getDragon()
+Mesh_ptr Util::GetDragon()
 {
-	Mesh_ptr model = Util::loadModel("../data/models/dragon.obj");
+	Mesh_ptr model = Util::LoadModel("../data/models/dragon.obj");
 	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.85f,0));
 	model->worldTransform = glm::scale(model->worldTransform,glm::vec3(8,8,8));
 	return model;
 }
 
-Mesh_ptr Util::getHorse()
+Mesh_ptr Util::GetHorse()
 {
-	Mesh_ptr model = Util::loadModel("../data/models/horse.obj");
+	Mesh_ptr model = Util::LoadModel("../data/models/horse.obj");
 	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.3f,0));
 	model->worldTransform = glm::rotate(model->worldTransform, 270.0f, glm::vec3(0,1,0));
 	return model;
 }
 
-Mesh_ptr Util::getElephant()
+Mesh_ptr Util::GetElephant()
 {
-	Mesh_ptr model = Util::loadModel("../data/models/elephant.obj");
+	Mesh_ptr model = Util::LoadModel("../data/models/elephant.obj");
 	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.5f,0));
 	return model;
 }
 
-Mesh_ptr Util::getBox()
+Mesh_ptr Util::GetBox()
 {
 	Box_ptr box = Box_ptr(new Box());
-	box->init();
+	box->Init();
 
 	box->worldTransform = glm::translate(box->worldTransform, glm::vec3(-0.5, -0.5f, -0.5));
 
 	return box;
 }
 
-std::unique_ptr<glimg::ImageSet> Util::loadImage(const std::string& texturePath)
+std::unique_ptr<glimg::ImageSet> Util::LoadImage(const std::string& texturePath)
 {
 	std::unique_ptr<glimg::ImageSet> imgSet;
 	try
@@ -159,7 +159,7 @@ std::unique_ptr<glimg::ImageSet> Util::loadImage(const std::string& texturePath)
 	return imgSet;
 }
 
-std::string Util::extractBaseFolder(std::string path)
+std::string Util::ExtractBaseFolder(std::string path)
 {
        static std::regex rgx("(.*(/|\\\\))+");
        std::smatch result;
@@ -167,7 +167,7 @@ std::string Util::extractBaseFolder(std::string path)
        return result[0];
 }
 
-bool Util::fileExists (const std::string& name) {
+bool Util::FileExists (const std::string& name) {
 	std::ifstream f(name.c_str());
 	if (f.good()) {
 		f.close();
@@ -178,9 +178,9 @@ bool Util::fileExists (const std::string& name) {
 	}   
 }
 
-void Util::beep()
+void Util::Beep()
 {
-	Beep( 440, 300 );
+	::Beep( 440, 300 );
 }
 
 // trim from start

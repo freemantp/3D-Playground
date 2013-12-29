@@ -13,7 +13,7 @@ Texture_ptr Texture::Create(const std::string& texturePath)
 
 Texture::Texture(const std::string& texturePath)
 {
-	if (std::unique_ptr<glimg::ImageSet> imageSet = Util::loadImage(texturePath))
+	if (std::unique_ptr<glimg::ImageSet> imageSet = Util::LoadImage(texturePath))
 	{
 		try
 		{
@@ -38,7 +38,7 @@ Texture::~Texture()
 		glDeleteTextures(1, &texObject);
 }
 
-void Texture::bindTexture(int textureUnit)
+void Texture::BindTexture(int textureUnit)
 {
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	glBindTexture(GL_TEXTURE_2D, texObject);

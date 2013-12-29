@@ -4,7 +4,7 @@
 
 GLSLProgram::GLSLProgram() 
 	: programHandle(0)
-	, linked(false) 
+	, Linked(false) 
 {
 	programHandle = glCreateProgram();
 
@@ -22,7 +22,7 @@ GLSLProgram::~GLSLProgram()
 	}
 }
 
-bool GLSLProgram::compileShaderFromString( const string& source,  
+bool GLSLProgram::CompileShaderFromString( const string& source,  
 										  GLSLShader::GLSLShaderType type)
 {
 	GLuint shaderHandle = 0;
@@ -60,7 +60,7 @@ bool GLSLProgram::compileShaderFromString( const string& source,
 
 	if( GL_FALSE == result ) 
 	{       
-		logString = getInfoLog(shaderHandle);
+		logString = GetInfoLog(shaderHandle);
 		return false;
 	} 
 	else 
@@ -71,9 +71,9 @@ bool GLSLProgram::compileShaderFromString( const string& source,
 	}
 }
 
-bool GLSLProgram::link()
+bool GLSLProgram::Link()
 {
-	if( linked ) 
+	if( Linked ) 
 		return true;
 
 	if( programHandle <= 0 ) 
@@ -88,43 +88,43 @@ bool GLSLProgram::link()
 	glGetProgramiv( programHandle, GL_LINK_STATUS, &status);
 	if( GL_TRUE != status ) 
 	{
-		logString = getInfoLog(programHandle);
+		logString = GetInfoLog(programHandle);
 		return false;
 	} else {
-		linked = true;
-		return linked;
+		Linked = true;
+		return Linked;
 	}
 }
 
 bool GLSLProgram::isLinked() const
 {
-	return linked;
+	return Linked;
 }
 
-bool GLSLProgram::validate()
+bool GLSLProgram::Validate()
 {
 	glValidateProgram(programHandle);
 	GLint status;
 	glGetProgramiv(programHandle, GL_VALIDATE_STATUS, &status);
 
-	logString = getInfoLog(programHandle);
+	logString = GetInfoLog(programHandle);
 
 	return GL_TRUE == status;
 }
 
-GLuint GLSLProgram::getProgramHandle() const
+GLuint GLSLProgram::GetProgramHandle() const
 { 
 	return programHandle; 
 };
 
-string GLSLProgram::log() const
+string GLSLProgram::Log() const
 {
 	return logString;
 }
 
-bool GLSLProgram::use()
+bool GLSLProgram::Use()
 {
-	if( programHandle <= 0 || (! linked) ) 
+	if( programHandle <= 0 || (! Linked) ) 
 		return false;
 
 	glUseProgram(programHandle);
@@ -133,11 +133,11 @@ bool GLSLProgram::use()
 
 }
 
-void GLSLProgram::unuse()
+void GLSLProgram::UnUse()
 {
 	glUseProgram(0);
 }
-void GLSLProgram::setUniform(const GLchar *name, bool value)
+void GLSLProgram::SetUniform(const GLchar *name, bool value)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) 
@@ -152,7 +152,7 @@ void GLSLProgram::setUniform(const GLchar *name, bool value)
 	}
 }
 
-void GLSLProgram::setUniform(const GLchar *name, float value)
+void GLSLProgram::SetUniform(const GLchar *name, float value)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) 
@@ -167,7 +167,7 @@ void GLSLProgram::setUniform(const GLchar *name, float value)
 	}
 }
 
-void GLSLProgram::setUniform(const GLchar *name, int value)
+void GLSLProgram::SetUniform(const GLchar *name, int value)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) 
@@ -182,7 +182,7 @@ void GLSLProgram::setUniform(const GLchar *name, int value)
 	}
 }
 
-void GLSLProgram::setUniform(const GLchar *name, unsigned int value)
+void GLSLProgram::SetUniform(const GLchar *name, unsigned int value)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) 
@@ -197,7 +197,7 @@ void GLSLProgram::setUniform(const GLchar *name, unsigned int value)
 	}
 }
 
-void GLSLProgram::setUniform(const GLchar *name, const vec2& v)
+void GLSLProgram::SetUniform(const GLchar *name, const vec2& v)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) 
@@ -212,7 +212,7 @@ void GLSLProgram::setUniform(const GLchar *name, const vec2& v)
 	}
 }
 
-void GLSLProgram::setUniform(const GLchar *name, const vec3& v)
+void GLSLProgram::SetUniform(const GLchar *name, const vec3& v)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) 
@@ -227,7 +227,7 @@ void GLSLProgram::setUniform(const GLchar *name, const vec3& v)
 	}
 }
 
-void GLSLProgram::setUniform(const char *name,  const vec4& v)
+void GLSLProgram::SetUniform(const char *name,  const vec4& v)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) 
@@ -242,7 +242,7 @@ void GLSLProgram::setUniform(const char *name,  const vec4& v)
 	}
 }
 
-void GLSLProgram::setUniform(const GLchar *name, const mat3& m)
+void GLSLProgram::SetUniform(const GLchar *name, const mat3& m)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) 
@@ -257,7 +257,7 @@ void GLSLProgram::setUniform(const GLchar *name, const mat3& m)
 	}
 }
 
-void GLSLProgram::setUniform(const GLchar *name, const mat4& m)
+void GLSLProgram::SetUniform(const GLchar *name, const mat4& m)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) 
@@ -272,7 +272,7 @@ void GLSLProgram::setUniform(const GLchar *name, const mat4& m)
 	}
 }
 
-void GLSLProgram::setUniformArray(const GLchar *name, 
+void GLSLProgram::SetUniformArray(const GLchar *name, 
 								  GLfloat *v, 
 								  int elementSize, 
 								  int count)
@@ -302,7 +302,7 @@ void GLSLProgram::setUniformArray(const GLchar *name,
 	}
 }
 
-std::vector<std::string> GLSLProgram::getVertexAttributes()
+std::vector<std::string> GLSLProgram::GetVertexAttributes()
 {
 	GLint nAttribs, maxLength, charsWritten, size;
 	GLenum type;
@@ -327,7 +327,7 @@ std::vector<std::string> GLSLProgram::getVertexAttributes()
 
 }
 
-std::vector<std::string> GLSLProgram::getUniformAttributes() const
+std::vector<std::string> GLSLProgram::GetUniformAttributes() const
 {
 	GLint nAttribs, maxLength, charsWritten, size;
 	GLenum type;
@@ -352,9 +352,9 @@ std::vector<std::string> GLSLProgram::getUniformAttributes() const
 
 }
 
-bool GLSLProgram::bindAttribLocation( GLuint index,  std::string& name)
+bool GLSLProgram::BindAttribLocation( GLuint index,  std::string& name)
 {
-	if(linked) 
+	if(Linked) 
 		return false;
 
 	glBindAttribLocation( programHandle, index, name.c_str() );
@@ -362,9 +362,9 @@ bool GLSLProgram::bindAttribLocation( GLuint index,  std::string& name)
 
 }
 
-bool GLSLProgram::bindFragDataLocation( GLuint colorNumber,  std::string& name)
+bool GLSLProgram::BindFragDataLocation( GLuint colorNumber,  std::string& name)
 {
-	if(linked) 
+	if(Linked) 
 		return false;
 
 	glBindFragDataLocation( programHandle, colorNumber, name.c_str() );
@@ -372,7 +372,7 @@ bool GLSLProgram::bindFragDataLocation( GLuint colorNumber,  std::string& name)
 
 }
 
-string GLSLProgram::getInfoLog(GLuint handle) 
+string GLSLProgram::GetInfoLog(GLuint handle) 
 {
 
 	GLboolean isShader = glIsShader(handle) ;

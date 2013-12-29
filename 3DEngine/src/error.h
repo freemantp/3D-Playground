@@ -4,9 +4,9 @@
 #include <string>
 #include <sstream>
 
-//#define BEEP 1
+//#define Beep 1
 
-#ifdef BEEP
+#ifdef Beep
 #include "util/Util.h"
 #endif
 
@@ -23,16 +23,16 @@ inline void Info(const std::string& msg)
 inline void Error(const char* errorMsg) 
 {
 	std::cerr << "ERROR: " << errorMsg << std::endl;
-	#ifdef BEEP 
-	Util::beep();
+	#ifdef Beep 
+	Util::Beep();
 	#endif
 }
 
 inline void Error(const std::string& errorMsg) 
 {
 	std::cerr << "ERROR: " << errorMsg << std::endl;
-	#ifdef BEEP 
-	Util::beep();
+	#ifdef Beep 
+	Util::Beep();
 	#endif
 }
 
@@ -42,8 +42,8 @@ inline void CheckOpenGlError(std::string file, int line)
 	GLenum err = glGetError();
 	if(err != GL_NO_ERROR)
 	{
-		#ifdef BEEP 
-		Util::beep();
+		#ifdef Beep 
+		Util::Beep();
 		#endif
 		std::cerr << "ERROR [OpenGL]: " << err << " on "<<  file << ":" << line << std::endl;
 	}
@@ -55,8 +55,8 @@ inline void CheckOpenGlError(std::string file, int line)
 
 inline void Error(const std::string& errorMsg, int line) 
 {
-	#ifdef BEEP 
-	Util::beep();
+	#ifdef Beep 
+	Util::Beep();
 	#endif
 	std::stringstream err;
 	err << errorMsg << ", line " << line;
@@ -65,24 +65,24 @@ inline void Error(const std::string& errorMsg, int line)
 
 inline void Warn(const char* errorMsg) 
 {
-	#ifdef BEEP 
-	Util::beep();
+	#ifdef Beep 
+	Util::Beep();
 	#endif
 	std::cout << "WARNING: " << errorMsg << std::endl;
 }
 
 inline void Warn(const std::string& errorMsg) 
 {
-	#ifdef BEEP 
-	Util::beep();
+	#ifdef Beep 
+	Util::Beep();
 	#endif
 	std::cout << "WARNING: " << errorMsg << std::endl;
 }
 
 inline void Warn(const std::string& warnMsg, int line) 
 {
-	#ifdef BEEP 
-	Util::beep();
+	#ifdef Beep 
+	Util::Beep();
 	#endif
 	std::stringstream warn;
 	warn << warnMsg << ", line " << line;

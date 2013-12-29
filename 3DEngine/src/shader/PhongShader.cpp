@@ -16,16 +16,16 @@ PhongShader::PhongShader()
 : ShaderBase("phongShader")
 {
 	hasMM = true;
-	init();
+	Init();
 }
 
 PhongShader::PhongShader(const string& shaderName)
 	: ShaderBase(shaderName)
 {	
-	init();
+	Init();
 }
 
-void PhongShader::init()
+void PhongShader::Init()
 {
 	ambientReflection = vec3(0.0f);
 	diffuseReflection = vec3(0.0f);
@@ -44,29 +44,29 @@ PhongShader::~PhongShader(void)
 {
 }
 
-void PhongShader::use(const Scene_ptr scene, const glm::mat4& modelTransform)
+void PhongShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {	
-	ShaderBase::use(scene,modelTransform);
+	ShaderBase::Use(scene,modelTransform);
 
-	setUniform("Material.AmbientReflectivity", ambientReflection );
-	setUniform("Material.DiffuseReflectivity", diffuseReflection );
-	setUniform("Material.SpecularReflectivity", glossyReflection );
-	setUniform("Material.Shininess", shininess);
+	SetUniform("Material.AmbientReflectivity", ambientReflection );
+	SetUniform("Material.DiffuseReflectivity", diffuseReflection );
+	SetUniform("Material.SpecularReflectivity", glossyReflection );
+	SetUniform("Material.Shininess", shininess);
 
 	if(scene->skybox)
 	{
 		const int skymapTexUnit = 0;
 
 		CubeMapTexture_ptr envTex =  scene->skybox->texture;
-		envTex->bindTexture(skymapTexUnit);
-		setUniform("EnvMapTex",skymapTexUnit);
-		setUniform("CameraPosWorld",scene->activeCamera->GetPosition() );
+		envTex->BindTexture(skymapTexUnit);
+		SetUniform("EnvMapTex",skymapTexUnit);
+		SetUniform("CameraPosWorld",scene->activeCamera->GetPosition() );
 	}
 
-	setLightAndModel(scene);
+	SetLightAndModel(scene);
 }
 
-void PhongShader::setLightAndModel(const Scene_ptr scene)
+void PhongShader::SetLightAndModel(const Scene_ptr scene)
 {
 	GLuint* shadeFunc = 0;
 
@@ -86,7 +86,7 @@ void PhongShader::setLightAndModel(const Scene_ptr scene)
 	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, shadeFunc);
 
 	//set lights
-	setUniform("NumPointLights", (int)scene->lightModel->pointLights.size());
-	setUniform("NumSpotLights", (int)scene->lightModel->spotLights.size());
-	scene->lightModel->GetLightsBuffer()->bindToShader(shared_from_this(),"Lights");
+	SetUniform("NumPointLights", (int)scene->lightModel->pointLights.size());
+	SetUniform("NumSpotLights", (int)scene->lightModel->spotLights.size());
+	scene->lightModel->GetLightsBuffer()->BindToShader(shared_from_this(),"Lights");
 }

@@ -12,10 +12,9 @@ public:
 
 	static Texture_ptr Create(const std::string& texturePath);
 
-	
 	virtual ~Texture();
 
-	void bindTexture(int textureUnit);
+	void BindTexture(int textureUnit);
 
 protected:
 

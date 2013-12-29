@@ -28,12 +28,12 @@ public:
 
 	void render();
 
-	void addShape(Shape_ptr shape);
-	void setSkybox(Skybox_ptr skybox);
-	void addMaterial(ShaderBase* shape);
-	void setCamera(Camera_ptr cam);
-	void addLight(PointLight_ptr shape);
-	void addLight(SpotLight_ptr light);
+	void AddShape(Shape_ptr shape);
+	void SetSkybox(Skybox_ptr skybox);
+	void AddMaterial(ShaderBase* shape);
+	void SetCamera(Camera_ptr cam);
+	void AddLight(PointLight_ptr shape);
+	void AddLight(SpotLight_ptr light);
 
 	virtual void TimeUpdate(long time);
 

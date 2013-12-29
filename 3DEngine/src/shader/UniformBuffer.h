@@ -20,17 +20,17 @@ public:
 
 	~UniformBuffer(void);
 
-	void bindToShader(GLSLProgram_ptr program, std::string bufferName);
+	void BindToShader(GLSLProgram_ptr program, std::string bufferName);
 	
-	void setElement(const std::string& name, float v);
-	void setElement(const std::string& name, const vec3& v);
-	void setElement(const std::string& name, const vec4& v);
+	void SetElement(const std::string& name, float v);
+	void SetElement(const std::string& name, const vec3& v);
+	void SetElement(const std::string& name, const vec4& v);
 
 protected:
 	
 
-	void printUniforms(const GLSLProgram_ptr program, const GLchar* elemNames[],GLuint* indices, GLint* eOffsets, int numElems);
-	inline void setElement(const std::string& name, const void* ptr, const GLsizei numBytes);
+	void PrintUniforms(const GLSLProgram_ptr program, const GLchar* elemNames[],GLuint* indices, GLint* eOffsets, int numElems);
+	inline void SetElement(const std::string& name, const void* ptr, const GLsizei numBytes);
 
 	std::map<std::string,GLint> offsets;
 	GLuint uboHandle;

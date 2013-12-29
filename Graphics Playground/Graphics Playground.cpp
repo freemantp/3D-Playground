@@ -98,7 +98,7 @@ bool Initialize()
 	GLint num;
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &num);
 
-	const char* data = Util::loadTextFile(Config::SCENE_BASE_PATH  + sceneName.c_str());
+	const char* data = Util::LoadTextFile(Config::SCENE_BASE_PATH  + sceneName.c_str());
 	
 	renderer = Renderer::Create(CurrentWidth,CurrentHeight);
 
@@ -106,7 +106,7 @@ bool Initialize()
 	SceneParser sp(gihf);	
 	if(sp.parse(data))
 	{
-		auto s = sp.getScene();
+		auto s = sp.GetScene();
 		renderer->SetScene(s);
 		TimeManager::getInstance().addTimeObserver(s);
 
