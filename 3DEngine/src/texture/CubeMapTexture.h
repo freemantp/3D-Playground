@@ -12,7 +12,7 @@ public:
 	int bytesPerComponent;
 	int width;
 	int height;
-	unsigned char* imageData[6];
+	const unsigned char* imageData[6];
 
 	CubeMapTextureRawData() 
 		: width(0), height(0)
@@ -31,6 +31,8 @@ public:
 	void bindTexture(int textureUnit);
 
 protected:
+
+	bool setTextureImages(const CubeMapTextureRawData& cubemaps);
 
 	/// Loads a cube map from a single file
 	static bool loadCubeMapFromFile(const std::string& texturePath, CubeMapTextureRawData& cubeMap);

@@ -7,10 +7,8 @@
 #include <glimg/glimg.h>
 
 CubeMapTexture::CubeMapTexture(const std::string& cubeMapTexture)
-{
-	
-	/*
-	
+{	
+	/*	
 	cubemap texture layout
 			 _______
 			|		|
@@ -22,10 +20,52 @@ CubeMapTexture::CubeMapTexture(const std::string& cubeMapTexture)
 			|		|
 			|  -Y	|
 			|_______|
-
 	*/
 
-	GLuint targets[] = { 
+	CubeMapTextureRawData cmtrd;
+	if (loadCubeMapFromFile(cubeMapTexture,cmtrd))
+	{
+		setTextureImages(cmtrd);
+		for (int i = 0; i < 6; i++)
+		{
+			delete[] cmtrd.imageData[i];
+		}
+	}
+}
+
+CubeMapTexture::CubeMapTexture(const std::string& textureBasePath, const std::string& imageExtension)
+{
+	const char* suffixes[] = { "posy", "negx", "posz", "posx","negz", "negy" };
+
+	CubeMapTextureRawData cmtrd;
+
+	std::unique_ptr<glimg::ImageSet> images[6];
+
+	for(int i=0; i < 6; i++)
+	{
+		std::string fileName = textureBasePath + "/" + suffixes[i] + "." + imageExtension;
+
+		if (images[i] = Util::loadImage(fileName))
+		{
+			auto img = images[i]->GetImage(0);
+			auto dim = img.GetDimensions();
+			
+			cmtrd.width = dim.width;
+			cmtrd.height = dim.height;
+			cmtrd.numComponents = (img.GetFormat().Components() == glimg::FMT_COLOR_RGB ? 3 : 4);
+			cmtrd.bytesPerComponent = 1;
+			cmtrd.imageData[i] = static_cast<const unsigned char*>(img.GetImageData());
+		}
+		else
+			Error("Could not load texture: " + fileName);
+	}
+
+	setTextureImages(cmtrd);
+}
+
+bool CubeMapTexture::setTextureImages(const CubeMapTextureRawData& cubemaps)
+{
+	GLuint targets[] = {
 		GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
 		GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
 		GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
@@ -38,64 +78,17 @@ CubeMapTexture::CubeMapTexture(const std::string& cubeMapTexture)
 	glGenTextures(1, &texObject);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texObject);
 
-	//unsigned char* subImages[6];
-	//int width = 0;
-	//int height = 0;
+	GLint format = (cubemaps.numComponents == 3 ? GL_RGB : GL_RGBA);
 
-	CubeMapTextureRawData cmtrd;
-
-	if (loadCubeMapFromFile(cubeMapTexture,cmtrd))
+	for (int i = 0; i < 6; i++)
 	{
-		GLint format = (cmtrd.numComponents == 3 ? GL_RGB : GL_RGBA);
-
-		for (int i = 0; i < 6; i++)
-		{
-			glTexImage2D(targets[i], 0, format, cmtrd.width, cmtrd.height, 0, format, GL_UNSIGNED_BYTE, cmtrd.imageData[i]);
-			delete[] cmtrd.imageData[i];
-		}
-
-		initTexture();
-	}
-}
-
-CubeMapTexture::CubeMapTexture(const std::string& textureBasePath, const std::string& imageExtension)
-{
-	const char* suffixes[] = {"posx","negx",  "posy","negy", "posz","negz" };
-	//const char* suffixes[] = {"rt","lf",     "up","dn",     "bk","ft" };
-
-	GLuint targets[] = { 
-		GL_TEXTURE_CUBE_MAP_POSITIVE_X,
-		GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
-		GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
-		GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
-		GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
-		GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
-	};
-
-	//Generate texture object and bind
-	glGenTextures(1, &texObject);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, texObject);
-
-	for(int i=0; i < 6; i++)
-	{
-		std::string fileName = textureBasePath + "/" + suffixes[i] + "." + imageExtension;
-
-		if (auto imgSet = Util::loadImage(fileName))
-		{
-			auto img = imgSet->GetImage(0);
-			auto dim = img.GetDimensions();
-			GLenum fmt = (img.GetFormat().Components() == glimg::FMT_COLOR_RGB ? GL_RGB : GL_RGBA);
-
-			const void* imgData = img.GetImageData();
-
-			glTexImage2D(targets[i], 0, fmt, dim.width, dim.height, 0, fmt, GL_UNSIGNED_BYTE, imgData);
-
-		}
-		else
-			Error("Could not load texture: " + fileName);
+		glTexImage2D(targets[i], 0, format, cubemaps.width, cubemaps.height, 0, format, GL_UNSIGNED_BYTE, cubemaps.imageData[i]);
 	}
 
 	initTexture();
+
+
+	return true;
 }
 
 bool CubeMapTexture::loadCubeMapFromFile(const std::string& texturePath, CubeMapTextureRawData& cubeMap)
@@ -130,6 +123,7 @@ bool CubeMapTexture::loadCubeMapFromFile(const std::string& texturePath, CubeMap
 
 					size_t bytePerPixel = cubeMap.bytesPerComponent * cubeMap.numComponents;
 
+					//Copy subimage pixel data
 					auto copyArea = [&image, &cubeMap, bytePerPixel](size_t x, size_t y, size_t w, size_t h, void* dst) 
 					{
 						//todo: range checks
@@ -148,18 +142,21 @@ bool CubeMapTexture::loadCubeMapFromFile(const std::string& texturePath, CubeMap
 						}
 					};
 
+					size_t areas[6][4] = { 
+						{ cubeMap.width, 0, cubeMap.width, cubeMap.height },
+						{ 0, cubeMap.height, cubeMap.width, cubeMap.height },
+						{ 1 * cubeMap.width, cubeMap.height, cubeMap.width, cubeMap.height },
+						{ 2 * cubeMap.width, cubeMap.height, cubeMap.width, cubeMap.height },
+						{ 3 * cubeMap.width, cubeMap.height, cubeMap.width, cubeMap.height },
+						{ cubeMap.width, 2 * cubeMap.height, cubeMap.width, cubeMap.height },
+					};
+
 					for (int i = 0; i < 6; i++)
 					{
-						cubeMap.imageData[i] = new unsigned char[cubeMap.width*cubeMap.height*bytePerPixel];
+						unsigned char* subimage = new unsigned char[cubeMap.width*cubeMap.height*bytePerPixel];
+						copyArea(areas[i][0], areas[i][1], areas[i][2], areas[i][3], subimage);
+						cubeMap.imageData[i] = subimage;
 					}
-
-					//Copy subimage pixel data
-					copyArea(cubeMap.width, 0, cubeMap.width, cubeMap.height, cubeMap.imageData[0]);
-					copyArea(0, cubeMap.height, cubeMap.width, cubeMap.height, cubeMap.imageData[1]);
-					copyArea(1 * cubeMap.width, cubeMap.height, cubeMap.width, cubeMap.height, cubeMap.imageData[2]);
-					copyArea(2 * cubeMap.width, cubeMap.height, cubeMap.width, cubeMap.height, cubeMap.imageData[3]);
-					copyArea(3 * cubeMap.width, cubeMap.height, cubeMap.width, cubeMap.height, cubeMap.imageData[4]);
-					copyArea(cubeMap.width, 2 * cubeMap.height, cubeMap.width, cubeMap.height, cubeMap.imageData[5]);
 
 					return true;
 				}
