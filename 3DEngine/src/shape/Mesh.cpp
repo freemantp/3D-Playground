@@ -385,39 +385,55 @@ void Mesh::Render(const Scene_ptr scene) const
 	//Render individual index groups if available
 	int numRanges = (int)ranges.size();
 
-	for(int i=0 ; i < numRanges; i++)
-	{			
-		if(shaderProgram) 
-		{	
-			if(i < materials.size())
+	//std::vector<size_t> sortedRanges;
+	//std::vector<size_t> transparentRanges;
+	//for (size_t i = 0; i < ranges.size(); i++)
+	//{
+	//	if (i < materials.size())
+	//	{
+	//		if (materials[i]->opacity < 1)
+	//			transparentRanges.push_back(i);
+	//		else
+	//			sortedRanges.push_back(i);
+	//	}
+	//	else
+	//		sortedRanges.push_back(i);
+
+	//}
+	//sortedRanges.insert(sortedRanges.end(), transparentRanges.begin(), transparentRanges.end());
+
+	if (shaderProgram)
+	{
+		//for (int i : sortedRanges)
+		for (size_t i = 0; i < numRanges; i++)
+		{
+			if (i < materials.size())
 			{
 				//TODO: make this work with any shader
 				if (auto ps = std::dynamic_pointer_cast<PhongShader>(shaderProgram))
 				{
-					if(ObjMaterial_ptr mat = materials[i])
+					if (ObjMaterial_ptr mat = materials[i])
 					{
 						ps->ambientReflection = mat->ambient;
 						ps->diffuseReflection = mat->diffuse;
 						ps->glossyReflection = mat->specular;
 						ps->shininess = static_cast<int>(mat->shininess);
-
-						if (mat->opacity < 1)
-						{
-							continue;
-						}
-
+						ps->opacity = mat->opacity;
 					}
-				}	
+				}
 			}
-			shaderProgram->Use(scene, worldTransform);
-		}
 
-		//Bind i-th index buffer
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[i]);
-			
-		//Here glDrawRangeElements is used to limit the amount of vertex data to be prefetched
-		int numElems = (ranges[i].second - ranges[i].first + 1) * 3;
-		glDrawRangeElements(GL_TRIANGLES, ranges[i].first, ranges[i].second, (GLsizei)numElems, GL_UNSIGNED_INT, (GLvoid*)nullptr);
+			shaderProgram->Use(scene, worldTransform);
+
+			//Bind i-th index buffer
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[i]);
+
+			//Here glDrawRangeElements is used to limit the amount of vertex data to be prefetched
+			int numElems = (ranges[i].second - ranges[i].first + 1) * 3;
+			glDrawRangeElements(GL_TRIANGLES, ranges[i].first, ranges[i].second, (GLsizei)numElems, GL_UNSIGNED_INT, (GLvoid*)nullptr);
+
+			shaderProgram->UnUse();
+		}
 	}
 
 	glBindVertexArray(0);

@@ -143,6 +143,6 @@ bool ShaderBase::LoadShader( const string& vertexSource,
 
 void ShaderBase::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {
-	GLSLProgram::Use();
+	__super::Use();
 	UpdateTransforms(scene->activeCamera,modelTransform);
 }

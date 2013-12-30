@@ -8,6 +8,7 @@ struct MaterialInfo
 	vec3 DiffuseReflectivity;
 	vec3 SpecularReflectivity;
 	int Shininess;
+	float Opacity; //[0,1]
 };
 
 struct PointLight
@@ -143,5 +144,5 @@ void main()
 		ambient  *= cubeMapColor;
 	}
 
-	FragColor = vec4(ambient + diffuse + specular,1.0);
+	FragColor = vec4(ambient + diffuse + specular, 0.5);//Material.Opacity);
 }

@@ -31,6 +31,7 @@ void PhongShader::Init()
 	diffuseReflection = vec3(0.0f);
 	glossyReflection = vec3(1.0f);
 	shininess = 20;
+	opacity = 1.0f;
 
 	//Get subroutine indices
 	blinnSubroutineIdx = glGetSubroutineIndex(programHandle, GL_FRAGMENT_SHADER, "blinn");
@@ -52,6 +53,14 @@ void PhongShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 	SetUniform("Material.DiffuseReflectivity", diffuseReflection );
 	SetUniform("Material.SpecularReflectivity", glossyReflection );
 	SetUniform("Material.Shininess", shininess);
+	SetUniform("Material.Opacity", opacity);
+
+	if (opacity < 1.0)
+	{
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glDepthMask(GL_FALSE);
+	}
 
 	if(scene->skybox)
 	{
@@ -64,6 +73,13 @@ void PhongShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 	}
 
 	SetLightAndModel(scene);
+}
+
+void PhongShader::UnUse()
+{
+	__super::UnUse();
+	glDisable(GL_BLEND);
+	glDepthMask(GL_TRUE);
 }
 
 void PhongShader::SetLightAndModel(const Scene_ptr scene)

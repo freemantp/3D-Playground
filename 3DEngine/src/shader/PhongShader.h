@@ -23,13 +23,16 @@ public:
 
 	virtual ~PhongShader();
 
-	virtual void Use(const Scene_ptr scene, const glm::mat4& modelTransform);
+	virtual void Use(const Scene_ptr scene, const glm::mat4& modelTransform) override;
+
+	virtual void UnUse() override;
 
 	vec3 ambientReflection;
 	vec3 diffuseReflection;
 	vec3 glossyReflection;
 
 	int shininess;
+	float opacity;
 	GLSLShader::PhongShadeModel shadeModel;
 
 protected:
