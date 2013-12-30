@@ -33,7 +33,7 @@ public:
 
 	virtual void SetShader(ShaderBase_ptr shader);
 
-	bool IsInitialized() { return initialized; };
+	bool IsInitialized() const { return initialized; };
 	bool MapVertexAttribute(GLSLShader::VertexAttribute attrib, GLuint channel);
 
 protected:
@@ -48,9 +48,7 @@ protected:
 		GLint  size;
 	};
 
-
-
-	inline void setAttribPointer(const GLSLShader::VertexAttribute& attrib);
+	inline void SetAttribPointer(const GLSLShader::VertexAttribute& attrib);
 
 	GLuint vaoHandle;
 	//size_t numIndices;

@@ -105,7 +105,7 @@ bool Mesh::MapVertexAttribute(VertexAttribute attrib, GLuint channel)
 		glEnableVertexAttribArray(channel);
 
 		vAttribData[attrib].channel = channel;
-		setAttribPointer(attrib);
+		SetAttribPointer(attrib);
 
 		//unbind array & buffer
 		glBindBuffer(GL_ARRAY_BUFFER,0);
@@ -115,7 +115,7 @@ bool Mesh::MapVertexAttribute(VertexAttribute attrib, GLuint channel)
 	return true;
 }
 
-void Mesh::setAttribPointer(const VertexAttribute& attrib)
+void Mesh::SetAttribPointer(const VertexAttribute& attrib)
 {
 	GLuint channel = vAttribData[attrib].channel;
 	GLint size = vAttribData[attrib].size;
@@ -153,7 +153,7 @@ bool Mesh::SetPositions(const std::vector<float>& positions, const std::vector<i
 	{
 		glEnableVertexAttribArray(vAttribData[Position].channel);  
 		glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(float), &positions[0], GL_STATIC_DRAW);
-		setAttribPointer(Position);
+		SetAttribPointer(Position);
 	} 
 	else 
 	{
@@ -205,7 +205,7 @@ bool Mesh::SetNormals(const std::vector<float>& normals)
 
 		glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(float), &normals[0], GL_STATIC_DRAW);
 
-		setAttribPointer(Normal);
+		SetAttribPointer(Normal);
 		success =  true;
 	} 
 	else
@@ -232,7 +232,7 @@ bool Mesh::SetTangents(const std::vector<float>& tangents)
 
 		glBufferData(GL_ARRAY_BUFFER, tangents.size() * sizeof(float), &tangents[0], GL_STATIC_DRAW);
 
-		setAttribPointer(Tangent);
+		SetAttribPointer(Tangent);
 		success =  true;
 	} 
 	else
@@ -259,7 +259,7 @@ bool Mesh::SetTextureCoordinates(const std::vector<float>& texCoords)
 
 		glBufferData(GL_ARRAY_BUFFER, texCoords.size() * sizeof(float), &texCoords[0], GL_STATIC_DRAW);
 
-		setAttribPointer(TextureCoord);
+		SetAttribPointer(TextureCoord);
 		success =  true;
 	} 
 	else
@@ -286,7 +286,7 @@ bool Mesh::SetColors(const std::vector<float>& colors)
 		glEnableVertexAttribArray(vAttribData[Color].channel);  // Vertex color		
 		glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(float), &colors[0], GL_STATIC_DRAW);
 
-		setAttribPointer(Color);
+		SetAttribPointer(Color);
 		success =  true;
 	} 
 	else
@@ -400,6 +400,12 @@ void Mesh::Render(const Scene_ptr scene) const
 						ps->diffuseReflection = mat->diffuse;
 						ps->glossyReflection = mat->specular;
 						ps->shininess = static_cast<int>(mat->shininess);
+
+						if (mat->opacity < 1)
+						{
+							continue;
+						}
+
 					}
 				}	
 			}

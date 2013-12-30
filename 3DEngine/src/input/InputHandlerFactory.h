@@ -6,6 +6,6 @@ class InputHandlerFactory
 {
 public:
 
-	virtual InputHandler& getInputHandler() = 0;
+	virtual InputHandler& GetInputHandler() = 0;
 
 };

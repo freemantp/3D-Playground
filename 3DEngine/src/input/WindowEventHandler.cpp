@@ -14,17 +14,17 @@ WindowEventHandler& WindowEventHandler::getInstance()
 	return instance;
 }
 
-void WindowEventHandler::addViewportObserver(ViewportObserver_ptr observer)
+void WindowEventHandler::AddViewportObserver(ViewportObserver_ptr observer)
 {
 	viewportObservers.push_back(observer);
 }
 
 void WindowEventHandler::resize(int width, int height)
 {
-	instance.handleResize(width,height);
+	instance.HandleResize(width,height);
 }
 
-void WindowEventHandler::handleResize(int width, int height)
+void WindowEventHandler::HandleResize(int width, int height)
 {
 	//Update Viewport
 	glViewport(0, 0, width, height);
