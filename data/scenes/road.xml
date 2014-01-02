@@ -48,10 +48,9 @@
 
   <objects>
 
-    <mesh file="GAZ M24 VOLGA/GAZ M24 VOLGA.obj" material="car">
+    <mesh file="girl_3/girl_3.obj" material="car">
       <transform>
-        <translate x="0" y="0.24" z="0.0"/>
-        <scale x="0.00005" y="0.00005" z="0.00005"/>
+        <scale x="0.2" y="0.2" z="0.2"/>
       </transform>
     </mesh>
 

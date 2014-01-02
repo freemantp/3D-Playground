@@ -42,6 +42,7 @@
     <ClInclude Include="src\rendering\GeometryBuffer.h" />
     <ClInclude Include="src\rendering\Renderable.h" />
     <ClInclude Include="src\rendering\Renderer.h" />
+    <ClInclude Include="src\rendering\Viewport.h" />
     <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="src\scene\SceneParser.h" />
     <ClInclude Include="src\shader\ColorShader.h" />
@@ -85,6 +86,7 @@
     <ClCompile Include="src\math\HaltonSphere.cpp" />
     <ClCompile Include="src\rendering\GeometryBuffer.cpp" />
     <ClCompile Include="src\rendering\Renderer.cpp" />
+    <ClCompile Include="src\rendering\Viewport.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\scene\SceneParser.cpp" />
     <ClCompile Include="src\shader\ColorShader.cpp" />

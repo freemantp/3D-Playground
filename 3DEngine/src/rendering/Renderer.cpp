@@ -1,19 +1,19 @@
 #include "stdafx.h"
 #include "Renderer.h"
+#include "Viewport.h"
 #include "GeometryBuffer.h"
 #include  "../scene/Scene.h"
 
 
-Renderer_ptr Renderer::Create(int width, int height)
+Renderer_ptr Renderer::Create(Viewport_ptr viewport)
 {
-	return Renderer_ptr(new Renderer(width,height));
+	return Renderer_ptr(new Renderer(viewport));
 }
 
-Renderer::Renderer(int width, int height)
-	: m_gBuffer(GeometryBuffer::Create(width,height))
+Renderer::Renderer(Viewport_ptr viewport)
+: m_gBuffer(GeometryBuffer::Create(viewport->width, viewport->height))
 {
 }
-
 
 Renderer::~Renderer()
 {

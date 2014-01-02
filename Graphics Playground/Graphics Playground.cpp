@@ -4,6 +4,8 @@
 #include <string>
 
 #include <rendering/Renderer.h>
+#include <rendering/Viewport.h>
+
 #include <scene/SceneParser.h>
 #include <scene/Scene.h>
 #include <util/Util.h>
@@ -19,9 +21,10 @@ using std::string;
 
 #define WINDOW_TITLE_PREFIX "OpenGL Playground"
 
-int CurrentWidth = 1600,
-	CurrentHeight = 900,
-	WindowHandle = 0;
+
+Viewport_ptr viewport;
+
+int	WindowHandle = 0;
 
 bool Initialize();
 bool InitializeGlut(int, char*[]);
@@ -29,27 +32,27 @@ void InitWindow();
 void RenderFunction();
 
 Renderer_ptr renderer;
-string sceneName = "headScene.xml";
+//string sceneName = "headScene.xml";
 //string sceneName = "manyPlanes.xml";
-//string sceneName = "road.xml";
+string sceneName = "road.xml";
 //string sceneName = "simpleScene.xml";
 //string sceneName = "shScene.xml";
 //string sceneName = "ogreScene.xml";
 
 int main(int argc, char* argv[])
-{	
+{
 
-	if(argc == 2)
+	if (argc == 2)
 	{
 		sceneName = string(argv[1]);
 	}
 
-	
 	int retCode = EXIT_SUCCESS;
-	if( Initialize() )
+	if (Initialize())
 	{
 		glutMainLoop();
-	} else {
+	}
+	else {
 		glutHideWindow();
 		getchar();
 		retCode = EXIT_FAILURE;
@@ -64,7 +67,7 @@ void initGL()
 	if (!tst)
 	{
 		//Problem: glewInit failed, something is seriously wrong.
-		std::cout<<"glewInit failed, aborting." << std::endl;
+		std::cout << "glewInit failed, aborting." << std::endl;
 	}
 
 	/* Use depth buffering for hidden surface elimination. */
@@ -87,35 +90,38 @@ bool Initialize()
 	int glutArgc = 0;
 	char** glutArgv = nullptr;
 
-	if( ! InitializeGlut(glutArgc, glutArgv) )
+	viewport = Viewport::Create(1600, 900);
+
+	if (!InitializeGlut(glutArgc, glutArgv))
 		return false;
-	
+
 	InitWindow();
 	initGL();
 
-	fprintf( stdout, "INFO: OpenGL Version: %s\n", glGetString(GL_VERSION) );
+	fprintf(stdout, "INFO: OpenGL Version: %s\n", glGetString(GL_VERSION));
 
 	GLint num;
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &num);
 
-	const char* data = Util::LoadTextFile(Config::SCENE_BASE_PATH  + sceneName.c_str());
-	
-	renderer = Renderer::Create(CurrentWidth,CurrentHeight);
+	const char* data = Util::LoadTextFile(Config::SCENE_BASE_PATH + sceneName.c_str());
+
+
+	renderer = Renderer::Create(viewport);
 
 	GlutInputHandlerFactory gihf;
-	SceneParser sp(gihf);	
-	if(sp.parse(data))
+	SceneParser sp(gihf);
+	if (sp.parse(data))
 	{
 		auto s = sp.GetScene();
 		renderer->SetScene(s);
 		TimeManager::getInstance().addTimeObserver(s);
 
 		string windowTitle = string(WINDOW_TITLE_PREFIX) + " - " + s->name;
-		glutSetWindowTitle(windowTitle.c_str() );
+		glutSetWindowTitle(windowTitle.c_str());
 	}
 	else
 	{
-		Error("Scene could not be loaded: " + sceneName );	
+		Error("Scene could not be loaded: " + sceneName);
 		return false;
 	}
 
@@ -135,7 +141,7 @@ bool InitializeGlut(int argc, char* argv[])
 		GLUT_ACTION_GLUTMAINLOOP_RETURNS
 		);
 
-	glutInitWindowSize(CurrentWidth, CurrentHeight);
+	glutInitWindowSize(viewport->width, viewport->height);
 
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
 
@@ -146,7 +152,7 @@ void InitWindow()
 {
 	WindowHandle = glutCreateWindow(WINDOW_TITLE_PREFIX);
 
-	if(WindowHandle < 1) 
+	if (WindowHandle < 1)
 	{
 		Error("ERROR: Could not create a new rendering window");
 		exit(EXIT_FAILURE);

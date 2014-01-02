@@ -562,11 +562,20 @@ bool ObjLoader::ComputeTangents()
 		const vec3& t = tangents_tmp[i];
 		const vec3& bt = bitangents[i];
 
-		// Gram-Schmidt orthogonalize
-		tangents[i] = vec4(glm::normalize(t - n * glm::dot(n,t) ), 1.0);
+		vec3 gm_tmp = t - n * glm::dot(n, t);
 
-		// Calculate handedness
-        tangents[i].w = (glm::dot(glm::cross(n, t), bt) < 0.0f) ? -1.0f : 1.0f;
+		if (glm::length(gm_tmp) > 0)
+		{
+			// Gram-Schmidt orthogonalize
+			tangents[i] = vec4(glm::normalize(gm_tmp), 1.0);
+
+			// Calculate handedness
+			tangents[i].w = (glm::dot(glm::cross(n, t), bt) < 0.0f) ? -1.0f : 1.0f;
+		}
+		else
+		{
+			Warn("Tangent could not be computed");
+		}
 	}
 
 	return true;

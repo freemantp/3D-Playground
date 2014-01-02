@@ -221,6 +221,9 @@
       <Filter>Source Files\math</Filter>
     </ClInclude>
     <ClInclude Include="src\common.h" />
+    <ClInclude Include="src\rendering\Viewport.h">
+      <Filter>Source Files\rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -339,6 +342,9 @@
     </ClCompile>
     <ClCompile Include="src\math\HaltonSphere.cpp">
       <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rendering\Viewport.cpp">
+      <Filter>Source Files\rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
