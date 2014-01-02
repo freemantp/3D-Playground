@@ -144,5 +144,5 @@ void main()
 		ambient  *= cubeMapColor;
 	}
 
-	FragColor = vec4(ambient + diffuse + specular, 0.5);//Material.Opacity);
+	FragColor = vec4(ambient + diffuse + specular, Material.Opacity);
 }

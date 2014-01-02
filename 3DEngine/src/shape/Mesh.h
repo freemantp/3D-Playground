@@ -23,7 +23,8 @@ public:
 	virtual void Render(const Scene_ptr scene) const;
 	virtual void Init(); 
 
-	typedef std::vector<std::pair<int, int> > IntPairVector;
+	typedef std::pair<int, int> IntPair;
+	typedef std::vector<IntPair> IntPairVector;
 
 	bool SetPositions(const std::vector<float>& positions, const std::vector<int>& indices, IntPairVector* indexGroups = nullptr);
 	bool SetNormals(const std::vector<float>& normals);
