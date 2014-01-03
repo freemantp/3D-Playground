@@ -13,6 +13,7 @@
 #include "../texture/CubeMapTexture.h"
 
 #include "../util/Util.h"
+#include "../util/MeshRaw.h"
 #include "../camera/PerspectiveCamera.h"
 #include "../scene/Scene.h"
 
@@ -264,21 +265,15 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 			string type = objeElem->Name();
 			Shape_ptr shape;
 
+			std::string modelPath = "../data/models/";
+
 			if(type == "mesh")
 			{
 				string file = objeElem->Attribute("file");
 
-				if (Mesh_ptr loadedMesh = Util::LoadModel("../data/models/" + file))
-				{					
-					// Mesh has material descriptors
-					if (loadedMesh->GetMaterials().size() > 0)
-					{
-						Info("Mesh has own materials");
-					}
-
-					shape = loadedMesh;
-				}					
-				else
+				modelPath += file;
+				shape = Util::LoadModel(modelPath);
+				if (!shape)
 					return false;
 			}
 			else if(type == "box")
@@ -310,6 +305,46 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 			}
 			else // Look whether 
 			{
+				if (auto mesh = std::dynamic_pointer_cast<Mesh>(shape))
+				{
+					std::vector<MeshTextureSet> meshTextureSets;
+
+					// Mesh has material descriptors
+					for (auto mat : mesh->GetMaterials())
+					{
+						MeshTextureSet mts;
+
+						if (!mat->bumpMapTexture.empty())
+						{					
+							mts.bump = Texture::Create(Util::ExtractBaseFolder(modelPath) + mat->bumpMapTexture);
+						}
+						if (!mat->diffuseColorTexture.empty())
+						{
+							mts.albedo = Texture::Create(Util::ExtractBaseFolder(modelPath) + mat->diffuseColorTexture);
+						}
+						if (!mat->specularColorTexture.empty())
+						{
+							mts.specular = Texture::Create(Util::ExtractBaseFolder(modelPath) + mat->specularColorTexture);
+						}
+
+						
+
+						if (mts.Valid())
+						{
+							mts.name = mat->name;
+							meshTextureSets.push_back(mts);
+						}
+											
+
+					}
+
+					if (!meshTextureSets.empty())
+					{
+						mesh->SetTextures(meshTextureSets);
+						mesh->SetShader(PhongTextureShader::Create(meshTextureSets[0].albedo));
+					}
+				}
+
 				shape->GetShader();
 			}
 

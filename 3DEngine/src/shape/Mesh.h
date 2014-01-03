@@ -11,7 +11,20 @@ SHARED_PTR_CLASS_DECL(MeshRaw);
 SHARED_PTR_CLASS_DECL(Mesh);
 SHARED_PTR_CLASS_DECL(ObjMaterial);
 SHARED_PTR_CLASS_DECL(Scene);
+SHARED_PTR_CLASS_DECL(Texture);
  
+class MeshTextureSet
+{
+public:
+	std::string name;
+	Texture_ptr bump;
+	Texture_ptr albedo;
+	Texture_ptr specular;
+
+	bool Valid() { return bump || albedo || specular; }
+
+};
+
 class Mesh : public Shape
 {
 public:
@@ -34,6 +47,7 @@ public:
 
 	virtual void SetShader(ShaderBase_ptr shader) override;
 
+	void SetTextures(const std::vector<MeshTextureSet>& tex);
 	const std::vector<ObjMaterial_ptr>& GetMaterials() { return materials; };
 
 	bool IsInitialized() const { return initialized; };
@@ -61,6 +75,7 @@ protected:
 
 	std::vector< std::pair<int,int> > ranges;
 	std::vector<ObjMaterial_ptr> materials;
+	std::vector<MeshTextureSet> textures;
 
 	bool normalsSet,tangentsSet,colorsSet,texCoordsSet;
 

@@ -1,12 +1,11 @@
 #include "stdafx.h"
+
 #include "PhongTextureShader.h"
+#include "UniformBuffer.h"
+
 #include "../camera/Camera.h"
 #include "../scene/Scene.h"
 #include "../light/PointLight.h"
-#include "UniformBuffer.h"
-#include "../util/Util.h"
-#include "../config.h"
-
 #include "../texture/Texture.h"
 
 PhongTextureShader_ptr PhongTextureShader::Create(const Texture_ptr albedoTex)
@@ -22,8 +21,7 @@ PhongTextureShader::PhongTextureShader(const Texture_ptr albedoTex)
 	GLint maxTexUnits;
 	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,&maxTexUnits);
 
-	//Create albedo texture and specify texUnit 0
-	textures[Albedo] = albedoTex;
+	SetAlbedo(albedoTex);
 
 	texUnits[Albedo] = 0;
 	texUnits[BumpMap] = 1;
@@ -35,19 +33,31 @@ PhongTextureShader::~PhongTextureShader()
 
 }
 
+void PhongTextureShader::SetAlbedo(const Texture_ptr albedoTex)
+{
+	textures[Albedo] = albedoTex;
+}
+
 void PhongTextureShader::SetBumpMap(const Texture_ptr bumpMap, bool isNormalMap)
 {
 	this->isNormalMap = isNormalMap;
 
 	//Create albedo texture and specify texUnit 0
 	textures[BumpMap] = bumpMap;
-	hasBumpMap = true;
+	if (bumpMap)
+		hasBumpMap = true;
+	else
+		hasBumpMap = false;
 }
 
 void PhongTextureShader::SetSpecularMap(const Texture_ptr specularMap)
 {
 	textures[Specular] = specularMap;
-	hasSpecularMap = true;
+
+	if (specularMap)
+		hasSpecularMap = true;
+	else
+		hasSpecularMap = false;
 }
 
 void PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
@@ -77,5 +87,4 @@ void PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransf
 		SetUniform("SpecularTex", texUnits[Specular]);
 		SetUniform("hasSpecularMap",hasSpecularMap);
 	}
-
 }

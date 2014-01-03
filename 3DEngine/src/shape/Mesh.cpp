@@ -3,6 +3,7 @@
 #include "../scene/Scene.h"
 #include "../shader/ShaderBase.h"
 #include "../shader/PhongShader.h"
+#include "../shader/PhongTextureShader.h"
 #include "../util/MeshRaw.h"
 
 using namespace GLSLShader;
@@ -35,6 +36,13 @@ Mesh::Mesh(MeshRaw_ptr rawMesh)
 	Init();
 	InitFromRawMesh(rawMesh);
 	
+}
+
+Mesh::~Mesh()
+{
+	delete[] bufferObjects;
+	delete[] indexBufferObjects;
+	delete[] vAttribData;
 }
 
 void Mesh::InitFromRawMesh(MeshRaw_ptr rawMesh)
@@ -80,12 +88,12 @@ void Mesh::InitFromRawMesh(MeshRaw_ptr rawMesh)
 	}
 }
 
-Mesh::~Mesh() 
+void Mesh::SetTextures(const std::vector<MeshTextureSet>& tex)
 {
-	delete[] bufferObjects;
-	delete[] indexBufferObjects;
-	delete[] vAttribData;
+	textures = tex;
 }
+
+
 
 bool Mesh::MapVertexAttribute(VertexAttribute attrib, GLuint channel)
 {
@@ -410,7 +418,14 @@ void Mesh::Render(const Scene_ptr scene) const
 			if (i < materials.size())
 			{
 				//TODO: make this work with any shader
-				if (auto ps = std::dynamic_pointer_cast<PhongShader>(shaderProgram))
+				if (auto pts = std::dynamic_pointer_cast<PhongTextureShader>(shaderProgram))
+				{
+					pts->SetAlbedo(textures[i].albedo);
+					pts->SetSpecularMap(textures[i].specular ? textures[i].specular : Texture_ptr());
+					pts->SetBumpMap(textures[i].bump ? textures[i].bump : Texture_ptr(),true);
+
+				}
+				else if (auto ps = std::dynamic_pointer_cast<PhongShader>(shaderProgram))
 				{
 					if (ObjMaterial_ptr mat = materials[i])
 					{
