@@ -9,18 +9,18 @@ class PhongTextureShader :public PhongShader
 {
 public:
 
-	static PhongTextureShader_ptr Create(const string& textureFile);
+	static PhongTextureShader_ptr Create(const Texture_ptr albedoTex);
 	
 	virtual ~PhongTextureShader();
 
 	virtual void Use(const Scene_ptr scene, const glm::mat4& modelTransform);
-	virtual void SetSpecularMap(const std::string& specularMap);
-	virtual void SetBumpMap(const std::string& textureFile, bool isNormalMap);
+	virtual void SetSpecularMap(const Texture_ptr specularMa);
+	virtual void SetBumpMap(const Texture_ptr bumpMap, bool isNormalMap);
 
 
 protected:
 
-	PhongTextureShader(const string& textureFile);
+	PhongTextureShader(const Texture_ptr albedo);
 
 	enum TextureType {Albedo, BumpMap, Specular};
 	static const int numTextures = 3;

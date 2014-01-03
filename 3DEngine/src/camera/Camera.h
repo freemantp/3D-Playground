@@ -26,7 +26,6 @@ public:
 
 	void UpdateViewMatrix();
 	virtual void UpdateProjectionMatrix() = 0;
-	virtual void ViewportSizeChanged(int width, int height) = 0;
 
 	const vec3& GetPosition() const;
 	const vec3& GetTarget() const;

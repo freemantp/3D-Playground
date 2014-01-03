@@ -9,6 +9,7 @@
 #include "../shader/ColorShader.h"
 #include "../shader/ConstShader.h"
 #include "../shader/SHDiffuseShader.h"
+#include "../texture/Texture.h"
 #include "../texture/CubeMapTexture.h"
 
 #include "../util/Util.h"
@@ -108,7 +109,6 @@ bool SceneParser::parse(const char* xmlDocument)
 				if( ! ParseObjects(objectsElement) )
 					return false;
 			}
-
 		}
 		else 
 		{
@@ -131,11 +131,12 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 
 	do
 	{
-		string shaderName = materialElement->Attribute("shader");
+		string shaderType = materialElement->Attribute("shader");
+		string materialName = materialElement->Attribute("name");
 
 		ShaderBase_ptr shader;
 		
-		if(shaderName == "phong")
+		if(shaderType == "phong")
 		{			
 			PhongShader_ptr ps;
 			XMLElement* subElem;
@@ -145,21 +146,27 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 			{
 				string texFile(subElem->Attribute("file"));
 			
-				auto pbs = PhongTextureShader::Create(texFile);
+				Texture_ptr albedo = Texture::Create(Config::TEXTURE_BASE_PATH + texFile);
+
+				auto pbs = PhongTextureShader::Create(albedo);
 
 				//bump mapping		
 				if(subElem = materialElement->FirstChildElement("bumpMap"))
 				{
 					string bumpMapFile(subElem->Attribute("file"));
 					string type(subElem->Attribute("type"));
-					pbs->SetBumpMap(bumpMapFile, type == "normal");
+
+					Texture_ptr bumpMap = Texture::Create(Config::TEXTURE_BASE_PATH + bumpMapFile);
+					pbs->SetBumpMap(bumpMap, type == "normal");
 				}
 
 				//specular mapping				
 				if(subElem = materialElement->FirstChildElement("specularMap"))
 				{
 					string specMapFile(subElem->Attribute("file"));
-					pbs->SetSpecularMap(specMapFile);
+
+					Texture_ptr specularMap = Texture::Create(Config::TEXTURE_BASE_PATH + specMapFile);
+					pbs->SetSpecularMap(specularMap);
 				}
 				ps = pbs;
 			}
@@ -183,11 +190,11 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 
 			shader = ps;
 		}
-		else if(shaderName == "color")
+		else if(shaderType == "color")
 		{
 			shader.reset(new ColorShader());
 		}
-		else if(shaderName == "const")
+		else if(shaderType == "const")
 		{
 			ConstShader_ptr cshader(new ConstShader(vec3(1.0)));
 			
@@ -197,13 +204,13 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 
 			shader = cshader;
 		}
-		else if (shaderName == "diffuseSH")
+		else if (shaderType == "diffuseSH")
 		{
 			shader = ShDiffuseShader::Create();
 		}
 		else
 		{
-			Error("Shader " + shaderName + " not supported");
+			Error("Shader " + shaderType + " not supported");
 			return false;
 		}
 
@@ -260,8 +267,18 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 			if(type == "mesh")
 			{
 				string file = objeElem->Attribute("file");
-				shape = Util::LoadModel("../data/models/"+file);
-				if(!shape)
+
+				if (Mesh_ptr loadedMesh = Util::LoadModel("../data/models/" + file))
+				{					
+					// Mesh has material descriptors
+					if (loadedMesh->GetMaterials().size() > 0)
+					{
+						Info("Mesh has own materials");
+					}
+
+					shape = loadedMesh;
+				}					
+				else
 					return false;
 			}
 			else if(type == "box")
@@ -290,6 +307,10 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 					else
 						Warn("The specified material " + string(materialName) +" is not defined");	
 				}
+			}
+			else // Look whether 
+			{
+				shape->GetShader();
 			}
 
 			// Parse transform node

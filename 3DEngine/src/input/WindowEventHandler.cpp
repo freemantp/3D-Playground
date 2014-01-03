@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "WindowEventHandler.h"
 #include "ViewportObserver.h"
+#include "../rendering/Viewport.h"
 
 WindowEventHandler WindowEventHandler::instance = WindowEventHandler();
 
@@ -33,6 +34,6 @@ void WindowEventHandler::HandleResize(int width, int height)
 	//std::vector<ViewportObserver*>::const_iterator cit;
 	for(auto cit = viewportObservers.cbegin(); cit != viewportObservers.cend(); cit++) 
 	{
-		(*cit)->ViewportSizeChanged(width,height);
+		(*cit)->ViewportChanged(Viewport::Create(width, height));
 	}
 }

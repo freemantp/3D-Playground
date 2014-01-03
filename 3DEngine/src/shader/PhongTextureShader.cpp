@@ -9,12 +9,12 @@
 
 #include "../texture/Texture.h"
 
-PhongTextureShader_ptr PhongTextureShader::Create(const string& textureFile)
+PhongTextureShader_ptr PhongTextureShader::Create(const Texture_ptr albedoTex)
 {
-	return PhongTextureShader_ptr(new PhongTextureShader(textureFile));
+	return PhongTextureShader_ptr(new PhongTextureShader(albedoTex));
 }
 
-PhongTextureShader::PhongTextureShader(const string& albedoTexFile)
+PhongTextureShader::PhongTextureShader(const Texture_ptr albedoTex)
 : hasBumpMap(false)
 , hasSpecularMap(false)
 , PhongShader("phongBumpShader")
@@ -23,7 +23,7 @@ PhongTextureShader::PhongTextureShader(const string& albedoTexFile)
 	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,&maxTexUnits);
 
 	//Create albedo texture and specify texUnit 0
-	textures[Albedo] = Texture::Create( Config::TEXTURE_BASE_PATH + albedoTexFile );
+	textures[Albedo] = albedoTex;
 
 	texUnits[Albedo] = 0;
 	texUnits[BumpMap] = 1;
@@ -35,18 +35,18 @@ PhongTextureShader::~PhongTextureShader()
 
 }
 
-void PhongTextureShader::SetBumpMap(const std::string& textureFile, bool isNormalMap)
+void PhongTextureShader::SetBumpMap(const Texture_ptr bumpMap, bool isNormalMap)
 {
 	this->isNormalMap = isNormalMap;
 
 	//Create albedo texture and specify texUnit 0
-	textures[BumpMap] = Texture::Create( Config::TEXTURE_BASE_PATH + textureFile );
+	textures[BumpMap] = bumpMap;
 	hasBumpMap = true;
 }
 
-void PhongTextureShader::SetSpecularMap(const string& textureFile)
+void PhongTextureShader::SetSpecularMap(const Texture_ptr specularMap)
 {
-	textures[Specular]= Texture::Create( Config::TEXTURE_BASE_PATH +  textureFile );
+	textures[Specular] = specularMap;
 	hasSpecularMap = true;
 }
 

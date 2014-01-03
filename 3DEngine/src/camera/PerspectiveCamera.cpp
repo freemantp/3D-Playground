@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "PerspectiveCamera.h"
+#include "../rendering/Viewport.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 using glm::vec4;
@@ -40,7 +42,7 @@ void PerspectiveCamera::SetFov(float fov)
 	UpdateProjectionMatrix();
 }
 
-void PerspectiveCamera::ViewportSizeChanged(int width, int height)
+void PerspectiveCamera::ViewportChanged(Viewport_ptr viewport)
 {
-	SetAspectRatio((float)width / height);
+	SetAspectRatio((float)viewport->width / viewport->height);
 }

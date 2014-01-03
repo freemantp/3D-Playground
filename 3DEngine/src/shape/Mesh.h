@@ -32,7 +32,9 @@ public:
 	bool SetTextureCoordinates(const std::vector<float>& texCoords);
 	bool SetColors(const std::vector<float>& colors);
 
-	virtual void SetShader(ShaderBase_ptr shader);
+	virtual void SetShader(ShaderBase_ptr shader) override;
+
+	const std::vector<ObjMaterial_ptr>& GetMaterials() { return materials; };
 
 	bool IsInitialized() const { return initialized; };
 	bool MapVertexAttribute(GLSLShader::VertexAttribute attrib, GLuint channel);

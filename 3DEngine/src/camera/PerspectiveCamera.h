@@ -15,7 +15,7 @@ public:
 	void SetFov(float fov);
 	void SetAspectRatio(float aspectRatio);
 
-	virtual void ViewportSizeChanged(int width, int height);
+	virtual void ViewportChanged(Viewport_ptr viewport) override;
 
 protected:
 

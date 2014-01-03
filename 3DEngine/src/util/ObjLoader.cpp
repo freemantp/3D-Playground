@@ -264,9 +264,7 @@ bool ObjLoader::LoadMtllib(std::istream& istr, MeshRaw_ptr newMesh)
 			{
 				mat->displacementMapTexture = line.substr(5);
 			}
-
 		}
-
 	}	
 	newMesh->materials.push_back(mat);
 	return newMesh->materials.size() > 0;
