@@ -12,6 +12,8 @@
 #include "../texture/Texture.h"
 #include "../texture/CubeMapTexture.h"
 
+#include "../materials/Material.h"
+
 #include "../util/Util.h"
 #include "../util/MeshRaw.h"
 #include "../camera/PerspectiveCamera.h"
@@ -128,100 +130,104 @@ bool SceneParser::parse(const char* xmlDocument)
 
 bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 {
-	XMLElement* materialElement = materialsGroupElement->FirstChildElement("material");
-
-	do
+	if (XMLElement* materialElement = materialsGroupElement->FirstChildElement("material"))
 	{
-		string shaderType = materialElement->Attribute("shader");
-		string materialName = materialElement->Attribute("name");
+		do
+		{
+			string shaderType = materialElement->Attribute("shader");
+			string materialName = materialElement->Attribute("name");
 
-		ShaderBase_ptr shader;
-		
-		if(shaderType == "phong")
-		{			
-			PhongShader_ptr ps;
-			XMLElement* subElem;
+			ShaderBase_ptr shader;
 
-			//Load textured version if available
-			if(subElem = materialElement->FirstChildElement("texture"))
+			if (shaderType == "phong")
 			{
-				string texFile(subElem->Attribute("file"));
-			
-				Texture_ptr albedo = Texture::Create(Config::TEXTURE_BASE_PATH + texFile);
+				PhongShader_ptr ps;
+				XMLElement* subElem;
 
-				auto pbs = PhongTextureShader::Create(albedo);
-
-				//bump mapping		
-				if(subElem = materialElement->FirstChildElement("bumpMap"))
+				//Load textured version if available
+				if (subElem = materialElement->FirstChildElement("texture"))
 				{
-					string bumpMapFile(subElem->Attribute("file"));
-					string type(subElem->Attribute("type"));
+					string texFile(subElem->Attribute("file"));
 
-					Texture_ptr bumpMap = Texture::Create(Config::TEXTURE_BASE_PATH + bumpMapFile);
-					pbs->SetBumpMap(bumpMap, type == "normal");
+					Texture_ptr albedo = Texture::Create(Config::TEXTURE_BASE_PATH + texFile);
+
+					auto pbs = PhongTextureShader::Create(albedo);
+
+					//bump mapping		
+					if (subElem = materialElement->FirstChildElement("bumpMap"))
+					{
+						string bumpMapFile(subElem->Attribute("file"));
+						string type(subElem->Attribute("type"));
+
+						Texture_ptr bumpMap = Texture::Create(Config::TEXTURE_BASE_PATH + bumpMapFile);
+						pbs->SetBumpMap(bumpMap, type == "normal");
+					}
+
+					//specular mapping				
+					if (subElem = materialElement->FirstChildElement("specularMap"))
+					{
+						string specMapFile(subElem->Attribute("file"));
+
+						Texture_ptr specularMap = Texture::Create(Config::TEXTURE_BASE_PATH + specMapFile);
+						pbs->SetSpecularMap(specularMap);
+					}
+					ps = pbs;
+				}
+				else
+				{
+					ps = PhongShader::Create();
 				}
 
-				//specular mapping				
-				if(subElem = materialElement->FirstChildElement("specularMap"))
-				{
-					string specMapFile(subElem->Attribute("file"));
+				PhongMaterial_ptr phongMat = PhongMaterial::Create();
 
-					Texture_ptr specularMap = Texture::Create(Config::TEXTURE_BASE_PATH + specMapFile);
-					pbs->SetSpecularMap(specularMap);
-				}
-				ps = pbs;
+				//Load common phong attributes
+				if (subElem = materialElement->FirstChildElement("ambientReflect"))
+					GetColorVector3(subElem, phongMat->ambientReflection);
+
+				if (subElem = materialElement->FirstChildElement("diffuseReflect"))
+					GetColorVector3(subElem, phongMat->diffuseReflection);
+
+				if (subElem = materialElement->FirstChildElement("glossyReflect"))
+					GetColorVector3(subElem, phongMat->glossyReflection);
+
+				if (subElem = materialElement->FirstChildElement("shininess"))
+					GetIntAttrib(subElem, "value", phongMat->shininess);
+
+				ps->SetMaterial(phongMat);
+
+				shader = ps;
+			}
+			else if (shaderType == "color")
+			{
+				shader.reset(new ColorShader());
+			}
+			else if (shaderType == "const")
+			{
+				ConstShader_ptr cshader(new ConstShader(vec3(1.0)));
+
+				XMLElement* subElem;
+				if (subElem = materialElement->FirstChildElement("color"))
+					GetColorVector3(subElem, cshader->color);
+
+				shader = cshader;
+			}
+			else if (shaderType == "diffuseSH")
+			{
+				shader = ShDiffuseShader::Create();
 			}
 			else
 			{
-				ps = PhongShader::Create();
+				Error("Shader " + shaderType + " not supported");
+				return false;
 			}
-			
-			//Load common phong attributes
-			if ( subElem = materialElement->FirstChildElement("ambientReflect") )
-				GetColorVector3(subElem,ps->ambientReflection);
 
-			if ( subElem = materialElement->FirstChildElement("diffuseReflect") )
-				GetColorVector3(subElem,ps->diffuseReflection);
-
-			if ( subElem = materialElement->FirstChildElement("glossyReflect"))
-				GetColorVector3(subElem,ps->glossyReflection);
-
-			if ( subElem = materialElement->FirstChildElement("shininess") )
-				GetIntAttrib(subElem,"value",ps->shininess);
-
-			shader = ps;
-		}
-		else if(shaderType == "color")
-		{
-			shader.reset(new ColorShader());
-		}
-		else if(shaderType == "const")
-		{
-			ConstShader_ptr cshader(new ConstShader(vec3(1.0)));
-			
-			XMLElement* subElem;
-			if ( subElem = materialElement->FirstChildElement("color") )
-				GetColorVector3(subElem,cshader->color);
-
-			shader = cshader;
-		}
-		else if (shaderType == "diffuseSH")
-		{
-			shader = ShDiffuseShader::Create();
-		}
-		else
-		{
-			Error("Shader " + shaderType + " not supported");
-			return false;
-		}
-
-		if( ! shader->isLinked() )
+			if (!shader->isLinked())
 				return false;
 
-		shaders.insert(ShaderKeyVal(materialElement->Attribute("name"),shader));
+			shaders.insert(ShaderKeyVal(materialElement->Attribute("name"), shader));
 
-	} 
-	while (materialElement = materialElement->NextSiblingElement("material"));
+		} while (materialElement = materialElement->NextSiblingElement("material"));
+	}
 	
 
 	return true;
@@ -326,8 +332,6 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 						{
 							mts.specular = Texture::Create(Util::ExtractBaseFolder(modelPath) + mat->specularColorTexture);
 						}
-
-						
 
 						if (mts.Valid())
 						{

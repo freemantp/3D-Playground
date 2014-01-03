@@ -5,6 +5,7 @@
 #include "../shader/PhongShader.h"
 #include "../shader/PhongTextureShader.h"
 #include "../util/MeshRaw.h"
+#include "../materials/Material.h"
 
 using namespace GLSLShader;
 
@@ -32,7 +33,6 @@ Mesh::Mesh(MeshRaw_ptr rawMesh)
 	, texCoordsSet(false)
 	, Shape() 
 {
-
 	Init();
 	InitFromRawMesh(rawMesh);
 	
@@ -66,11 +66,6 @@ void Mesh::InitFromRawMesh(MeshRaw_ptr rawMesh)
 					found = true;
 				}
 			}
-		}
-
-		if(materials.size() > 0)
-		{
-
 		}
 
 		if( rawMesh->HasTexCoords() )
@@ -393,26 +388,8 @@ void Mesh::Render(const Scene_ptr scene) const
 	//Render individual index groups if available
 	int numRanges = (int)ranges.size();
 
-	//std::vector<size_t> sortedRanges;
-	//std::vector<size_t> transparentRanges;
-	//for (size_t i = 0; i < ranges.size(); i++)
-	//{
-	//	if (i < materials.size())
-	//	{
-	//		if (materials[i]->opacity < 1)
-	//			transparentRanges.push_back(i);
-	//		else
-	//			sortedRanges.push_back(i);
-	//	}
-	//	else
-	//		sortedRanges.push_back(i);
-
-	//}
-	//sortedRanges.insert(sortedRanges.end(), transparentRanges.begin(), transparentRanges.end());
-
 	if (shaderProgram)
 	{
-		//for (int i : sortedRanges)
 		for (size_t i = 0; i < numRanges; i++)
 		{
 			if (i < materials.size())
@@ -429,11 +406,14 @@ void Mesh::Render(const Scene_ptr scene) const
 				{
 					if (ObjMaterial_ptr mat = materials[i])
 					{
-						ps->ambientReflection = mat->ambient;
-						ps->diffuseReflection = mat->diffuse;
-						ps->glossyReflection = mat->specular;
-						ps->shininess = static_cast<int>(mat->shininess);
-						ps->opacity = mat->opacity;
+						PhongMaterial_ptr pm = PhongMaterial::Create();
+						pm->ambientReflection = mat->ambient;
+						pm->diffuseReflection = mat->diffuse;
+						pm->glossyReflection = mat->specular;
+						pm->shininess = static_cast<int>(mat->shininess);
+						pm->opacity = mat->opacity;
+
+						ps->SetMaterial(pm);
 					}
 				}
 			}

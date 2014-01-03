@@ -5,7 +5,9 @@
 #include "../light/PointLight.h"
 #include "../shape/Skybox.h"
 #include "../texture/CubeMapTexture.h"
+#include "../materials/Material.h"
 #include "UniformBuffer.h"
+
 
 PhongShader_ptr PhongShader::Create()
 {
@@ -20,18 +22,18 @@ PhongShader::PhongShader()
 }
 
 PhongShader::PhongShader(const string& shaderName)
-	: ShaderBase(shaderName)
+: ShaderBase(shaderName)
 {	
 	Init();
 }
 
 void PhongShader::Init()
 {
-	ambientReflection = vec3(0.0f);
-	diffuseReflection = vec3(0.0f);
-	glossyReflection = vec3(1.0f);
-	shininess = 20;
-	opacity = 1.0f;
+	//ambientReflection = vec3(0.0f);
+	//diffuseReflection = vec3(0.0f);
+	//glossyReflection = vec3(1.0f);
+	//shininess = 20;
+	//opacity = 1.0f;
 
 	//Get subroutine indices
 	blinnSubroutineIdx = glGetSubroutineIndex(programHandle, GL_FRAGMENT_SHADER, "blinn");
@@ -45,22 +47,37 @@ PhongShader::~PhongShader(void)
 {
 }
 
+bool PhongShader::SetMaterial(Material_ptr material)
+{
+	if (PhongMaterial_ptr pm = std::dynamic_pointer_cast<PhongMaterial>(material))
+	{
+		this->material = pm;
+		return true;
+	}
+
+	return false;
+}
+
 void PhongShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {	
 	ShaderBase::Use(scene,modelTransform);
 
-	SetUniform("Material.AmbientReflectivity", ambientReflection );
-	SetUniform("Material.DiffuseReflectivity", diffuseReflection );
-	SetUniform("Material.SpecularReflectivity", glossyReflection );
-	SetUniform("Material.Shininess", shininess);
-	SetUniform("Material.Opacity", opacity);
-
-	if (opacity < 1.0)
+	if (material)
 	{
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glDepthMask(GL_FALSE);
+		SetUniform("Material.AmbientReflectivity", material->ambientReflection);
+		SetUniform("Material.DiffuseReflectivity", material->diffuseReflection);
+		SetUniform("Material.SpecularReflectivity", material->glossyReflection);
+		SetUniform("Material.Shininess", material->shininess);
+		SetUniform("Material.Opacity", material->opacity);
+
+		if (material->opacity < 1.0)
+		{
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glDepthMask(GL_FALSE);
+		}
 	}
+
 
 	if(scene->skybox)
 	{

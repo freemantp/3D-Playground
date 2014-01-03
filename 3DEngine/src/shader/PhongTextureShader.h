@@ -6,6 +6,7 @@
 
 SHARED_PTR_CLASS_DECL(Texture)
 SHARED_PTR_CLASS_DECL(PhongTextureShader)
+SHARED_PTR_CLASS_DECL(TextureMaterial)
 
 class PhongTextureShader : public PhongShader
 {
@@ -16,6 +17,7 @@ public:
 	virtual ~PhongTextureShader();
 
 	virtual void Use(const Scene_ptr scene, const glm::mat4& modelTransform) override;
+
 	virtual void SetAlbedo(const Texture_ptr albedoTex);
 	virtual void SetSpecularMap(const Texture_ptr specularMap);
 	virtual void SetBumpMap(const Texture_ptr bumpMap, bool isNormalMap);

@@ -7,6 +7,7 @@
 #include "../scene/Scene.h"
 #include "../light/PointLight.h"
 #include "../texture/Texture.h"
+#include "../materials/Material.h"
 
 PhongTextureShader_ptr PhongTextureShader::Create(const Texture_ptr albedoTex)
 {
@@ -65,7 +66,7 @@ void PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransf
 	ShaderBase::Use(scene,modelTransform);
 
 	SetLightAndModel(scene);
-	SetUniform("Shininess", shininess);
+	SetUniform("Shininess", material->shininess);
 
 	//Bind albedo texture to texture unit 0
 	textures[Albedo]->BindTexture(texUnits[Albedo]);

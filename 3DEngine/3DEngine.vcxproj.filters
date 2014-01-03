@@ -68,6 +68,9 @@
     <Filter Include="Source Files\math">
       <UniqueIdentifier>{77edf59b-308f-4c53-9f04-66087e885491}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\materials">
+      <UniqueIdentifier>{f6822c38-77b7-4685-9cdd-af18be151dc2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\enums.h">
@@ -224,6 +227,12 @@
     <ClInclude Include="src\rendering\Viewport.h">
       <Filter>Source Files\rendering</Filter>
     </ClInclude>
+    <ClInclude Include="src\materials\Material.h">
+      <Filter>Source Files\materials</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\MaterialShader.h">
+      <Filter>Source Files\shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -345,6 +354,9 @@
     </ClCompile>
     <ClCompile Include="src\rendering\Viewport.cpp">
       <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\materials\Material.cpp">
+      <Filter>Source Files\materials</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

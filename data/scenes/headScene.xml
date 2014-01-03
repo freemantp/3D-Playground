@@ -7,45 +7,28 @@
     <target   x="0.0" y="0.3" z="0.0"/>
     <up       x="0.0" y="1.0" z="0.0"/>
   </camera>
-
-  <materials>
-    <!-- shiny material -->
-    <material name="glossy" shader="phong">
-      <texture file="head/lambertian.jpg"/>
-      <shininess value="5"/>
-    </material>
-    <!-- diffuse material -->
-    <material name="dull" shader="phong">
-      <texture file="checker.jpg"/>
-      <bumpMap file="head/bump-lowRes.png" type="bump"/>
-      <shininess value="600"/>
-    </material>
-  </materials>
   
   <lights>
-    <light type="spot" cutoff="60" exponent="5">
-      <position x="0.0" y="1.0" z="1.0"/>
+    <light type="point" cutoff="60" exponent="5">
+      <position x="0.0" y="10.0" z="1.0"/>
       <direction x="0.0" y="-1.0" z="-1.0"/>
       <color r="1.0" g="1.0" b="1.0"/>
     </light>
   </lights>
 
+  <materials/>
+
+  <skybox cubeMapFile="cubeMap/stormydays.jpg"/>
+
  <objects>
  
-   <mesh file="head/headtri.obj" material="glossy">
+   <mesh file="Tyranosaurus/dino.obj">
       <position x="0" y="0" z="0"/>
-      <transform>
-        <translate x="0.0" y="0.55" z="0.0"/>
-        <scale x="2.0" y="2.0" z="2.0"/>
-      </transform>
+      <!--<transform>
+        <scale x="0.05" y="0.5" z="0.05"/>
+      </transform>-->
     </mesh>
-   
-    <mesh file="rectangle.obj" material="dull">
-       <transform>
-        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
-         <scale x="1.0" y="1.0" z="1.0"/>
-      </transform>
-    </mesh>
+  
   </objects>
    
 </scene>

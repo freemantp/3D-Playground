@@ -21,7 +21,6 @@ using std::string;
 
 #define WINDOW_TITLE_PREFIX "OpenGL Playground"
 
-
 Viewport_ptr viewport;
 
 int	WindowHandle = 0;
@@ -34,8 +33,8 @@ void RenderFunction();
 Renderer_ptr renderer;
 //string sceneName = "headScene.xml";
 //string sceneName = "manyPlanes.xml";
-string sceneName = "road.xml";
-//string sceneName = "simpleScene.xml";
+//string sceneName = "road.xml";
+string sceneName = "simpleScene.xml";
 //string sceneName = "shScene.xml";
 //string sceneName = "ogreScene.xml";
 

@@ -38,6 +38,7 @@
     <ClInclude Include="src\light\LightModel.h" />
     <ClInclude Include="src\light\PointLight.h" />
     <ClInclude Include="src\light\SpotLight.h" />
+    <ClInclude Include="src\materials\Material.h" />
     <ClInclude Include="src\math\HaltonSphere.h" />
     <ClInclude Include="src\rendering\GeometryBuffer.h" />
     <ClInclude Include="src\rendering\Renderable.h" />
@@ -49,6 +50,7 @@
     <ClInclude Include="src\shader\ConstShader.h" />
     <ClInclude Include="src\shader\GBufferShader.h" />
     <ClInclude Include="src\shader\GLSLProgram.h" />
+    <ClInclude Include="src\shader\MaterialShader.h" />
     <ClInclude Include="src\shader\PhongTextureShader.h" />
     <ClInclude Include="src\shader\PhongShader.h" />
     <ClInclude Include="src\shader\ShaderBase.h" />
@@ -83,6 +85,7 @@
     <ClCompile Include="src\light\LightModel.cpp" />
     <ClCompile Include="src\light\PointLight.cpp" />
     <ClCompile Include="src\light\SpotLight.cpp" />
+    <ClCompile Include="src\materials\Material.cpp" />
     <ClCompile Include="src\math\HaltonSphere.cpp" />
     <ClCompile Include="src\rendering\GeometryBuffer.cpp" />
     <ClCompile Include="src\rendering\Renderer.cpp" />
