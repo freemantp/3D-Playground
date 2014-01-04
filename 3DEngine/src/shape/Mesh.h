@@ -45,13 +45,11 @@ public:
 	bool SetTextureCoordinates(const std::vector<float>& texCoords);
 	bool SetColors(const std::vector<float>& colors);
 
-	virtual void SetShader(ShaderBase_ptr shader) override;
-
 	void SetTextures(const std::vector<MeshTextureSet>& tex);
 	const std::vector<ObjMaterial_ptr>& GetMaterials() { return materials; };
 
 	bool IsInitialized() const { return initialized; };
-	bool MapVertexAttribute(GLSLShader::VertexAttribute attrib, GLuint channel);
+	bool MapVertexAttribute(GLSLShader::VertexAttribute attrib, GLuint channel) const;
 
 protected:
 
@@ -65,7 +63,7 @@ protected:
 		GLint  size;
 	};
 
-	inline void SetAttribPointer(const GLSLShader::VertexAttribute& attrib);
+	inline void SetAttribPointer(const GLSLShader::VertexAttribute& attrib) const;
 
 	GLuint vaoHandle;
 	//size_t numIndices;

@@ -80,7 +80,7 @@ void Mesh::SetTextures(const std::vector<MeshTextureSet>& tex)
 	textures = tex;
 }
 
-bool Mesh::MapVertexAttribute(VertexAttribute attrib, GLuint channel)
+bool Mesh::MapVertexAttribute(VertexAttribute attrib, GLuint channel) const
 {
 	if ( attrib == Index) //Indices are NOT a vertex attribute!
 		return false;
@@ -108,7 +108,7 @@ bool Mesh::MapVertexAttribute(VertexAttribute attrib, GLuint channel)
 	return true;
 }
 
-void Mesh::SetAttribPointer(const VertexAttribute& attrib)
+void Mesh::SetAttribPointer(const VertexAttribute& attrib) const
 {
 	GLuint channel = vAttribData[attrib].channel;
 	GLint size = vAttribData[attrib].size;
@@ -335,30 +335,26 @@ void Mesh::Init()
 	}
 }
 
-void Mesh::SetShader(ShaderBase_ptr shader)
+void Mesh::Render(const Scene_ptr scene) const
 {
-	__super::SetShader(shader);
-
-	auto vA = shader->GetVertexAttributeInfo();
-
-	if (auto vai = shader->GetVertexAttributeInfo())
+	//Map vertex attributes to correct channels
+	if (auto vai = shaderProgram->GetVertexAttributeInfo())
 	{
 		for (auto& kv : vai->mapping) {
 
 			if (kv.second >= 0)
 			{
 				if (vtxAttribSet[kv.first])
-					MapVertexAttribute(kv.first, kv.second);
+				{
+					if (!MapVertexAttribute(kv.first, kv.second))
+						Error("Could not map vertex attribute channel");
+				}
 				else
 					Warn("Shader uses a vertex attribute for wich no data is present");
 			}
 		}
-
 	}
-}
 
-void Mesh::Render(const Scene_ptr scene) const
-{
 	glBindVertexArray(vaoHandle);
 
 	//Render individual index groups if available
