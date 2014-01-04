@@ -9,8 +9,6 @@ ConstShader::ConstShader(glm::vec3& color)
 	hasMVM = false;
 
 	this->color = color;
-
-	vertexAttribInfo->channelMappings[GLSLShader::Position] = 0;
 }
 
 

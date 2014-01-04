@@ -13,9 +13,6 @@ GBufferShader::GBufferShader()
 	hasNM = true;
 	hasPM = true;
 	hasMVP = true;
-
-	vertexAttribInfo->channelMappings[GLSLShader::Position] = 0;
-	vertexAttribInfo->channelMappings[GLSLShader::Normal] = 1;
 }
 
 

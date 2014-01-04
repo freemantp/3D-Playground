@@ -8,7 +8,4 @@ ColorShader::ColorShader()
 {	
 	hasNM = false;
 	hasMVM = false;
-
-	vertexAttribInfo->channelMappings[GLSLShader::Position] = 0;
-	vertexAttribInfo->channelMappings[GLSLShader::Color] = 1;
 }

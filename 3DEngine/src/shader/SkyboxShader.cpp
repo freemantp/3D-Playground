@@ -12,8 +12,6 @@ SkyboxShader::SkyboxShader(CubeMapTexture_ptr texture)
 	hasMVP = false;
 	hasNM = false;
 	hasMVM = false;
-
-	vertexAttribInfo->channelMappings[GLSLShader::Position] = 0;
 }
 
 

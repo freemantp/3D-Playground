@@ -16,7 +16,7 @@ public:
 	SHARED_PTR_FACTORY(VertexAttributeInfo);
 
 	//typedef std::pair<GLSLShader::VertexAttribute, int> AttribChannel;
-	std::map<GLSLShader::VertexAttribute, int> channelMappings;
+	std::map<GLSLShader::VertexAttribute, int> mapping;
 
 
 protected:
@@ -29,12 +29,14 @@ public:
 
 	virtual ~ShaderBase();
 
+	/* \brief  Queries the shader for the channel ids
+	*  \return the channel id for the specified vertex attribute, -1 for inexisting attrib */
 	GLint GetAttributeChannel(GLSLShader::VertexAttribute attribute);
 
-	virtual void Use(const Scene_ptr cam, const glm::mat4& modelTransform);
-
-	/// Returns the necessary vertex attribute info the shader uses
+	/* \brief  Returns the necessary vertex attribute info the shader uses */
 	virtual VertexAttributeInfo_ptr GetVertexAttributeInfo() const;
+
+	virtual void Use(const Scene_ptr cam, const glm::mat4& modelTransform);
 
 	const string& GetName() const;
 	
@@ -60,6 +62,7 @@ protected:
 	string shaderName;
 	GLint currentProgram;
 
+private:
 	VertexAttributeInfo_ptr vertexAttribInfo;
 	
 };

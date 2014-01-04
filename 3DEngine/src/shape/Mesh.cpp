@@ -16,10 +16,6 @@ Mesh_ptr Mesh::Create(MeshRaw_ptr mesh)
 
 Mesh::Mesh() 
 	: initialized(false)
-	, normalsSet(false)
-	, tangentsSet(false)
-	, colorsSet(false)
-	, texCoordsSet(false)
 	, Shape() 
 {
 	Init();
@@ -27,10 +23,6 @@ Mesh::Mesh()
 
 Mesh::Mesh(MeshRaw_ptr rawMesh)
 	: initialized(false)
-	, normalsSet(false)
-	, tangentsSet(false)
-	, colorsSet(false)
-	, texCoordsSet(false)
 	, Shape() 
 {
 	Init();
@@ -88,8 +80,6 @@ void Mesh::SetTextures(const std::vector<MeshTextureSet>& tex)
 	textures = tex;
 }
 
-
-
 bool Mesh::MapVertexAttribute(VertexAttribute attrib, GLuint channel)
 {
 	if ( attrib == Index) //Indices are NOT a vertex attribute!
@@ -97,7 +87,7 @@ bool Mesh::MapVertexAttribute(VertexAttribute attrib, GLuint channel)
 
 	GLuint currentChannel = vAttribData[attrib].channel;
 
-	if( GL_TRUE == glIsBuffer(bufferObjects[attrib]) )
+	if (currentChannel != channel && GL_TRUE == glIsBuffer(bufferObjects[attrib]))
 	{		
 		//bind array & buffer
 		glBindVertexArray(vaoHandle);	
@@ -217,7 +207,7 @@ bool Mesh::SetNormals(const std::vector<float>& normals)
 	}
 
 	glBindVertexArray(0);
-	normalsSet = success;
+	vtxAttribSet[GLSLShader::Normal] = success;
 	return success;
 }
 
@@ -244,7 +234,7 @@ bool Mesh::SetTangents(const std::vector<float>& tangents)
 	}
 
 	glBindVertexArray(0);
-	tangentsSet = success;
+	vtxAttribSet[GLSLShader::Tangent] = success;
 	return success;
 }
 
@@ -272,7 +262,7 @@ bool Mesh::SetTextureCoordinates(const std::vector<float>& texCoords)
 	}
 
 	glBindVertexArray(0);
-	texCoordsSet = success;
+	vtxAttribSet[GLSLShader::TextureCoord] = success;
 	return success;
 }
 
@@ -299,7 +289,7 @@ bool Mesh::SetColors(const std::vector<float>& colors)
 
 	glBindVertexArray(0);
 
-	colorsSet = success;
+	vtxAttribSet[GLSLShader::Color] = success;
 	return success;
 }
 
@@ -307,6 +297,11 @@ void Mesh::Init()
 {
 	if( ! initialized )
 	{
+		vtxAttribSet[GLSLShader::Normal] = false;
+		vtxAttribSet[GLSLShader::Tangent] = false;
+		vtxAttribSet[GLSLShader::Color] = false;
+		vtxAttribSet[GLSLShader::TextureCoord] = false;
+
 		// Create and set-up the vertex array object
 		glGenVertexArrays( 1, &vaoHandle );
 
@@ -344,39 +339,21 @@ void Mesh::SetShader(ShaderBase_ptr shader)
 {
 	__super::SetShader(shader);
 
-	GLint channel = shader->GetAttributeChannel(GLSLShader::Position);
-	if(channel >= 0)
-		MapVertexAttribute(GLSLShader::Position, channel );
+	auto vA = shader->GetVertexAttributeInfo();
 
-	channel = shader->GetAttributeChannel(GLSLShader::Normal);
-	if(channel >= 0) {
-		MapVertexAttribute(GLSLShader::Normal, channel );
-		if(!normalsSet)
-			Warn("Shader uses normal vertex attribute, but no normals were set");
-	}
-
-	channel = shader->GetAttributeChannel(GLSLShader::Tangent);
-	if(channel >= 0) 
+	if (auto vai = shader->GetVertexAttributeInfo())
 	{
-		MapVertexAttribute(GLSLShader::Tangent, channel );
-		if(!tangentsSet)
-			Warn("Shader uses tangent vertex attribute, but no tangents were set");
-	}
+		for (auto& kv : vai->mapping) {
 
-	channel = shader->GetAttributeChannel(GLSLShader::Color);
-	if(channel >= 0)
-	{
-		MapVertexAttribute(GLSLShader::Color, channel );
-		if(!colorsSet)
-			Warn("Shader uses color vertex attribute, but no colors were set");
-	}
+			if (kv.second >= 0)
+			{
+				if (vtxAttribSet[kv.first])
+					MapVertexAttribute(kv.first, kv.second);
+				else
+					Warn("Shader uses a vertex attribute for wich no data is present");
+			}
+		}
 
-	channel = shader->GetAttributeChannel(GLSLShader::TextureCoord);
-	if(channel >= 0)
-	{
-		MapVertexAttribute(GLSLShader::TextureCoord, channel );
-		if(!texCoordsSet)
-			Warn("Shader uses tex coord vertex attribute, but no tex coords were set");
 	}
 }
 

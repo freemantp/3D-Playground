@@ -28,9 +28,6 @@ void ShDiffuseShader::Init()
 	const char* data = Util::LoadTextFile(Config::DATA_BASE_PATH + "sh/grace.xml");
 	m_ShCoeffs= ShCoeffParser::Parse(data);
 	delete[] data;
-
-	vertexAttribInfo->channelMappings[GLSLShader::Position] = 0;
-	vertexAttribInfo->channelMappings[GLSLShader::Normal] = 1;
 }
 
 ShDiffuseShader::~ShDiffuseShader(void)

@@ -12,10 +12,10 @@ UniformBufferShader::UniformBufferShader()
 VertexAttributeInfo_ptr UniformBufferShader::GetVertexAttributeInfo() const
 {
 	VertexAttributeInfo_ptr vtxInfo = VertexAttributeInfo::Create();
-	vtxInfo->channelMappings[GLSLShader::Position] = 0;
-	vtxInfo->channelMappings[GLSLShader::Normal] = 1;
-	vtxInfo->channelMappings[GLSLShader::Tangent] = 2;
-	vtxInfo->channelMappings[GLSLShader::TextureCoord] = 3;
+	vtxInfo->mapping[GLSLShader::Position] = 0;
+	vtxInfo->mapping[GLSLShader::Normal] = 1;
+	vtxInfo->mapping[GLSLShader::Tangent] = 2;
+	vtxInfo->mapping[GLSLShader::TextureCoord] = 3;
 
 	return vtxInfo;
 }

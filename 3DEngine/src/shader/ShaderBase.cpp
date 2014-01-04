@@ -27,7 +27,16 @@ ShaderBase::~ShaderBase()
 
 void ShaderBase::Init()
 {
-
+	//Query available vertex attributes
+	for (int attr_i = GLSLShader::Position; attr_i != GLSLShader::TextureCoord; attr_i++)
+	{
+		GLSLShader::VertexAttribute attr = static_cast<GLSLShader::VertexAttribute>(attr_i);
+		int c = GetAttributeChannel(attr);
+		if (c >= 0)
+		{
+			vertexAttribInfo->mapping[attr] = c;
+		}
+	}
 }
 
 GLint ShaderBase::GetCurentProgram()

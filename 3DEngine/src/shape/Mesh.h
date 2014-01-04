@@ -77,7 +77,9 @@ protected:
 	std::vector<ObjMaterial_ptr> materials;
 	std::vector<MeshTextureSet> textures;
 
-	bool normalsSet,tangentsSet,colorsSet,texCoordsSet;
+	bool vtxAttribSet[6];
+
+	//bool normalsSet,tangentsSet,colorsSet,texCoordsSet;
 
 	bool initialized;
 

@@ -29,11 +29,6 @@ PhongShader::PhongShader(const string& shaderName)
 
 void PhongShader::Init()
 {
-	vertexAttribInfo->channelMappings[GLSLShader::Position] = 0;
-	vertexAttribInfo->channelMappings[GLSLShader::Normal] = 1;
-	vertexAttribInfo->channelMappings[GLSLShader::Tangent] = 2;
-	vertexAttribInfo->channelMappings[GLSLShader::TextureCoord] = 3;
-
 	//Get subroutine indices
 	blinnSubroutineIdx = glGetSubroutineIndex(programHandle, GL_FRAGMENT_SHADER, "blinn");
 	phongSubroutineIdx = glGetSubroutineIndex(programHandle, GL_FRAGMENT_SHADER, "phong");
