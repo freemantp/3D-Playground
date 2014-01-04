@@ -342,7 +342,7 @@ void Mesh::Init()
 
 void Mesh::SetShader(ShaderBase_ptr shader)
 {
-	Shape::SetShader(shader);
+	__super::SetShader(shader);
 
 	GLint channel = shader->GetAttributeChannel(GLSLShader::Position);
 	if(channel >= 0)
@@ -362,7 +362,6 @@ void Mesh::SetShader(ShaderBase_ptr shader)
 		if(!tangentsSet)
 			Warn("Shader uses tangent vertex attribute, but no tangents were set");
 	}
-
 
 	channel = shader->GetAttributeChannel(GLSLShader::Color);
 	if(channel >= 0)

@@ -8,5 +8,8 @@ class UniformBufferShader : public ShaderBase
 {
 public:
 	UniformBufferShader();
+
+	virtual VertexAttributeInfo_ptr GetVertexAttributeInfo() const override;
+
 };
 

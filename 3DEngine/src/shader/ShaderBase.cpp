@@ -14,6 +14,7 @@ ShaderBase::ShaderBase(const string& shaderName)
 	, hasMM(false)
 	, hasPM(false)
 	, shaderName(shaderName)
+	, vertexAttribInfo(VertexAttributeInfo::Create())
 	, GLSLProgram()
 {
 	LoadShader(shaderName);
@@ -145,4 +146,9 @@ void ShaderBase::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {
 	__super::Use();
 	UpdateTransforms(scene->activeCamera,modelTransform);
+}
+
+VertexAttributeInfo_ptr ShaderBase::GetVertexAttributeInfo() const 
+{ 
+	return vertexAttribInfo; 
 }

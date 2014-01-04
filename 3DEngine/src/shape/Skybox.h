@@ -11,7 +11,7 @@ class Skybox : public Box
 public:
 
 	Skybox(CubeMapTexture_ptr texture);
-	~Skybox();
+	virtual ~Skybox();
 
 	CubeMapTexture_ptr texture;
 protected:		

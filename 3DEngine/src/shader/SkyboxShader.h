@@ -12,7 +12,7 @@ public:
 	SkyboxShader(CubeMapTexture_ptr texture);
 	~SkyboxShader(void);
 
-	virtual void Use(const Scene_ptr scene, const glm::mat4& modelTransform);
+	virtual void Use(const Scene_ptr scene, const glm::mat4& modelTransform) override;
 
 protected:
 	GLuint texUnit;

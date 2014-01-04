@@ -29,11 +29,10 @@ PhongShader::PhongShader(const string& shaderName)
 
 void PhongShader::Init()
 {
-	//ambientReflection = vec3(0.0f);
-	//diffuseReflection = vec3(0.0f);
-	//glossyReflection = vec3(1.0f);
-	//shininess = 20;
-	//opacity = 1.0f;
+	vertexAttribInfo->channelMappings[GLSLShader::Position] = 0;
+	vertexAttribInfo->channelMappings[GLSLShader::Normal] = 1;
+	vertexAttribInfo->channelMappings[GLSLShader::Tangent] = 2;
+	vertexAttribInfo->channelMappings[GLSLShader::TextureCoord] = 3;
 
 	//Get subroutine indices
 	blinnSubroutineIdx = glGetSubroutineIndex(programHandle, GL_FRAGMENT_SHADER, "blinn");
