@@ -201,16 +201,18 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 			}
 			else if (shaderType == "color")
 			{
-				shader.reset(new ColorShader());
+				shader = ColorShader::Create();
 			}
 			else if (shaderType == "const")
 			{
-				ConstShader_ptr cshader(new ConstShader(vec3(1.0)));
-
+				ConstShader_ptr cshader = ConstShader::Create();
+				ConstantColorMaterial_ptr mat = ConstantColorMaterial::Create();
+				
 				XMLElement* subElem;
 				if (subElem = materialElement->FirstChildElement("color"))
-					GetColorVector3(subElem, cshader->color);
+					GetColorVector3(subElem, mat->color);
 
+				cshader->SetMaterial(mat);
 				shader = cshader;
 			}
 			else if (shaderType == "diffuseSH")

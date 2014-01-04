@@ -4,6 +4,7 @@
 #include "../shape/Box.h"
 #include "../shader/ConstShader.h"
 #include "../util/Util.h"
+#include "../materials/Material.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -15,8 +16,10 @@ PointLight::PointLight(void)
 	visMesh = Util::GetBox();
 	visMesh->Init();
 
-	visShader.reset(new ConstShader(color));
-
+	visShader = ConstShader::Create();
+	ConstantColorMaterial_ptr mat = ConstantColorMaterial::Create();
+	mat->color = color;
+	visShader->SetMaterial(mat);
 	visMesh->SetShader(visShader);
 }
 
@@ -37,7 +40,9 @@ void PointLight::SetPosition(vec4& pos)
 void PointLight::SetColor(vec3& color)
 {
 	Light::SetColor(color);
-	visShader->color = color;
+	ConstantColorMaterial_ptr mat = ConstantColorMaterial::Create();
+	mat->color = color;
+	visShader->SetMaterial(mat);
 }
 
 void PointLight::Render(const Scene_ptr scene)
