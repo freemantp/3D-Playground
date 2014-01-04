@@ -9,6 +9,7 @@ SHARED_PTR_CLASS_DECL(ShaderBase)
 SHARED_PTR_CLASS_DECL(VertexAttributeInfo)
 SHARED_PTR_CLASS_DECL(Scene)
 SHARED_PTR_CLASS_DECL(Camera)
+SHARED_PTR_CLASS_DECL(Material)
 
 class VertexAttributeInfo
 {
@@ -29,17 +30,16 @@ public:
 
 	virtual ~ShaderBase();
 
-	/* \brief  Queries the shader for the channel ids
+	/* \brief Queries the shader for the channel ids
 	*  \return the channel id for the specified vertex attribute, -1 for inexisting attrib */
 	GLint GetAttributeChannel(GLSLShader::VertexAttribute attribute);
 
-	/* \brief  Returns the necessary vertex attribute info the shader uses */
+	/* \brief Returns the necessary vertex attribute info the shader uses */
 	virtual VertexAttributeInfo_ptr GetVertexAttributeInfo() const;
 
 	virtual void Use(const Scene_ptr cam, const glm::mat4& modelTransform);
 
-	const string& GetName() const;
-	
+	const string& GetName() const;	
 
 protected:
 

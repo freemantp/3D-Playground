@@ -28,16 +28,11 @@ public:
 
 	virtual void Use(const Scene_ptr scene, const glm::mat4& modelTransform) override;
 
-	virtual bool SetMaterial(Material_ptr) override;
+	virtual bool SetMaterial(Material_cptr material) override;
 
 	virtual void UnUse() override;
 
-	//vec3 ambientReflection;
-	//vec3 diffuseReflection;
-	//vec3 glossyReflection;
 
-	//int shininess;
-	//float opacity;
 	GLSLShader::PhongShadeModel shadeModel;
 
 protected:
@@ -49,7 +44,7 @@ protected:
 
 	virtual void Init();
 
-	PhongMaterial_ptr material;
+	PhongMaterial_cptr material;
 
 	GLuint blinnSubroutineIdx;
 	GLuint phongSubroutineIdx;

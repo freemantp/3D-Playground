@@ -146,12 +146,13 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 
 				//Load textured version if available
 				if (subElem = materialElement->FirstChildElement("texture"))
-				{
+				{					
 					string texFile(subElem->Attribute("file"));
+					Texture_ptr albedoTex = Texture::Create(Config::TEXTURE_BASE_PATH + texFile);
 
-					Texture_ptr albedo = Texture::Create(Config::TEXTURE_BASE_PATH + texFile);
+					TextureMaterial_ptr tm = TextureMaterial::Create(albedoTex);
 
-					auto pbs = PhongTextureShader::Create(albedo);
+					auto pbs = PhongTextureShader::Create();				
 
 					//bump mapping		
 					if (subElem = materialElement->FirstChildElement("bumpMap"))
@@ -159,8 +160,8 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 						string bumpMapFile(subElem->Attribute("file"));
 						string type(subElem->Attribute("type"));
 
-						Texture_ptr bumpMap = Texture::Create(Config::TEXTURE_BASE_PATH + bumpMapFile);
-						pbs->SetBumpMap(bumpMap, type == "normal");
+						tm->bumpTexture = Texture::Create(Config::TEXTURE_BASE_PATH + bumpMapFile);
+						tm->bumpIsNormalMap = (type == "normal");
 					}
 
 					//specular mapping				
@@ -168,9 +169,10 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 					{
 						string specMapFile(subElem->Attribute("file"));
 
-						Texture_ptr specularMap = Texture::Create(Config::TEXTURE_BASE_PATH + specMapFile);
-						pbs->SetSpecularMap(specularMap);
+						tm->specularTexture = Texture::Create(Config::TEXTURE_BASE_PATH + specMapFile);
 					}
+
+					pbs->SetMaterial(tm);
 					ps = pbs;
 				}
 				else
@@ -337,15 +339,16 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 						{
 							mts.name = mat->name;
 							meshTextureSets.push_back(mts);
-						}
-											
-
+						}									
 					}
 
 					if (!meshTextureSets.empty())
 					{
 						mesh->SetTextures(meshTextureSets);
-						mesh->SetShader(PhongTextureShader::Create(meshTextureSets[0].albedo));
+						TextureMaterial_ptr tm = TextureMaterial::Create(meshTextureSets[0].albedo);
+						auto ps = PhongTextureShader::Create();
+						ps->SetMaterial(tm);
+						mesh->SetShader(ps);
 					}
 				}
 

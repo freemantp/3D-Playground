@@ -7,6 +7,8 @@ SHARED_PTR_CLASS_DECL(Material)
 
 class MaterialShader
 {
-	virtual bool SetMaterial(Material_ptr) = 0;
+	/* \brief Sets the shader's uniform variables from the material
+	\return true on success, false otherwise */
+	virtual bool SetMaterial(Material_cptr material) = 0;
 };
 

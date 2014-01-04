@@ -41,9 +41,9 @@ PhongShader::~PhongShader(void)
 {
 }
 
-bool PhongShader::SetMaterial(Material_ptr material)
+bool PhongShader::SetMaterial(Material_cptr material)
 {
-	if (PhongMaterial_ptr pm = std::dynamic_pointer_cast<PhongMaterial>(material))
+	if (PhongMaterial_cptr pm = std::dynamic_pointer_cast<const PhongMaterial>(material))
 	{
 		this->material = pm;
 		return true;

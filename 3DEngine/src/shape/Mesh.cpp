@@ -369,10 +369,11 @@ void Mesh::Render(const Scene_ptr scene) const
 				//TODO: make this work with any shader
 				if (auto pts = std::dynamic_pointer_cast<PhongTextureShader>(shaderProgram))
 				{
-					pts->SetAlbedo(textures[i].albedo);
-					pts->SetSpecularMap(textures[i].specular ? textures[i].specular : Texture_ptr());
-					pts->SetBumpMap(textures[i].bump ? textures[i].bump : Texture_ptr(),true);
-
+					TextureMaterial_ptr tm = TextureMaterial::Create(textures[i].albedo);
+					tm->specularTexture = textures[i].specular ? textures[i].specular : Texture_ptr();
+					tm->bumpTexture = textures[i].bump ? textures[i].bump : Texture_ptr();
+					tm->bumpIsNormalMap = true;
+					pts->SetMaterial(tm);
 				}
 				else if (auto ps = std::dynamic_pointer_cast<PhongShader>(shaderProgram))
 				{
@@ -384,7 +385,6 @@ void Mesh::Render(const Scene_ptr scene) const
 						pm->glossyReflection = mat->specular;
 						pm->shininess = static_cast<int>(mat->shininess);
 						pm->opacity = mat->opacity;
-
 						ps->SetMaterial(pm);
 					}
 				}

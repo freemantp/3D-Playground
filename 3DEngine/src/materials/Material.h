@@ -45,7 +45,7 @@ protected:
 	PhongMaterial();
 };
 
-class TextureMaterial : public Material
+class TextureMaterial : public PhongMaterial
 {
 public:
 	static TextureMaterial_ptr Create(Texture_ptr albedoTexture);
