@@ -13,5 +13,5 @@ GlutInputHandlerFactory::~GlutInputHandlerFactory(void)
 
 InputHandler& GlutInputHandlerFactory::GetInputHandler()
 {
-	return GlutInputHandler::getInstance();
+	return GlutInputHandler::GetInstance();
 }

@@ -9,14 +9,14 @@ class TimeManager
 {
 public:
 
-	static TimeManager& getInstance();
-	static void tick();
+	static TimeManager& GetInstance();
+	static void Tick();
 
-	virtual void addTimeObserver(TimeObserver_ptr observer);
+	virtual void AddTimeObserver(TimeObserver_ptr observer);
 
 protected:
 
-	void handleTick();
+	void HandleTick();
 
 	std::vector<TimeObserver_wptr> timeObservers;
 	static TimeManager instance;

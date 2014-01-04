@@ -3,11 +3,12 @@
 #include "../util/SharedPointer.h"
 #include <glm/glm.hpp>
 
-SHARED_PTR_CLASS_DECL(Texture);
+SHARED_PTR_CLASS_DECL(Material);
 SHARED_PTR_CLASS_DECL(IntrinsicColorMaterial);
 SHARED_PTR_CLASS_DECL(ConstantColorMaterial);
 SHARED_PTR_CLASS_DECL(PhongMaterial);
 SHARED_PTR_CLASS_DECL(TextureMaterial);
+SHARED_PTR_CLASS_DECL(Texture);
 
 class Material
 {

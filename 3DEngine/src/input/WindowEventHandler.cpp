@@ -10,7 +10,7 @@ WindowEventHandler::WindowEventHandler()
 }
 
 
-WindowEventHandler& WindowEventHandler::getInstance()
+WindowEventHandler& WindowEventHandler::GetInstance()
 {
 	return instance;
 }

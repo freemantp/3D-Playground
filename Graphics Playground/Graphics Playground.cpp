@@ -113,7 +113,7 @@ bool Initialize()
 	{
 		auto s = sp.GetScene();
 		renderer->SetScene(s);
-		TimeManager::getInstance().addTimeObserver(s);
+		TimeManager::GetInstance().AddTimeObserver(s);
 
 		string windowTitle = string(WINDOW_TITLE_PREFIX) + " - " + s->name;
 		glutSetWindowTitle(windowTitle.c_str());
@@ -166,7 +166,7 @@ void InitWindow()
 	glutMouseWheelFunc(GlutInputHandler::wheel);
 	glutKeyboardFunc(GlutInputHandler::key);
 	glutSpecialFunc(GlutInputHandler::specialKey);
-	glutIdleFunc(TimeManager::tick);
+	glutIdleFunc(TimeManager::Tick);
 
 	//atexit(Controller::glutAtExit);
 

@@ -8,17 +8,17 @@ TimeManager::TimeManager()
 {
 }
 
-TimeManager& TimeManager::getInstance()
+TimeManager& TimeManager::GetInstance()
 {
 	return TimeManager::instance;
 }
 
-void TimeManager::addTimeObserver(TimeObserver_ptr observer)
+void TimeManager::AddTimeObserver(TimeObserver_ptr observer)
 {
 	timeObservers.push_back(observer);
 }
 
-void TimeManager::handleTick()
+void TimeManager::HandleTick()
 {
 	for(auto cit = timeObservers.cbegin(); cit != timeObservers.cend(); cit++) 
 	{
@@ -29,7 +29,7 @@ void TimeManager::handleTick()
 	}
 }
 
-void TimeManager::tick()
+void TimeManager::Tick()
 {
-	instance.handleTick();
+	instance.HandleTick();
 }

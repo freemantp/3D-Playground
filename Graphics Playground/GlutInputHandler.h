@@ -8,7 +8,7 @@ class GlutInputHandler : public InputHandler
 
 public:
 
-	static GlutInputHandler& getInstance();
+	static GlutInputHandler& GetInstance();
 
 	static void drag(int x, int y);
 	static void click(int button, int state, int x, int y);

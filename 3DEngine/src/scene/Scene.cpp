@@ -41,7 +41,7 @@ Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 	}
 
 	InputHandler& inputHandler = ihf.GetInputHandler();
-	WindowEventHandler& winEventHandler = WindowEventHandler::getInstance();
+	WindowEventHandler& winEventHandler = WindowEventHandler::GetInstance();
 
 	if(true)
 	{

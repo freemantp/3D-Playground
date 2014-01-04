@@ -8,7 +8,7 @@ SHARED_PTR_CLASS_DECL(ViewportObserver);
 class WindowEventHandler
 {
 public:
-	static WindowEventHandler& getInstance();
+	static WindowEventHandler& GetInstance();
 	static void resize(int width, int height);
 
 	void AddViewportObserver(ViewportObserver_ptr observer);

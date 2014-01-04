@@ -233,6 +233,7 @@
     <ClInclude Include="src\shader\MaterialShader.h">
       <Filter>Source Files\shaders</Filter>
     </ClInclude>
+    <ClInclude Include="src\shader\ShaderLibrary.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -357,6 +358,9 @@
     </ClCompile>
     <ClCompile Include="src\materials\Material.cpp">
       <Filter>Source Files\materials</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\ShaderLibrary.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

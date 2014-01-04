@@ -54,6 +54,7 @@
     <ClInclude Include="src\shader\PhongTextureShader.h" />
     <ClInclude Include="src\shader\PhongShader.h" />
     <ClInclude Include="src\shader\ShaderBase.h" />
+    <ClInclude Include="src\shader\ShaderLibrary.h" />
     <ClInclude Include="src\shader\SHDiffuseShader.h" />
     <ClInclude Include="src\shader\SkyboxShader.h" />
     <ClInclude Include="src\shader\UniformBuffer.h" />
@@ -99,6 +100,7 @@
     <ClCompile Include="src\shader\PhongTextureShader.cpp" />
     <ClCompile Include="src\shader\PhongShader.cpp" />
     <ClCompile Include="src\shader\ShaderBase.cpp" />
+    <ClCompile Include="src\shader\ShaderLibrary.cpp" />
     <ClCompile Include="src\shader\SHDiffuseShader.cpp" />
     <ClCompile Include="src\shader\SkyboxShader.cpp" />
     <ClCompile Include="src\shader\UniformBuffer.cpp" />
