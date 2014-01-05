@@ -2,15 +2,16 @@
 #include "PointLight.h"
 
 #include "../shape/Box.h"
-#include "../shader/ConstColorShader.h"
 #include "../util/Util.h"
 #include "../materials/Material.h"
 
+#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
 
 using glm::vec3;
 
-PointLight::PointLight(void)
+PointLight::PointLight()
 	: Light()
 {
 	visMesh = Util::GetBox();
@@ -22,7 +23,7 @@ PointLight::PointLight(void)
 }
 
 
-PointLight::~PointLight(void)
+PointLight::~PointLight()
 {
 
 }
@@ -31,19 +32,24 @@ void PointLight::SetPosition(vec4& pos)
 {
 	Light::SetPosition(pos);
 	
-	visMesh->worldTransform = glm::translate(mat4(1.0),vec3(pos.x,pos.y,pos.z));
+	visMesh->worldTransform = glm::translate(glm::mat4(1.0),vec3(pos.x,pos.y,pos.z));
 	visMesh->worldTransform = glm::scale(visMesh->worldTransform,vec3(0.05));
 }
 
 void PointLight::SetColor(vec3& color)
 {
 	Light::SetColor(color);
-	ConstantColorMaterial_ptr mat = ConstantColorMaterial::Create();
+	ConstantColorMaterial_ptr mat = std::dynamic_pointer_cast<ConstantColorMaterial>(visMesh->GetMaterial());
+	if (!mat)
+	{
+		mat = ConstantColorMaterial::Create();
+		visMesh->SetMaterial(mat);
+	}	
+
 	mat->color = color;
-	visMesh->SetMaterial(mat);
 }
 
-void PointLight::Render(const Scene_ptr scene)
+Shape_ptr PointLight::GetRepresentation() const
 {
-	visMesh->Render(scene);
+	return visMesh;
 }

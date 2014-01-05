@@ -102,14 +102,20 @@ void Scene::render()
 
 	if(renderLights)
 	{
-		for(auto pl_it = lightModel->pointLights.cbegin(); pl_it != lightModel->pointLights.cend(); pl_it++)
+		for (auto pl : lightModel->pointLights)
 		{
-			(*pl_it)->Render(shared_from_this());
+			if (auto plr = pl->GetRepresentation())
+			{
+				plr->Render(shared_from_this());
+			}
 		}
 
-		for(auto sl_it = lightModel->spotLights.cbegin(); sl_it != lightModel->spotLights.cend(); sl_it++)
+		for(auto sl : lightModel->spotLights)
 		{
-			(*sl_it)->Render(shared_from_this());
+			if (auto plr = sl->GetRepresentation())
+			{
+				plr->Render(shared_from_this());
+			}
 		}
 	}
 }

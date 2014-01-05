@@ -19,16 +19,6 @@ public:
 	virtual ~Shape();
 
 	virtual void Init() = 0;
-	
-	//virtual void SetShader(ShaderBase_ptr shader)
-	//{
-	//		shaderProgram = shader;
-	//}
-
-	//ShaderBase_ptr GetShader()
-	//{
-	//	return shaderProgram;
-	//}
 
 	void SetMaterial(Material_ptr material) { this->material = material; };
 

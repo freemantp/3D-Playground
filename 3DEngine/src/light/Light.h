@@ -5,6 +5,7 @@
 
 SHARED_PTR_CLASS_DECL(Light);
 SHARED_PTR_CLASS_DECL(Scene);
+SHARED_PTR_CLASS_DECL(Shape);
 
 class Scene;
 
@@ -17,13 +18,13 @@ public:
 
 	Light();
 
-	virtual void Render(const Scene_ptr scene) = 0;
-
 	virtual	vec4& GetPosition();
 	virtual void SetPosition(vec4& pos);
 
 	virtual vec3& GetColor();
 	virtual void SetColor(vec3& pos);
+
+	virtual Shape_ptr GetRepresentation() const;
 
 protected:
 	glm::vec3 color;

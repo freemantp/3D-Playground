@@ -134,19 +134,11 @@ bool SceneParser::parse(const char* xmlDocument)
 }
 
 bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
-{
-
-	ShaderLibrary_ptr sl = ShaderLibrary::GetInstance();
-
-	sl->AddShader(PhongMaterial::Create(), PhongShader::Create());
-	sl->AddShader(TextureMaterial::Create(), PhongTextureShader::Create());
-	sl->AddShader(ConstantColorMaterial::Create(), ConstColorShader::Create());
-	sl->AddShader(IntrinsicColorMaterial::Create(), IntrinsicColorShader::Create());
-	sl->AddShader(SkyboxMaterial::Create(), SkyboxShader::Create());
-	sl->AddShader(ShDiffuseMaterial::Create(), ShDiffuseShader::Create());
-		
+{	
 	if (XMLElement* materialElement = materialsGroupElement->FirstChildElement("material"))
 	{
+		ShaderLibrary_ptr sl = ShaderLibrary::GetInstance();
+
 		do
 		{
 			string materialType = materialElement->Attribute("shader");
@@ -483,7 +475,7 @@ bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 
 		if(lightType == "point")
 		{
-			PointLight_ptr plight(new PointLight());
+			PointLight_ptr plight = PointLight::Create();
 			vec3 pos, color;
 
 			GetVector3(lightElem->FirstChildElement("position"),pos);

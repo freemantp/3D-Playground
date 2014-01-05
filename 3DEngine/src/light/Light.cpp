@@ -25,3 +25,8 @@ void Light::SetColor(vec3& color)
 {
 	this->color = color;
 }
+
+Shape_ptr Light::GetRepresentation() const
+{
+	return Shape_ptr();
+}

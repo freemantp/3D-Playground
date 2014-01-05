@@ -26,7 +26,7 @@ protected:
 class ConstantColorMaterial : public Material
 {
 public:
-	SHARED_PTR_FACTORY(ConstantColorMaterial);
+	static ConstantColorMaterial_ptr Create();
 
 	glm::vec3 color;
 };
@@ -34,7 +34,7 @@ public:
 class PhongMaterial : public Material
 {
 public:
-	SHARED_PTR_FACTORY(PhongMaterial);
+	static PhongMaterial_ptr Create();
 
 	glm::vec3 ambientReflection;
 	glm::vec3 diffuseReflection;
@@ -48,7 +48,7 @@ protected:
 class TextureMaterial : public PhongMaterial
 {
 public:
-	SHARED_PTR_FACTORY(TextureMaterial);
+	static TextureMaterial_ptr Create();
 	Texture_ptr albedoTexture;
 	Texture_ptr bumpTexture;
 	Texture_ptr specularTexture;
@@ -61,13 +61,13 @@ protected:
 class IntrinsicColorMaterial : public Material
 {
 public:
-	SHARED_PTR_FACTORY(IntrinsicColorMaterial);
+	static IntrinsicColorMaterial_ptr Create();
 };
 
 class ShDiffuseMaterial : public Material
 {
 public:
-	SHARED_PTR_FACTORY(ShDiffuseMaterial);
+	static ShDiffuseMaterial_ptr Create();
 
 	ShDiffuseShaderCoeffs_ptr shCoeffs;
 
@@ -78,7 +78,7 @@ protected:
 class SkyboxMaterial : public Material
 {
 public:
-	SHARED_PTR_FACTORY(SkyboxMaterial);
+	static SkyboxMaterial_ptr Create();
 
 	CubeMapTexture_ptr texture;
 protected:

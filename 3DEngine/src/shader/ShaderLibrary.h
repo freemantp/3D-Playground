@@ -18,9 +18,11 @@ public:
 
 	MaterialShader_ptr GetShader(Material_cptr material);
 	
-	bool AddShader(Material_cptr material, MaterialShader_ptr shader);
+	bool AddShader(Material_cptr material);
 	
 protected:
+
+	bool AddShader(Material_cptr material, MaterialShader_ptr shader);
 
 	MaterialShader_ptr GetShader(const std::type_info& materialType);
 	bool AddShader(const std::type_info& materialType, MaterialShader_ptr shader);
