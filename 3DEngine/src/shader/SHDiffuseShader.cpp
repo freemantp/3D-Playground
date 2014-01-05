@@ -5,6 +5,7 @@
 #include "../light/PointLight.h"
 #include "../shape/Skybox.h"
 #include "../texture/CubeMapTexture.h"
+#include "../materials/Material.h"
 #include "../util/Util.h"
 #include "../util/ShCoeffParser.h"
 #include "UniformBuffer.h"
@@ -16,18 +17,10 @@ ShDiffuseShader_ptr ShDiffuseShader::Create()
 }
 
 ShDiffuseShader::ShDiffuseShader()
-: ShaderBase("diffuseSH")
+: MaterialShader("diffuseSH")
 {
 	hasMVP = true;
 	hasMVM = false;
-	Init();
-}
-
-void ShDiffuseShader::Init()
-{
-	const char* data = Util::LoadTextFile(Config::DATA_BASE_PATH + "sh/grace.xml");
-	m_ShCoeffs= ShCoeffParser::Parse(data);
-	delete[] data;
 }
 
 ShDiffuseShader::~ShDiffuseShader(void)
@@ -38,19 +31,35 @@ void ShDiffuseShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform
 {	
 	ShaderBase::Use(scene,modelTransform);
 
-	const int numShBands = 3;
-	const float exposure = 1.0f;
-	SetUniform("numShBands", numShBands);
-	SetUniform("exposure", exposure);
-
-	float shCoeffs[9*3];
-
-	for(int i=0; i<9 ;i++)
+	if (material && material->shCoeffs)
 	{
-		memcpy(shCoeffs+i*3,&(m_ShCoeffs->m_Coeffs[i]).x,3*sizeof(float));
-	}
-	
-	SetUniformArray("shLightCoeffs",shCoeffs,3,9);
+		const int numShBands = 3;
+		const float exposure = 1.0f;
+		SetUniform("numShBands", numShBands);
+		SetUniform("exposure", exposure);
 
+		float shCoeffs[9 * 3];
+
+		for (int i = 0; i<9; i++)
+		{
+			memcpy(shCoeffs + i * 3, &(material->shCoeffs->m_Coeffs[i]).x, 3 * sizeof(float));
+		}
+
+		SetUniformArray("shLightCoeffs", shCoeffs, 3, 9);
+	}
+	else
+	{
+		Error("No SH material or SH coeffs available");
+	}
 }
 
+bool ShDiffuseShader::SetMaterial(Material_cptr material)
+{
+	if (ShDiffuseMaterial_cptr mat = std::dynamic_pointer_cast<const ShDiffuseMaterial>(material))
+	{
+		this->material = mat;
+		return true;
+	}
+
+	return false;
+}

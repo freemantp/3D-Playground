@@ -1,21 +1,28 @@
 #pragma once
 
-#include "shaderbase.h"
+#include "MaterialShader.h"
 #include "../util/SharedPointer.h"
 
 SHARED_PTR_CLASS_DECL(SkyboxShader);
-SHARED_PTR_CLASS_DECL(CubeMapTexture);
+SHARED_PTR_CLASS_DECL(SkyboxMaterial);
 
-class SkyboxShader : public ShaderBase
+class SkyboxShader : public MaterialShader
 {
 public:
-	SkyboxShader(CubeMapTexture_ptr texture);
+	
+	SHARED_PTR_FACTORY(SkyboxShader);
+
 	~SkyboxShader(void);
 
 	virtual void Use(const Scene_ptr scene, const glm::mat4& modelTransform) override;
 
+	virtual bool SetMaterial(Material_cptr material) override;
+
 protected:
+
+	SkyboxShader();
+
 	GLuint texUnit;
-	CubeMapTexture_ptr texture;
+	SkyboxMaterial_cptr material;
 };
 

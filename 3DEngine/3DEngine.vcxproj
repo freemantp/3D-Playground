@@ -46,8 +46,8 @@
     <ClInclude Include="src\rendering\Viewport.h" />
     <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="src\scene\SceneParser.h" />
-    <ClInclude Include="src\shader\ColorShader.h" />
-    <ClInclude Include="src\shader\ConstShader.h" />
+    <ClInclude Include="src\shader\IntrinsicColorShader.h" />
+    <ClInclude Include="src\shader\ConstColorShader.h" />
     <ClInclude Include="src\shader\GBufferShader.h" />
     <ClInclude Include="src\shader\GLSLProgram.h" />
     <ClInclude Include="src\shader\MaterialShader.h" />
@@ -94,7 +94,7 @@
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\scene\SceneParser.cpp" />
     <ClCompile Include="src\shader\ColorShader.cpp" />
-    <ClCompile Include="src\shader\ConstShader.cpp" />
+    <ClCompile Include="src\shader\ConstColorShader.cpp" />
     <ClCompile Include="src\shader\GBufferShader.cpp" />
     <ClCompile Include="src\shader\GLSLProgram.cpp" />
     <ClCompile Include="src\shader\PhongTextureShader.cpp" />
@@ -124,16 +124,16 @@
     <ClCompile Include="src\util\XmlUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\data\shader\colorShader.frag">
+    <None Include="..\data\shader\intrinsicColorShader.frag">
       <FileType>Document</FileType>
     </None>
-    <None Include="..\data\shader\colorShader.vert">
+    <None Include="..\data\shader\intrinsicColorShader.vert">
       <FileType>Document</FileType>
     </None>
-    <None Include="..\data\shader\constShader.frag">
+    <None Include="..\data\shader\constColorShader.frag">
       <FileType>Document</FileType>
     </None>
-    <None Include="..\data\shader\constShader.vert">
+    <None Include="..\data\shader\constColorShader.vert">
       <FileType>Document</FileType>
     </None>
     <None Include="..\data\shader\diffuseSH.frag" />

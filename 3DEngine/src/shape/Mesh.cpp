@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Mesh.h"
 #include "../scene/Scene.h"
+#include "../shader/ShaderLibrary.h"
 #include "../shader/ShaderBase.h"
 #include "../shader/PhongShader.h"
 #include "../shader/PhongTextureShader.h"
@@ -335,10 +336,9 @@ void Mesh::Init()
 	}
 }
 
-void Mesh::Render(const Scene_ptr scene) const
+void Mesh::MapVertexAttributes(MaterialShader_ptr shader) const
 {
-	//Map vertex attributes to correct channels
-	if (auto vai = shaderProgram->GetVertexAttributeInfo())
+	if (auto vai = shader->GetVertexAttributeInfo())
 	{
 		for (auto& kv : vai->mapping) {
 
@@ -356,12 +356,20 @@ void Mesh::Render(const Scene_ptr scene) const
 	}
 
 	glBindVertexArray(vaoHandle);
+}
 
-	//Render individual index groups if available
-	int numRanges = (int)ranges.size();
+void Mesh::Render(const Scene_ptr scene) const
+{
+	ShaderLibrary_ptr sl = ShaderLibrary::GetInstance();
+	MaterialShader_ptr shaderProgram = sl->GetShader(material);
 
 	if (shaderProgram)
 	{
+		MapVertexAttributes(shaderProgram);
+
+		//Render individual index groups if available
+		int numRanges = (int)ranges.size();
+
 		for (size_t i = 0; i < numRanges; i++)
 		{
 			if (i < materials.size())
@@ -369,7 +377,8 @@ void Mesh::Render(const Scene_ptr scene) const
 				//TODO: make this work with any shader
 				if (auto pts = std::dynamic_pointer_cast<PhongTextureShader>(shaderProgram))
 				{
-					TextureMaterial_ptr tm = TextureMaterial::Create(textures[i].albedo);
+					TextureMaterial_ptr tm = TextureMaterial::Create();
+					tm->albedoTexture = textures[i].albedo;
 					tm->specularTexture = textures[i].specular ? textures[i].specular : Texture_ptr();
 					tm->bumpTexture = textures[i].bump ? textures[i].bump : Texture_ptr();
 					tm->bumpIsNormalMap = true;
@@ -389,6 +398,10 @@ void Mesh::Render(const Scene_ptr scene) const
 					}
 				}
 			}
+			else
+			{
+				shaderProgram->SetMaterial(material);
+			}
 
 			shaderProgram->Use(scene, worldTransform);
 
@@ -401,13 +414,18 @@ void Mesh::Render(const Scene_ptr scene) const
 
 			shaderProgram->UnUse();
 		}
+		
+
+		glBindVertexArray(0);
+
+		if (shaderProgram)
+		{
+			shaderProgram->UnUse();
+		}
 	}
-
-	glBindVertexArray(0);
-
-	if(shaderProgram)
+	else
 	{
-		shaderProgram->UnUse();
+		Error("Could not obtain shader for this material");
 	}
 }
 

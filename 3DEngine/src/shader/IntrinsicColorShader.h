@@ -3,22 +3,20 @@
 #include "ShaderBase.h"
 #include "MaterialShader.h"
 
-SHARED_PTR_CLASS_DECL(ColorShader)
+SHARED_PTR_CLASS_DECL(IntrinsicColorShader)
 SHARED_PTR_CLASS_DECL(IntrinsicColorMaterial)
 
-class ColorShader 
-	: public ShaderBase
-	, public MaterialShader
+class IntrinsicColorShader : public MaterialShader
 {
 public:
 
-	SHARED_PTR_FACTORY(ColorShader);
+	SHARED_PTR_FACTORY(IntrinsicColorShader);
 
 	virtual bool SetMaterial(Material_cptr material) override;
 
 protected:
 
-	ColorShader();
+	IntrinsicColorShader();
 
 	IntrinsicColorMaterial_cptr material;
 };

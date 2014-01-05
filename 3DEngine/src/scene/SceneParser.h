@@ -12,7 +12,7 @@ class InputHandlerFactory;
 
 SHARED_PTR_CLASS_DECL(Camera);
 SHARED_PTR_CLASS_DECL(Scene);
-SHARED_PTR_CLASS_DECL(ShaderBase);
+SHARED_PTR_CLASS_DECL(Material);
 
 class SceneParser
 {
@@ -37,7 +37,7 @@ protected:
 	bool ParseLights(XMLElement* materialElement);
 	bool ParseTransforms(glm::mat4& tMatrix, XMLElement* transformElem);
 
-	std::map<std::string, ShaderBase_ptr> shaders;
+	std::map<std::string, Material_ptr> materials;
 	Scene_ptr generatedScene;
 
 	InputHandlerFactory& factory;

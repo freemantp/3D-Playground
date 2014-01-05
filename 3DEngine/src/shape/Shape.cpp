@@ -11,7 +11,3 @@ Shape::~Shape()
 {
 }
 
-void Shape::SetShader(ShaderBase_ptr shader)
-{
-	shaderProgram = shader;
-}

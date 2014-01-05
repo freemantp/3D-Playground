@@ -2,7 +2,7 @@
 #include "PointLight.h"
 
 #include "../shape/Box.h"
-#include "../shader/ConstShader.h"
+#include "../shader/ConstColorShader.h"
 #include "../util/Util.h"
 #include "../materials/Material.h"
 
@@ -16,11 +16,9 @@ PointLight::PointLight(void)
 	visMesh = Util::GetBox();
 	visMesh->Init();
 
-	visShader = ConstShader::Create();
 	ConstantColorMaterial_ptr mat = ConstantColorMaterial::Create();
 	mat->color = color;
-	visShader->SetMaterial(mat);
-	visMesh->SetShader(visShader);
+	visMesh->SetMaterial(mat);
 }
 
 
@@ -42,7 +40,7 @@ void PointLight::SetColor(vec3& color)
 	Light::SetColor(color);
 	ConstantColorMaterial_ptr mat = ConstantColorMaterial::Create();
 	mat->color = color;
-	visShader->SetMaterial(mat);
+	visMesh->SetMaterial(mat);
 }
 
 void PointLight::Render(const Scene_ptr scene)

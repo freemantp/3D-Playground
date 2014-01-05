@@ -106,9 +106,6 @@
     <ClInclude Include="src\camera\InspectionCameraAdapter.h">
       <Filter>Source Files\camera</Filter>
     </ClInclude>
-    <ClInclude Include="src\shader\ColorShader.h">
-      <Filter>Source Files\shaders</Filter>
-    </ClInclude>
     <ClInclude Include="src\shader\PhongShader.h">
       <Filter>Source Files\shaders</Filter>
     </ClInclude>
@@ -150,9 +147,6 @@
     </ClInclude>
     <ClInclude Include="src\animation\TimeObserver.h">
       <Filter>Source Files\animation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\ConstShader.h">
-      <Filter>Source Files\shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\light\SpotLight.h">
       <Filter>Source Files\light</Filter>
@@ -234,6 +228,12 @@
       <Filter>Source Files\shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\shader\ShaderLibrary.h" />
+    <ClInclude Include="src\shader\ConstColorShader.h">
+      <Filter>Source Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\IntrinsicColorShader.h">
+      <Filter>Source Files\shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -270,9 +270,6 @@
       <Filter>Source Files\scene</Filter>
     </ClCompile>
     <ClCompile Include="src\shader\ColorShader.cpp">
-      <Filter>Source Files\shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\ConstShader.cpp">
       <Filter>Source Files\shaders</Filter>
     </ClCompile>
     <ClCompile Include="src\shader\GLSLProgram.cpp">
@@ -362,14 +359,11 @@
     <ClCompile Include="src\shader\ShaderLibrary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\shader\ConstColorShader.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\data\shader\colorShader.frag">
-      <Filter>data\shaders\color</Filter>
-    </None>
-    <None Include="..\data\shader\colorShader.vert">
-      <Filter>data\shaders\color</Filter>
-    </None>
     <None Include="..\data\shader\phongShader.frag">
       <Filter>data\shaders\phong</Filter>
     </None>
@@ -381,12 +375,6 @@
     </None>
     <None Include="..\data\shader\normalShader.vert">
       <Filter>data\shaders\normal</Filter>
-    </None>
-    <None Include="..\data\shader\constShader.frag">
-      <Filter>data\shaders\const</Filter>
-    </None>
-    <None Include="..\data\shader\constShader.vert">
-      <Filter>data\shaders\const</Filter>
     </None>
     <None Include="..\data\shader\uniformBuffer.vert">
       <Filter>data\shaders\specialized</Filter>
@@ -418,6 +406,18 @@
     </None>
     <None Include="..\data\shader\diffuseSH.vert">
       <Filter>data\shaders\sh</Filter>
+    </None>
+    <None Include="..\data\shader\constColorShader.frag">
+      <Filter>data\shaders\const</Filter>
+    </None>
+    <None Include="..\data\shader\constColorShader.vert">
+      <Filter>data\shaders\const</Filter>
+    </None>
+    <None Include="..\data\shader\intrinsicColorShader.frag">
+      <Filter>data\shaders\color</Filter>
+    </None>
+    <None Include="..\data\shader\intrinsicColorShader.vert">
+      <Filter>data\shaders\color</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

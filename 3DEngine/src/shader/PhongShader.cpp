@@ -15,14 +15,14 @@ PhongShader_ptr PhongShader::Create()
 }
 
 PhongShader::PhongShader()
-: ShaderBase("phongShader")
+: MaterialShader("phongShader")
 {
 	hasMM = true;
 	Init();
 }
 
 PhongShader::PhongShader(const string& shaderName)
-: ShaderBase(shaderName)
+: MaterialShader(shaderName)
 {	
 	Init();
 }
@@ -77,10 +77,12 @@ void PhongShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 	{
 		const int skymapTexUnit = 0;
 
-		CubeMapTexture_ptr envTex =  scene->skybox->texture;
-		envTex->BindTexture(skymapTexUnit);
-		SetUniform("EnvMapTex",skymapTexUnit);
-		SetUniform("CameraPosWorld",scene->activeCamera->GetPosition() );
+		if (auto sbm = std::dynamic_pointer_cast<SkyboxMaterial>(scene->skybox->GetMaterial()))
+		{
+			sbm->texture->BindTexture(skymapTexUnit);
+			SetUniform("EnvMapTex", skymapTexUnit);
+			SetUniform("CameraPosWorld", scene->activeCamera->GetPosition());
+		}
 	}
 
 	SetLightAndModel(scene);

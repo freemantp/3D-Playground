@@ -9,6 +9,10 @@ SHARED_PTR_CLASS_DECL(ConstantColorMaterial);
 SHARED_PTR_CLASS_DECL(PhongMaterial);
 SHARED_PTR_CLASS_DECL(TextureMaterial);
 SHARED_PTR_CLASS_DECL(Texture);
+SHARED_PTR_CLASS_DECL(ShDiffuseMaterial);
+SHARED_PTR_CLASS_DECL(ShDiffuseShaderCoeffs);
+SHARED_PTR_CLASS_DECL(SkyboxMaterial);
+SHARED_PTR_CLASS_DECL(CubeMapTexture);
 
 class Material
 {
@@ -19,23 +23,19 @@ protected:
 	
 };
 
-class IntrinsicColorMaterial : public Material
-{
-public:
-	static IntrinsicColorMaterial_ptr Create();
-};
-
 class ConstantColorMaterial : public Material
 {
 public:
-	static ConstantColorMaterial_ptr Create();
+	SHARED_PTR_FACTORY(ConstantColorMaterial);
+
 	glm::vec3 color;
 };
 
 class PhongMaterial : public Material
 {
 public:
-	static PhongMaterial_ptr Create();
+	SHARED_PTR_FACTORY(PhongMaterial);
+
 	glm::vec3 ambientReflection;
 	glm::vec3 diffuseReflection;
 	glm::vec3 glossyReflection;
@@ -48,12 +48,40 @@ protected:
 class TextureMaterial : public PhongMaterial
 {
 public:
-	static TextureMaterial_ptr Create(Texture_ptr albedoTexture);
+	SHARED_PTR_FACTORY(TextureMaterial);
 	Texture_ptr albedoTexture;
 	Texture_ptr bumpTexture;
 	Texture_ptr specularTexture;
 	bool bumpIsNormalMap;
 
 protected:
-	TextureMaterial(Texture_ptr albedo);
+	TextureMaterial() { };
 };
+
+class IntrinsicColorMaterial : public Material
+{
+public:
+	SHARED_PTR_FACTORY(IntrinsicColorMaterial);
+};
+
+class ShDiffuseMaterial : public Material
+{
+public:
+	SHARED_PTR_FACTORY(ShDiffuseMaterial);
+
+	ShDiffuseShaderCoeffs_ptr shCoeffs;
+
+protected:
+	ShDiffuseMaterial() {};
+};
+
+class SkyboxMaterial : public Material
+{
+public:
+	SHARED_PTR_FACTORY(SkyboxMaterial);
+
+	CubeMapTexture_ptr texture;
+protected:
+	SkyboxMaterial() {};
+};
+

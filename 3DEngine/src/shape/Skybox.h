@@ -3,22 +3,14 @@
 #include <string>
 
 SHARED_PTR_CLASS_DECL(Skybox);
-SHARED_PTR_CLASS_DECL(CubeMapTexture);
-
+SHARED_PTR_CLASS_DECL(SkyboxMaterial);
 
 class Skybox : public Box
 {
 public:
 
-	Skybox(CubeMapTexture_ptr texture);
+	Skybox(SkyboxMaterial_ptr material);
 	virtual ~Skybox();
-
-	CubeMapTexture_ptr texture;
-protected:		
-	
-	virtual void SetShader(ShaderBase_ptr shader);
-
-	
 
 };
 

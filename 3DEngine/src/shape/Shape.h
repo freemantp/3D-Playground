@@ -9,7 +9,7 @@
 class Scene;
 
 SHARED_PTR_CLASS_DECL(Shape);
-SHARED_PTR_CLASS_DECL(ShaderBase);
+SHARED_PTR_CLASS_DECL(Material);
 
 class Shape : public Renderable
 {
@@ -20,12 +20,19 @@ public:
 
 	virtual void Init() = 0;
 	
-	virtual void SetShader(ShaderBase_ptr shader);
+	//virtual void SetShader(ShaderBase_ptr shader)
+	//{
+	//		shaderProgram = shader;
+	//}
 
-	ShaderBase_ptr GetShader()
-	{
-		return shaderProgram;
-	}
+	//ShaderBase_ptr GetShader()
+	//{
+	//	return shaderProgram;
+	//}
+
+	void SetMaterial(Material_ptr material) { this->material = material; };
+
+	Material_ptr GetMaterial() const { return material; };
 
 	void SetWorldTransform(glm::mat4 transf)
 	{
@@ -35,6 +42,6 @@ public:
 	glm::mat4 worldTransform;
 
 protected:
-	ShaderBase_ptr shaderProgram;
+	Material_ptr material;
 };
 

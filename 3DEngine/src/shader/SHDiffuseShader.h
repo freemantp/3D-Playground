@@ -1,10 +1,11 @@
 #pragma once
 
-#include "ShaderBase.h"
+#include "MaterialShader.h"
 #include "../util/gettersetter.h"
 
 SHARED_PTR_CLASS_DECL(ShDiffuseShader)
 SHARED_PTR_CLASS_DECL(ShDiffuseShaderCoeffs)
+SHARED_PTR_CLASS_DECL(ShDiffuseMaterial)
 
 class ShDiffuseShaderCoeffs 
 {
@@ -23,7 +24,7 @@ protected:
 
 };
 
-class ShDiffuseShader : public ShaderBase
+class ShDiffuseShader : public MaterialShader
 {
 public:
 
@@ -33,13 +34,13 @@ public:
 
 	virtual void Use(const Scene_ptr scene, const glm::mat4& modelTransform) override;
 
+	virtual bool SetMaterial(Material_cptr material) override;
+
 protected:
 
 	ShDiffuseShader();
 
-	virtual void Init();
-
-	ShDiffuseShaderCoeffs_ptr m_ShCoeffs;
+	ShDiffuseMaterial_cptr material;
 
 };
 

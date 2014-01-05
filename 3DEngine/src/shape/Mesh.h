@@ -12,7 +12,8 @@ SHARED_PTR_CLASS_DECL(Mesh);
 SHARED_PTR_CLASS_DECL(ObjMaterial);
 SHARED_PTR_CLASS_DECL(Scene);
 SHARED_PTR_CLASS_DECL(Texture);
- 
+SHARED_PTR_CLASS_DECL(MaterialShader);
+
 class MeshTextureSet
 {
 public:
@@ -57,6 +58,9 @@ protected:
 	Mesh();
 
 	void InitFromRawMesh(MeshRaw_ptr rawMesh);
+
+	/* \brief Map vertex attributes to correct channels */
+	void MapVertexAttributes(MaterialShader_ptr shader) const;
 
 	struct VertexAttribData {
 		GLuint channel;

@@ -1,16 +1,16 @@
 #include "stdafx.h"
-#include "ColorShader.h"
+#include "IntrinsicColorShader.h"
 #include "../util/Util.h"
 #include "../materials/Material.h"
 
-ColorShader::ColorShader()
-	: ShaderBase("colorShader")
+IntrinsicColorShader::IntrinsicColorShader()
+: MaterialShader("intrinsicColorShader")
 {	
 	hasNM = false;
 	hasMVM = false;
 }
 
-bool ColorShader::SetMaterial(Material_cptr material)
+bool IntrinsicColorShader::SetMaterial(Material_cptr material)
 {
 	if (IntrinsicColorMaterial_cptr icm = std::dynamic_pointer_cast<const IntrinsicColorMaterial>(material))
 	{

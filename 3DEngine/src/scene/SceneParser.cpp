@@ -6,9 +6,12 @@
 
 #include "../shader/PhongShader.h"
 #include "../shader/PhongTextureShader.h"
-#include "../shader/ColorShader.h"
-#include "../shader/ConstShader.h"
+#include "../shader/IntrinsicColorShader.h"
+#include "../shader/SkyboxShader.h"
+#include "../shader/ConstColorShader.h"
 #include "../shader/SHDiffuseShader.h"
+#include "../shader/ShaderLibrary.h"
+
 #include "../texture/Texture.h"
 #include "../texture/CubeMapTexture.h"
 
@@ -16,6 +19,8 @@
 
 #include "../util/Util.h"
 #include "../util/MeshRaw.h"
+#include "../util/ShCoeffParser.h"
+
 #include "../camera/PerspectiveCamera.h"
 #include "../scene/Scene.h"
 
@@ -32,7 +37,7 @@ using tinyxml2::XMLNode;
 using std::string;
 using std::vector;
 
-typedef std::pair<string,ShaderBase_ptr> ShaderKeyVal;
+typedef std::pair<string,Material_ptr> ShaderKeyVal;
 
 SceneParser::SceneParser(InputHandlerFactory& factory) 
 	: factory(factory)
@@ -130,18 +135,28 @@ bool SceneParser::parse(const char* xmlDocument)
 
 bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 {
+
+	ShaderLibrary_ptr sl = ShaderLibrary::GetInstance();
+
+	sl->AddShader(PhongMaterial::Create(), PhongShader::Create());
+	sl->AddShader(TextureMaterial::Create(), PhongTextureShader::Create());
+	sl->AddShader(ConstantColorMaterial::Create(), ConstColorShader::Create());
+	sl->AddShader(IntrinsicColorMaterial::Create(), IntrinsicColorShader::Create());
+	sl->AddShader(SkyboxMaterial::Create(), SkyboxShader::Create());
+	sl->AddShader(ShDiffuseMaterial::Create(), ShDiffuseShader::Create());
+		
 	if (XMLElement* materialElement = materialsGroupElement->FirstChildElement("material"))
 	{
 		do
 		{
-			string shaderType = materialElement->Attribute("shader");
+			string materialType = materialElement->Attribute("shader");
 			string materialName = materialElement->Attribute("name");
 
-			ShaderBase_ptr shader;
+			Material_ptr material;
 
-			if (shaderType == "phong")
+			if (materialType == "phong")
 			{
-				PhongShader_ptr ps;
+				PhongMaterial_ptr phongMat;
 				XMLElement* subElem;
 
 				//Load textured version if available
@@ -150,9 +165,8 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 					string texFile(subElem->Attribute("file"));
 					Texture_ptr albedoTex = Texture::Create(Config::TEXTURE_BASE_PATH + texFile);
 
-					TextureMaterial_ptr tm = TextureMaterial::Create(albedoTex);
-
-					auto pbs = PhongTextureShader::Create();				
+					TextureMaterial_ptr tm = TextureMaterial::Create();
+					tm->albedoTexture = albedoTex;
 
 					//bump mapping		
 					if (subElem = materialElement->FirstChildElement("bumpMap"))
@@ -172,15 +186,12 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 						tm->specularTexture = Texture::Create(Config::TEXTURE_BASE_PATH + specMapFile);
 					}
 
-					pbs->SetMaterial(tm);
-					ps = pbs;
+					phongMat = tm;
 				}
 				else
 				{
-					ps = PhongShader::Create();
+					phongMat = PhongMaterial::Create();
 				}
-
-				PhongMaterial_ptr phongMat = PhongMaterial::Create();
 
 				//Load common phong attributes
 				if (subElem = materialElement->FirstChildElement("ambientReflect"))
@@ -195,40 +206,38 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 				if (subElem = materialElement->FirstChildElement("shininess"))
 					GetIntAttrib(subElem, "value", phongMat->shininess);
 
-				ps->SetMaterial(phongMat);
-
-				shader = ps;
+				material = phongMat;
 			}
-			else if (shaderType == "color")
+			else if (materialType == "color")
 			{
-				shader = ColorShader::Create();
+				material = IntrinsicColorMaterial::Create();
 			}
-			else if (shaderType == "const")
+			else if (materialType == "const")
 			{
-				ConstShader_ptr cshader = ConstShader::Create();
 				ConstantColorMaterial_ptr mat = ConstantColorMaterial::Create();
 				
 				XMLElement* subElem;
 				if (subElem = materialElement->FirstChildElement("color"))
 					GetColorVector3(subElem, mat->color);
 
-				cshader->SetMaterial(mat);
-				shader = cshader;
+				material = mat;
 			}
-			else if (shaderType == "diffuseSH")
+			else if (materialType == "diffuseSH")
 			{
-				shader = ShDiffuseShader::Create();
+				auto shMaterial = ShDiffuseMaterial::Create();
+				const char* data = Util::LoadTextFile(Config::DATA_BASE_PATH + "sh/grace.xml");
+				shMaterial->shCoeffs = ShCoeffParser::Parse(data);
+				delete[] data;
+
+				material = shMaterial;
 			}
 			else
 			{
-				Error("Shader " + shaderType + " not supported");
+				Error("Material " + materialType + " not supported");
 				return false;
 			}
 
-			if (!shader->isLinked())
-				return false;
-
-			shaders.insert(ShaderKeyVal(materialElement->Attribute("name"), shader));
+			materials.insert(ShaderKeyVal(materialElement->Attribute("name"), material));
 
 		} while (materialElement = materialElement->NextSiblingElement("material"));
 	}
@@ -258,7 +267,10 @@ bool SceneParser::ParseSkybox(XMLElement* skyboxElem)
 		return false;
 	}
 
-	Skybox_ptr sb = Skybox_ptr(new Skybox(texture));
+	SkyboxMaterial_ptr sbMat = SkyboxMaterial::Create();
+	sbMat->texture = texture;
+
+	Skybox_ptr sb = Skybox_ptr(new Skybox(sbMat));
 	sb->Init();
 	generatedScene->SetSkybox(sb);
 
@@ -301,14 +313,14 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 			//See if a material is specified
 			if(const char* materialName = objeElem->Attribute("material"))
 			{
-				if(shape->GetShader())
+				if(shape->GetMaterial())
 				{
 					Warn("The shape already has a material assigned, ignoring specified material");	
 				}
 				else
 				{
-					if(ShaderBase_ptr material = shaders[materialName])		
-						shape->SetShader(material);
+					if(Material_ptr material = materials[materialName])		
+						shape->SetMaterial(material);
 					else
 						Warn("The specified material " + string(materialName) +" is not defined");	
 				}
@@ -347,14 +359,11 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 					if (!meshTextureSets.empty())
 					{
 						mesh->SetTextures(meshTextureSets);
-						TextureMaterial_ptr tm = TextureMaterial::Create(meshTextureSets[0].albedo);
-						auto ps = PhongTextureShader::Create();
-						ps->SetMaterial(tm);
-						mesh->SetShader(ps);
+						TextureMaterial_ptr tm = TextureMaterial::Create();
+						tm->albedoTexture = meshTextureSets[0].albedo;
+						mesh->SetMaterial(tm);
 					}
 				}
-
-				shape->GetShader();
 			}
 
 			// Parse transform node
