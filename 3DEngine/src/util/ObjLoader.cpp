@@ -573,6 +573,8 @@ bool ObjLoader::ComputeTangents()
 		}
 		else
 		{
+			tangents[i] = glm::normalize(vec4(1, 1, 1, 1));
+			tangents[i].w = 1;
 			Warn("Tangent could not be computed");
 		}
 	}

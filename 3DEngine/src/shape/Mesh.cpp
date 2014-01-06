@@ -9,6 +9,8 @@
 #include "../util/MeshRaw.h"
 #include "../materials/Material.h"
 
+#include <set>
+
 using namespace GLSLShader;
 
 Mesh_ptr Mesh::Create(MeshRaw_ptr mesh)
@@ -397,27 +399,29 @@ void Mesh::MapVertexAttributes(MaterialShader_ptr shader) const
 void Mesh::Render(const Scene_ptr scene) const
 {
 	ShaderLibrary_ptr sl = ShaderLibrary::GetInstance();
-	MaterialShader_ptr shaderProgram = sl->GetShader(material);
 
-	if (shaderProgram)
+	//Render individual index groups if available
+	int numRanges = (int)ranges.size();
+
+	std::set<MaterialShader_ptr> verxtexAttribsMapped;
+
+	for (size_t i = 0; i < numRanges; i++)
 	{
-		MapVertexAttributes(shaderProgram);
+		Material_ptr currentMaterial = (i < materialsNew.size())
+			? materialsNew[i]
+			: this->material;
 
-		//Render individual index groups if available
-		int numRanges = (int)ranges.size();
-
-		for (size_t i = 0; i < numRanges; i++)
+		if (MaterialShader_ptr currentShader = sl->GetShader(currentMaterial))
 		{
-			if (i < materialsNew.size())
+			if (verxtexAttribsMapped.count(currentShader) <= 0)
 			{
-				shaderProgram->SetMaterial(materialsNew[i]);
-			}
-			else
-			{
-				shaderProgram->SetMaterial(material);
+				MapVertexAttributes(currentShader);
+				verxtexAttribsMapped.insert(currentShader);
 			}
 
-			shaderProgram->Use(scene, worldTransform);
+			currentShader->Use(scene, worldTransform);
+
+			currentShader->SetMaterial(currentMaterial);
 
 			//Bind i-th index buffer
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[i]);
@@ -426,19 +430,14 @@ void Mesh::Render(const Scene_ptr scene) const
 			int numElems = (ranges[i].second - ranges[i].first + 1) * 3;
 			glDrawRangeElements(GL_TRIANGLES, ranges[i].first, ranges[i].second, (GLsizei)numElems, GL_UNSIGNED_INT, (GLvoid*)nullptr);
 
-			shaderProgram->UnUse();
+			currentShader->UnUse();
 		}
-		
-		glBindVertexArray(0);
-
-		if (shaderProgram)
+		else
 		{
-			shaderProgram->UnUse();
+			Error("Could not obtain shader for this material");
 		}
 	}
-	else
-	{
-		Error("Could not obtain shader for this material");
-	}
+
+	glBindVertexArray(0);
 }
 

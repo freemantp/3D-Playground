@@ -229,6 +229,7 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 				return false;
 			}
 
+			material->SetName(materialName);
 			materials.insert(ShaderKeyVal(materialElement->Attribute("name"), material));
 
 		} while (materialElement = materialElement->NextSiblingElement("material"));

@@ -15,11 +15,6 @@
       <specularMap file="road/road_specular.jpg"/>
       <shininess value="1"/>
     </material>
-
-    <material name="car" shader="phong">
-      <envMapReflection value="0.3"/>
-    </material>
-
   </materials>
 
   <lights>
