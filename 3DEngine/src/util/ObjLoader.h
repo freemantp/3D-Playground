@@ -35,7 +35,7 @@ public:
 	bool HasTexCoords();
 
 protected:
-	MeshRaw_ptr LoadObj(std::istream& istr);
+	MeshRaw_ptr LoadObj(std::istream& istr, std::string path = "");
 	bool LoadMtllib(std::istream& istr, MeshRaw_ptr newMesh);
 
 private:

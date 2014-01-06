@@ -19,6 +19,16 @@ SHARED_MATERIAL_PTR_FACTORY_IMPL(ConstantColorMaterial);
 SHARED_MATERIAL_PTR_FACTORY_IMPL(ShDiffuseMaterial);
 SHARED_MATERIAL_PTR_FACTORY_IMPL(SkyboxMaterial);
 
+void Material::SetName(const std::string& name)
+{
+	this->name = name;
+}
+
+std::string Material::GetName()
+{
+	return name;
+}
+
 PhongMaterial::PhongMaterial()
 : shininess(1)
 , opacity(1)

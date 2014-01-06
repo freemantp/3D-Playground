@@ -16,6 +16,16 @@ ObjMaterial::ObjMaterial(std::string theName)
 
 }
 
+bool ObjMaterial::HasTextures() const
+{
+	return !ambientColorTexture.empty()
+		|| !diffuseColorTexture.empty()
+		|| !specularColorTexture.empty()
+		|| !specularHightlightTexture.empty()
+		|| !alphaMapTexture.empty()
+		|| !displacementMapTexture.empty();
+}
+
 MeshRaw::MeshRaw(void)
 {
 }

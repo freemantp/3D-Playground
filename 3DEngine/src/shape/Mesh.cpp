@@ -3,8 +3,9 @@
 #include "../scene/Scene.h"
 #include "../shader/ShaderLibrary.h"
 #include "../shader/ShaderBase.h"
-#include "../shader/PhongShader.h"
-#include "../shader/PhongTextureShader.h"
+#include "../shader/MaterialShader.h"
+#include "../texture/Texture.h"
+#include "../util/Util.h"
 #include "../util/MeshRaw.h"
 #include "../materials/Material.h"
 
@@ -44,18 +45,58 @@ void Mesh::InitFromRawMesh(MeshRaw_ptr rawMesh)
 	{
 		SetPositions(rawMesh->vertices,rawMesh->faces, &rawMesh->groupRanges);
 
+		std::vector<PhongMaterial_ptr> meshMaterials;
+
+		// Mesh has material descriptors
+		for (auto mat : rawMesh->materials)
+		{
+			PhongMaterial_ptr pMaterial;
+			if (mat->HasTextures())
+			{
+				TextureMaterial_ptr texMat = TextureMaterial::Create();
+				pMaterial = texMat;
+
+				if (!mat->bumpMapTexture.empty())
+				{
+					texMat->bumpTexture = Texture::Create(Util::ExtractBaseFolder(rawMesh->meshPath) + mat->bumpMapTexture);
+					texMat->bumpIsNormalMap = true;
+				}
+				if (!mat->diffuseColorTexture.empty())
+				{
+					texMat->albedoTexture = Texture::Create(Util::ExtractBaseFolder(rawMesh->meshPath) + mat->diffuseColorTexture);
+				}
+				if (!mat->specularColorTexture.empty())
+				{
+					texMat->specularTexture = Texture::Create(Util::ExtractBaseFolder(rawMesh->meshPath) + mat->specularColorTexture);
+				}
+			}
+			else
+			{
+				pMaterial = PhongMaterial::Create();
+			}
+
+			pMaterial->SetName(mat->name);
+			pMaterial->ambientReflection = mat->ambient;
+			pMaterial->diffuseReflection = mat->diffuse;
+			pMaterial->glossyReflection = mat->specular;
+			pMaterial->shininess = static_cast<int>(mat->shininess);
+			pMaterial->opacity = mat->opacity;
+
+			meshMaterials.push_back(pMaterial);
+		}
+
 		// TODO: Refactor this (ugly, inefficient hack)
 		for(auto matName : rawMesh->groupMaterial)
 		{
 			bool found = false;
 
-			for(ObjMaterial_ptr mat : rawMesh->materials)
+			for (Material_ptr mat : meshMaterials)
 			{
-				std::string mn = mat->name;
+				std::string mn = mat->GetName();
 
 				if(matName == mn)
 				{
-					materials.push_back(mat);
+					materialsNew.push_back(mat);
 					found = true;
 				}
 			}
@@ -74,11 +115,6 @@ void Mesh::InitFromRawMesh(MeshRaw_ptr rawMesh)
 		else
 			Warn("Tangent data not present!");
 	}
-}
-
-void Mesh::SetTextures(const std::vector<MeshTextureSet>& tex)
-{
-	textures = tex;
 }
 
 bool Mesh::MapVertexAttribute(VertexAttribute attrib, GLuint channel) const
@@ -372,31 +408,9 @@ void Mesh::Render(const Scene_ptr scene) const
 
 		for (size_t i = 0; i < numRanges; i++)
 		{
-			if (i < materials.size())
+			if (i < materialsNew.size())
 			{
-				//TODO: make this work with any shader
-				if (auto pts = std::dynamic_pointer_cast<PhongTextureShader>(shaderProgram))
-				{
-					TextureMaterial_ptr tm = TextureMaterial::Create();
-					tm->albedoTexture = textures[i].albedo;
-					tm->specularTexture = textures[i].specular ? textures[i].specular : Texture_ptr();
-					tm->bumpTexture = textures[i].bump ? textures[i].bump : Texture_ptr();
-					tm->bumpIsNormalMap = true;
-					pts->SetMaterial(tm);
-				}
-				else if (auto ps = std::dynamic_pointer_cast<PhongShader>(shaderProgram))
-				{
-					if (ObjMaterial_ptr mat = materials[i])
-					{
-						PhongMaterial_ptr pm = PhongMaterial::Create();
-						pm->ambientReflection = mat->ambient;
-						pm->diffuseReflection = mat->diffuse;
-						pm->glossyReflection = mat->specular;
-						pm->shininess = static_cast<int>(mat->shininess);
-						pm->opacity = mat->opacity;
-						ps->SetMaterial(pm);
-					}
-				}
+				shaderProgram->SetMaterial(materialsNew[i]);
 			}
 			else
 			{
@@ -415,7 +429,6 @@ void Mesh::Render(const Scene_ptr scene) const
 			shaderProgram->UnUse();
 		}
 		
-
 		glBindVertexArray(0);
 
 		if (shaderProgram)

@@ -292,7 +292,7 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 			}
 			else if(type == "box")
 			{
-				shape = Box_ptr(new Box());
+				shape = Box::Create();
 			}
 			else 
 			{
@@ -302,7 +302,7 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 
 			shape->Init();
 
-			//See if a material is specified
+			//See if a material is specified, if yes override mtllib in case of mesh
 			if(const char* materialName = objeElem->Attribute("material"))
 			{
 				if(shape->GetMaterial())
@@ -315,46 +315,6 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 						shape->SetMaterial(material);
 					else
 						Warn("The specified material " + string(materialName) +" is not defined");	
-				}
-			}
-			else // Look whether 
-			{
-				if (auto mesh = std::dynamic_pointer_cast<Mesh>(shape))
-				{
-					std::vector<MeshTextureSet> meshTextureSets;
-
-					// Mesh has material descriptors
-					for (auto mat : mesh->GetMaterials())
-					{
-						MeshTextureSet mts;
-
-						if (!mat->bumpMapTexture.empty())
-						{					
-							mts.bump = Texture::Create(Util::ExtractBaseFolder(modelPath) + mat->bumpMapTexture);
-						}
-						if (!mat->diffuseColorTexture.empty())
-						{
-							mts.albedo = Texture::Create(Util::ExtractBaseFolder(modelPath) + mat->diffuseColorTexture);
-						}
-						if (!mat->specularColorTexture.empty())
-						{
-							mts.specular = Texture::Create(Util::ExtractBaseFolder(modelPath) + mat->specularColorTexture);
-						}
-
-						if (mts.Valid())
-						{
-							mts.name = mat->name;
-							meshTextureSets.push_back(mts);
-						}									
-					}
-
-					if (!meshTextureSets.empty())
-					{
-						mesh->SetTextures(meshTextureSets);
-						TextureMaterial_ptr tm = TextureMaterial::Create();
-						tm->albedoTexture = meshTextureSets[0].albedo;
-						mesh->SetMaterial(tm);
-					}
 				}
 			}
 

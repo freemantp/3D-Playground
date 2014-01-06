@@ -49,11 +49,12 @@ void ObjLoader::ParseIdx(string& s,ivec3& indices)
 	indices[idxPtr++] = number - 1;
 }
 
-MeshRaw_ptr ObjLoader::LoadObj(istream& istr)
+MeshRaw_ptr ObjLoader::LoadObj(istream& istr, std::string path)
 {	
 	int lineCount = 0;
 
 	MeshRaw_ptr newMesh = MeshRaw::Create();
+	newMesh->meshPath = path;
 
 	string groupName;	
 	string currentMtl;
@@ -592,7 +593,7 @@ MeshRaw_ptr ObjLoader::LoadObjFile(const string& path)
 	std::string line;
 	if (myfile.is_open())
 	{
-		newMesh = LoadObj(myfile);
+		newMesh = LoadObj(myfile,path);
 		myfile.close();
 	}
 	else 

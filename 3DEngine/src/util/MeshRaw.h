@@ -24,6 +24,9 @@ public:
 protected:
 	ObjMaterial(std::string name);
 public:
+
+	bool HasTextures() const;
+
 	std::string name;
 	glm::vec3 ambient;
 	glm::vec3 diffuse;
@@ -38,13 +41,15 @@ public:
 	std::string bumpMapTexture;
 	std::string displacementMapTexture;
 	bool specularEnabled;
+
+
 };
 
 class MeshRaw
 {
 public:
 
-	static MeshRaw_ptr Create() { return MeshRaw_ptr(new MeshRaw());}
+	SHARED_PTR_FACTORY(MeshRaw);
 
 	~MeshRaw();
 
@@ -66,6 +71,7 @@ public:
 	vector<string> groupNames;
 	std::vector<ObjMaterial_ptr> materials;
 	string name;
+	string meshPath;
 
 protected:
 	MeshRaw();

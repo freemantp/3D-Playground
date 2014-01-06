@@ -127,6 +127,9 @@ void Box::Init() {
 	SetPositions(pos,idx);
 	SetNormals(normal);
 	SetTextureCoordinates(tex);
+}
 
+Box::Box() :Mesh()
+{
 
 }

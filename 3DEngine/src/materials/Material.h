@@ -18,8 +18,13 @@ class Material
 {
 public:
 	virtual ~Material() {};
+
+	void SetName(const std::string& name);
+	std::string GetName();
+
 protected:
-	Material() {};	
+	Material() {};
+	std::string name;
 	
 };
 

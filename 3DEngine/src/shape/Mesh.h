@@ -14,18 +14,6 @@ SHARED_PTR_CLASS_DECL(Scene);
 SHARED_PTR_CLASS_DECL(Texture);
 SHARED_PTR_CLASS_DECL(MaterialShader);
 
-class MeshTextureSet
-{
-public:
-	std::string name;
-	Texture_ptr bump;
-	Texture_ptr albedo;
-	Texture_ptr specular;
-
-	bool Valid() { return bump || albedo || specular; }
-
-};
-
 class Mesh : public Shape
 {
 public:
@@ -45,9 +33,6 @@ public:
 	bool SetTangents(const std::vector<float>& tangents);
 	bool SetTextureCoordinates(const std::vector<float>& texCoords);
 	bool SetColors(const std::vector<float>& colors);
-
-	void SetTextures(const std::vector<MeshTextureSet>& tex);
-	const std::vector<ObjMaterial_ptr>& GetMaterials() { return materials; };
 
 	bool IsInitialized() const { return initialized; };
 	bool MapVertexAttribute(GLSLShader::VertexAttribute attrib, GLuint channel) const;
@@ -76,14 +61,9 @@ protected:
 	VertexAttribData* vAttribData;
 
 	std::vector< std::pair<int,int> > ranges;
-	std::vector<ObjMaterial_ptr> materials;
-	std::vector<MeshTextureSet> textures;
+	std::vector<Material_ptr> materialsNew;
 
 	bool vtxAttribSet[6];
-
-	//bool normalsSet,tangentsSet,colorsSet,texCoordsSet;
-
 	bool initialized;
-
 };
 

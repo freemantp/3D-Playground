@@ -136,7 +136,7 @@ Mesh_ptr Util::GetElephant()
 
 Mesh_ptr Util::GetBox()
 {
-	Box_ptr box = Box_ptr(new Box());
+	Box_ptr box = Box::Create();
 	box->Init();
 
 	box->worldTransform = glm::translate(box->worldTransform, glm::vec3(-0.5, -0.5f, -0.5));
