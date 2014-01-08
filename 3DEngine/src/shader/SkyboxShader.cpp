@@ -20,9 +20,9 @@ SkyboxShader::~SkyboxShader(void)
 }
 
 
-void SkyboxShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
+bool SkyboxShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {	
-	ShaderBase::Use(scene,modelTransform);
+	bool ok = __super::Use(scene,modelTransform);
 
 	//Bind cubemap texture to texture unit 0
 	if (material)
@@ -32,6 +32,10 @@ void SkyboxShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 
 		SetUniform("SkyboxSize", 50);
 	}
+	else
+		ok = false;
+
+	return ok;
 
 }
 

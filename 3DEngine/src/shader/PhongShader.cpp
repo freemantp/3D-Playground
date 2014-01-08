@@ -52,9 +52,9 @@ bool PhongShader::SetMaterial(Material_cptr material)
 	return false;
 }
 
-void PhongShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
+bool PhongShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {	
-	ShaderBase::Use(scene,modelTransform);
+	bool ok = __super::Use(scene, modelTransform);
 
 	if (material)
 	{
@@ -71,6 +71,8 @@ void PhongShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 			glDepthMask(GL_FALSE);
 		}
 	}
+	else
+		ok = false;
 
 
 	if(scene->skybox)
@@ -86,6 +88,8 @@ void PhongShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 	}
 
 	SetLightAndModel(scene);
+
+	return ok;
 }
 
 void PhongShader::UnUse()

@@ -151,10 +151,11 @@ bool ShaderBase::LoadShader( const string& vertexSource,
 
 }
 
-void ShaderBase::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
+bool ShaderBase::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {
-	__super::Use();
+	bool ok = __super::Use();
 	UpdateTransforms(scene->activeCamera,modelTransform);
+	return ok;
 }
 
 VertexAttributeInfo_ptr ShaderBase::GetVertexAttributeInfo() const 

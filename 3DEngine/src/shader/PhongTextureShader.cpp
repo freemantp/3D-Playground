@@ -25,9 +25,9 @@ PhongTextureShader::~PhongTextureShader()
 
 }
 
-void PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
+bool PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {	
-	ShaderBase::Use(scene,modelTransform);
+	bool ok = ShaderBase::Use(scene, modelTransform);
 
 	SetLightAndModel(scene);
 
@@ -65,6 +65,10 @@ void PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransf
 		SetUniform("hasBumpMap", hasBumpMap);
 		SetUniform("hasSpecularMap", hasSpecularMap);
 	}
+	else
+		ok = false;
+	
+	return ok;
 }
 
 bool PhongTextureShader::SetMaterial(Material_cptr material)

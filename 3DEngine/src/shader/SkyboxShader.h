@@ -14,7 +14,7 @@ public:
 
 	~SkyboxShader(void);
 
-	virtual void Use(const Scene_ptr scene, const glm::mat4& modelTransform) override;
+	virtual bool Use(const Scene_ptr scene, const glm::mat4& modelTransform) override;
 
 	virtual bool SetMaterial(Material_cptr material) override;
 

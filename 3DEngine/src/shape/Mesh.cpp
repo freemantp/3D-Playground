@@ -419,18 +419,24 @@ void Mesh::Render(const Scene_ptr scene) const
 				verxtexAttribsMapped.insert(currentShader);
 			}
 
-			currentShader->Use(scene, worldTransform);
+			if (currentShader->SetMaterial(currentMaterial))
+			{
+				if (currentShader->Use(scene, worldTransform))
+				{
+					//Bind i-th index buffer
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[i]);
 
-			currentShader->SetMaterial(currentMaterial);
-
-			//Bind i-th index buffer
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[i]);
-
-			//Here glDrawRangeElements is used to limit the amount of vertex data to be prefetched
-			int numElems = (ranges[i].second - ranges[i].first + 1) * 3;
-			glDrawRangeElements(GL_TRIANGLES, ranges[i].first, ranges[i].second, (GLsizei)numElems, GL_UNSIGNED_INT, (GLvoid*)nullptr);
-
-			currentShader->UnUse();
+					//Here glDrawRangeElements is used to limit the amount of vertex data to be prefetched
+					int numElems = (ranges[i].second - ranges[i].first + 1) * 3;
+					glDrawRangeElements(GL_TRIANGLES, ranges[i].first, ranges[i].second, (GLsizei)numElems, GL_UNSIGNED_INT, (GLvoid*)nullptr);
+					currentShader->UnUse();
+				}
+				else
+					Error("Could not use shader");
+			}
+			else
+				Error("Could not set material");
+			
 		}
 		else
 		{

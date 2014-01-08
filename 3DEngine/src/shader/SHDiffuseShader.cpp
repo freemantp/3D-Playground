@@ -27,9 +27,9 @@ ShDiffuseShader::~ShDiffuseShader(void)
 {
 }
 
-void ShDiffuseShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
+bool ShDiffuseShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 {	
-	ShaderBase::Use(scene,modelTransform);
+	bool ok = __super::Use(scene,modelTransform);
 
 	if (material && material->shCoeffs)
 	{
@@ -50,7 +50,10 @@ void ShDiffuseShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform
 	else
 	{
 		Error("No SH material or SH coeffs available");
+		ok = false;
 	}
+
+	return ok;
 }
 
 bool ShDiffuseShader::SetMaterial(Material_cptr material)
