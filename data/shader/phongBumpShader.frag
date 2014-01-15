@@ -113,7 +113,7 @@ vec3 getNormal()
 		if(isNormalMap)
 		{
 			// fetch normal from normal map, expand to the [-1, 1] range, and normalize
-			normal = normalize(2.0 * texture2D (BumpmapTex, TexCoord).rgb - 1.0);
+			normal = normalize(2.0 * texture (BumpmapTex, TexCoord).rgb - 1.0);
 		}
 		else
 		{
