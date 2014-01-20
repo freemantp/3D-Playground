@@ -1,5 +1,4 @@
 #version 400
-subroutine float shadeModelType(in vec3 s, in vec3 v, in vec3 normal);
 
 // ----------------- declarations -----------------
 
@@ -40,9 +39,6 @@ uniform bool hasSpecularMap;
 uniform bool hasBumpMap;
 uniform int	Shininess;
 
-//Subroutine declaration
-subroutine uniform shadeModelType shadeModel;
-
 // ----------------- in / out -----------------
 
 //input from previous stage
@@ -60,30 +56,21 @@ layout (location = 0) out vec4 FragColor;
 // ----------------- subroutines -----------------
 
 //Blinn-Phong model
-subroutine( shadeModelType )
 float blinn(in vec3 s, in vec3 v, in vec3 normal)
 {
 	vec3 h = normalize( v + s );
 	return pow( max( dot(h,normal), 0.0), Shininess ) ;
 }
 
-//Phong model
-subroutine( shadeModelType )
-float phong(in vec3 s, in vec3 v, in vec3 normal)
-{
-	vec3 r = reflect( -s , normal);
-	return pow( max( dot(r,v), 0.0), Shininess );
-}
-
 float shade(const in vec3 normal, const in vec3 viewDir, const in vec3 lightDir, vec2 texCoord)
 {		
 	float diffuse = max( dot(lightDir,normal), 0.0 );	
-	float specular;
+	float specular = 0;
 
 	float specularity = hasSpecularMap ? texture(SpecularTex,TexCoord).r : 1.0;
 
 	if(diffuse > 0)
-		specular = shadeModel(lightDir,viewDir,normal) ;
+		specular = blinn(lightDir,viewDir,normal) ;
 
 	return diffuse + specularity * specular;
 }
@@ -134,12 +121,14 @@ void main()
 	vec3 normal = getNormal();
 	vec3 albedo = texture(AlbedoTex,TexCoord).rgb;
 
+	FragColor = vec4(0,0,0,1);
+
 	//Point lights
 	for(int i=0;  i < NumPointLights; i++)
 	{
 		PointLight light = sceneLights.PointLights[i];
 		vec3 lightDir = isNormalMap ? PointlightDirTGT[i] : normalize( vec3(light.Position) - PositionEYE);
-		FragColor += vec4(light.Color * albedo * shade(normal,ViewDirection, lightDir,TexCoord),1);
+		FragColor += vec4(light.Color * albedo * shade(normal,ViewDirection, lightDir,TexCoord),0);
 	}
 
 	//Spot lights
@@ -155,7 +144,7 @@ void main()
 		{
 			float spotFactor = pow( dot( -lightToCamDir, light.Direction), light.Exponent);
 			vec3 lightDir = isNormalMap ? SpotlightDirTGT[i] : normalize( vec3(light.Position) - PositionEYE);
-			FragColor += spotFactor * vec4(light.Color * albedo * shade(normal,ViewDirection,lightDir,TexCoord),1);
+			FragColor += spotFactor * vec4(light.Color * albedo * shade(normal,ViewDirection,lightDir,TexCoord),0);
 		}
 	}
 

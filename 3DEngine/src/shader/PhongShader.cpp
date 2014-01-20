@@ -29,12 +29,7 @@ PhongShader::PhongShader(const string& shaderName)
 
 void PhongShader::Init()
 {
-	//Get subroutine indices
-	blinnSubroutineIdx = glGetSubroutineIndex(programHandle, GL_FRAGMENT_SHADER, "blinn");
-	phongSubroutineIdx = glGetSubroutineIndex(programHandle, GL_FRAGMENT_SHADER, "phong");
 
-	//Select default shade model
-	shadeModel = GLSLShader::BLINN_PHONG;
 }
 
 PhongShader::~PhongShader(void)
@@ -101,23 +96,6 @@ void PhongShader::UnUse()
 
 void PhongShader::SetLightAndModel(const Scene_ptr scene)
 {
-	GLuint* shadeFunc = 0;
-
-	switch (shadeModel)
-	{
-	case GLSLShader::PHONG:
-		shadeFunc = &phongSubroutineIdx;
-		break;
-	case GLSLShader::BLINN_PHONG:
-		shadeFunc = &blinnSubroutineIdx;
-		break;
-	default:
-		Error("Unsupported shade func type");
-		return;
-	}
-
-	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, shadeFunc);
-
 	//set lights
 	SetUniform("NumPointLights", (int)scene->lightModel->pointLights.size());
 	SetUniform("NumSpotLights", (int)scene->lightModel->spotLights.size());

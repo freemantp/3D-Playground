@@ -4,14 +4,6 @@
 #include "MaterialShader.h"
 #include "../util/gettersetter.h"
 
-namespace GLSLShader 
-{
-	enum PhongShadeModel 
-	{
-		PHONG, BLINN_PHONG
-	};
-};
-
 SHARED_PTR_CLASS_DECL(PhongShader)
 SHARED_PTR_CLASS_DECL(PhongMaterial)
 
@@ -29,9 +21,6 @@ public:
 	virtual bool SetMaterial(Material_cptr material) override;
 
 	virtual void UnUse() override;
-
-
-	GLSLShader::PhongShadeModel shadeModel;
 
 protected:
 
