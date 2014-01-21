@@ -167,6 +167,14 @@ std::string Util::ExtractBaseFolder(std::string path)
        return result[0];
 }
 
+std::string Util::ExtractFileName(std::string path)
+{
+	static std::regex rgx("(.*(/|\\\\))+([a-zA-Z0-9\\.]+)");
+	std::smatch result;
+	std::regex_search(path, result, rgx);
+	return result[result.size()-1];
+}
+
 bool Util::FileExists (const std::string& name) {
 	std::ifstream f(name.c_str());
 	if (f.good()) {

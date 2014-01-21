@@ -55,7 +55,7 @@ protected:
 	inline void SetAttribPointer(const GLSLShader::VertexAttribute& attrib) const;
 
 	GLuint vaoHandle;
-	//size_t numIndices;
+	std::string name;
 	GLuint* bufferObjects;
 	GLuint* indexBufferObjects;
 	VertexAttribData* vAttribData;

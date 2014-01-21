@@ -45,6 +45,11 @@ void Mesh::InitFromRawMesh(MeshRaw_ptr rawMesh)
 {
 	if(rawMesh)
 	{
+		if (!rawMesh->name.empty())
+			name = rawMesh->name;
+		else
+			name = Util::ExtractFileName(rawMesh->meshPath);
+
 		SetPositions(rawMesh->vertices,rawMesh->faces, &rawMesh->groupRanges);
 
 		std::vector<PhongMaterial_ptr> meshMaterials;
@@ -382,13 +387,21 @@ void Mesh::MapVertexAttributes(MaterialShader_ptr shader) const
 
 			if (kv.second >= 0)
 			{
-				if (vtxAttribSet[kv.first])
+				GLSLShader::VertexAttribute attrib = kv.first;
+				int channel = kv.second;
+
+				if (vtxAttribSet[attrib])
 				{
-					if (!MapVertexAttribute(kv.first, kv.second))
+					if (!MapVertexAttribute(attrib, channel))
 						Error("Could not map vertex attribute channel");
 				}
 				else
-					Warn("Shader uses a vertex attribute for wich no data is present");
+				{					
+					std::stringstream ss;
+					ss << attrib;
+					
+					Warn("Shader uses vertex attribute " + ss.str() + " for wich no data is present in mesh '" + name + "'");				
+				}								
 			}
 		}
 	}
