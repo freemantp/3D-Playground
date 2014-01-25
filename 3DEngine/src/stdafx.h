@@ -7,7 +7,7 @@
 
 //#define GLM_SWIZZLE GLM_SWIZZLE_XYZW
 //#include <glm/glm.hpp>
-#include <glload/gl_4_3.h>
+//#include "core/gl.h"
 
 // TODO: reference additional headers your program requires here
 #include "error.h"

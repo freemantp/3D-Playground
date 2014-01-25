@@ -3,9 +3,9 @@
 #include <vector>
 #include <string>
 
-#include "../stdafx.h"
 #include "../enums.h"
 #include "../util/SharedPointer.h"
+#include "../core/gl.h"
 #include <glm/glm.hpp>
 
 using std::string;

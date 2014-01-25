@@ -45,7 +45,7 @@ CubeMapTexture::CubeMapTexture(const std::string& textureBasePath, const std::st
 	{
 		std::string fileName = textureBasePath + "/" + suffixes[i] + "." + imageExtension;
 
-		if (images[i] = Util::LoadImage(fileName))
+		if (images[i] = Util::LoadImageFile(fileName))
 		{
 			auto img = images[i]->GetImage(0);
 			auto dim = img.GetDimensions();
@@ -90,7 +90,7 @@ void CubeMapTexture::LoadCubeTextures(const CubeMapTextureRawData& cubemaps)
 
 bool CubeMapTexture::LoadCubemapImages(const std::string& texturePath, CubeMapTextureRawData& cubeMap)
 {
-	if (auto imgSet = Util::LoadImage(texturePath))
+	if (auto imgSet = Util::LoadImageFile(texturePath))
 	{
 		if (imgSet->GetFaceCount() == 1)
 		{

@@ -20,29 +20,29 @@ int numShTerms = numShBands * numShBands;
  * multiplied by the albedo factor rho */
 const vec3 zhCoeffs = vec3(1/(2*sqrt(pi)), 1/sqrt(3*pi), 1/8*sqrt(5/pi));
 
-void evalSHfast(in vec3 v,in out float pOut[9] )
+void evalSHfast(in vec3 v,inout float pOut[9] )
 {
 	float fC0,fS0,fC1,fS1,fPa,fPb,fPc;
 	float vz2 = v.z*v.z;
-	pOut[0] = 0.282094791774f;
-	pOut[2] =  0.488602511903f*v.z;
-	pOut[6] = ( 0.946174695758f*vz2)+ -0.315391565253f;
+	pOut[0] = 0.282094791774;
+	pOut[2] =  0.488602511903*v.z;
+	pOut[6] = ( 0.946174695758*vz2)+ -0.315391565253;
 	fC0 = v.x;
 	fS0 = v.y;
-	fPa =  -0.488602511903f;
+	fPa =  -0.488602511903;
 	pOut[3] = fPa*fC0;
 	pOut[1] = fPa*fS0;
-	fPb =  -1.09254843059f*v.z;
+	fPb =  -1.09254843059*v.z;
 	pOut[7] = fPb*fC0;
 	pOut[5] = fPb*fS0;
 	fC1 = (v.x*fC0)-(v.y*fS0);
 	fS1 = (v.x*fS0)+(v.y*fC0);
-	fPc =  0.546274215296f;
+	fPc =  0.546274215296;
 	pOut[8] = fPc*fC1;
 	pOut[4] = fPc*fS1;
 }
 
-void computeDiffuseTransferCoeffs(in vec3 n, in out float tfC[9])
+void computeDiffuseTransferCoeffs(in vec3 n, inout float tfC[9])
 {
 	evalSHfast(n,tfC);
 

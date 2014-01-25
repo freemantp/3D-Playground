@@ -25,7 +25,7 @@ public:
 	static void PrintUniforms(const ShaderBase* shader);
 	static Mesh_ptr LoadModel(const std::string& path);
 
-	static std::unique_ptr<glimg::ImageSet> LoadImage(const std::string& texturePath);
+	static std::unique_ptr<glimg::ImageSet> LoadImageFile(const std::string& texturePath);
 	static std::string Util::ExtractBaseFolder(std::string path);
 	static std::string Util::ExtractFileName(std::string path);	
 	static bool FileExists (const std::string& name);

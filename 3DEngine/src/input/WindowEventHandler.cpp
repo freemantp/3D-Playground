@@ -2,6 +2,7 @@
 #include "WindowEventHandler.h"
 #include "ViewportObserver.h"
 #include "../rendering/Viewport.h"
+#include "../core/gl.h"
 
 WindowEventHandler WindowEventHandler::instance = WindowEventHandler();
 

@@ -396,11 +396,17 @@ void Mesh::MapVertexAttributes(MaterialShader_ptr shader) const
 						Error("Could not map vertex attribute channel");
 				}
 				else
-				{					
+				{	
+#if _DEBUG
 					std::stringstream ss;
 					ss << attrib;
 					
-					Warn("Shader uses vertex attribute " + ss.str() + " for wich no data is present in mesh '" + name + "'");				
+					Warn("Shader uses vertex attribute " + ss.str() + " for wich no data is present in mesh '" + name + "'");	
+					for (size_t i = 0; i < 6; i++)
+					{
+						std::cout << vtxAttribSet[i] << std::endl;
+					}
+#endif
 				}								
 			}
 		}
@@ -436,7 +442,7 @@ void Mesh::Render(const Scene_ptr scene) const
 			{
 				if (currentShader->Use(scene, worldTransform))
 				{
-					//Bind i-th index buffer
+					//Bind i-th index bufferg
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[i]);
 
 					//Here glDrawRangeElements is used to limit the amount of vertex data to be prefetched

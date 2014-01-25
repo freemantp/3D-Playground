@@ -11,6 +11,8 @@
 #include "../shader/ShaderBase.h"
 #include "../shader/GLSLProgram.h"
 
+#include "../error.h"
+
 #include <fstream>
 #include <ctime>
 #include <regex>
@@ -144,14 +146,14 @@ Mesh_ptr Util::GetBox()
 	return box;
 }
 
-std::unique_ptr<glimg::ImageSet> Util::LoadImage(const std::string& texturePath)
+std::unique_ptr<glimg::ImageSet> Util::LoadImageFile(const std::string& texturePath)
 {
 	std::unique_ptr<glimg::ImageSet> imgSet;
 	try
 	{
 		imgSet.reset(glimg::loaders::stb::LoadFromFile(texturePath));
 	}
-	catch (glimg::loaders::stb::StbLoaderException &e)
+	catch (glimg::loaders::stb::StbLoaderException)
 	{
 		Error("Loading of " + texturePath + " failed");
 	}

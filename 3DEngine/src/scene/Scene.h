@@ -9,7 +9,7 @@
 class ShaderBase;
 class InputHandlerFactory;
 
-SHARED_PTR_CLASS_DECL(Camera);
+SHARED_PTR_CLASS_DECL(Camera);	
 SHARED_PTR_CLASS_DECL(Scene);
 SHARED_PTR_CLASS_DECL(Shape);
 SHARED_PTR_CLASS_DECL(Skybox);

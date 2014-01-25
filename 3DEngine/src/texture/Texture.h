@@ -3,6 +3,7 @@
 #include <string>
 
 #include "../util/SharedPointer.h"
+#include "../core/gl.h"
 
 SHARED_PTR_CLASS_DECL(Texture);
 

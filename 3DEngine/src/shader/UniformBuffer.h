@@ -4,6 +4,7 @@
 #include <map>
 #include <glm/glm.hpp>
 #include "../util/SharedPointer.h"
+#include "../core/gl.h"
 
 SHARED_PTR_CLASS_DECL(UniformBuffer);
 SHARED_PTR_CLASS_DECL(GLSLProgram)

@@ -1,7 +1,9 @@
 #pragma once
 
 #include "../util/SharedPointer.h"
+#include "../core/gl.h"
 #include <glm/glm.hpp>
+
 
 SHARED_PTR_CLASS_DECL(GeometryBuffer);
 SHARED_PTR_CLASS_DECL(GBufferShader);

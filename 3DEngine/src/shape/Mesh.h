@@ -6,6 +6,8 @@
 #include <map>
 #include <string>
 
+#include "../core/gl.h"
+
 //forward declarations
 SHARED_PTR_CLASS_DECL(MeshRaw);
 SHARED_PTR_CLASS_DECL(Mesh);

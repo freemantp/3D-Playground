@@ -25,7 +25,7 @@
     <ClInclude Include="src\camera\FirstPersonCameraAdapter.h" />
     <ClInclude Include="src\camera\InspectionCameraAdapter.h" />
     <ClInclude Include="src\camera\PerspectiveCamera.h" />
-    <ClInclude Include="src\common.h" />
+    <ClInclude Include="src\core\gl.h" />
     <ClInclude Include="src\enums.h" />
     <ClInclude Include="src\error.h" />
     <ClInclude Include="src\input\InputHandler.h" />
@@ -66,6 +66,7 @@
     <ClInclude Include="src\shape\Triangle.h" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\texture\CubeMapTexture.h" />
+    <ClInclude Include="src\texture\Framebuffer.h" />
     <ClInclude Include="src\texture\Texture.h" />
     <ClInclude Include="src\util\gettersetter.h" />
     <ClInclude Include="src\util\MeshRaw.h" />
@@ -116,6 +117,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\texture\CubeMapTexture.cpp" />
+    <ClCompile Include="src\texture\Framebuffer.cpp" />
     <ClCompile Include="src\texture\Texture.cpp" />
     <ClCompile Include="src\util\MeshRaw.cpp" />
     <ClCompile Include="src\util\ObjLoader.cpp" />

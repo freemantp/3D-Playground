@@ -217,7 +217,6 @@
     <ClInclude Include="src\math\HaltonSphere.h">
       <Filter>Source Files\math</Filter>
     </ClInclude>
-    <ClInclude Include="src\common.h" />
     <ClInclude Include="src\rendering\Viewport.h">
       <Filter>Source Files\rendering</Filter>
     </ClInclude>
@@ -233,6 +232,10 @@
     </ClInclude>
     <ClInclude Include="src\shader\IntrinsicColorShader.h">
       <Filter>Source Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\texture\Framebuffer.h" />
+    <ClInclude Include="src\core\gl.h">
+      <Filter>Source Files\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -361,6 +364,9 @@
     </ClCompile>
     <ClCompile Include="src\shader\ConstColorShader.cpp">
       <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture\Framebuffer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
