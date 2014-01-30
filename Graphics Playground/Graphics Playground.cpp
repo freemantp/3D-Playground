@@ -81,6 +81,8 @@ void initGL()
 	glGetIntegerv(GL_SAMPLE_BUFFERS, &iMultiSample);
 	glGetIntegerv(GL_SAMPLES, &iNumSamples);
 
+	std::cout << "MSAA: buffers= " << iMultiSample << ", samples = " << iNumSamples << std::endl;
+
 }
 
 bool Initialize()

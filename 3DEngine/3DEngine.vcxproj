@@ -66,6 +66,7 @@
     <ClInclude Include="src\shape\Triangle.h" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\texture\CubeMapTexture.h" />
+    <ClInclude Include="src\texture\ShadowMapTexture.h" />
     <ClInclude Include="src\texture\Framebuffer.h" />
     <ClInclude Include="src\texture\Texture.h" />
     <ClInclude Include="src\util\gettersetter.h" />
@@ -117,6 +118,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\texture\CubeMapTexture.cpp" />
+    <ClCompile Include="src\texture\ShadowMapTexture.cpp" />
     <ClCompile Include="src\texture\Framebuffer.cpp" />
     <ClCompile Include="src\texture\Texture.cpp" />
     <ClCompile Include="src\util\MeshRaw.cpp" />

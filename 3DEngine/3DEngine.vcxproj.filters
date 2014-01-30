@@ -237,6 +237,9 @@
     <ClInclude Include="src\core\gl.h">
       <Filter>Source Files\core</Filter>
     </ClInclude>
+    <ClInclude Include="src\texture\ShadowMapTexture.h">
+      <Filter>Source Files\texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -367,6 +370,9 @@
     </ClCompile>
     <ClCompile Include="src\texture\Framebuffer.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture\ShadowMapTexture.cpp">
+      <Filter>Source Files\texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

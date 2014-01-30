@@ -17,9 +17,13 @@ public:
 
 	void BindTexture(int textureUnit);
 
+	GLuint Handle() const { return texObject; };
+
 protected:
 
 	Texture(const std::string& texturePath);
+
+	Texture();
 
 	GLuint texObject;
 };

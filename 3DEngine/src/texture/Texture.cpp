@@ -11,6 +11,11 @@ Texture_ptr Texture::Create(const std::string& texturePath)
 	return Texture_ptr(new Texture(texturePath));
 }
 
+Texture::Texture()
+{
+
+}
+
 Texture::Texture(const std::string& texturePath)
 {
 	if (std::unique_ptr<glimg::ImageSet> imageSet = Util::LoadImageFile(texturePath))
