@@ -3,7 +3,6 @@
 #include <fstream>
 #include <regex>
 #include <sstream>
-#include <glm/core/func_geometric.hpp>
 #include "MeshRaw.h"
 #include "../error.h"
 #include "Util.h"

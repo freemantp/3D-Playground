@@ -1,5 +1,7 @@
 #pragma once
 
+#include "core/gl.h"
+
 #include <iostream>
 #include <string>
 #include <sstream>

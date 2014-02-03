@@ -4,7 +4,6 @@
 #include <vector>
 #include "../util/Util.h"
 
-#include <glm/gtc/matrix_transform.hpp>
 #include "../input/InputHandlerFactory.h"
 #include "../input/WindowEventHandler.h"
 
@@ -19,6 +18,10 @@
 #include "../light/lightModel.h"
 #include "../light/PointLight.h"
 #include "../light/SpotLight.h"
+
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 using std::vector;
 
@@ -130,7 +133,7 @@ void Scene::TimeUpdate(long time)
 	{
 		
 		pl = lightModel->spotLights[0];
-		glm::mat4 lightTransform1 = (glm::rotate(mat4(1.0f), 1.0f, glm::vec3(0.0f,1.0f,0.0f)));
+		glm::mat4 lightTransform1 = (glm::rotate(mat4(1.0f), glm::radians(30.0f), glm::vec3(0.0f,1.0f,0.0f)));
 		pl->SetPosition(lightTransform1 * pl->GetPosition());
 
 		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform1))) * pl->GetDirection();
@@ -141,7 +144,7 @@ void Scene::TimeUpdate(long time)
 	if(numPLs > 1)
 	{
 		pl = lightModel->spotLights[1];
-		glm::mat4 lightTransform2 = (glm::rotate(mat4(1.0f), 0.5f, glm::normalize(glm::vec3(0.5f,1.0f,0.0f))));
+		glm::mat4 lightTransform2 = (glm::rotate(mat4(1.0f), glm::radians(15.0f), glm::normalize(glm::vec3(0.5f, 1.0f, 0.0f))));
 		pl->SetPosition(lightTransform2 * pl->GetPosition());
 	
 		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform2))) * pl->GetDirection();
@@ -151,7 +154,7 @@ void Scene::TimeUpdate(long time)
 	if(numPLs > 2)
 	{
 		pl = lightModel->spotLights[2];
-		glm::mat4 lightTransform3 = (glm::rotate(mat4(1.0f), 2.0f, glm::vec3(1.0f,0.0f,0.0f)));
+		glm::mat4 lightTransform3 = (glm::rotate(mat4(1.0f), glm::radians(60.0f), glm::vec3(1.0f, 0.0f, 0.0f)));
 		pl->SetPosition(lightTransform3 * pl->GetPosition());
 	
 		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform3))) * pl->GetDirection();

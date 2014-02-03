@@ -1,5 +1,6 @@
 #pragma once
 
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include "CameraAdapter.h"
 #include "../input/MouseObserver.h"
