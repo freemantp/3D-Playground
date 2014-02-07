@@ -71,6 +71,9 @@
     <Filter Include="Source Files\materials">
       <UniqueIdentifier>{f6822c38-77b7-4685-9cdd-af18be151dc2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\shaders\specialized">
+      <UniqueIdentifier>{21011bcf-315e-4d43-a5bc-b3916fccf300}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\enums.h">
@@ -142,17 +145,11 @@
     <ClInclude Include="src\light\LightModel.h">
       <Filter>Source Files\light</Filter>
     </ClInclude>
-    <ClInclude Include="src\shader\UniformBuffer.h">
-      <Filter>Source Files\shaders</Filter>
-    </ClInclude>
     <ClInclude Include="src\animation\TimeObserver.h">
       <Filter>Source Files\animation</Filter>
     </ClInclude>
     <ClInclude Include="src\light\SpotLight.h">
       <Filter>Source Files\light</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\UniformBufferShader.h">
-      <Filter>Source Files\shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\texture\Texture.h">
       <Filter>Source Files\texture</Filter>
@@ -187,9 +184,6 @@
     <ClInclude Include="src\shader\PhongTextureShader.h">
       <Filter>Source Files\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="src\shader\SkyboxShader.h">
-      <Filter>Source Files\shaders</Filter>
-    </ClInclude>
     <ClInclude Include="src\error.h">
       <Filter>Source Files\core</Filter>
     </ClInclude>
@@ -201,9 +195,6 @@
     </ClInclude>
     <ClInclude Include="src\rendering\GeometryBuffer.h">
       <Filter>Source Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\GBufferShader.h">
-      <Filter>Source Files\shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\shader\SHDiffuseShader.h">
       <Filter>Source Files\shaders</Filter>
@@ -233,12 +224,29 @@
     <ClInclude Include="src\shader\IntrinsicColorShader.h">
       <Filter>Source Files\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="src\texture\Framebuffer.h" />
     <ClInclude Include="src\core\gl.h">
       <Filter>Source Files\core</Filter>
     </ClInclude>
     <ClInclude Include="src\texture\ShadowMapTexture.h">
       <Filter>Source Files\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\texture\Framebuffer.h">
+      <Filter>Source Files\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\GBufferShader.h">
+      <Filter>Source Files\shaders\specialized</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\UniformBufferShader.h">
+      <Filter>Source Files\shaders\specialized</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\UniformBuffer.h">
+      <Filter>Source Files\shaders\specialized</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\SkyboxShader.h">
+      <Filter>Source Files\shaders\specialized</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\ShadowMapShader.h">
+      <Filter>Source Files\shaders\specialized</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -287,15 +295,6 @@
     <ClCompile Include="src\shader\ShaderBase.cpp">
       <Filter>Source Files\shaders</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader\SkyboxShader.cpp">
-      <Filter>Source Files\shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\UniformBuffer.cpp">
-      <Filter>Source Files\shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\UniformBufferShader.cpp">
-      <Filter>Source Files\shaders</Filter>
-    </ClCompile>
     <ClCompile Include="src\shape\Box.cpp">
       <Filter>Source Files\shapes</Filter>
     </ClCompile>
@@ -341,9 +340,6 @@
     <ClCompile Include="src\rendering\GeometryBuffer.cpp">
       <Filter>Source Files\rendering</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader\GBufferShader.cpp">
-      <Filter>Source Files\shaders</Filter>
-    </ClCompile>
     <ClCompile Include="src\shader\SHDiffuseShader.cpp">
       <Filter>Source Files\shaders</Filter>
     </ClCompile>
@@ -368,11 +364,26 @@
     <ClCompile Include="src\shader\ConstColorShader.cpp">
       <Filter>Source Files\shaders</Filter>
     </ClCompile>
-    <ClCompile Include="src\texture\Framebuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\texture\ShadowMapTexture.cpp">
       <Filter>Source Files\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture\Framebuffer.cpp">
+      <Filter>Source Files\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\GBufferShader.cpp">
+      <Filter>Source Files\shaders\specialized</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\UniformBuffer.cpp">
+      <Filter>Source Files\shaders\specialized</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\UniformBufferShader.cpp">
+      <Filter>Source Files\shaders\specialized</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\SkyboxShader.cpp">
+      <Filter>Source Files\shaders\specialized</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\ShadowMapShader.cpp">
+      <Filter>Source Files\shaders\specialized</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -431,6 +442,12 @@
     <None Include="..\data\shader\intrinsicColorShader.vert">
       <Filter>data\shaders\color</Filter>
     </None>
+    <None Include="..\data\shader\shadowMapShader.frag">
+      <Filter>data\shaders\specialized</Filter>
+    </None>
+    <None Include="..\data\shader\shadowMapShader.vert">
+      <Filter>data\shaders\specialized</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\data\scenes\boxScene.xml">
@@ -455,6 +472,9 @@
       <Filter>data\scenes</Filter>
     </Xml>
     <Xml Include="..\data\scenes\shScene.xml">
+      <Filter>data\scenes</Filter>
+    </Xml>
+    <Xml Include="..\data\scenes\shadowScene.xml">
       <Filter>data\scenes</Filter>
     </Xml>
   </ItemGroup>

@@ -55,6 +55,7 @@
     <ClInclude Include="src\shader\PhongShader.h" />
     <ClInclude Include="src\shader\ShaderBase.h" />
     <ClInclude Include="src\shader\ShaderLibrary.h" />
+    <ClInclude Include="src\shader\ShadowMapShader.h" />
     <ClInclude Include="src\shader\SHDiffuseShader.h" />
     <ClInclude Include="src\shader\SkyboxShader.h" />
     <ClInclude Include="src\shader\UniformBuffer.h" />
@@ -103,6 +104,7 @@
     <ClCompile Include="src\shader\PhongShader.cpp" />
     <ClCompile Include="src\shader\ShaderBase.cpp" />
     <ClCompile Include="src\shader\ShaderLibrary.cpp" />
+    <ClCompile Include="src\shader\ShadowMapShader.cpp" />
     <ClCompile Include="src\shader\SHDiffuseShader.cpp" />
     <ClCompile Include="src\shader\SkyboxShader.cpp" />
     <ClCompile Include="src\shader\UniformBuffer.cpp" />
@@ -158,6 +160,8 @@
     <None Include="..\data\shader\phongShader.vert">
       <FileType>Document</FileType>
     </None>
+    <None Include="..\data\shader\shadowMapShader.frag" />
+    <None Include="..\data\shader\shadowMapShader.vert" />
     <None Include="..\data\shader\skyboxShader.frag" />
     <None Include="..\data\shader\skyboxShader.vert" />
     <None Include="..\data\shader\uniformBuffer.frag" />
@@ -174,6 +178,7 @@
     <Xml Include="..\data\scenes\road.xml">
       <SubType>Designer</SubType>
     </Xml>
+    <Xml Include="..\data\scenes\shadowScene.xml" />
     <Xml Include="..\data\scenes\shScene.xml">
       <SubType>Designer</SubType>
     </Xml>

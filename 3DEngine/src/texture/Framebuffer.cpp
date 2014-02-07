@@ -19,40 +19,51 @@ bool Framebuffer::IsComplete()
 
 bool Framebuffer::Attach(Texture_ptr texture, Attachment target)
 {
-	Activate();
+	Bind();
 	texture->BindTexture(0);
 
 	GLenum attchmt;
 	switch (target)
 	{
 	case Attachment::Color:
-		//attchmt = GL_COLOR_ATTACHMENT0;
+		attchmt = GL_COLOR_ATTACHMENT0;
+		colorTexture = texture;
 		return false;
 		break;
 	case Attachment::Depth:
+		depthTexture = texture;
 		attchmt = GL_DEPTH_ATTACHMENT;
 		break;
 	case Attachment::Stencil:
+		stencilTexture = texture;
 		attchmt = GL_STENCIL_ATTACHMENT;
 		break;
 	}
 
 	glFramebufferTexture2D(GL_FRAMEBUFFER, attchmt, GL_TEXTURE_2D, texture->Handle(), 0);
 
-	attachements.insert(target);	
-	//auto a = attachements.find(Attachment::Color);
-
-
-	Deactivate();
+	Unbind();
 }
 
-bool Framebuffer::Activate()
+void Framebuffer::SetDrawToColorBufferEnabled(bool enabled)
+{
+	Bind();
+
+	if (enabled)
+		glDrawBuffer(GL_COLOR_ATTACHMENT0);
+	else
+		glDrawBuffer(GL_NONE);
+
+	Unbind();
+}
+
+bool Framebuffer::Bind()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, bufferHandle);
 	return IsComplete();
 }
 
-void Framebuffer::Deactivate()
+void Framebuffer::Unbind()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

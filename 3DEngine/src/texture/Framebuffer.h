@@ -3,8 +3,6 @@
 #include "../util/SharedPointer.h"
 #include "../core/gl.h"
 
-#include <set>
-
 SHARED_PTR_CLASS_DECL(Framebuffer);
 SHARED_PTR_CLASS_DECL(Texture);
 
@@ -17,9 +15,11 @@ public:
 
 	bool Attach(Texture_ptr texture, Attachment target);
 
-	bool Activate();
+	void SetDrawToColorBufferEnabled(bool enabled);
 
-	void Deactivate();
+	bool Bind();
+
+	void Unbind();
 
 	virtual ~Framebuffer();
 
@@ -30,7 +30,11 @@ protected:
 
 	GLuint bufferHandle;
 
-	std::set<Attachment> attachements;
+	Texture_ptr	colorTexture;
+	Texture_ptr	depthTexture;
+	Texture_ptr	stencilTexture;
+
+	bool drawToColorBuffer;
 	
 };
 
