@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ShadowMapShader.h"
-#include "../light/Light.h"
+#include "../light/SpotLight.h"
 
 #include <glm/gtc/matrix_transform.hpp> 
 
@@ -15,25 +15,34 @@ ShadowMapShader::ShadowMapShader()
 	hasMVM = false;
 	hasNM = false;
 	hasPM = false;
-	hasMVP = true;
+	hasMVP = false;
+	hasMM = true;
 	
 	biasMatrix = glm::mat4(
 		0.5, 0.0, 0.0, 0.0,
 		0.0, 0.5, 0.0, 0.0,
 		0.0, 0.0, 0.5, 0.0,
 		0.5, 0.5, 0.5, 1.0
-		);
+	);
 
 }
 
-void ShadowMapShader::SetLight(Light_ptr light)
+void ShadowMapShader::SetLight(SpotLight_ptr light)
 {
-	//TODO: calculate light projection & view mat
-	glm::mat4 P = glm::mat4(1.0);
-	glm::mat4 V = glm::mat4(1.0);
+	//In fact this applies to directional lights only...	
 
+	glm::vec3 dirToLight = -light->GetDirection();
+	glm::vec3 center(0, 0, 0);
+	glm::vec3 up(0, 1, 0);
 
-	glm::mat4 shadowMat = biasMatrix * P * V; 
+	glm::mat4 depthViewMatrix = glm::lookAt(dirToLight, center, up);
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 20);
+
+	glm::mat4 shadowMat = biasMatrix * depthProjectionMatrix * depthViewMatrix;
+
+	BeforeUniformSet();
+	SetUniform("ShadowMatrix", shadowMat);
+	AfterUniformSet();
 
 }
 

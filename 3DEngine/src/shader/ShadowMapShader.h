@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 
 SHARED_PTR_CLASS_DECL(ShadowMapShader)
-SHARED_PTR_CLASS_DECL(Light);
+SHARED_PTR_CLASS_DECL(SpotLight);
 
 
 class ShadowMapShader : public ShaderBase
@@ -13,7 +13,7 @@ public:
 
 	static ShadowMapShader_ptr Create();
 
-	void SetLight(Light_ptr light);
+	void SetLight(SpotLight_ptr light);
 	
 	virtual ~ShadowMapShader();
 	

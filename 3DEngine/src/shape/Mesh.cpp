@@ -9,6 +9,8 @@
 #include "../util/MeshRaw.h"
 #include "../materials/Material.h"
 
+#include "../error.h"
+
 #include <set>
 
 using namespace GLSLShader;
@@ -415,6 +417,15 @@ void Mesh::MapVertexAttributes(MaterialShader_ptr shader) const
 	glBindVertexArray(vaoHandle);
 }
 
+void Mesh::RenderShadowMap() const
+{
+	int numRanges = (int)ranges.size();
+	for (size_t i = 0; i < numRanges; i++)
+	{
+		Draw(i);
+	}
+}
+
 void Mesh::Render(const Scene_ptr scene) const
 {
 	ShaderLibrary_ptr sl = ShaderLibrary::GetInstance();
@@ -442,12 +453,7 @@ void Mesh::Render(const Scene_ptr scene) const
 			{
 				if (currentShader->Use(scene, worldTransform))
 				{
-					//Bind i-th index bufferg
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[i]);
-
-					//Here glDrawRangeElements is used to limit the amount of vertex data to be prefetched
-					int numElems = (ranges[i].second - ranges[i].first + 1) * 3;
-					glDrawRangeElements(GL_TRIANGLES, ranges[i].first, ranges[i].second, (GLsizei)numElems, GL_UNSIGNED_INT, (GLvoid*)nullptr);
+					Draw(i);
 					currentShader->UnUse();
 				}
 				else
@@ -466,3 +472,12 @@ void Mesh::Render(const Scene_ptr scene) const
 	glBindVertexArray(0);
 }
 
+void Mesh::Draw(size_t group) const
+{
+	//Bind i-th index bufferg
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[group]);
+
+	//Here glDrawRangeElements is used to limit the amount of vertex data to be prefetched
+	int numElems = (ranges[group].second - ranges[group].first + 1) * 3;
+	glDrawRangeElements(GL_TRIANGLES, ranges[group].first, ranges[group].second, (GLsizei)numElems, GL_UNSIGNED_INT, (GLvoid*)nullptr);
+}

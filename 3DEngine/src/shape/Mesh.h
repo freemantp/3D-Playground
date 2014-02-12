@@ -24,8 +24,9 @@ public:
 
 	virtual ~Mesh();
 
-	virtual void Render(const Scene_ptr scene) const;
-	virtual void Init(); 
+	virtual void Render(const Scene_ptr scene) const override;
+	virtual void RenderShadowMap() const override;
+	virtual void Init() override; 
 
 	typedef std::pair<int, int> IntPair;
 	typedef std::vector<IntPair> IntPairVector;
@@ -53,6 +54,9 @@ protected:
 		GLuint channel;
 		GLint  size;
 	};
+
+	/// Naked draw commands w/o shaders
+	void Draw(size_t group) const;
 
 	inline void SetAttribPointer(const GLSLShader::VertexAttribute& attrib) const;
 

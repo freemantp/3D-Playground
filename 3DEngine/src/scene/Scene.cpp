@@ -13,11 +13,14 @@
 
 #include "../camera/Camera.h"
 #include "../shader/ShaderBase.h"
+#include "../shader/ShadowMapShader.h"
 #include "../shape/Shape.h"
 #include "../shape/Skybox.h"
 #include "../light/lightModel.h"
 #include "../light/PointLight.h"
 #include "../light/SpotLight.h"
+#include "../texture/Framebuffer.h"
+#include "../texture/ShadowMapTexture.h"
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
@@ -32,6 +35,8 @@ Scene_ptr Scene::Create(InputHandlerFactory& ihf, Camera_ptr cam)
 
 Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 	: skybox(nullptr)
+	, shadowShader(ShadowMapShader::Create())
+	, framebuffer(Framebuffer::Create())
 {
 
 	SetCamera(cam);
@@ -58,6 +63,11 @@ Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 	}
 
 	winEventHandler.AddViewportObserver(cam);
+
+	//Set up framebuffer
+	framebuffer->SetDrawToColorBufferEnabled(false);
+	
+
 }
 
 Scene::~Scene()
@@ -94,6 +104,28 @@ void Scene::render()
 	//Render skybox
 	if(skybox != nullptr)
 		skybox->Render(shared_from_this());
+
+
+	// Generate shadow map
+	
+	for (auto sl : lightModel->spotLights)
+	{
+		if (ShadowMapTexture_ptr smap = sl->ShadowMap())
+		{
+			framebuffer->Attach(smap, Framebuffer::Attachment::Depth);
+			framebuffer->Bind();
+			shadowShader->SetLight(sl);
+
+			for (Shape_ptr s : objects)
+			{
+				shadowShader->Use(shared_from_this(),s->worldTransform);
+				s->RenderShadowMap();
+			}
+
+			framebuffer->Unbind();
+		}
+	}
+	shadowShader->UnUse();
 	
 	//Render objects
 	for(Shape_ptr s : objects)

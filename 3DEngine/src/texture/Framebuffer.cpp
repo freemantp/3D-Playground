@@ -43,6 +43,7 @@ bool Framebuffer::Attach(Texture_ptr texture, Attachment target)
 	glFramebufferTexture2D(GL_FRAMEBUFFER, attchmt, GL_TEXTURE_2D, texture->Handle(), 0);
 
 	Unbind();
+	return true;
 }
 
 void Framebuffer::SetDrawToColorBufferEnabled(bool enabled)

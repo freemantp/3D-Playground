@@ -15,6 +15,8 @@ SHARED_PTR_CLASS_DECL(Shape);
 SHARED_PTR_CLASS_DECL(Skybox);
 SHARED_PTR_CLASS_DECL(InspectionCameraAdapter);
 SHARED_PTR_CLASS_DECL(FirstPersonCameraAdapter);
+SHARED_PTR_CLASS_DECL(ShadowMapShader);
+SHARED_PTR_CLASS_DECL(Framebuffer);
 
 class Scene 
 	: public TimeObserver
@@ -50,7 +52,9 @@ protected:
 
 	InspectionCameraAdapter_ptr mAdapter;
 	FirstPersonCameraAdapter_ptr mAdapter2;
-	
+
+	ShadowMapShader_ptr shadowShader;
+	Framebuffer_ptr framebuffer;
 
 };
 

@@ -1,12 +1,15 @@
 #include "stdafx.h"
 #include "SpotLight.h"
 
+#include "../texture/ShadowMapTexture.h"
 
-SpotLight::SpotLight(const vec3& direction, float cutoffAngle, float exponent)
+SpotLight::SpotLight(const vec3& direction, float cutoffAngle, float exponent, bool castsShadow)
 	: PointLight()
 	, cutoffAngle(cutoffAngle)
 	, exponent(exponent)
 	, direction(glm::normalize(direction))	
+	, castsShadow(castsShadow)
+	, shadowMapTex(ShadowMapTexture::Create(512, 512))
 {
 
 }
@@ -40,6 +43,14 @@ void SpotLight::SetExponent(float exponent)
 
 float SpotLight::GetExponent() { 
 	return exponent; 
+}
+
+ShadowMapTexture_ptr SpotLight::ShadowMap() const
+{
+	if (castsShadow)
+		return shadowMapTex;
+	else
+		ShadowMapTexture_ptr();
 }
 
 
