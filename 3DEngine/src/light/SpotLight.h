@@ -3,7 +3,7 @@
 #include "PointLight.h"
 
 SHARED_PTR_CLASS_DECL(SpotLight);
-SHARED_PTR_CLASS_DECL(ShadowMapTexture);
+SHARED_PTR_CLASS_DECL(Shadow);
 
 
 class SpotLight : public PointLight
@@ -19,7 +19,7 @@ public:
 	virtual void SetExponent(float exponent);
 	virtual float GetExponent();
 
-	ShadowMapTexture_ptr ShadowMap() const;
+	Shadow_ptr GetShadow() const;
 
 protected:
 
@@ -27,9 +27,7 @@ protected:
 	float cutoffAngle;
 	float exponent;
 
-	bool castsShadow;
-
-	ShadowMapTexture_ptr shadowMapTex;
+	Shadow_ptr shadow;
 
 };
 

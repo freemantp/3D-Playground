@@ -33,6 +33,7 @@ void RenderFunction();
 Renderer_ptr renderer;
 //string sceneName = "headScene.xml";
 //string sceneName = "manyPlanes.xml";
+//string sceneName = "road.xml";
 string sceneName = "shadowScene.xml";
 //string sceneName = "simpleScene.xml";
 //string sceneName = "shScene.xml";

@@ -19,6 +19,7 @@
 #include "../light/lightModel.h"
 #include "../light/PointLight.h"
 #include "../light/SpotLight.h"
+#include "../light/Shadow.h"
 #include "../texture/Framebuffer.h"
 #include "../texture/ShadowMapTexture.h"
 
@@ -36,9 +37,8 @@ Scene_ptr Scene::Create(InputHandlerFactory& ihf, Camera_ptr cam)
 Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 	: skybox(nullptr)
 	, shadowShader(ShadowMapShader::Create())
-	, framebuffer(Framebuffer::Create())
+	//, framebuffer(Framebuffer::Create())
 {
-
 	SetCamera(cam);
 
 	lightModel.reset(new LightModel());
@@ -64,10 +64,10 @@ Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 
 	winEventHandler.AddViewportObserver(cam);
 
-	//Set up framebuffer
-	framebuffer->SetDrawToColorBufferEnabled(false);
-	
-
+	//Set up framebuffer	
+	//Texture_ptr texture = Texture::Create(1600, 900);
+	//framebuffer->Attach(texture, Framebuffer::Attachment::Color);
+	//framebuffer->SetDrawToColorBufferEnabled(true);	
 }
 
 Scene::~Scene()
@@ -85,7 +85,6 @@ Scene::~Scene()
 	{
 		delete *mIt;
 	}
-
 }
 
 void Scene::AddShape(Shape_ptr shape)
@@ -100,32 +99,32 @@ void Scene::SetSkybox(Skybox_ptr skybox)
 
 void Scene::render()
 {		
-	
 	//Render skybox
 	if(skybox != nullptr)
 		skybox->Render(shared_from_this());
 
+	//Generate shadow maps
+	//for (auto sl : lightModel->spotLights)
+	//{
+	//	if (Shadow_ptr smap = sl->GetShadow())
+	//	{
+	//		//framebuffer->Attach(smap->ShadowMap(), Framebuffer::Attachment::Depth);
+	//		if (framebuffer->Bind())
+	//		{
+	//			//shadowShader->SetShadowMatrix(smap->ShadowMatrix());
 
-	// Generate shadow map
-	
-	for (auto sl : lightModel->spotLights)
-	{
-		if (ShadowMapTexture_ptr smap = sl->ShadowMap())
-		{
-			framebuffer->Attach(smap, Framebuffer::Attachment::Depth);
-			framebuffer->Bind();
-			shadowShader->SetLight(sl);
-
-			for (Shape_ptr s : objects)
-			{
-				shadowShader->Use(shared_from_this(),s->worldTransform);
-				s->RenderShadowMap();
-			}
-
-			framebuffer->Unbind();
-		}
-	}
-	shadowShader->UnUse();
+	//			for (Shape_ptr s : objects)
+	//			{
+	//				if (shadowShader->Use(shared_from_this(), s->worldTransform))
+	//				{
+	//					s->RenderShadowMap(shadowShader);
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
+	//shadowShader->UnUse();
+	//framebuffer->Unbind();
 	
 	//Render objects
 	for(Shape_ptr s : objects)
@@ -162,15 +161,13 @@ void Scene::TimeUpdate(long time)
 	SpotLight_ptr pl;
 
 	if(numPLs > 0)
-	{
-		
+	{	
 		pl = lightModel->spotLights[0];
 		glm::mat4 lightTransform1 = (glm::rotate(mat4(1.0f), glm::radians(30.0f), glm::vec3(0.0f,1.0f,0.0f)));
 		pl->SetPosition(lightTransform1 * pl->GetPosition());
 
 		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform1))) * pl->GetDirection();
-		pl->SetDirection(newDir);
-		
+		pl->SetDirection(newDir);	
 	}
 
 	if(numPLs > 1)

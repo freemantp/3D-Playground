@@ -13,6 +13,8 @@ public:
 
 	static Texture_ptr Create(const std::string& texturePath);
 
+	static Texture_ptr Create(int width, int height);
+
 	virtual ~Texture();
 
 	void BindTexture(int textureUnit);
@@ -22,6 +24,8 @@ public:
 protected:
 
 	Texture(const std::string& texturePath);
+
+	Texture(int width, int height);
 
 	Texture();
 

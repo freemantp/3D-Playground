@@ -15,45 +15,30 @@ ShadowMapShader::ShadowMapShader()
 	hasMVM = false;
 	hasNM = false;
 	hasPM = false;
-	hasMVP = false;
-	hasMM = true;
-	
-	biasMatrix = glm::mat4(
-		0.5, 0.0, 0.0, 0.0,
-		0.0, 0.5, 0.0, 0.0,
-		0.0, 0.0, 0.5, 0.0,
-		0.5, 0.5, 0.5, 1.0
-	);
+	hasMVP = true;
+	//hasMM = true;
+
+	Init();
 
 }
 
-void ShadowMapShader::SetLight(SpotLight_ptr light)
+void ShadowMapShader::SetShadowMatrix(const glm::mat4& mat)
 {
-	//In fact this applies to directional lights only...	
-
-	glm::vec3 dirToLight = -light->GetDirection();
-	glm::vec3 center(0, 0, 0);
-	glm::vec3 up(0, 1, 0);
-
-	glm::mat4 depthViewMatrix = glm::lookAt(dirToLight, center, up);
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 20);
-
-	glm::mat4 shadowMat = biasMatrix * depthProjectionMatrix * depthViewMatrix;
+	shadowMatrix = mat;
 
 	BeforeUniformSet();
-	SetUniform("ShadowMatrix", shadowMat);
+	SetUniform("ShadowMatrix", mat);
 	AfterUniformSet();
-
 }
 
 void ShadowMapShader::UpdateTransforms(const Camera_ptr cam, const glm::mat4& modelTransform)
 {
 	__super::UpdateTransforms(cam, modelTransform);
-	BeforeUniformSet();
+	//BeforeUniformSet();
 
-	SetUniform("ShadowMatrix", shadowMat * modelTransform);
+	//SetUniform("ShadowMatrix", shadowMatrix * modelTransform);
 
-	AfterUniformSet();
+	//AfterUniformSet();
 }
 
 ShadowMapShader::~ShadowMapShader()

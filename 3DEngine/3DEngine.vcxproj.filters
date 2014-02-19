@@ -248,6 +248,7 @@
     <ClInclude Include="src\shader\ShadowMapShader.h">
       <Filter>Source Files\shaders\specialized</Filter>
     </ClInclude>
+    <ClInclude Include="src\light\Shadow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -384,6 +385,9 @@
     </ClCompile>
     <ClCompile Include="src\shader\ShadowMapShader.cpp">
       <Filter>Source Files\shaders\specialized</Filter>
+    </ClCompile>
+    <ClCompile Include="src\light\Shadow.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

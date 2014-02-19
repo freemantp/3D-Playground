@@ -37,6 +37,7 @@
     <ClInclude Include="src\light\Light.h" />
     <ClInclude Include="src\light\LightModel.h" />
     <ClInclude Include="src\light\PointLight.h" />
+    <ClInclude Include="src\light\Shadow.h" />
     <ClInclude Include="src\light\SpotLight.h" />
     <ClInclude Include="src\materials\Material.h" />
     <ClInclude Include="src\math\HaltonSphere.h" />
@@ -88,6 +89,7 @@
     <ClCompile Include="src\light\Light.cpp" />
     <ClCompile Include="src\light\LightModel.cpp" />
     <ClCompile Include="src\light\PointLight.cpp" />
+    <ClCompile Include="src\light\Shadow.cpp" />
     <ClCompile Include="src\light\SpotLight.cpp" />
     <ClCompile Include="src\materials\Material.cpp" />
     <ClCompile Include="src\math\HaltonSphere.cpp" />
@@ -198,7 +200,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -210,7 +212,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>

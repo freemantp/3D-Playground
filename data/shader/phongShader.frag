@@ -39,6 +39,8 @@ uniform int NumSpotLights;
 uniform samplerCube EnvMapTex;
 uniform float EnvReflection; //[0,1]
 
+uniform sampler2DShadow ShadowMap;
+
 //Subroutine declaration
 subroutine float shadeModelType(in vec3 s, in vec3 v, in vec3 normal);
 
@@ -51,6 +53,7 @@ subroutine uniform shadeModelType shadeModel;
 in vec3 Position;
 in vec3 Normal;
 in vec3 ReflectDir;
+in vec4 ShadowCoord;
 
 //Blinn-Phong model
 subroutine( shadeModelType )
@@ -144,5 +147,11 @@ void main()
 		ambient  *= cubeMapColor;
 	}
 
-	FragColor = vec4(ambient + diffuse + specular, Material.Opacity);
+	float shadow = textureProj(ShadowMap,ShadowCoord);
+	if(shadow > 300)
+		ambient.r = 0;
+
+	FragColor = vec4(ambient + (diffuse + specular), Material.Opacity);
+	//FragColor = vec4(ambient + (diffuse + specular) * shadow, Material.Opacity);
+
 }
