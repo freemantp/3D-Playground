@@ -11,7 +11,7 @@ Renderer_ptr Renderer::Create(Viewport_ptr viewport)
 }
 
 Renderer::Renderer(Viewport_ptr viewport)
-: m_gBuffer(GeometryBuffer::Create(viewport->width, viewport->height))
+//: m_gBuffer(GeometryBuffer::Create(viewport->width, viewport->height))
 {
 }
 
