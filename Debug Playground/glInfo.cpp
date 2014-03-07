@@ -23,13 +23,6 @@
 
 #include <glload/gl_3_3_comp.h>
 
-// WGL specific extensions for v3.0+ //////////////////////////////////////////
-#ifdef _WIN32
-#include <windows.h>
-typedef const char* (WINAPI * PFNWGLGETEXTENSIONSSTRINGARBPROC)(HDC hdc);
-PFNWGLGETEXTENSIONSSTRINGARBPROC    pwglGetExtensionsStringARB = 0;
-#define wglGetExtensionsStringARB  pwglGetExtensionsStringARB
-#endif
 
 // version 2.0 or greater
 #define GL_SHADING_LANGUAGE_VERSION       0x8B8C
@@ -78,24 +71,6 @@ bool glInfo::getInfo(unsigned int param)
             tok = strtok(0, " ");               // next token
         }
     }
-
-    // get WGL specific extensions for v3.0+
-#ifdef _WIN32 //===========================================
-    wglGetExtensionsStringARB = (PFNWGLGETEXTENSIONSSTRINGARBPROC)wglGetProcAddress("wglGetExtensionsStringARB");
-    if(wglGetExtensionsStringARB && param)
-    {
-        str = wglGetExtensionsStringARB((HDC)param);
-        if(str)
-        {
-            tok = strtok((char*)str, " ");
-            while(tok)
-            {
-                this->extensions.push_back(tok);    // put a extension into struct
-                tok = strtok(0, " ");               // next token
-            }
-        }
-    }
-#endif //==================================================
 
     // sort extension by alphabetical order
     std::sort(this->extensions.begin(), this->extensions.end());
