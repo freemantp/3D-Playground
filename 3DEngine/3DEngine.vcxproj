@@ -98,7 +98,7 @@
     <ClCompile Include="src\rendering\Viewport.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\scene\SceneParser.cpp" />
-    <ClCompile Include="src\shader\ColorShader.cpp" />
+    <ClCompile Include="src\shader\IntrinsicColorShader.cpp" />
     <ClCompile Include="src\shader\ConstColorShader.cpp" />
     <ClCompile Include="src\shader\GBufferShader.cpp" />
     <ClCompile Include="src\shader\GLSLProgram.cpp" />

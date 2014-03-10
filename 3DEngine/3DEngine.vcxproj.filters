@@ -284,9 +284,6 @@
     <ClCompile Include="src\scene\SceneParser.cpp">
       <Filter>Source Files\scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader\ColorShader.cpp">
-      <Filter>Source Files\shaders</Filter>
-    </ClCompile>
     <ClCompile Include="src\shader\GLSLProgram.cpp">
       <Filter>Source Files\shaders</Filter>
     </ClCompile>
@@ -388,6 +385,9 @@
     </ClCompile>
     <ClCompile Include="src\light\Shadow.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\IntrinsicColorShader.cpp">
+      <Filter>Source Files\shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
