@@ -74,6 +74,7 @@ bool Framebuffer::AttachDepthRenderBuffer()
 		{
 			bool isRbuf = glIsRenderbuffer(bufHandle) == GL_TRUE;
 			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, bufHandle);
+			return isRbuf;
 		}
 	}
 
@@ -105,14 +106,10 @@ GLuint Framebuffer::CreateRenderBuffer(GLenum format)
 
 void Framebuffer::SetDrawToColorBufferEnabled(bool enabled)
 {
-	Bind();
-
 	if (enabled)
 		glDrawBuffer(GL_COLOR_ATTACHMENT0);
 	else
 		glDrawBuffer(GL_NONE);
-
-	Unbind();
 }
 
 bool Framebuffer::Bind()

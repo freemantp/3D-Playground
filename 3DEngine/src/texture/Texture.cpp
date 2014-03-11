@@ -11,9 +11,9 @@ Texture_ptr Texture::Create(const std::string& texturePath)
 	return Texture_ptr(new Texture(texturePath));
 }
 
-Texture_ptr Texture::Create(int width, int height)
+Texture_ptr Texture::Create(int width, int height, Format format)
 {
-	return Texture_ptr(new Texture(width,height));
+	return Texture_ptr(new Texture(width, height, format));
 }
 
 Texture_ptr Texture::Create(GLuint texHandle)
@@ -57,17 +57,23 @@ Texture::Texture(GLuint texHandle)
 
 }
 
-Texture::Texture(int width, int height)
+Texture::Texture(int width, int height, Format format)
 	: width(width)
 	, height(height)
 {
+	bool isDepth = format == Format::Depth;
+
+	GLint internalFormat = static_cast<GLint>(format);
+	GLenum dataFormat = isDepth ? GL_DEPTH_COMPONENT : GL_RGBA;
+	GLenum dataType = isDepth ? GL_FLOAT : GL_UNSIGNED_BYTE;
+
 	glGenTextures(1, &texObject);
 	glBindTexture(GL_TEXTURE_2D, texObject);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);		
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, dataType, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -109,5 +115,5 @@ void Texture::BindTexture(int textureUnit)
 
 bool Texture::IsValid() const
 {
-	return glIsTexture(texObject);
+	return glIsTexture(texObject) == GL_TRUE;
 }

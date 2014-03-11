@@ -6,6 +6,12 @@
 SHARED_PTR_CLASS_DECL(Framebuffer);
 SHARED_PTR_CLASS_DECL(Texture);
 
+/** 
+* \brief a class that wraps an OpenGL Framebuffer Object (FBO)
+*
+* The member functions only work correctly if the Framebuffer
+* is bound
+*/
 class Framebuffer
 {
 public:
@@ -13,12 +19,11 @@ public:
 
 	enum class Attachment : GLuint { Color = 0, Depth = 1, Stencil = 2 };
 
-	/// Attaches the given texture to the specified buffer target, 
-	/// returns true on success
+	/// Attaches the given texture to the specified buffer target, returns true on success
 	bool Attach(Texture_ptr texture, Attachment target);
 
-	/// Attaches a depth renderbuffer to the Framebuffer.  Only applicabe
-	/// if a color attachement has been set, returns true on success
+	/** Attaches a depth renderbuffer to the Framebuffer. Only applicabe
+	 *  if a color attachement has been set, returns true on success */
 	bool AttachDepthRenderBuffer();
 
 	/// Enables/disables drawing to the color attachement of this buffer
@@ -27,8 +32,13 @@ public:
 	/// Returns the attaachement of a potentially bound renderbuffer, 0 if none is available
 	GLuint RenderbufferHandle(Attachment target) const;
 
+	/// Returns true if framebuffer ist complete. 
+	bool IsComplete() const;
+
+	/// Binds the current framebuffer
 	bool Bind();
 
+	/// Uninds the current framebuffer
 	void Unbind();
 
 	virtual ~Framebuffer();
@@ -37,8 +47,6 @@ protected:
 	Framebuffer();
 
 	GLuint CreateRenderBuffer(GLenum format);
-
-	bool IsComplete() const;
 
 	inline bool IsBound() const;
 

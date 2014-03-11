@@ -11,9 +11,11 @@ class Texture
 {
 public:
 
+	enum class Format : GLint  { RGB = GL_RGB8, RGBA = GL_RGBA8, Depth = GL_DEPTH_COMPONENT16 };
+
 	static Texture_ptr Create(const std::string& texturePath);
 
-	static Texture_ptr Create(int width, int height);
+	static Texture_ptr Create(int width, int height, Format format = Format::RGBA);
 
 	/// Creates a new texture with the passed texture id
 	/// The OpenGL texture is deleted when this instance is destroyed
@@ -35,7 +37,7 @@ protected:
 
 	Texture(const std::string& texturePath);
 
-	Texture(int width, int height);
+	Texture(int width, int height, Format format);
 
 	Texture(GLuint texHandle);
 
