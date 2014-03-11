@@ -4,10 +4,15 @@
 #include "../shader/ShaderLibrary.h"
 #include "../shader/ShaderBase.h"
 #include "../shader/MaterialShader.h"
+#include "../shader/ShadowMapShader.h"
 #include "../texture/Texture.h"
 #include "../util/Util.h"
 #include "../util/MeshRaw.h"
 #include "../materials/Material.h"
+
+#include "../shader/PhongShader.h"
+#include "../light/SpotLight.h" //Remove me
+#include "../light/Shadow.h"
 
 #include "../error.h"
 
@@ -381,7 +386,7 @@ void Mesh::Init()
 	}
 }
 
-void Mesh::MapVertexAttributes(MaterialShader_ptr shader) const
+void Mesh::MapVertexAttributes(ShaderBase_ptr shader) const
 {
 	if (auto vai = shader->GetVertexAttributeInfo())
 	{
@@ -417,13 +422,27 @@ void Mesh::MapVertexAttributes(MaterialShader_ptr shader) const
 	glBindVertexArray(vaoHandle);
 }
 
-void Mesh::RenderShadowMap() const
+void Mesh::RenderShadowMap(ShadowMapShader_ptr shadow_shader) const
 {
+
+	//Render individual index groups if available
 	int numRanges = (int)ranges.size();
+
+	MapVertexAttributes(shadow_shader);
+
 	for (size_t i = 0; i < numRanges; i++)
 	{
-		Draw(i);
+		if (ShaderBase_ptr currentShader = shadow_shader)
+		{
+			Draw(i);
+		}
+		else
+		{
+			Error("Could not obtain shader for this material");
+		}
 	}
+
+	glBindVertexArray(0);
 }
 
 void Mesh::Render(const Scene_ptr scene) const
@@ -433,7 +452,7 @@ void Mesh::Render(const Scene_ptr scene) const
 	//Render individual index groups if available
 	int numRanges = (int)ranges.size();
 
-	std::set<MaterialShader_ptr> verxtexAttribsMapped;
+	std::set<ShaderBase_ptr> verxtexAttribsMapped;
 
 	for (size_t i = 0; i < numRanges; i++)
 	{
@@ -451,6 +470,16 @@ void Mesh::Render(const Scene_ptr scene) const
 
 			if (currentShader->SetMaterial(currentMaterial))
 			{
+				PhongShader_ptr ps = std::dynamic_pointer_cast<PhongShader>(currentShader);
+
+				if (ps && scene->lightModel->spotLights.size() > 0)
+				{
+					auto sl = scene->lightModel->spotLights[0];
+					Shadow_ptr shadow = sl->GetShadow();
+
+					ps->SetShadow(sl->GetShadow());
+				}
+
 				if (currentShader->Use(scene, worldTransform))
 				{
 					Draw(i);

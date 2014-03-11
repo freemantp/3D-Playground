@@ -3,8 +3,10 @@
 #include "../camera/Camera.h"
 #include "../scene/Scene.h"
 #include "../light/PointLight.h"
+#include "../light/Shadow.h"
 #include "../shape/Skybox.h"
 #include "../texture/CubeMapTexture.h"
+#include "../texture/ShadowMapTexture.h"
 #include "../materials/Material.h"
 #include "UniformBuffer.h"
 
@@ -82,6 +84,15 @@ bool PhongShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 		}
 	}
 
+	if (shadow)
+	{
+		const int shadowMapTexUnit = 1;
+
+		shadow->ShadowMap()->BindTexture(shadowMapTexUnit);
+		SetUniform("ShadowMap", shadowMapTexUnit);
+		SetUniform("ShadowMatrix", shadow->ShadowMatrix());
+	}
+
 	SetLightAndModel(scene);
 
 	return ok;
@@ -90,7 +101,7 @@ bool PhongShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 void PhongShader::UnUse()
 {
 	__super::UnUse();
-	glDisable(GL_BLEND);
+	glDisable(GL_BLEND); // TODO: WTF?
 	glDepthMask(GL_TRUE);
 }
 
@@ -100,4 +111,9 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 	SetUniform("NumPointLights", (int)scene->lightModel->pointLights.size());
 	SetUniform("NumSpotLights", (int)scene->lightModel->spotLights.size());
 	scene->lightModel->GetLightsBuffer()->BindToShader(shared_from_this(),"Lights");
+}
+
+void PhongShader::SetShadow(Shadow_ptr shadow)
+{
+	this->shadow = shadow;
 }

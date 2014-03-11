@@ -6,6 +6,7 @@
 
 SHARED_PTR_CLASS_DECL(PhongShader)
 SHARED_PTR_CLASS_DECL(PhongMaterial)
+SHARED_PTR_CLASS_DECL(Shadow)
 
 class PhongShader : public MaterialShader
 	, public std::enable_shared_from_this<PhongShader>
@@ -22,6 +23,8 @@ public:
 
 	virtual void UnUse() override;
 
+	void SetShadow(Shadow_ptr);
+
 protected:
 
 	PhongShader();
@@ -29,9 +32,11 @@ protected:
 
 	void SetLightAndModel(const Scene_ptr scene);
 
+
 	virtual void Init();
 
 	PhongMaterial_cptr material;
+	Shadow_ptr shadow;
 
 	GLuint blinnSubroutineIdx;
 	GLuint phongSubroutineIdx;

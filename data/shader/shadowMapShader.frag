@@ -7,5 +7,5 @@ in vec4 ShadowCoord;
 
 void main()
 {
-	FragColor = ShadowCoord;
+	FragColor = vec4(1,1,1,1);
 }

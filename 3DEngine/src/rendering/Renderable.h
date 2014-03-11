@@ -3,6 +3,7 @@
 #include "../util/SharedPointer.h"
 
 SHARED_PTR_CLASS_DECL(Scene);
+SHARED_PTR_CLASS_DECL(ShadowMapShader);
 
 class Renderable
 {
@@ -12,7 +13,7 @@ public:
 	virtual void Render(const Scene_ptr scene) const = 0;
 
 	/// Renders the object for shadow map generation (no shaders)
-	virtual void RenderShadowMap() const = 0;
+	virtual void RenderShadowMap(ShadowMapShader_ptr) const = 0;
 
 protected:
 };

@@ -24,8 +24,9 @@ public:
 protected:
 	Renderer(Viewport_ptr viewport);
 
-	Scene_ptr m_Scene;
-	GeometryBuffer_ptr m_gBuffer;
+	Scene_ptr			m_Scene;
+	GeometryBuffer_ptr	m_gBuffer;
+	Viewport_ptr		m_Viewport;
 
 
 };

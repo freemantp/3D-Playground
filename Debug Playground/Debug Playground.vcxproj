@@ -21,13 +21,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -43,13 +43,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\3DEngine\src;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\x64\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\3DEngine\src;D:\Libraries\glsdk_0_5_2\glload\include;D:\Libraries\glsdk_0_5_2\glimg\include;D:\Libraries\glsdk_0_5_2\boost;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\x64\Debug;D:\Libraries\glsdk_0_5_2\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\3DEngine\src;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\x64\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\3DEngine\src;D:\Libraries\glsdk_0_5_2\glload\include;D:\Libraries\glsdk_0_5_2\glimg\include;D:\Libraries\glsdk_0_5_2\boost;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\x64\Release;D:\Libraries\glsdk_0_5_2\x64\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -61,7 +61,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>3DEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glloadD.lib;glimgD.lib;3DEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -78,7 +78,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>3DEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glload.lib;glimg.lib;3DEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -86,6 +86,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Debug Playground.cpp" />
+    <ClCompile Include="glInfo.cpp" />
+    <ClCompile Include="Timer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="glInfo.h" />
+    <ClInclude Include="teapot.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -93,12 +100,16 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-    <Import Project="..\packages\freeglut.redist.2.8.1.1\build\native\freeglut.redist.targets" Condition="Exists('..\packages\freeglut.redist.2.8.1.1\build\native\freeglut.redist.targets')" />
-    <Import Project="..\packages\freeglut.2.8.1.1\build\native\freeglut.targets" Condition="Exists('..\packages\freeglut.2.8.1.1\build\native\freeglut.targets')" />
-    <Import Project="..\packages\glm.0.9.4.4\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.4.4\build\native\glm.targets')" />
-    <Import Project="..\packages\glew.redist.1.9.0.1\build\native\glew.redist.targets" Condition="Exists('..\packages\glew.redist.1.9.0.1\build\native\glew.redist.targets')" />
-    <Import Project="..\packages\glew.1.9.0.1\build\native\glew.targets" Condition="Exists('..\packages\glew.1.9.0.1\build\native\glew.targets')" />
-    <Import Project="..\packages\DevIL.redist.1.7.8\build\native\DevIL.redist.targets" Condition="Exists('..\packages\DevIL.redist.1.7.8\build\native\DevIL.redist.targets')" />
-    <Import Project="..\packages\DevIL.1.7.8\build\native\DevIL.targets" Condition="Exists('..\packages\DevIL.1.7.8\build\native\DevIL.targets')" />
+    <Import Project="..\packages\glm.0.9.5.2\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.5.2\build\native\glm.targets')" />
+    <Import Project="..\packages\freeglut.redist.2.8.1\build\native\freeglut.redist.targets" Condition="Exists('..\packages\freeglut.redist.2.8.1\build\native\freeglut.redist.targets')" />
+    <Import Project="..\packages\freeglut.2.8.1\build\native\freeglut.targets" Condition="Exists('..\packages\freeglut.2.8.1\build\native\freeglut.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\glm.0.9.5.2\build\native\glm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glm.0.9.5.2\build\native\glm.targets'))" />
+    <Error Condition="!Exists('..\packages\freeglut.redist.2.8.1\build\native\freeglut.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\freeglut.redist.2.8.1\build\native\freeglut.redist.targets'))" />
+    <Error Condition="!Exists('..\packages\freeglut.2.8.1\build\native\freeglut.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\freeglut.2.8.1\build\native\freeglut.targets'))" />
+  </Target>
 </Project>

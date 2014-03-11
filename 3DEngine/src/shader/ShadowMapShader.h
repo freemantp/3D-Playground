@@ -13,17 +13,20 @@ public:
 
 	static ShadowMapShader_ptr Create();
 
-	void SetLight(SpotLight_ptr light);
+	void SetShadowMatrix(const glm::mat4& mat);
+
+	/// Returns the current shadow matrix
+	glm::mat4 GetShadowMatrix() const;
 	
 	virtual ~ShadowMapShader();
-	
+
 
 protected:
 	ShadowMapShader();
 
 	virtual void UpdateTransforms(const Camera_ptr cam, const glm::mat4& modelTransform) override;
 
-	glm::mat4 biasMatrix;
-	glm::mat4 shadowMat;
+	glm::mat4 shadowMatrix;
+
 };
 
