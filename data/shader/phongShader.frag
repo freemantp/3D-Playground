@@ -147,9 +147,9 @@ void main()
 		ambient  *= cubeMapColor;
 	}
 
-	float shadow = textureProj(ShadowMap,ShadowCoord);
-	if(shadow > 300)
-		ambient.r = 0;
+	//float shadow = textureProj(ShadowMap,ShadowCoord);
+	//if(shadow > 300)
+	//	ambient.r = 0;
 
 	FragColor = vec4(ambient + (diffuse + specular), Material.Opacity);
 	//FragColor = vec4(ambient + (diffuse + specular) * shadow, Material.Opacity);
