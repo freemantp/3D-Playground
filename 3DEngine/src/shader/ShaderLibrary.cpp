@@ -64,8 +64,14 @@ bool ShaderLibrary::AddShader(const std::type_info& materialType, MaterialShader
 
 MaterialShader_ptr ShaderLibrary::GetShader(Material_cptr material)
 {
-	const std::type_info& info = typeid(*material.get());
-	return GetShader(info);
+	if (material)
+	{
+		const std::type_info& info = typeid(*material.get());
+		return GetShader(info);
+	}
+	else
+		return MaterialShader_ptr();
+
 }
 
 MaterialShader_ptr ShaderLibrary::GetShader(const std::type_info& materialType)
