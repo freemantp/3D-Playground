@@ -11,8 +11,7 @@ Renderer_ptr Renderer::Create(Viewport_ptr viewport)
 }
 
 Renderer::Renderer(Viewport_ptr viewport)
-: m_Viewport(viewport)
-//: m_gBuffer(GeometryBuffer::Create(viewport->width, viewport->height))
+	: m_Viewport(viewport)
 {
 }
 
@@ -34,7 +33,6 @@ void Renderer::Render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	if(m_Scene)
 	{
-		//m_gBuffer->StartGBufferComp(m_Scene,
-		m_Scene->render();
+		m_Scene->render(m_Viewport);
 	}
 }

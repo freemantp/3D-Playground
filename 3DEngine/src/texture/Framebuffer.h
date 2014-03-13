@@ -29,8 +29,11 @@ public:
 	/// Enables/disables drawing to the color attachement of this buffer
 	void SetDrawToColorBufferEnabled(bool enabled);
 
-	/// Returns the attaachement of a potentially bound renderbuffer, 0 if none is available
-	GLuint RenderbufferHandle(Attachment target) const;
+	/// Returns the attachement of a potentially bound renderbuffer, 0 if none is available
+	inline GLuint Renderbuffer(Attachment target) const;
+
+	/// Returns the attachement of a potentially bound texture, invalid ptr if none is available
+	inline Texture_ptr TextureAttachment(Attachment target) const;
 
 	/// Returns true if framebuffer ist complete. 
 	bool IsComplete() const;
@@ -50,13 +53,16 @@ protected:
 
 	inline bool IsBound() const;
 
+	inline GLuint TextureIndex(Attachment target) const;
+
 	GLuint bufferHandle;
 
 	GLuint renderBuferHandle[3];
+	Texture_ptr attachedTexture[3];
 
-	Texture_ptr	colorTexture;
-	Texture_ptr	depthTexture;
-	Texture_ptr	stencilTexture;
+	//Texture_ptr	colorTexture;
+	//Texture_ptr	depthTexture;
+	//Texture_ptr	stencilTexture;
 
 	bool drawToColorBuffer;
 	

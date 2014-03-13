@@ -97,61 +97,86 @@ void Scene::SetSkybox(Skybox_ptr skybox)
 	this->skybox = skybox;
 }
 
-void Scene::render()
+
+void Scene::render(Viewport_ptr viewport)
 {		
 	//Render skybox
 	if(skybox != nullptr)
 		skybox->Render(shared_from_this());
 
-	//Generate shadow maps
-	//for (auto sl : lightModel->spotLights)
-	//{
-	//	if (Shadow_ptr smap = sl->GetShadow())
-	//	{
-	//		//framebuffer->Attach(smap->ShadowMap(), Framebuffer::Attachment::Depth);
-	//		if (framebuffer->Bind())
-	//		{
-	//			//shadowShader->SetShadowMatrix(smap->ShadowMatrix());
+	glViewport(0, 0, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+	framebuffer->Bind();
+	glClearColor(1, 0, 1, 1);
+	glClearDepth(1);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//			for (Shape_ptr s : objects)
-	//			{
-	//				if (shadowShader->Use(shared_from_this(), s->worldTransform))
-	//				{
-	//					s->RenderShadowMap(shadowShader);
-	//				}
-	//			}
+
+	//Generate shadow maps
+	for (auto sl : lightModel->spotLights)
+	{
+		if (Shadow_ptr smap = sl->GetShadow())
+		{
+			//framebuffer->Attach(smap->ShadowMap(), Framebuffer::Attachment::Depth);
+			if (framebuffer->Bind())
+			{
+				//shadowShader->SetShadowMatrix(smap->ShadowMatrix());
+
+				for (Shape_ptr s : objects)
+				{
+					glm::vec3 pos(sl->GetPosition());
+
+					glm::mat4 lightMatrix = glm::lookAt(pos, glm::vec3(0,0,0), glm::vec3(0, 1, 0));
+
+					float ar = ((float)viewport->width / viewport->height);
+					//glm::mat4 pm = glm::perspective(50.0f, ar, 0.01f, 100.0f);
+					 
+
+					if (shadowShader->Use(shared_from_this(), lightMatrix *s->worldTransform))
+					{
+						s->RenderShadowMap(shadowShader);
+					}
+				}
+			}
+		}
+	}
+	shadowShader->UnUse();
+	framebuffer->Unbind();
+	
+	//Render objects
+
+
+	//for(Shape_ptr s : objects)
+	//{
+	//	s->Render(shared_from_this());
+	//}
+
+	//bool renderLights = true;
+
+	//if(renderLights)
+	//{
+	//	for (auto pl : lightModel->pointLights)
+	//	{
+	//		if (auto plr = pl->GetRepresentation())
+	//		{
+	//			plr->Render(shared_from_this());
+	//		}
+	//	}
+
+	//	for(auto sl : lightModel->spotLights)
+	//	{
+	//		if (auto plr = sl->GetRepresentation())
+	//		{
+	//			plr->Render(shared_from_this());
 	//		}
 	//	}
 	//}
-	//shadowShader->UnUse();
-	//framebuffer->Unbind();
 	
-	//Render objects
-	for(Shape_ptr s : objects)
-	{
-		s->Render(shared_from_this());
-	}
 
-	bool renderLights = true;
 
-	if(renderLights)
-	{
-		for (auto pl : lightModel->pointLights)
-		{
-			if (auto plr = pl->GetRepresentation())
-			{
-				plr->Render(shared_from_this());
-			}
-		}
-
-		for(auto sl : lightModel->spotLights)
-		{
-			if (auto plr = sl->GetRepresentation())
-			{
-				plr->Render(shared_from_this());
-			}
-		}
-	}
+	glViewport(0, 0, viewport->width, viewport->height);
+	glClearColor(0, 0, 0, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	m_Box->Render(shared_from_this());
 }
 
 void Scene::TimeUpdate(long time)

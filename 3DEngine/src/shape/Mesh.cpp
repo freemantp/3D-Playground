@@ -424,25 +424,28 @@ void Mesh::MapVertexAttributes(ShaderBase_ptr shader) const
 
 void Mesh::RenderShadowMap(ShadowMapShader_ptr shadow_shader) const
 {
-
-	//Render individual index groups if available
-	int numRanges = (int)ranges.size();
-
-	MapVertexAttributes(shadow_shader);
-
-	for (size_t i = 0; i < numRanges; i++)
+	if (shadow_shader)
 	{
-		if (ShaderBase_ptr currentShader = shadow_shader)
-		{
-			Draw(i);
-		}
-		else
-		{
-			Error("Could not obtain shader for this material");
-		}
-	}
+		//Render individual index groups if available
+		int numRanges = (int)ranges.size();
 
-	glBindVertexArray(0);
+		MapVertexAttributes(shadow_shader);
+
+		for (size_t i = 0; i < numRanges; i++)
+		{
+			if (ShaderBase_ptr currentShader = shadow_shader)
+			{
+				Draw(i);
+			}
+			else
+			{
+				Error("Could not obtain shader for this material");
+			}
+		}
+
+		glBindVertexArray(0);
+	}
+	
 }
 
 void Mesh::Render(const Scene_ptr scene) const

@@ -8,8 +8,8 @@ SpotLight::SpotLight(const vec3& direction, float cutoffAngle, float exponent, b
 	, exponent(exponent)
 	, direction(glm::normalize(direction))	
 {
-	//if (castsShadow)
-	//	shadow = Shadow::Create();
+	if (castsShadow)
+		shadow = Shadow::Create();
 }
 
 

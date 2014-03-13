@@ -36,26 +36,28 @@ bool Framebuffer::Attach(Texture_ptr texture, Attachment target)
 		if (!bound)
 			Bind();
 
-		texture->BindTexture(0);
+		
 
-		GLenum attchmt;
-		switch (target)
+		auto get_gl_enum = [](Attachment target)->GLenum
 		{
-		case Attachment::Color:
-			attchmt = GL_COLOR_ATTACHMENT0;
-			colorTexture = texture;
-			break;
-		case Attachment::Depth:
-			depthTexture = texture;
-			attchmt = GL_DEPTH_ATTACHMENT;
-			break;
-		case Attachment::Stencil:
-			stencilTexture = texture;
-			attchmt = GL_STENCIL_ATTACHMENT;
-			break;
-		}
+			switch (target)
+			{
+			case Attachment::Color:
+				return GL_COLOR_ATTACHMENT0;
+				break;
+			case Attachment::Depth:
+				return GL_DEPTH_ATTACHMENT;
+				break;
+			case Attachment::Stencil:
+				return GL_STENCIL_ATTACHMENT;
+				break;
+			}
 
-		glFramebufferTexture2D(GL_FRAMEBUFFER, attchmt, GL_TEXTURE_2D, texture->Handle(), 0);
+			return GL_COLOR_ATTACHMENT0;
+		};
+
+		attachedTexture[TextureIndex(target)] = texture;
+		glFramebufferTexture2D(GL_FRAMEBUFFER, get_gl_enum(target), GL_TEXTURE_2D, texture->Handle(), 0);
 
 		if(!bound)
 			Unbind();
@@ -83,12 +85,14 @@ bool Framebuffer::AttachDepthRenderBuffer()
 
 GLuint Framebuffer::CreateRenderBuffer(GLenum format)
 {
-	if (colorTexture && colorTexture->IsValid())
+	Texture_ptr colorTex = TextureAttachment(Attachment::Color);
+
+	if (colorTex && colorTex->IsValid())
 	{
 		GLuint handle;
 
-		int texWidth =  colorTexture->Width();
-		int texHeight = colorTexture->Height();
+		int texWidth = colorTex->Width();
+		int texHeight = colorTex->Height();
 
 		assert(texWidth > 0);
 		assert(texHeight > 0);
@@ -123,7 +127,17 @@ void Framebuffer::Unbind()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-GLuint Framebuffer::RenderbufferHandle(Attachment target) const
+GLuint Framebuffer::TextureIndex(Attachment target) const
 {
-	return renderBuferHandle[static_cast<GLuint>(target)];	
+	return static_cast<GLuint>(target);
+}
+
+GLuint Framebuffer::Renderbuffer(Attachment target) const
+{
+	return renderBuferHandle[TextureIndex(target)];
+}
+
+Texture_ptr Framebuffer::TextureAttachment(Attachment target) const
+{
+	return attachedTexture[TextureIndex(target)];
 }

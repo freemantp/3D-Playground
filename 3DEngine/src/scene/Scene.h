@@ -17,6 +17,7 @@ SHARED_PTR_CLASS_DECL(InspectionCameraAdapter);
 SHARED_PTR_CLASS_DECL(FirstPersonCameraAdapter);
 SHARED_PTR_CLASS_DECL(ShadowMapShader);
 SHARED_PTR_CLASS_DECL(Framebuffer);
+SHARED_PTR_CLASS_DECL(Viewport);
 
 class Scene 
 	: public TimeObserver
@@ -28,7 +29,7 @@ public:
 
 	virtual ~Scene();
 
-	void render();
+	void render(Viewport_ptr viewport);
 
 	void AddShape(Shape_ptr shape);
 	void SetSkybox(Skybox_ptr skybox);
