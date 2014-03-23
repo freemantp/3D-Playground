@@ -24,6 +24,8 @@ public:
 
 	mat4 GetViewProjectionTransform() const;
 
+	mat4 GetProjectionTransform() const;
+
 	void UpdateViewMatrix();
 	virtual void UpdateProjectionMatrix() = 0;
 

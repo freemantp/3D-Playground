@@ -14,6 +14,11 @@ mat4 Camera::GetViewProjectionTransform() const
 	return projectionMatrix * viewMatrix;
 }
 
+mat4 Camera::GetProjectionTransform() const
+{
+	return projectionMatrix;
+}
+
 void Camera::UpdateViewMatrix()
 {
 	//Update view matrix

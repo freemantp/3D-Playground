@@ -2,6 +2,7 @@
 
 #include "../util/SharedPointer.h"
 
+SHARED_PTR_CLASS_DECL(SpotLight);
 SHARED_PTR_CLASS_DECL(Shadow);
 SHARED_PTR_CLASS_DECL(ShadowMapTexture);
 
@@ -17,7 +18,7 @@ public:
 
 	glm::mat4 ShadowMatrix() const;
 
-	void UpdateShadowMatrix(const glm::vec3& direction);
+	void UpdateShadowMatrix(const SpotLight_ptr spotLight);
 
 protected:
 
