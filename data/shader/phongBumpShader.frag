@@ -119,9 +119,12 @@ vec3 getNormal()
 void main() 
 {
 	vec3 normal = getNormal();
-	vec3 albedo = texture(AlbedoTex,TexCoord).rgb;
+	vec3 albedo = texture2D(AlbedoTex,TexCoord).rgb;
 
-	FragColor = vec4(0,0,0,1);
+	float spread = 5;
+	float depth = (albedo.r - (1-1/spread)) * spread;
+
+	//FragColor = vec4(0,0,0,1);	
 
 	//Point lights
 	for(int i=0;  i < NumPointLights; i++)
@@ -147,5 +150,9 @@ void main()
 			FragColor += spotFactor * vec4(light.Color * albedo * shade(normal,ViewDirection,lightDir,TexCoord),0);
 		}
 	}
+
+	FragColor = vec4(depth,depth,depth,1);
+	//FragColor = vec4(albedo,1);
+	
 
 }

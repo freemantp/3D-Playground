@@ -107,17 +107,12 @@ void Scene::SetSkybox(Skybox_ptr skybox)
 	this->skybox = skybox;
 }
 
-void Scene::render(Viewport_ptr viewport)
-{		
-	//Render skybox
-	if(skybox != nullptr)
-		skybox->Render(shared_from_this());
-
+void Scene::RenderShadowMaps()
+{
 	framebuffer->Bind();
 	{
-		glClearColor(0.2f, 0.2f, 0.2f, 1);
 		glClearDepth(1);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_DEPTH_BUFFER_BIT);
 
 		//Generate shadow maps
 		for (auto sl : lightModel->spotLights)
@@ -145,9 +140,21 @@ void Scene::render(Viewport_ptr viewport)
 	}
 	shadowShader->UnUse();
 	framebuffer->Unbind();
+}
+
+void Scene::render(Viewport_ptr viewport)
+{		
+	RenderShadowMaps();
+
+	//Render skybox
+	if(skybox != nullptr)
+		skybox->Render(shared_from_this());	
 	
 	//Render objects
 
+	viewport->Apply();
+	glClearColor(0, 0, 0, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//for(Shape_ptr s : objects)
 	//{
@@ -175,9 +182,6 @@ void Scene::render(Viewport_ptr viewport)
 	//	}
 	//}
 
-	glViewport(0, 0, viewport->width, viewport->height);
-	glClearColor(0, 0, 0, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	m_Box->Render(shared_from_this());
 }
 

@@ -49,6 +49,8 @@ public:
 
 protected:
 
+	void RenderShadowMaps();
+
 	Scene(InputHandlerFactory& ihf, Camera_ptr cam);
 
 	InspectionCameraAdapter_ptr mAdapter;
