@@ -23,6 +23,12 @@
 #include "../texture/Framebuffer.h"
 #include "../texture/ShadowMapTexture.h"
 
+#include "../rendering/Viewport.h"
+
+#include "../materials/Material.h"
+
+#include "../error.h"
+
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -34,10 +40,13 @@ Scene_ptr Scene::Create(InputHandlerFactory& ihf, Camera_ptr cam)
 	return Scene_ptr(new Scene(ihf,cam));
 }
 
+static Box_ptr				m_Box;
+static TextureMaterial_ptr txm;
+
 Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 	: skybox(nullptr)
 	, shadowShader(ShadowMapShader::Create())
-	//, framebuffer(Framebuffer::Create())
+	, framebuffer(Framebuffer::Create())
 {
 	SetCamera(cam);
 
@@ -64,10 +73,11 @@ Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 
 	winEventHandler.AddViewportObserver(cam);
 
-	//Set up framebuffer	
-	//Texture_ptr texture = Texture::Create(1600, 900);
-	//framebuffer->Attach(texture, Framebuffer::Attachment::Color);
-	//framebuffer->SetDrawToColorBufferEnabled(true);	
+	m_Box = Box::Create();
+	m_Box->Init();
+
+	txm = TextureMaterial::Create();	
+	m_Box->SetMaterial(txm);
 }
 
 Scene::~Scene()
@@ -97,41 +107,35 @@ void Scene::SetSkybox(Skybox_ptr skybox)
 	this->skybox = skybox;
 }
 
-
 void Scene::render(Viewport_ptr viewport)
 {		
 	//Render skybox
 	if(skybox != nullptr)
 		skybox->Render(shared_from_this());
 
-	glViewport(0, 0, TEXTURE_WIDTH, TEXTURE_HEIGHT);
 	framebuffer->Bind();
-	glClearColor(1, 0, 1, 1);
-	glClearDepth(1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-	//Generate shadow maps
-	for (auto sl : lightModel->spotLights)
 	{
-		if (Shadow_ptr smap = sl->GetShadow())
+		glClearColor(0.2f, 0.2f, 0.2f, 1);
+		glClearDepth(1);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		//Generate shadow maps
+		for (auto sl : lightModel->spotLights)
 		{
-			//framebuffer->Attach(smap->ShadowMap(), Framebuffer::Attachment::Depth);
-			if (framebuffer->Bind())
+			if (Shadow_ptr smap = sl->GetShadow())
 			{
-				//shadowShader->SetShadowMatrix(smap->ShadowMatrix());
+				auto smaptex = smap->ShadowMap();
+				framebuffer->Attach(smaptex, Framebuffer::Attachment::Depth);
+				framebuffer->SetDrawToColorBufferEnabled(false);
+
+				txm->albedoTexture = framebuffer->TextureAttachment(Framebuffer::Attachment::Depth);
+				glViewport(0, 0, smaptex->Width(), smaptex->Height());
+
+				shadowShader->SetShadowMatrix(smap->ShadowMatrix());
 
 				for (Shape_ptr s : objects)
 				{
-					glm::vec3 pos(sl->GetPosition());
-
-					glm::mat4 lightMatrix = glm::lookAt(pos, glm::vec3(0,0,0), glm::vec3(0, 1, 0));
-
-					float ar = ((float)viewport->width / viewport->height);
-					//glm::mat4 pm = glm::perspective(50.0f, ar, 0.01f, 100.0f);
-					 
-
-					if (shadowShader->Use(shared_from_this(), lightMatrix *s->worldTransform))
+					if (shadowShader->Use(shared_from_this(), s->worldTransform))
 					{
 						s->RenderShadowMap(shadowShader);
 					}
@@ -170,8 +174,6 @@ void Scene::render(Viewport_ptr viewport)
 	//		}
 	//	}
 	//}
-	
-
 
 	glViewport(0, 0, viewport->width, viewport->height);
 	glClearColor(0, 0, 0, 0);

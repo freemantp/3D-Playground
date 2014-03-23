@@ -15,8 +15,8 @@ ShadowMapShader::ShadowMapShader()
 	hasMVM = false;
 	hasNM = false;
 	hasPM = false;
-	hasMVP = true;
-	//hasMM = true;
+	hasMVP = false;
+	hasMM = true;
 
 	Init();
 
