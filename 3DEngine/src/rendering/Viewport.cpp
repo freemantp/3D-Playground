@@ -14,6 +14,11 @@ Viewport::Viewport(int width, int height)
 
 }
 
+void Viewport::Apply()
+{
+	glViewport(0, 0, width, height);
+}
+
 
 Viewport::~Viewport()
 {

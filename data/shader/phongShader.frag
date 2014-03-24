@@ -39,7 +39,7 @@ uniform int NumSpotLights;
 uniform samplerCube EnvMapTex;
 uniform float EnvReflection; //[0,1]
 
-uniform sampler2DShadow ShadowMap;
+uniform sampler2D ShadowMap;
 
 //Subroutine declaration
 subroutine float shadeModelType(in vec3 s, in vec3 v, in vec3 normal);
@@ -135,8 +135,6 @@ void main()
 		}
 	}
 
-	
-
 	//Environment mapping
 	if(Material.Shininess > 0.0) 
 	{
@@ -147,11 +145,8 @@ void main()
 		ambient  *= cubeMapColor;
 	}
 
-	//float shadow = textureProj(ShadowMap,ShadowCoord);
-	//if(shadow > 300)
-	//	ambient.r = 0;
+	float shadow = textureProj(ShadowMap,ShadowCoord);
 
-	FragColor = vec4(ambient + (diffuse + specular), Material.Opacity);
-	//FragColor = vec4(ambient + (diffuse + specular) * shadow, Material.Opacity);
+	FragColor = vec4(ambient + (diffuse + specular) * shadow , Material.Opacity);
 
 }

@@ -23,6 +23,12 @@
 #include "../texture/Framebuffer.h"
 #include "../texture/ShadowMapTexture.h"
 
+#include "../rendering/Viewport.h"
+
+#include "../materials/Material.h"
+
+#include "../error.h"
+
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -37,7 +43,7 @@ Scene_ptr Scene::Create(InputHandlerFactory& ihf, Camera_ptr cam)
 Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 	: skybox(nullptr)
 	, shadowShader(ShadowMapShader::Create())
-	//, framebuffer(Framebuffer::Create())
+	, framebuffer(Framebuffer::Create())
 {
 	SetCamera(cam);
 
@@ -64,10 +70,7 @@ Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 
 	winEventHandler.AddViewportObserver(cam);
 
-	//Set up framebuffer	
-	//Texture_ptr texture = Texture::Create(1600, 900);
-	//framebuffer->Attach(texture, Framebuffer::Attachment::Color);
-	//framebuffer->SetDrawToColorBufferEnabled(true);	
+	glEnable(GL_CULL_FACE); //For shadow mapping
 }
 
 Scene::~Scene()
@@ -97,36 +100,57 @@ void Scene::SetSkybox(Skybox_ptr skybox)
 	this->skybox = skybox;
 }
 
-void Scene::render()
+void Scene::RenderShadowMaps()
+{
+	framebuffer->Bind();
+	{
+		glClearDepth(1);
+		glClear(GL_DEPTH_BUFFER_BIT);		
+		glCullFace(GL_FRONT);
+
+		//Generate shadow maps
+		for (auto sl : lightModel->spotLights)
+		{
+			if (Shadow_ptr smap = sl->GetShadow())
+			{
+				auto smaptex = smap->ShadowMap();
+				framebuffer->Attach(smaptex, Framebuffer::Attachment::Depth);
+				framebuffer->SetDrawToColorBufferEnabled(false);
+
+				glViewport(0, 0, smaptex->Width(), smaptex->Height());
+
+				shadowShader->SetLightMatrix(smap->LightViewProjectionMatrix());
+
+				for (Shape_ptr s : objects)
+				{
+					if (shadowShader->Use(shared_from_this(), s->worldTransform))
+					{
+						s->RenderShadowMap(shadowShader);
+					}
+				}
+			}
+		}
+	}
+	shadowShader->UnUse();
+	framebuffer->Unbind();
+
+	glCullFace(GL_BACK);
+}
+
+void Scene::render(Viewport_ptr viewport)
 {		
+	RenderShadowMaps();
+
 	//Render skybox
 	if(skybox != nullptr)
-		skybox->Render(shared_from_this());
-
-	//Generate shadow maps
-	//for (auto sl : lightModel->spotLights)
-	//{
-	//	if (Shadow_ptr smap = sl->GetShadow())
-	//	{
-	//		//framebuffer->Attach(smap->ShadowMap(), Framebuffer::Attachment::Depth);
-	//		if (framebuffer->Bind())
-	//		{
-	//			//shadowShader->SetShadowMatrix(smap->ShadowMatrix());
-
-	//			for (Shape_ptr s : objects)
-	//			{
-	//				if (shadowShader->Use(shared_from_this(), s->worldTransform))
-	//				{
-	//					s->RenderShadowMap(shadowShader);
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
-	//shadowShader->UnUse();
-	//framebuffer->Unbind();
+		skybox->Render(shared_from_this());	
 	
 	//Render objects
+
+	viewport->Apply();
+	glClearColor(0, 0, 0, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	for(Shape_ptr s : objects)
 	{
 		s->Render(shared_from_this());
@@ -152,6 +176,8 @@ void Scene::render()
 			}
 		}
 	}
+
+	//m_Box->Render(shared_from_this());
 }
 
 void Scene::TimeUpdate(long time)

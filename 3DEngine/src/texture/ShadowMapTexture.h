@@ -12,7 +12,7 @@ public:
 
 protected:
 
-	ShadowMapTexture(int width, int height);
+	ShadowMapTexture(int width, int height, Format format);
 
 };
 

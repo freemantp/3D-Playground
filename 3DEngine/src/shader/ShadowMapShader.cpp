@@ -15,19 +15,19 @@ ShadowMapShader::ShadowMapShader()
 	hasMVM = false;
 	hasNM = false;
 	hasPM = false;
-	hasMVP = true;
-	//hasMM = true;
+	hasMVP = false;
+	hasMM = true;
 
 	Init();
 
 }
 
-void ShadowMapShader::SetShadowMatrix(const glm::mat4& mat)
+void ShadowMapShader::SetLightMatrix(const glm::mat4& mat)
 {
 	shadowMatrix = mat;
 
 	BeforeUniformSet();
-	SetUniform("ShadowMatrix", mat);
+	SetUniform("LightVPMatrix", mat);
 	AfterUniformSet();
 }
 

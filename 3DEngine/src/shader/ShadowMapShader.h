@@ -13,7 +13,8 @@ public:
 
 	static ShadowMapShader_ptr Create();
 
-	void SetShadowMatrix(const glm::mat4& mat);
+	/// The view porjection matrix of a light source
+	void SetLightMatrix(const glm::mat4& mat);
 
 	/// Returns the current shadow matrix
 	glm::mat4 GetShadowMatrix() const;

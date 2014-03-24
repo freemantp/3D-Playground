@@ -30,7 +30,7 @@ PointLight::~PointLight()
 
 void PointLight::SetPosition(vec4& pos)
 {
-	Light::SetPosition(pos);
+	__super::SetPosition(pos);
 	
 	visMesh->worldTransform = glm::translate(glm::mat4(1.0),vec3(pos.x,pos.y,pos.z));
 	visMesh->worldTransform = glm::scale(visMesh->worldTransform,vec3(0.05f));
