@@ -69,8 +69,6 @@ Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 	}
 
 	winEventHandler.AddViewportObserver(cam);
-
-	glEnable(GL_CULL_FACE); //For shadow mapping
 }
 
 Scene::~Scene()
@@ -105,7 +103,8 @@ void Scene::RenderShadowMaps()
 	framebuffer->Bind();
 	{
 		glClearDepth(1);
-		glClear(GL_DEPTH_BUFFER_BIT);		
+		glClear(GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_CULL_FACE);
 		glCullFace(GL_FRONT);
 
 		//Generate shadow maps
@@ -135,21 +134,22 @@ void Scene::RenderShadowMaps()
 	framebuffer->Unbind();
 
 	glCullFace(GL_BACK);
+	glDisable(GL_CULL_FACE);
 }
 
 void Scene::render(Viewport_ptr viewport)
 {		
 	RenderShadowMaps();
-
-	//Render skybox
-	if(skybox != nullptr)
-		skybox->Render(shared_from_this());	
 	
 	//Render objects
 
 	viewport->Apply();
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//Render skybox
+	if (skybox != nullptr)
+		skybox->Render(shared_from_this());
 
 	for(Shape_ptr s : objects)
 	{

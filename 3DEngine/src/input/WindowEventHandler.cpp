@@ -29,12 +29,12 @@ void WindowEventHandler::resize(int width, int height)
 void WindowEventHandler::HandleResize(int width, int height)
 {
 	//Update Viewport
-	glViewport(0, 0, width, height);
+	Viewport_ptr vp = Viewport::Create(width, height);
+	vp->Apply();
 	
 	//Notify observers
-	//std::vector<ViewportObserver*>::const_iterator cit;
-	for(auto cit = viewportObservers.cbegin(); cit != viewportObservers.cend(); cit++) 
+	for (ViewportObserver_ptr vpo : viewportObservers)
 	{
-		(*cit)->ViewportChanged(Viewport::Create(width, height));
+		vpo->ViewportChanged(vp);
 	}
 }

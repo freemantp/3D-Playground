@@ -35,7 +35,7 @@
       <position x="-1.0" y="1.0" z="0.0"/>
       <direction x="1.0" y="-1.0" z="0.0"/>
       <color r="0.0" g="0.0" b="1.2"/>
-    </light>s
+    </light>
     <!--<light type="spot"  cutoff="60" exponent="5">
       <position x="0.0" y="0.5" z="1.0"/>
        <direction x="0.0" y="0.0" z="-1.0"/>
