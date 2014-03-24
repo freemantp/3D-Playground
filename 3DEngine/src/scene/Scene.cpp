@@ -40,9 +40,6 @@ Scene_ptr Scene::Create(InputHandlerFactory& ihf, Camera_ptr cam)
 	return Scene_ptr(new Scene(ihf,cam));
 }
 
-static Box_ptr				m_Box;
-static TextureMaterial_ptr txm;
-
 Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 	: skybox(nullptr)
 	, shadowShader(ShadowMapShader::Create())
@@ -73,11 +70,7 @@ Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 
 	winEventHandler.AddViewportObserver(cam);
 
-	m_Box = Box::Create();
-	m_Box->Init();
-
-	txm = TextureMaterial::Create();	
-	m_Box->SetMaterial(txm);
+	glEnable(GL_CULL_FACE); //For shadow mapping
 }
 
 Scene::~Scene()
@@ -112,7 +105,8 @@ void Scene::RenderShadowMaps()
 	framebuffer->Bind();
 	{
 		glClearDepth(1);
-		glClear(GL_DEPTH_BUFFER_BIT);
+		glClear(GL_DEPTH_BUFFER_BIT);		
+		glCullFace(GL_FRONT);
 
 		//Generate shadow maps
 		for (auto sl : lightModel->spotLights)
@@ -123,7 +117,6 @@ void Scene::RenderShadowMaps()
 				framebuffer->Attach(smaptex, Framebuffer::Attachment::Depth);
 				framebuffer->SetDrawToColorBufferEnabled(false);
 
-				txm->albedoTexture = framebuffer->TextureAttachment(Framebuffer::Attachment::Depth);
 				glViewport(0, 0, smaptex->Width(), smaptex->Height());
 
 				shadowShader->SetLightMatrix(smap->LightViewProjectionMatrix());
@@ -140,6 +133,8 @@ void Scene::RenderShadowMaps()
 	}
 	shadowShader->UnUse();
 	framebuffer->Unbind();
+
+	glCullFace(GL_BACK);
 }
 
 void Scene::render(Viewport_ptr viewport)

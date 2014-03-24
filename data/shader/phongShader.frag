@@ -146,6 +146,7 @@ void main()
 	}
 
 	float shadow = textureProj(ShadowMap,ShadowCoord);
+
 	FragColor = vec4(ambient + (diffuse + specular) * shadow , Material.Opacity);
 
 }

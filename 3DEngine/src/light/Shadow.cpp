@@ -9,7 +9,7 @@
 
 
 Shadow::Shadow()
-: shadowMapTex(ShadowMapTexture::Create(2048,2048))
+: shadowMapTex(ShadowMapTexture::Create(2048, 2048))
 {
 	biasMatrix = glm::mat4(
 		0.5, 0.0, 0.0, 0.0,
