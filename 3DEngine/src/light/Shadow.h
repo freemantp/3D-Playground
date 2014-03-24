@@ -16,7 +16,9 @@ public:
 
 	ShadowMapTexture_ptr ShadowMap() const;
 
-	glm::mat4 ShadowMatrix() const;
+	const glm::mat4& BiasMatrix() const;
+	const glm::mat4& ShadowMatrix() const;
+	const glm::mat4& LightViewProjectionMatrix() const;
 
 	void UpdateShadowMatrix(const SpotLight_ptr spotLight);
 
@@ -28,6 +30,7 @@ protected:
 
 	glm::mat4 biasMatrix;
 	glm::mat4 shadowMat;
+	glm::mat4 depthViewProjectionMatrix;
 
 };
 

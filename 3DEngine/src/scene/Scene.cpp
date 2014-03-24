@@ -126,7 +126,7 @@ void Scene::RenderShadowMaps()
 				txm->albedoTexture = framebuffer->TextureAttachment(Framebuffer::Attachment::Depth);
 				glViewport(0, 0, smaptex->Width(), smaptex->Height());
 
-				shadowShader->SetShadowMatrix(smap->ShadowMatrix());
+				shadowShader->SetLightMatrix(smap->LightViewProjectionMatrix());
 
 				for (Shape_ptr s : objects)
 				{
@@ -156,33 +156,33 @@ void Scene::render(Viewport_ptr viewport)
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//for(Shape_ptr s : objects)
-	//{
-	//	s->Render(shared_from_this());
-	//}
+	for(Shape_ptr s : objects)
+	{
+		s->Render(shared_from_this());
+	}
 
-	//bool renderLights = true;
+	bool renderLights = true;
 
-	//if(renderLights)
-	//{
-	//	for (auto pl : lightModel->pointLights)
-	//	{
-	//		if (auto plr = pl->GetRepresentation())
-	//		{
-	//			plr->Render(shared_from_this());
-	//		}
-	//	}
+	if(renderLights)
+	{
+		for (auto pl : lightModel->pointLights)
+		{
+			if (auto plr = pl->GetRepresentation())
+			{
+				plr->Render(shared_from_this());
+			}
+		}
 
-	//	for(auto sl : lightModel->spotLights)
-	//	{
-	//		if (auto plr = sl->GetRepresentation())
-	//		{
-	//			plr->Render(shared_from_this());
-	//		}
-	//	}
-	//}
+		for(auto sl : lightModel->spotLights)
+		{
+			if (auto plr = sl->GetRepresentation())
+			{
+				plr->Render(shared_from_this());
+			}
+		}
+	}
 
-	m_Box->Render(shared_from_this());
+	//m_Box->Render(shared_from_this());
 }
 
 void Scene::TimeUpdate(long time)

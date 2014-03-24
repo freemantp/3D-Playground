@@ -11,7 +11,7 @@ class Texture
 {
 public:
 
-	enum class Format : GLint  { RGB = GL_RGB8, RGBA = GL_RGBA8, Depth = GL_DEPTH_COMPONENT16 };
+	enum class Format : GLint  { RGB = GL_RGB8, RGBA = GL_RGBA8, Depth = GL_DEPTH_COMPONENT };
 
 	static Texture_ptr Create(const std::string& texturePath);
 

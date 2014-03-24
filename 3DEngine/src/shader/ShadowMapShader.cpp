@@ -22,12 +22,12 @@ ShadowMapShader::ShadowMapShader()
 
 }
 
-void ShadowMapShader::SetShadowMatrix(const glm::mat4& mat)
+void ShadowMapShader::SetLightMatrix(const glm::mat4& mat)
 {
 	shadowMatrix = mat;
 
 	BeforeUniformSet();
-	SetUniform("ShadowMatrix", mat);
+	SetUniform("LightVPMatrix", mat);
 	AfterUniformSet();
 }
 
