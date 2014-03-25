@@ -42,6 +42,7 @@ bool ShDiffuseShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform
 
 		for (int i = 0; i<9; i++)
 		{
+			//TODO: use std::copy
 			memcpy(shCoeffs + i * 3, &(material->shCoeffs->m_Coeffs[i]).x, 3 * sizeof(float));
 		}
 

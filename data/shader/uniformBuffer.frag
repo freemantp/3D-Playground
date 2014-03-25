@@ -19,6 +19,8 @@ struct SpotLight
 	vec3 Direction;
 	float CutoffAngle;
 	float Exponent;
+	mat4 Shadowmatrix;
+
 };
 
 // ----------------- uniforms -----------------

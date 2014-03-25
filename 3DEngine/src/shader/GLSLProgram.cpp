@@ -302,6 +302,37 @@ void GLSLProgram::SetUniformArray(const GLchar *name,
 	}
 }
 
+void GLSLProgram::SetUniformArray(const GLchar *name,
+	GLint *v,
+	int elementSize,
+	int count)
+{
+	GLint loc = glGetUniformLocation(programHandle, name);
+	if (loc == -1)
+	{
+#if _DEBUG
+		Error(string("Error setting parameter '") + name + "'");
+#endif
+		return;
+	}
+
+	switch (elementSize) {
+	case 1:
+		glUniform1iv(loc, count, v);
+		break;
+	case 2:
+		glUniform2iv(loc, count, v);
+		break;
+	case 3:
+		glUniform3iv(loc, count, v);
+		break;
+	case 4:
+		glUniform4iv(loc, count, v);
+		break;
+	}
+}
+
+
 std::vector<std::string> GLSLProgram::GetVertexAttributes()
 {
 	GLint nAttribs, maxLength, charsWritten, size;

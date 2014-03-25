@@ -3,6 +3,7 @@
 #include "../camera/Camera.h"
 #include "../scene/Scene.h"
 #include "../light/PointLight.h"
+#include "../light/SpotLight.h"
 #include "../light/Shadow.h"
 #include "../shape/Skybox.h"
 #include "../texture/CubeMapTexture.h"
@@ -84,15 +85,6 @@ bool PhongShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 		}
 	}
 
-	if (shadow)
-	{
-		const int shadowMapTexUnit = 1;
-
-		shadow->ShadowMap()->BindTexture(shadowMapTexUnit);
-		SetUniform("ShadowMap", shadowMapTexUnit);
-		SetUniform("ShadowMatrix", shadow->ShadowMatrix());
-	}
-
 	SetLightAndModel(scene);
 
 	return ok;
@@ -110,10 +102,22 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 	//set lights
 	SetUniform("NumPointLights", (int)scene->lightModel->pointLights.size());
 	SetUniform("NumSpotLights", (int)scene->lightModel->spotLights.size());
-	scene->lightModel->GetLightsBuffer()->BindToShader(shared_from_this(),"Lights");
-}
+	
+	size_t num_slights = scene->lightModel->spotLights.size();
+	GLint* shadowMaps = new GLint[num_slights];
 
-void PhongShader::SetShadow(Shadow_ptr shadow)
-{
-	this->shadow = shadow;
+	for (size_t i=0; i < num_slights; i++)
+	{		
+		auto sl = scene->lightModel->spotLights[i];
+		sl->GetShadow()->ShadowMap()->BindTexture(i + 1);
+		SetUniform("ShadowMatrix", sl->GetShadow()->ShadowMatrix());
+		shadowMaps[i] = i+1;
+	}
+
+	SetUniformArray("ShadowMapArray", shadowMaps, num_slights);
+	
+
+	delete[] shadowMaps;
+
+	scene->lightModel->GetLightsBuffer()->BindToShader(shared_from_this(),"Lights");
 }

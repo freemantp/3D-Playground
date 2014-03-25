@@ -96,7 +96,8 @@ public:
 	void SetUniform(const GLchar *name, const vec4& v);
 	void SetUniform(const GLchar *name, const mat4& m);
 	void SetUniform(const GLchar *name, const mat3& m);
-	void SetUniformArray(const GLchar *name, float *v, int elementSize, int count=1);
+	void SetUniformArray(const GLchar *name, GLfloat *v, int elementSize, int count = 1);
+	void SetUniformArray(const GLchar *name, GLint *v, int elementSize, int count = 1);
 
 	/** 
 	* \brief Retrieves available vertex attributes

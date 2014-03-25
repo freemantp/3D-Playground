@@ -25,8 +25,8 @@ struct SpotLight
 	vec3 Direction;
 	float CutoffAngle;
 	float Exponent;
+	mat4 Shadowmatrix;
 };
-
 
 layout (std140) uniform Lights
 {
@@ -38,8 +38,7 @@ uniform int NumPointLights;
 uniform int NumSpotLights;
 uniform samplerCube EnvMapTex;
 uniform float EnvReflection; //[0,1]
-
-uniform sampler2D ShadowMap;
+uniform sampler2DShadow ShadowMapArray[4];
 
 //Subroutine declaration
 subroutine float shadeModelType(in vec3 s, in vec3 v, in vec3 normal);
@@ -145,8 +144,9 @@ void main()
 		ambient  *= cubeMapColor;
 	}
 
-	float shadow = textureProj(ShadowMap,ShadowCoord);
+	float shadow = textureProj(ShadowMapArray[0],ShadowCoord);
 
 	FragColor = vec4(ambient + (diffuse + specular) * shadow , Material.Opacity);
+
 
 }

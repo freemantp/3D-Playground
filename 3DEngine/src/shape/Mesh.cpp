@@ -473,16 +473,6 @@ void Mesh::Render(const Scene_ptr scene) const
 
 			if (currentShader->SetMaterial(currentMaterial))
 			{
-				PhongShader_ptr ps = std::dynamic_pointer_cast<PhongShader>(currentShader);
-
-				if (ps && scene->lightModel->spotLights.size() > 0)
-				{
-					auto sl = scene->lightModel->spotLights[0];
-					Shadow_ptr shadow = sl->GetShadow();
-
-					ps->SetShadow(sl->GetShadow());
-				}
-
 				if (currentShader->Use(scene, worldTransform))
 				{
 					Draw(i);

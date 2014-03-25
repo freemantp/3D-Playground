@@ -176,8 +176,6 @@ void Scene::render(Viewport_ptr viewport)
 			}
 		}
 	}
-
-	//m_Box->Render(shared_from_this());
 }
 
 void Scene::TimeUpdate(long time)
