@@ -109,9 +109,10 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 	for (size_t i=0; i < num_slights; i++)
 	{		
 		auto sl = scene->lightModel->spotLights[i];
-		sl->GetShadow()->ShadowMap()->BindTexture(i + 1);
-		SetUniform("ShadowMatrix", sl->GetShadow()->ShadowMatrix());
-		shadowMaps[i] = i+1;
+		int texUnit = static_cast<int>(i + 1);
+
+		sl->GetShadow()->ShadowMap()->BindTexture(texUnit);
+		shadowMaps[i] = texUnit;
 	}
 
 	SetUniformArray("ShadowMapArray", shadowMaps, num_slights);

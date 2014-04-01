@@ -25,7 +25,7 @@ struct SpotLight
 	vec3 Direction;
 	float CutoffAngle;
 	float Exponent;
-	mat4 Shadowmatrix;
+	mat4 ShadowMatrix;
 };
 
 layout (std140) uniform Lights
@@ -50,9 +50,9 @@ subroutine uniform shadeModelType shadeModel;
 
 //input from previous stage
 in vec3 Position;
+in vec4 PositionModel;
 in vec3 Normal;
 in vec3 ReflectDir;
-in vec4 ShadowCoord;
 
 //Blinn-Phong model
 subroutine( shadeModelType )
@@ -85,7 +85,6 @@ void shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir,
 	{
 		specular = Material.SpecularReflectivity * shadeModel(lightDir,v,normal) ;
 	}
-
 }
 
 void main()
@@ -143,6 +142,8 @@ void main()
 		specular *= cubeMapColor;
 		ambient  *= cubeMapColor;
 	}
+
+	vec4 ShadowCoord = pLights.SpotLights[0].ShadowMatrix * PositionModel;
 
 	float shadow = textureProj(ShadowMapArray[0],ShadowCoord);
 

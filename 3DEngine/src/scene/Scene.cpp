@@ -103,7 +103,7 @@ void Scene::RenderShadowMaps()
 	framebuffer->Bind();
 	{
 		glClearDepth(1);
-		glClear(GL_DEPTH_BUFFER_BIT);
+		
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_FRONT);
 
@@ -116,6 +116,7 @@ void Scene::RenderShadowMaps()
 				framebuffer->Attach(smaptex, Framebuffer::Attachment::Depth);
 				framebuffer->SetDrawToColorBufferEnabled(false);
 
+				glClear(GL_DEPTH_BUFFER_BIT);
 				glViewport(0, 0, smaptex->Width(), smaptex->Height());
 
 				shadowShader->SetLightMatrix(smap->LightViewProjectionMatrix());
@@ -183,7 +184,7 @@ void Scene::TimeUpdate(long time)
 	//Animate lights
 	int numPLs = (int)lightModel->spotLights.size();
 	SpotLight_ptr pl;
-
+	
 	if(numPLs > 0)
 	{	
 		pl = lightModel->spotLights[0];

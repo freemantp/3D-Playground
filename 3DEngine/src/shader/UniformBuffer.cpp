@@ -3,6 +3,8 @@
 #include "UniformBuffer.h"
 #include "GLSLProgram.h"
 
+#include "../error.h"
+
 UniformBuffer::UniformBuffer(const GLSLProgram_ptr program, std::string bufferName, const GLchar* elemNames[], const int numElems)
 {	
 	if( ! program->isLinked () )
@@ -71,6 +73,11 @@ void UniformBuffer::SetElement(const string& name, const void* ptr, const GLsize
 	glBindBuffer(GL_UNIFORM_BUFFER, uboHandle);
 	glBufferSubData(GL_UNIFORM_BUFFER, offsets[name], numBytes, ptr);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
+
+void UniformBuffer::SetElement(const std::string& name, const mat4& v)
+{
+	SetElement(name, &v[0], 16 * sizeof(GLfloat));
 }
 
 void UniformBuffer::SetElement(const string& name, const vec3& v)

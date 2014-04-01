@@ -9,12 +9,10 @@ uniform mat3 NormalMatrix;
 uniform mat4 MVP;
 uniform vec3 CameraPosWorld;
 
-uniform mat4 ShadowMatrix;
-
 out vec3 Position;
+out vec4 PositionModel;
 out vec3 Normal;
 out vec3 ReflectDir;
-out vec4 ShadowCoord;
 
 void main()
 {
@@ -22,6 +20,7 @@ void main()
 
 	Normal = normalize(NormalMatrix * VertexNormal);
 	Position = vec3(ModelViewMatrix * posHomogenous);
+	PositionModel = ModelMatrix * posHomogenous;
 
 	//Transform to world space
 	vec3 positionWorld = vec3(ModelMatrix * posHomogenous);
@@ -30,8 +29,6 @@ void main()
 
 	ReflectDir = reflect(camDirectionWorld, normalWorld);
 	ReflectDir *= -1; //Why so?
-
-	ShadowCoord = ShadowMatrix * ModelMatrix * posHomogenous;
 
     gl_Position = MVP * posHomogenous;
 }

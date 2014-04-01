@@ -11,6 +11,7 @@ SHARED_PTR_CLASS_DECL(GLSLProgram)
 
 using glm::vec3;
 using glm::vec4;
+using glm::mat4;
 
 class UniformBuffer
 {
@@ -26,6 +27,7 @@ public:
 	void SetElement(const std::string& name, float v);
 	void SetElement(const std::string& name, const vec3& v);
 	void SetElement(const std::string& name, const vec4& v);
+	void SetElement(const std::string& name, const mat4& v);
 
 protected:
 	
