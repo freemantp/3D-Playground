@@ -11,6 +11,7 @@
 #include "../materials/Material.h"
 #include "UniformBuffer.h"
 
+#include <algorithm>   
 
 PhongShader_ptr PhongShader::Create()
 {
@@ -99,26 +100,36 @@ void PhongShader::UnUse()
 
 void PhongShader::SetLightAndModel(const Scene_ptr scene)
 {
+	size_t num_slights = scene->lightModel->spotLights.size();
+
 	//set lights
 	SetUniform("NumPointLights", (int)scene->lightModel->pointLights.size());
-	SetUniform("NumSpotLights", (int)scene->lightModel->spotLights.size());
+	SetUniform("NumSpotLights", static_cast<int>(num_slights));
 	
-	size_t num_slights = scene->lightModel->spotLights.size();
-	GLint* shadowMaps = new GLint[num_slights];
+	
+	//GLint* shadowMaps = new GLint[num_slights];
 
-	for (size_t i=0; i < num_slights; i++)
-	{		
-		auto sl = scene->lightModel->spotLights[i];
-		int texUnit = static_cast<int>(i + 1);
-
+	auto bind_smap_tex = [&scene](int sl_i, int texUnit)
+	{
+		auto sl = scene->lightModel->spotLights[sl_i];
 		sl->GetShadow()->ShadowMap()->BindTexture(texUnit);
-		shadowMaps[i] = texUnit;
+	};
+
+	const size_t maxNumSpotLights = 4;
+
+	GLint shadowMaps2[maxNumSpotLights];
+
+	for (int i = 0; i < maxNumSpotLights; i++)
+	{
+		if (i < num_slights)
+			bind_smap_tex(i, i);
+		
+		shadowMaps2[i] = i;
 	}
 
-	SetUniformArray("ShadowMapArray", shadowMaps, num_slights);
-	
+	SetUniformArray("ShadowMapArray", shadowMaps2, 1, maxNumSpotLights);
 
-	delete[] shadowMaps;
+	//delete[] shadowMaps;
 
 	scene->lightModel->GetLightsBuffer()->BindToShader(shared_from_this(),"Lights");
 }

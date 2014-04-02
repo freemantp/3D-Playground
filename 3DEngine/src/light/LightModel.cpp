@@ -23,10 +23,10 @@ LightModel::LightModel()
 			"Lights.PointLights[1].Position", "Lights.PointLights[1].Color",
 			"Lights.PointLights[2].Position", "Lights.PointLights[2].Color",
 			"Lights.PointLights[3].Position", "Lights.PointLights[3].Color",
-			"Lights.SpotLights[0].Position", "Lights.SpotLights[0].Color", "Lights.SpotLights[0].Direction", "Lights.SpotLights[0].CutoffAngle", "Lights.SpotLights[0].Exponent", "Lights.SpotLights[0].Shadowmatrix",
-			"Lights.SpotLights[1].Position", "Lights.SpotLights[1].Color", "Lights.SpotLights[1].Direction", "Lights.SpotLights[1].CutoffAngle", "Lights.SpotLights[1].Exponent", "Lights.SpotLights[1].Shadowmatrix",
-			"Lights.SpotLights[2].Position", "Lights.SpotLights[2].Color", "Lights.SpotLights[2].Direction", "Lights.SpotLights[2].CutoffAngle", "Lights.SpotLights[2].Exponent", "Lights.SpotLights[2].Shadowmatrix",
-			"Lights.SpotLights[3].Position", "Lights.SpotLights[3].Color", "Lights.SpotLights[3].Direction", "Lights.SpotLights[3].CutoffAngle", "Lights.SpotLights[3].Exponent", "Lights.SpotLights[3].Shadowmatrix",
+			"Lights.SpotLights[0].Position", "Lights.SpotLights[0].Color", "Lights.SpotLights[0].Direction", "Lights.SpotLights[0].CutoffAngle", "Lights.SpotLights[0].Exponent", "Lights.SpotLights[0].ShadowMatrix",
+			"Lights.SpotLights[1].Position", "Lights.SpotLights[1].Color", "Lights.SpotLights[1].Direction", "Lights.SpotLights[1].CutoffAngle", "Lights.SpotLights[1].Exponent", "Lights.SpotLights[1].ShadowMatrix",
+			"Lights.SpotLights[2].Position", "Lights.SpotLights[2].Color", "Lights.SpotLights[2].Direction", "Lights.SpotLights[2].CutoffAngle", "Lights.SpotLights[2].Exponent", "Lights.SpotLights[2].ShadowMatrix",
+			"Lights.SpotLights[3].Position", "Lights.SpotLights[3].Color", "Lights.SpotLights[3].Direction", "Lights.SpotLights[3].CutoffAngle", "Lights.SpotLights[3].Exponent", "Lights.SpotLights[3].ShadowMatrix",
 		};
 
 		lightsBuffer.reset(new UniformBuffer(unformBufferShader,"Lights", elemNames, numElems));
@@ -77,7 +77,7 @@ void LightModel::UpdateUniformBuffer(Camera_cptr cam)
 		lightsBuffer->SetElement(lightName.str() + "Exponent", sl->GetExponent());
 
 		if (auto shdw = sl->GetShadow())
-			lightsBuffer->SetElement(lightName.str() + "Shadowmatrix",shdw->ShadowMatrix());
+			lightsBuffer->SetElement(lightName.str() + "ShadowMatrix",shdw->ShadowMatrix());
 	}
 
 }

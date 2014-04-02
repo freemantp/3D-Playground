@@ -34,11 +34,12 @@ layout (std140) uniform Lights
 	SpotLight  SpotLights[4];
 } pLights;
 
+uniform sampler2DShadow ShadowMapArray[4];
+
 uniform int NumPointLights;
 uniform int NumSpotLights;
 uniform samplerCube EnvMapTex;
 uniform float EnvReflection; //[0,1]
-uniform sampler2DShadow ShadowMapArray[4];
 
 //Subroutine declaration
 subroutine float shadeModelType(in vec3 s, in vec3 v, in vec3 normal);
@@ -87,6 +88,17 @@ void shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir,
 	}
 }
 
+float getShadow(int pl_i)
+{
+	if(pl_i < NumSpotLights)
+	{
+		vec4 ShadowCoord = pLights.SpotLights[pl_i].ShadowMatrix * PositionModel;
+		return textureProj(ShadowMapArray[pl_i],ShadowCoord);
+	}
+	else
+		return 1.0f;
+}
+
 void main()
 {
 	vec3 normal = normalize(Normal);
@@ -126,10 +138,11 @@ void main()
 			shade(Position,normal,s,ambientCurrent, diffuseCurrent, specularCurrent);
 
 			float spotFactor = pow( dot( -s , light.Direction), light.Exponent);
+			float shadow = getShadow(i);
 
 			ambient  += spotFactor * ambientCurrent  * light.Color;
-			diffuse  += spotFactor * diffuseCurrent  * light.Color;
-			specular += spotFactor * specularCurrent * light.Color;
+			diffuse  += spotFactor * diffuseCurrent  * light.Color * shadow;
+			specular += spotFactor * specularCurrent * light.Color * shadow;
 		}
 	}
 
@@ -143,11 +156,7 @@ void main()
 		ambient  *= cubeMapColor;
 	}
 
-	vec4 ShadowCoord = pLights.SpotLights[0].ShadowMatrix * PositionModel;
-
-	float shadow = textureProj(ShadowMapArray[0],ShadowCoord);
-
-	FragColor = vec4(ambient + (diffuse + specular) * shadow , Material.Opacity);
+	FragColor = vec4(ambient + (diffuse + specular) , Material.Opacity);
 
 
 }

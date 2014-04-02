@@ -112,12 +112,12 @@ void Scene::RenderShadowMaps()
 		{
 			if (Shadow_ptr smap = sl->GetShadow())
 			{
-				auto smaptex = smap->ShadowMap();
-				framebuffer->Attach(smaptex, Framebuffer::Attachment::Depth);
+				auto smapTex = smap->ShadowMap();
+				framebuffer->Attach(smapTex, Framebuffer::Attachment::Depth);
 				framebuffer->SetDrawToColorBufferEnabled(false);
 
 				glClear(GL_DEPTH_BUFFER_BIT);
-				glViewport(0, 0, smaptex->Width(), smaptex->Height());
+				glViewport(0, 0, smapTex->Width(), smapTex->Height());
 
 				shadowShader->SetLightMatrix(smap->LightViewProjectionMatrix());
 
