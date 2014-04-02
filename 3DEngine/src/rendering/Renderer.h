@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../util/SharedPointer.h"
+#include "../input/ViewportObserver.h"
 
 SHARED_PTR_CLASS_DECL(Renderer);
 SHARED_PTR_CLASS_DECL(Viewport);
@@ -8,7 +9,7 @@ SHARED_PTR_CLASS_DECL(Scene);
 SHARED_PTR_CLASS_DECL(GeometryBuffer);
 
 
-class Renderer
+class Renderer : public ViewportObserver
 {
 public:
 
@@ -17,6 +18,8 @@ public:
 	virtual ~Renderer();
 
 	void Render();
+
+	virtual void ViewportChanged(Viewport_ptr viewport) override;
 
 	void SetScene(Scene_ptr scene);
 	Scene_ptr Scene();

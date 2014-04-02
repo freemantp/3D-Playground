@@ -36,3 +36,8 @@ void Renderer::Render()
 		m_Scene->render(m_Viewport);
 	}
 }
+
+void Renderer::ViewportChanged(Viewport_ptr viewport)
+{
+	m_Viewport = viewport;
+}

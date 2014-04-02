@@ -107,8 +107,10 @@ bool Initialize()
 
 	const char* data = Util::LoadTextFile(Config::SCENE_BASE_PATH + sceneName.c_str());
 
+	WindowEventHandler& winEventHandler = WindowEventHandler::GetInstance();
 
 	renderer = Renderer::Create(viewport);
+	winEventHandler.AddViewportObserver(renderer);
 
 	GlutInputHandlerFactory gihf;
 	SceneParser sp(gihf);
