@@ -152,13 +152,13 @@ void glInfo::printSelf()
     ss << "Stencil Bits: " << this->stencilBits << std::endl;
 
     ss << std::endl;
-    ss << "Max Texture Size: " << this->maxTextureSize << "x" << this->maxTextureSize << std::endl;
+    ss << "Max Texture2D Size: " << this->maxTextureSize << "x" << this->maxTextureSize << std::endl;
     ss << "Max Lights: " << this->maxLights << std::endl;
     ss << "Max Clip Planes: " << this->maxClipPlanes << std::endl;
     ss << "Max Modelview Matrix Stacks: " << this->maxModelViewStacks << std::endl;
     ss << "Max Projection Matrix Stacks: " << this->maxProjectionStacks << std::endl;
     ss << "Max Attribute Stacks: " << this->maxAttribStacks << std::endl;
-    ss << "Max Texture Stacks: " << this->maxTextureStacks << std::endl;
+    ss << "Max Texture2D Stacks: " << this->maxTextureStacks << std::endl;
 
     ss << std::endl;
     ss << "Total Number of Extensions: " << this->extensions.size() << std::endl;

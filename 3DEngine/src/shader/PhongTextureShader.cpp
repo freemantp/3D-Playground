@@ -6,7 +6,7 @@
 #include "../camera/Camera.h"
 #include "../scene/Scene.h"
 #include "../light/PointLight.h"
-#include "../texture/Texture.h"
+#include "../texture/Texture2D.h"
 #include "../materials/Material.h"
 
 PhongTextureShader::PhongTextureShader()

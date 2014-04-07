@@ -2,7 +2,7 @@
 
 #include "PhongShader.h"
 
-SHARED_PTR_CLASS_DECL(Texture)
+SHARED_PTR_CLASS_DECL(Texture2D)
 SHARED_PTR_CLASS_DECL(PhongTextureShader)
 SHARED_PTR_CLASS_DECL(TextureMaterial)
 

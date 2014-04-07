@@ -8,7 +8,7 @@ SHARED_PTR_CLASS_DECL(IntrinsicColorMaterial);
 SHARED_PTR_CLASS_DECL(ConstantColorMaterial);
 SHARED_PTR_CLASS_DECL(PhongMaterial);
 SHARED_PTR_CLASS_DECL(TextureMaterial);
-SHARED_PTR_CLASS_DECL(Texture);
+SHARED_PTR_CLASS_DECL(Texture2D);
 SHARED_PTR_CLASS_DECL(ShDiffuseMaterial);
 SHARED_PTR_CLASS_DECL(ShDiffuseShaderCoeffs);
 SHARED_PTR_CLASS_DECL(SkyboxMaterial);
@@ -54,9 +54,9 @@ class TextureMaterial : public PhongMaterial
 {
 public:
 	static TextureMaterial_ptr Create();
-	Texture_ptr albedoTexture;
-	Texture_ptr bumpTexture;
-	Texture_ptr specularTexture;
+	Texture2D_ptr albedoTexture;
+	Texture2D_ptr bumpTexture;
+	Texture2D_ptr specularTexture;
 	bool bumpIsNormalMap;
 
 protected:

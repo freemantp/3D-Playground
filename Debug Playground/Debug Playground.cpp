@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // main.cpp
 // ========
-// testing Frame Buffer Object (FBO) for "Render To Texture"
+// testing Frame Buffer Object (FBO) for "Render To Texture2D"
 // OpenGL draws the scene directly to a texture object.
 //
 // GL_EXT_framebuffer_object extension is promoted to a core feature of OpenGL

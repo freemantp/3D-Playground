@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Framebuffer.h"
-#include "Texture.h"
+#include "Texture2D.h"
 
 #include <cassert>
 
@@ -27,7 +27,7 @@ bool Framebuffer::IsBound() const
 	return boundFbo == bufferHandle;
 }
 
-bool Framebuffer::Attach(Texture_ptr texture, Attachment target)
+bool Framebuffer::Attach(Texture2D_ptr texture, Attachment target)
 {
 	
 	if (texture && texture->IsValid())
@@ -85,7 +85,7 @@ bool Framebuffer::AttachDepthRenderBuffer()
 
 GLuint Framebuffer::CreateRenderBuffer(GLenum format)
 {
-	Texture_ptr colorTex = TextureAttachment(Attachment::Color);
+	Texture2D_ptr colorTex = TextureAttachment(Attachment::Color);
 
 	if (colorTex && colorTex->IsValid())
 	{
@@ -137,7 +137,7 @@ GLuint Framebuffer::Renderbuffer(Attachment target) const
 	return renderBuferHandle[TextureIndex(target)];
 }
 
-Texture_ptr Framebuffer::TextureAttachment(Attachment target) const
+Texture2D_ptr Framebuffer::TextureAttachment(Attachment target) const
 {
 	return attachedTexture[TextureIndex(target)];
 }

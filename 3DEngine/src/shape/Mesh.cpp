@@ -5,7 +5,7 @@
 #include "../shader/ShaderBase.h"
 #include "../shader/MaterialShader.h"
 #include "../shader/ShadowMapShader.h"
-#include "../texture/Texture.h"
+#include "../texture/Texture2D.h"
 #include "../util/Util.h"
 #include "../util/MeshRaw.h"
 #include "../materials/Material.h"
@@ -72,16 +72,16 @@ void Mesh::InitFromRawMesh(MeshRaw_ptr rawMesh)
 
 				if (!mat->bumpMapTexture.empty())
 				{
-					texMat->bumpTexture = Texture::Create(Util::ExtractBaseFolder(rawMesh->meshPath) + mat->bumpMapTexture);
+					texMat->bumpTexture = Texture2D::Create(Util::ExtractBaseFolder(rawMesh->meshPath) + mat->bumpMapTexture);
 					texMat->bumpIsNormalMap = true;
 				}
 				if (!mat->diffuseColorTexture.empty())
 				{
-					texMat->albedoTexture = Texture::Create(Util::ExtractBaseFolder(rawMesh->meshPath) + mat->diffuseColorTexture);
+					texMat->albedoTexture = Texture2D::Create(Util::ExtractBaseFolder(rawMesh->meshPath) + mat->diffuseColorTexture);
 				}
 				if (!mat->specularColorTexture.empty())
 				{
-					texMat->specularTexture = Texture::Create(Util::ExtractBaseFolder(rawMesh->meshPath) + mat->specularColorTexture);
+					texMat->specularTexture = Texture2D::Create(Util::ExtractBaseFolder(rawMesh->meshPath) + mat->specularColorTexture);
 				}
 			}
 			else

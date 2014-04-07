@@ -3,11 +3,11 @@
 
 ShadowMapTexture_ptr ShadowMapTexture::Create(int width, int height)
 {
-	return ShadowMapTexture_ptr(new ShadowMapTexture(width, height, Texture::Format::Depth));
+	return ShadowMapTexture_ptr(new ShadowMapTexture(width, height, Texture2D::Format::Depth));
 }
 
 ShadowMapTexture::ShadowMapTexture(int width, int height, Format format)
-: Texture(width, height, format)
+: Texture2D(width, height, format)
 {
 	glBindTexture(GL_TEXTURE_2D, texObject);
 

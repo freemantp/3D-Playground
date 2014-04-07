@@ -12,7 +12,7 @@
 #include "../shader/SHDiffuseShader.h"
 #include "../shader/ShaderLibrary.h"
 
-#include "../texture/Texture.h"
+#include "../texture/Texture2D.h"
 #include "../texture/CubeMapTexture.h"
 
 #include "../materials/Material.h"
@@ -155,7 +155,7 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 				if (subElem = materialElement->FirstChildElement("texture"))
 				{					
 					string texFile(subElem->Attribute("file"));
-					Texture_ptr albedoTex = Texture::Create(Config::TEXTURE_BASE_PATH + texFile);
+					Texture2D_ptr albedoTex = Texture2D::Create(Config::TEXTURE_BASE_PATH + texFile);
 
 					TextureMaterial_ptr tm = TextureMaterial::Create();
 					tm->albedoTexture = albedoTex;
@@ -166,7 +166,7 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 						string bumpMapFile(subElem->Attribute("file"));
 						string type(subElem->Attribute("type"));
 
-						tm->bumpTexture = Texture::Create(Config::TEXTURE_BASE_PATH + bumpMapFile);
+						tm->bumpTexture = Texture2D::Create(Config::TEXTURE_BASE_PATH + bumpMapFile);
 						tm->bumpIsNormalMap = (type == "normal");
 					}
 
@@ -175,7 +175,7 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 					{
 						string specMapFile(subElem->Attribute("file"));
 
-						tm->specularTexture = Texture::Create(Config::TEXTURE_BASE_PATH + specMapFile);
+						tm->specularTexture = Texture2D::Create(Config::TEXTURE_BASE_PATH + specMapFile);
 					}
 
 					phongMat = tm;

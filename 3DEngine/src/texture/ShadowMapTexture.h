@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Texture.h"
+#include "Texture2D.h"
 
 SHARED_PTR_CLASS_DECL(ShadowMapTexture);
 
-class ShadowMapTexture : public Texture
+class ShadowMapTexture : public Texture2D
 {
 public:
 
