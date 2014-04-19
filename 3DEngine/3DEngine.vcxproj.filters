@@ -74,6 +74,9 @@
     <Filter Include="Source Files\shaders\specialized">
       <UniqueIdentifier>{21011bcf-315e-4d43-a5bc-b3916fccf300}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\light\shadow">
+      <UniqueIdentifier>{ab6382fc-8569-46e0-a763-88c04eb02600}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\enums.h">
@@ -253,11 +256,14 @@
     <ClInclude Include="src\shader\ShaderLibrary.h">
       <Filter>Source Files\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="src\light\Shadow.h">
-      <Filter>Source Files\light</Filter>
-    </ClInclude>
     <ClInclude Include="src\texture\Texture3D.h">
       <Filter>Source Files\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\light\Shadow.h">
+      <Filter>Source Files\light\shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="src\light\ShadowUtil.h">
+      <Filter>Source Files\light\shadow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -399,11 +405,14 @@
     <ClCompile Include="src\shader\ShaderLibrary.cpp">
       <Filter>Source Files\shaders</Filter>
     </ClCompile>
-    <ClCompile Include="src\light\Shadow.cpp">
-      <Filter>Source Files\light</Filter>
-    </ClCompile>
     <ClCompile Include="src\texture\Texture3D.cpp">
       <Filter>Source Files\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\light\Shadow.cpp">
+      <Filter>Source Files\light\shadow</Filter>
+    </ClCompile>
+    <ClCompile Include="src\light\ShadowUtil.cpp">
+      <Filter>Source Files\light\shadow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

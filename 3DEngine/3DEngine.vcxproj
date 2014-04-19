@@ -38,6 +38,7 @@
     <ClInclude Include="src\light\LightModel.h" />
     <ClInclude Include="src\light\PointLight.h" />
     <ClInclude Include="src\light\Shadow.h" />
+    <ClInclude Include="src\light\ShadowUtil.h" />
     <ClInclude Include="src\light\SpotLight.h" />
     <ClInclude Include="src\materials\Material.h" />
     <ClInclude Include="src\math\HaltonSphere.h" />
@@ -92,6 +93,7 @@
     <ClCompile Include="src\light\LightModel.cpp" />
     <ClCompile Include="src\light\PointLight.cpp" />
     <ClCompile Include="src\light\Shadow.cpp" />
+    <ClCompile Include="src\light\ShadowUtil.cpp" />
     <ClCompile Include="src\light\SpotLight.cpp" />
     <ClCompile Include="src\materials\Material.cpp" />
     <ClCompile Include="src\math\HaltonSphere.cpp" />
@@ -180,7 +182,9 @@
     <Xml Include="..\data\scenes\headScene.xml">
       <SubType>Designer</SubType>
     </Xml>
-    <Xml Include="..\data\scenes\ogreScene.xml" />
+    <Xml Include="..\data\scenes\ogreScene.xml">
+      <SubType>Designer</SubType>
+    </Xml>
     <Xml Include="..\data\scenes\road.xml">
       <SubType>Designer</SubType>
     </Xml>
