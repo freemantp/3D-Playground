@@ -8,15 +8,16 @@
 #include <glimg/glimg.h>
 
 
-Texture::Texture(GLenum texTarget)
-: Texture(texTarget,0)
+Texture::Texture(GLenum texTarget, Format format)
+: Texture(texTarget,0,format)
 {
 
 }
 
-Texture::Texture(GLenum texTarget, GLuint texHandle)
+Texture::Texture(GLenum texTarget, GLuint texHandle, Format format)
 : target(texTarget)
 , texObject(texHandle)
+, textureFormat(format)
 {
 
 }
@@ -55,4 +56,9 @@ GLenum Texture::DataType(Format format) const
 		case Format::RGBA32F: return GL_FLOAT;
 		default: return GL_UNSIGNED_BYTE;
 	}
+}
+
+Texture::Format Texture::TextureFormat() const
+{
+	return textureFormat;
 }

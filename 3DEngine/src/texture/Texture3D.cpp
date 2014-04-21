@@ -13,14 +13,14 @@ Texture3D_ptr Texture3D::Create(int width, int height, int depth, Format format)
 
 
 Texture3D::Texture3D(int width, int height, int depth, Format format)
-	: Texture(GL_TEXTURE_3D)
+	: Texture(GL_TEXTURE_3D, format)
 	, width(width)
 	, height(height)
 	, depth(depth)
 {
 	bool isDepth = format == Format::Depth;
 
-	GLint internalFormat = static_cast<GLint>(format);
+	GLint internalFormat = static_cast<GLint>(textureFormat);
 	GLenum dataFormat = DataFormat(format);
 	GLenum dataType = DataType(format);
 
@@ -32,4 +32,14 @@ Texture3D::Texture3D(int width, int height, int depth, Format format)
 
 	glTexImage3D(GL_TEXTURE_3D, 0, internalFormat, width, height, depth, border, dataFormat, dataType, 0);
 	glBindTexture(GL_TEXTURE_3D, 0);
+}
+
+bool Texture3D::SetData(void* data)
+{
+	const int border = 0;
+	GLint internalFormat = static_cast<GLint>(textureFormat);
+	GLenum dataFormat = DataFormat(textureFormat);
+	GLenum dataType = DataType(textureFormat);
+	glTexImage3D(GL_TEXTURE_3D, 0, internalFormat, width, height, depth, border, dataFormat, dataType, data);
+	return true;
 }

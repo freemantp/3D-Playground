@@ -14,7 +14,8 @@ public:
 		RGB = GL_RGB8, 
 		RGBA = GL_RGBA8, 
 		RGBA32F = GL_RGBA32F, 
-		Depth = GL_DEPTH_COMPONENT 
+		Depth = GL_DEPTH_COMPONENT,
+		Unknown = -1,
 	};
 
 	virtual ~Texture();
@@ -24,13 +25,19 @@ public:
 	/// Returns true, if the texture is a valid OpenGL Texture2D
 	bool IsValid() const;
 
+	Format TextureFormat() const;
+
 	GLuint Handle() const { return texObject; };
+
+	/// Sets data for this texture (must be bound). Make sure data is large enough for the textures dimensions
+	virtual bool SetData(void* data) = 0;
+
 
 protected:
 
-	Texture(GLenum texTarget, GLuint texHandle);
+	Texture(GLenum texTarget, GLuint texHandle, Format format);
 
-	Texture(GLenum texTarget);
+	Texture(GLenum texTarget, Format format);
 
 	GLenum DataFormat(Format format) const;
 
@@ -39,5 +46,7 @@ protected:
 	GLuint texObject;
 
 	GLenum target;
+
+	Format textureFormat;
 };
 

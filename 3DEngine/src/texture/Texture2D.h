@@ -22,6 +22,8 @@ public:
 	int Width() const { return width; };
 	int Height() const { return height; };
 
+	virtual bool SetData(void* data) override;
+
 protected:
 
 	Texture2D(const std::string& texturePath);

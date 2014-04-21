@@ -22,7 +22,7 @@ Texture2D_ptr Texture2D::Create(GLuint texHandle)
 }
 
 Texture2D::Texture2D(GLuint texHandle)
-	: Texture(GL_TEXTURE_2D, texHandle)
+	: Texture(GL_TEXTURE_2D, texHandle, Format::Unknown)
 {
 	if (GL_TRUE == glIsTexture(texHandle))
 	{
@@ -47,7 +47,7 @@ Texture2D::Texture2D(GLuint texHandle)
 }
 
 Texture2D::Texture2D(int width, int height, Format format)
-	: Texture(GL_TEXTURE_2D)
+: Texture(GL_TEXTURE_2D, format)
 	, width(width)
 	, height(height)
 {
@@ -68,7 +68,7 @@ Texture2D::Texture2D(int width, int height, Format format)
 }
 
 Texture2D::Texture2D(const std::string& texturePath)
-	: Texture(GL_TEXTURE_2D)
+: Texture(GL_TEXTURE_2D, Format::Unknown)
 {
 	if (std::unique_ptr<glimg::ImageSet> imageSet = Util::LoadImageFile(texturePath))
 	{
@@ -89,4 +89,14 @@ Texture2D::Texture2D(const std::string& texturePath)
 	{
 		Error("Image could not be loaded");
 	}
+}
+
+bool Texture2D::SetData(void* data)
+{
+	const int border = 0;
+	GLint internalFormat = static_cast<GLint>(textureFormat);
+	GLenum dataFormat = DataFormat(textureFormat);
+	GLenum dataType = DataType(textureFormat);
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, border, dataFormat, dataType, data);
+	return true;
 }

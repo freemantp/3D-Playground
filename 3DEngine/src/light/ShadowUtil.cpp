@@ -22,8 +22,6 @@ Texture3D_ptr ShadowUtil::BuildRandShadowOffset(unsigned int size, unsigned  int
 
 	float* dataBuffer = new float[size * size * numSamples * 2];
 
-	Texture3D_ptr tex = Texture3D::Create(size,size,2*numSamples,Texture::Format::RGBA32F);
-
 	for (unsigned int i = 0; i < size; i++)
 	{
 		for (unsigned int j = 0; j < size; j++)
@@ -54,7 +52,10 @@ Texture3D_ptr ShadowUtil::BuildRandShadowOffset(unsigned int size, unsigned  int
 
 	}
 
+	Texture3D_ptr tex = Texture3D::Create(size, size, 2 * numSamples, Texture::Format::RGBA32F);
+	tex->SetData(dataBuffer);
+
 	delete[] dataBuffer;
 
-	return tex;
+	return Texture3D_ptr();
 }
