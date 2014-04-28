@@ -5,6 +5,7 @@
 #include "../light/PointLight.h"
 #include "../light/SpotLight.h"
 #include "../light/Shadow.h"
+#include "../light/ShadowUtil.h"
 #include "../camera/Camera.h"
 
 #include <sstream>
@@ -33,6 +34,8 @@ LightModel::LightModel()
 
 		valid = true;
 	}
+
+	pcfShadowRandomData = ShadowUtil::BuildRandShadowOffset(8, 4, 8);
 
 }
 

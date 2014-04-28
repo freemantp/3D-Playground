@@ -1,8 +1,10 @@
 #pragma once
 
-#include <string>
-
 #include "Texture.h"
+
+#include <string>
+#include <glm/glm.hpp>
+
 
 
 SHARED_PTR_CLASS_DECL(Texture3D);
@@ -13,9 +15,7 @@ public:
 
 	static Texture3D_ptr Create(int width, int height, int depth, Format format = Format::RGBA);
 
-	int Width() const { return width; };
-	int Height() const { return height; };
-	int Depth() const { return depth; };
+	const glm::ivec3& Dimensions() const;
 
 	virtual bool SetData(void* data) override;
 
@@ -23,6 +23,7 @@ protected:
 
 	Texture3D(int width, int height, int depth, Format format);
 
-	int width, height, depth;
+	glm::ivec3 dimensions;
+
 };
 

@@ -14,9 +14,7 @@ Texture3D_ptr Texture3D::Create(int width, int height, int depth, Format format)
 
 Texture3D::Texture3D(int width, int height, int depth, Format format)
 	: Texture(GL_TEXTURE_3D, format)
-	, width(width)
-	, height(height)
-	, depth(depth)
+	, dimensions(width,height,depth)
 {
 	bool isDepth = format == Format::Depth;
 
@@ -40,6 +38,11 @@ bool Texture3D::SetData(void* data)
 	GLint internalFormat = static_cast<GLint>(textureFormat);
 	GLenum dataFormat = DataFormat(textureFormat);
 	GLenum dataType = DataType(textureFormat);
-	glTexImage3D(GL_TEXTURE_3D, 0, internalFormat, width, height, depth, border, dataFormat, dataType, data);
+	glTexImage3D(GL_TEXTURE_3D, 0, internalFormat, dimensions.x, dimensions.y, dimensions.z, border, dataFormat, dataType, data);
 	return true;
+}
+
+const glm::ivec3& Texture3D::Dimensions() const
+{
+	return dimensions;
 }

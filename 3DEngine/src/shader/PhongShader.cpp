@@ -6,6 +6,7 @@
 #include "../light/SpotLight.h"
 #include "../light/Shadow.h"
 #include "../shape/Skybox.h"
+#include "../texture/Texture3D.h"
 #include "../texture/CubeMapTexture.h"
 #include "../texture/ShadowMapTexture.h"
 #include "../materials/Material.h"
@@ -100,36 +101,46 @@ void PhongShader::UnUse()
 
 void PhongShader::SetLightAndModel(const Scene_ptr scene)
 {
-	size_t num_slights = scene->lightModel->spotLights.size();
+	LightModel_ptr lightModel = scene->lightModel;
+
+	size_t num_slights = lightModel->spotLights.size();
 
 	//set lights
-	SetUniform("NumPointLights", (int)scene->lightModel->pointLights.size());
+	SetUniform("NumPointLights", (int)lightModel->pointLights.size());
 	SetUniform("NumSpotLights", static_cast<int>(num_slights));
 	
-	
-	//GLint* shadowMaps = new GLint[num_slights];
-
-	auto bind_smap_tex = [&scene](int sl_i, int texUnit)
+	auto bind_shadowmap_tex = [&lightModel](int sl_i, int texUnit)
 	{
-		auto sl = scene->lightModel->spotLights[sl_i];
+		auto sl = lightModel->spotLights[sl_i];
 		sl->GetShadow()->ShadowMap()->BindTexture(texUnit);
 	};
 
 	const size_t maxNumSpotLights = 4;
+	GLint shadowMaps[maxNumSpotLights];
 
-	GLint shadowMaps2[maxNumSpotLights];
+	unsigned int lastTexUnit;
 
-	for (int i = 0; i < maxNumSpotLights; i++)
+	for (unsigned int i = 0; i < maxNumSpotLights; i++)
 	{
 		if (i < num_slights)
-			bind_smap_tex(i, i);
-		
-		shadowMaps2[i] = i;
+		{
+			bind_shadowmap_tex(i, i);
+			lastTexUnit = i;
+		}
+				
+		shadowMaps[i] = i;
 	}
 
-	SetUniformArray("ShadowMapArray", shadowMaps2, 1, maxNumSpotLights);
+	if (lightModel->pcfShadowRandomData)
+	{
+		lightModel->pcfShadowRandomData->BindTexture(lastTexUnit+1);
+		//SetUniform("PCFDataOffsets", lastTexUnit+1);
+		//SetUniform("PCFDataOffsetsSize", lightModel->pcfShadowRandomData->Dimensions());
+	}
 
-	//delete[] shadowMaps;
 
-	scene->lightModel->GetLightsBuffer()->BindToShader(shared_from_this(),"Lights");
+	SetUniformArray("ShadowMapArray", shadowMaps, 1, maxNumSpotLights);
+	
+
+	lightModel->GetLightsBuffer()->BindToShader(shared_from_this(),"Lights");
 }

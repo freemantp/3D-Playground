@@ -35,6 +35,8 @@ layout (std140) uniform Lights
 } pLights;
 
 uniform sampler2DShadow ShadowMapArray[4];
+uniform sampler3D PCFDataOffsets;
+uniform ivec3 PCFDataOffsetsSize;
 
 uniform int NumPointLights;
 uniform int NumSpotLights;
@@ -88,12 +90,68 @@ void shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir,
 	}
 }
 
-float getShadow(int pl_i)
+
+float random(vec4 seed) {
+  float dot_product = dot(seed, vec4(12.9898,78.233, 45.164, 94.673));
+  return fract(sin(dot_product) * 43758.5453);
+}
+
+float getShadow(int sl_i)
 {
-	if(pl_i < NumSpotLights)
+	if(sl_i < NumSpotLights)
 	{
-		vec4 ShadowCoord = pLights.SpotLights[pl_i].ShadowMatrix * PositionModel;
-		return textureProj(ShadowMapArray[pl_i],ShadowCoord);
+		vec4 ShadowCoord = pLights.SpotLights[sl_i].ShadowMatrix * PositionModel;
+
+		ivec3 offsetCoords;
+		offsetCoords.xy = ivec2( mod(gl_FragCoord.xy,  PCFDataOffsetsSize.xy) );
+
+		int Radius = 5;
+		vec4 sc = ShadowCoord;
+		float sum = 0;
+
+		//First test the four outermost offsets
+		for (int i=0; i<4; i++)
+		{
+			//offsetCoords.z = i;
+			//vec4 offsets = texelFetch(PCFDataOffsets,offsetCoords,0) * Radius * ShadowCoord.w;
+
+			ivec2 offsets;
+
+			offsets.x = i < 2 ? - 1 : 1;
+			offsets.y = mod(i,2) == 0 ? 1 : -1;
+
+			//sc.xy =  ShadowCoord.xy  + offsets.xy;
+			//sum += textureProj(ShadowMapArray[sl_i],sc);
+			sum += textureProjOffset(ShadowMapArray[sl_i],ShadowCoord,offsets);
+			//sc.xy =  ShadowCoord.xy  + offsets.zw;
+			//sum += textureProj(ShadowMapArray[sl_i],sc);
+		}
+
+		float shadow = sum /4.0;
+
+
+
+		//Only continue with inner offsets if outer ones are not completely shadowed or illuminated
+		//if(shadow != 1.0 && shadow != 0.0)
+		//{
+			
+		//	int numSamples = int(PCFDataOffsetsSize.z);
+
+		//	for (int i=4; i<numSamples; i++)
+		//	{
+		//		offsetCoords.z = i;
+		//		vec4 offsets = texelFetch(PCFDataOffsets,offsetCoords,0) * Radius * ShadowCoord.w;
+
+		//		sc.xy =  ShadowCoord.xy  + offsets.xy;
+		//		sum += textureProj(ShadowMapArray[sl_i],sc);
+		//		sc.xy =  ShadowCoord.xy  + offsets.zw;
+		//		sum += textureProj(ShadowMapArray[sl_i],sc);
+		//	}
+
+		//	shadow = sum / float(numSamples * 2.0);
+		//}
+
+		return shadow;
 	}
 	else
 		return 1.0f;
