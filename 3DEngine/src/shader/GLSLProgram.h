@@ -94,6 +94,9 @@ public:
 	void SetUniform(const GLchar *name, const vec2& v);
 	void SetUniform(const GLchar *name, const vec3& v);
 	void SetUniform(const GLchar *name, const vec4& v);
+	void SetUniform(const GLchar *name, const glm::ivec2& v);
+	void SetUniform(const GLchar *name, const glm::ivec3& v);
+	void SetUniform(const GLchar *name, const glm::ivec4& v);
 	void SetUniform(const GLchar *name, const mat4& m);
 	void SetUniform(const GLchar *name, const mat3& m);
 	void SetUniformArray(const GLchar *name, GLfloat *v, int elementSize, int count = 1);

@@ -227,6 +227,52 @@ void GLSLProgram::SetUniform(const GLchar *name, const vec3& v)
 	}
 }
 
+void GLSLProgram::SetUniform(const GLchar *name, const glm::ivec2& v)
+{
+	GLint loc = glGetUniformLocation(programHandle, name);
+	if (loc >= 0)
+	{
+		glUniform2i(loc, v.x, v.y);
+	}
+	else
+	{
+#if _DEBUG
+		Error(string("Error setting parameter '") + name + "'");
+#endif
+	}
+}
+
+
+void GLSLProgram::SetUniform(const GLchar *name, const glm::ivec3& v)
+{
+	GLint loc = glGetUniformLocation(programHandle, name);
+	if (loc >= 0)
+	{
+		glUniform3i(loc, v.x, v.y, v.z);
+	}
+	else
+	{
+#if _DEBUG
+		Error(string("Error setting parameter '") + name + "'");
+#endif
+	}
+}
+
+void GLSLProgram::SetUniform(const GLchar *name, const glm::ivec4& v)
+{
+	GLint loc = glGetUniformLocation(programHandle, name);
+	if (loc >= 0)
+	{
+		glUniform4i(loc, v.x, v.y, v.z, v.w);
+	}
+	else
+	{
+#if _DEBUG
+		Error(string("Error setting parameter '") + name + "'");
+#endif
+	}
+}
+
 void GLSLProgram::SetUniform(const char *name,  const vec4& v)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
