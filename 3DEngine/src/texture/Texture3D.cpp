@@ -8,11 +8,16 @@
 
 Texture3D_ptr Texture3D::Create(int width, int height, int depth, Format format)
 {
-	return Texture3D_ptr(new Texture3D(width, height, depth, format));
+	return Texture3D_ptr(new Texture3D(width, height, depth, format, 0));
+}
+
+Texture3D_ptr Texture3D::Create(int width, int height, int depth, void* data, Format format)
+{
+	return Texture3D_ptr(new Texture3D(width, height, depth, format, data));
 }
 
 
-Texture3D::Texture3D(int width, int height, int depth, Format format)
+Texture3D::Texture3D(int width, int height, int depth, Format format, void* data)
 	: Texture(GL_TEXTURE_3D, format)
 	, dimensions(width,height,depth)
 {
@@ -22,13 +27,15 @@ Texture3D::Texture3D(int width, int height, int depth, Format format)
 	GLenum dataFormat = DataFormat(format);
 	GLenum dataType = DataType(format);
 
-	glGenTextures(1, &texObject);
-	glBindTexture(GL_TEXTURE_3D, texObject);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	const int border = 0;
 
-	glTexImage3D(GL_TEXTURE_3D, 0, internalFormat, width, height, depth, border, dataFormat, dataType, 0);
+	glGenTextures(1, &texObject);
+	glBindTexture(GL_TEXTURE_3D, texObject);
+	glTexImage3D(GL_TEXTURE_3D, 0, internalFormat, width, height, depth, border, dataFormat, dataType, data);
+
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
 	glBindTexture(GL_TEXTURE_3D, 0);
 }
 

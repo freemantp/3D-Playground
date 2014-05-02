@@ -134,8 +134,8 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 	if (lightModel->pcfShadowRandomData)
 	{
 		lightModel->pcfShadowRandomData->BindTexture(lastTexUnit+1);
-		//SetUniform("PCFDataOffsets", lastTexUnit+1);
-		//SetUniform("PCFDataOffsetsSize", lightModel->pcfShadowRandomData->Dimensions());
+		SetUniform("PCFDataOffsets", lastTexUnit+1);
+		SetUniform("PCFDataOffsetsSize", lightModel->pcfShadowRandomData->Dimensions());
 	}
 
 

@@ -52,8 +52,7 @@ Texture3D_ptr ShadowUtil::BuildRandShadowOffset(unsigned int size, unsigned  int
 
 	}
 
-	Texture3D_ptr tex = Texture3D::Create(size, size, 2 * numSamples, Texture::Format::RGBA32F);
-	tex->SetData(dataBuffer);
+	Texture3D_ptr tex = Texture3D::Create(size, size, numSamples / 2, dataBuffer, Texture::Format::RGBA32F);
 
 	delete[] dataBuffer;
 
