@@ -10,7 +10,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 
-Texture3D_ptr ShadowUtil::BuildRandShadowOffset(unsigned int size, unsigned  int samplesU, unsigned  int samplesV)
+Texture3D_ptr ShadowUtil::GenerateCircularOffsets(unsigned int size, unsigned  int samplesPhi, unsigned  int samplesR)
 {
 	unsigned int seed = static_cast<unsigned int >(std::chrono::system_clock::now().time_since_epoch().count());
 
@@ -18,9 +18,11 @@ Texture3D_ptr ShadowUtil::BuildRandShadowOffset(unsigned int size, unsigned  int
 	std::uniform_real_distribution<float> jitter(-0.5f, 0.5f);
 
 	double randNumber = jitter(generator);
-	unsigned int numSamples = samplesU * samplesV;
+	unsigned int numSamples = samplesPhi * samplesR;
 
 	float* dataBuffer = new float[size * size * numSamples * 2];
+
+	const float twoPi = glm::pi<float>() * 2;
 
 	for (unsigned int i = 0; i < size; i++)
 	{
@@ -28,18 +30,21 @@ Texture3D_ptr ShadowUtil::BuildRandShadowOffset(unsigned int size, unsigned  int
 		{
 			for (unsigned int k = 0; k < numSamples; k += 2)
 			{
-				int x1 = k % samplesU;
-				int x2 = (k+1) % samplesU;
-				int y1 = (numSamples - 1 - k) / samplesU;
-				int y2 = (numSamples - 2 - k) / samplesU;
+				int x1 = k % samplesPhi;
+				int x2 = (k + 1) % samplesPhi;
+				int y1 = (numSamples - 1 - k) / samplesPhi;
+				int y2 = (numSamples - 1 - k - 1) / samplesPhi;
 
 				glm::vec4 v;
-				v.x = ( (x1 + 0.5f) + jitter(generator) ) / samplesU;
-				v.y = ( (y1 + 0.5f) + jitter(generator) ) / samplesV;
-				v.z = ( (x2 + 0.5f) + jitter(generator) ) / samplesU;
-				v.w = ( (x2 + 0.5f) + jitter(generator) ) / samplesV;
+				v.x = ((x1 + 0.5f) + jitter(generator)) / samplesPhi;
+				v.y = ((y1 + 0.5f) + jitter(generator)) / samplesR;
+				v.z = ((x2 + 0.5f) + jitter(generator)) / samplesPhi;
+				v.w = ((y2 + 0.5f) + jitter(generator)) / samplesR;
 
-				float twoPi = glm::pi<float>() * 2;
+				assert(v.x >= 0.f && v.x <= 1.f);
+				assert(v.y >= 0.f && v.y <= 1.f);
+				assert(v.z >= 0.f && v.z <= 1.f);
+				assert(v.w >= 0.f && v.w <= 1.f);
 
 				int cell = ((k / 2) * size * size + j * size + i) * 4;
 
@@ -47,10 +52,15 @@ Texture3D_ptr ShadowUtil::BuildRandShadowOffset(unsigned int size, unsigned  int
 				dataBuffer[cell + 1] = sqrtf(v.y) * sinf(twoPi*v.x);
 				dataBuffer[cell + 2] = sqrtf(v.w) * cosf(twoPi*v.z);
 				dataBuffer[cell + 3] = sqrtf(v.w) * sinf(twoPi*v.z);
+
+										    
+				assert(dataBuffer[cell + 0] >= -1.f && dataBuffer[cell + 0] <= 1.f);				
+				assert(dataBuffer[cell + 1] >= -1.f && dataBuffer[cell + 1] <= 1.f);				
+				assert(dataBuffer[cell + 2] >= -1.f && dataBuffer[cell + 2] <= 1.f);				
+				assert(dataBuffer[cell + 3] >= -1.f && dataBuffer[cell + 3] <= 1.f);
 			}
 		}
-
-	}
+	}	
 
 	Texture3D_ptr tex = Texture3D::Create(size, size, numSamples / 2, dataBuffer, Texture::Format::RGBA32F);
 

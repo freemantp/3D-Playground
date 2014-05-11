@@ -72,10 +72,7 @@ void initGL()
 
 	/* Use depth buffering for hidden surface elimination. */
 	glEnable(GL_DEPTH_TEST);
-
-
 	glEnable(GL_MULTISAMPLE);
-	glHint(GL_MULTISAMPLE_FILTER_HINT_NV, GL_NICEST);
 
 	GLint  iMultiSample = 0;
 	GLint  iNumSamples = 0;

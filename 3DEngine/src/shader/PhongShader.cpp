@@ -118,14 +118,14 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 	const size_t maxNumSpotLights = 4;
 	GLint shadowMaps[maxNumSpotLights];
 
-	unsigned int lastTexUnit;
+	unsigned int texUnit = 0;
 
 	for (unsigned int i = 0; i < maxNumSpotLights; i++)
 	{
 		if (i < num_slights)
 		{
-			bind_shadowmap_tex(i, i);
-			lastTexUnit = i;
+			bind_shadowmap_tex(i, texUnit);
+			texUnit++;
 		}
 				
 		shadowMaps[i] = i;
@@ -133,9 +133,18 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 
 	if (lightModel->pcfShadowRandomData)
 	{
-		lightModel->pcfShadowRandomData->BindTexture(lastTexUnit+1);
-		SetUniform("PCFDataOffsets", lastTexUnit+1);
-		SetUniform("PCFDataOffsetsSize", lightModel->pcfShadowRandomData->Dimensions());
+		lightModel->pcfShadowRandomData->BindTexture(++texUnit);
+		
+
+		auto pcfDim = lightModel->pcfShadowRandomData->Dimensions();
+
+
+
+		const float pixelBlur = 0.001f;
+		SetUniform("PCFDataOffsetsSize", pcfDim);
+		SetUniform("PCFDataOffsets", texUnit);
+		SetUniform("PCFBlurRadius", pixelBlur);
+		
 	}
 
 

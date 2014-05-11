@@ -35,7 +35,7 @@ LightModel::LightModel()
 		valid = true;
 	}
 
-	pcfShadowRandomData = ShadowUtil::BuildRandShadowOffset(8, 4, 8);
+	pcfShadowRandomData = ShadowUtil::GenerateCircularOffsets(8, 4, 8);
 
 }
 

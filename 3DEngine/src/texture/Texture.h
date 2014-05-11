@@ -13,7 +13,7 @@ public:
 	{ 
 		RGB = GL_RGB8, 
 		RGBA = GL_RGBA8, 
-		RGBA32F = GL_RGBA32F, 
+		RGBA32F = GL_RGBA32F, /// < 4 components, 32-bit floating point
 		Depth = GL_DEPTH_COMPONENT,
 		Unknown = -1,
 	};

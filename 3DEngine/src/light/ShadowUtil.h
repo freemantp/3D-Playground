@@ -8,7 +8,17 @@ class ShadowUtil
 {
 public:
 
-	static Texture3D_ptr BuildRandShadowOffset(unsigned int size, unsigned  int samplesU, unsigned  int samplesV);
+	/**
+	* \brief Builds a 3D noise texture cointaining circular offsets with distance [-1,1] from the origin.
+	* The resulting texture will be of dimension size,size,samplesU*samplesV/2, two samples are packed into one vec4
+	*
+	* See OpenGL 4.0 shading language Cookbook, Chapte 7 for details
+	*
+	* \param size The dimension of x and y of the resulting texture
+	* \param samplesPhi The number of samples in angular direction
+	* \param samplesR The number of samples in radial direction
+	*/
+	static Texture3D_ptr GenerateCircularOffsets(unsigned int size, unsigned  int samplesPhi, unsigned  int samplesR);
 
 
 };
