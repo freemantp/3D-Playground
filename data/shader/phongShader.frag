@@ -91,12 +91,6 @@ void shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir,
 	}
 }
 
-
-float random(vec4 seed) {
-  float dot_product = dot(seed, vec4(12.9898,78.233, 45.164, 94.673));
-  return fract(sin(dot_product) * 43758.5453);
-}
-
 float getShadow(int sl_i)
 {
 	if(sl_i < NumSpotLights)
@@ -119,9 +113,10 @@ float getShadow(int sl_i)
 			sum += textureProj(ShadowMapArray[sl_i], sc);
 			sc.xy =  ShadowCoord.xy  + offsets.zw;
 			sum += textureProj(ShadowMapArray[sl_i], sc);
+
 		}
 
-		float shadow = sum /8.0;
+		float shadow = sum /8.0f;
 
 		//Only continue with inner offsets if outer ones are not completely shadowed or illuminated
 		if(shadow != 1.0 && shadow != 0.0)

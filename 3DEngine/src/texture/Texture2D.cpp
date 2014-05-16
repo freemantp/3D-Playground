@@ -21,6 +21,11 @@ Texture2D_ptr Texture2D::Create(GLuint texHandle)
 	return Texture2D_ptr(new Texture2D(texHandle));
 }
 
+const glm::ivec2& Texture2D::Dimensions() const
+{
+	return dimensions;
+}
+
 Texture2D::Texture2D(GLuint texHandle)
 	: Texture(GL_TEXTURE_2D, texHandle, Format::Unknown)
 {
@@ -33,23 +38,19 @@ Texture2D::Texture2D(GLuint texHandle)
 
 		GLint twidth = 0, theight = 0;
 		
-		glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &twidth);
-		glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &theight);
+		glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH,  &dimensions.x);
+		glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &dimensions.y);
 		
 		if (boundTex != texHandle)	
 			glBindTexture(GL_TEXTURE_2D, boundTex);
-
-		width = twidth;
-		height = theight;
 	}
 	else
 		throw std::exception("Passed texture handle is not valid");
 }
 
 Texture2D::Texture2D(int width, int height, Format format)
-: Texture(GL_TEXTURE_2D, format)
-	, width(width)
-	, height(height)
+	: Texture(GL_TEXTURE_2D, format)
+	, dimensions( glm::ivec2(width,height))
 {
 	bool isDepth = format == Format::Depth;
 
@@ -76,8 +77,8 @@ Texture2D::Texture2D(const std::string& texturePath)
 		{
 			texObject = glimg::CreateTexture(imageSet.get(), 0);
 			glimg::Dimensions dim = imageSet->GetDimensions();
-			width = dim.width;
-			height = dim.height;
+
+			dimensions = glm::ivec2(dim.width, dim.height);
 		}
 		catch (glimg::TextureGenerationException &e)
 		{
@@ -97,6 +98,6 @@ bool Texture2D::SetData(void* data)
 	GLint internalFormat = static_cast<GLint>(textureFormat);
 	GLenum dataFormat = DataFormat(textureFormat);
 	GLenum dataType = DataType(textureFormat);
-	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, border, dataFormat, dataType, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x, dimensions.y, border, dataFormat, dataType, data);
 	return true;
 }

@@ -117,7 +117,9 @@ void Scene::RenderShadowMaps()
 				framebuffer->SetDrawToColorBufferEnabled(false);
 
 				glClear(GL_DEPTH_BUFFER_BIT);
-				glViewport(0, 0, smapTex->Width(), smapTex->Height());
+
+				const glm::ivec2& smapDim = smapTex->Dimensions();
+				glViewport(0, 0, smapDim.x, smapDim.y);
 
 				shadowShader->SetLightMatrix(smap->LightViewProjectionMatrix());
 

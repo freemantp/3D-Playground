@@ -91,15 +91,14 @@ GLuint Framebuffer::CreateRenderBuffer(GLenum format)
 	{
 		GLuint handle;
 
-		int texWidth = colorTex->Width();
-		int texHeight = colorTex->Height();
+		const glm::ivec2& colorTexDim = colorTex->Dimensions();
 
-		assert(texWidth > 0);
-		assert(texHeight > 0);
+		assert(colorTexDim.x > 0);
+		assert(colorTexDim.y > 0);
 
 		glGenRenderbuffers(1, &handle);
 		glBindRenderbuffer(GL_RENDERBUFFER, handle);
-		glRenderbufferStorage(GL_RENDERBUFFER, format, texWidth, texHeight);
+		glRenderbufferStorage(GL_RENDERBUFFER, format, colorTexDim.x, colorTexDim.y);
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 		return handle;

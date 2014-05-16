@@ -30,10 +30,10 @@ Texture3D_ptr ShadowUtil::GenerateCircularOffsets(unsigned int size, unsigned  i
 		{
 			for (unsigned int k = 0; k < numSamples; k += 2)
 			{
-				int x1 = k % samplesPhi;
-				int x2 = (k + 1) % samplesPhi;
-				int y1 = (numSamples - 1 - k) / samplesPhi;
-				int y2 = (numSamples - 1 - k - 1) / samplesPhi;
+				unsigned int x1 = k % samplesPhi;
+				unsigned int x2 = (k + 1) % samplesPhi;
+				unsigned int y1 = (numSamples - 1 - k) / samplesPhi;
+				unsigned int y2 = (numSamples - 1 - k - 1) / samplesPhi;
 
 				glm::vec4 v;
 				v.x = ((x1 + 0.5f) + jitter(generator)) / samplesPhi;
@@ -52,6 +52,7 @@ Texture3D_ptr ShadowUtil::GenerateCircularOffsets(unsigned int size, unsigned  i
 				dataBuffer[cell + 1] = sqrtf(v.y) * sinf(twoPi*v.x);
 				dataBuffer[cell + 2] = sqrtf(v.w) * cosf(twoPi*v.z);
 				dataBuffer[cell + 3] = sqrtf(v.w) * sinf(twoPi*v.z);
+				unsigned int cell = ((k / 2) * size * size + j * size + i) * 4;
 
 										    
 				assert(dataBuffer[cell + 0] >= -1.f && dataBuffer[cell + 0] <= 1.f);				

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <string>
-
 #include "Texture.h"
 
+#include <string>
+#include <glm/glm.hpp>
 
 SHARED_PTR_CLASS_DECL(Texture2D);
 
@@ -19,8 +19,7 @@ public:
 	/// The OpenGL texture is deleted when this instance is destroyed
 	static Texture2D_ptr Texture2D::Create(GLuint textHandle);
 
-	int Width() const { return width; };
-	int Height() const { return height; };
+	const glm::ivec2& Dimensions() const;
 
 	virtual bool SetData(void* data) override;
 
@@ -32,6 +31,6 @@ protected:
 
 	Texture2D(GLuint texHandle);
 
-	int width, height;
+	glm::ivec2 dimensions;
 };
 

@@ -138,9 +138,10 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 
 		auto pcfDim = lightModel->pcfShadowRandomData->Dimensions();
 
+		auto sl = lightModel->spotLights[0];
+		const glm::ivec2& sdims = sl->GetShadow()->ShadowMap()->Dimensions();
 
-
-		const float pixelBlur = 0.001f;
+		const float pixelBlur = pcfDim.x / static_cast<float>(sdims.x);
 		SetUniform("PCFDataOffsetsSize", pcfDim);
 		SetUniform("PCFDataOffsets", texUnit);
 		SetUniform("PCFBlurRadius", pixelBlur);
