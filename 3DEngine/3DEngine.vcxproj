@@ -34,6 +34,7 @@
     <ClInclude Include="src\input\MouseObserver.h" />
     <ClInclude Include="src\input\ViewportObserver.h" />
     <ClInclude Include="src\input\WindowEventHandler.h" />
+    <ClInclude Include="src\light\DirectionalLight.h" />
     <ClInclude Include="src\light\Light.h" />
     <ClInclude Include="src\light\LightModel.h" />
     <ClInclude Include="src\light\PointLight.h" />
@@ -89,6 +90,7 @@
     <ClCompile Include="src\camera\PerspectiveCamera.cpp" />
     <ClCompile Include="src\common.cpp" />
     <ClCompile Include="src\input\WindowEventHandler.cpp" />
+    <ClCompile Include="src\light\DirectionalLight.cpp" />
     <ClCompile Include="src\light\Light.cpp" />
     <ClCompile Include="src\light\LightModel.cpp" />
     <ClCompile Include="src\light\PointLight.cpp" />

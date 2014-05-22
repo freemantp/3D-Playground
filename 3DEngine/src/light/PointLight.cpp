@@ -28,12 +28,16 @@ PointLight::~PointLight()
 
 }
 
-void PointLight::SetPosition(vec4& pos)
+void PointLight::SetPosition(glm::vec4& pos)
 {
-	__super::SetPosition(pos);
-	
+	position = pos;
 	visMesh->worldTransform = glm::translate(glm::mat4(1.0),vec3(pos.x,pos.y,pos.z));
 	visMesh->worldTransform = glm::scale(visMesh->worldTransform,vec3(0.05f));
+}
+
+glm::vec4& PointLight::GetPosition()
+{
+	return position;
 }
 
 void PointLight::SetColor(vec3& color)

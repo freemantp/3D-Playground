@@ -14,15 +14,16 @@ Texture3D_ptr ShadowUtil::GenerateCircularOffsets(unsigned int size, unsigned  i
 {
 	unsigned int seed = static_cast<unsigned int >(std::chrono::system_clock::now().time_since_epoch().count());
 
-	std::default_random_engine generator(seed);
-	std::uniform_real_distribution<float> jitter(-0.5f, 0.5f);
+	typedef float value_t;
 
-	double randNumber = jitter(generator);
+	std::default_random_engine generator(seed);
+	std::uniform_real_distribution<value_t> jitter(-0.5f, 0.5f);
+
 	unsigned int numSamples = samplesPhi * samplesR;
 
-	float* dataBuffer = new float[size * size * numSamples * 2];
+	value_t* dataBuffer = new value_t[size * size * numSamples * 2];
 
-	const float twoPi = glm::pi<float>() * 2;
+	const value_t twoPi = glm::pi<value_t>() * 2;
 
 	for (unsigned int i = 0; i < size; i++)
 	{
@@ -46,20 +47,21 @@ Texture3D_ptr ShadowUtil::GenerateCircularOffsets(unsigned int size, unsigned  i
 				assert(v.z >= 0.f && v.z <= 1.f);
 				assert(v.w >= 0.f && v.w <= 1.f);
 
-				int cell = ((k / 2) * size * size + j * size + i) * 4;
+				unsigned int cell = ((k / 2) * size * size + j * size + i) * 4;
 
 				dataBuffer[cell + 0] = sqrtf(v.y) * cosf(twoPi*v.x);
 				dataBuffer[cell + 1] = sqrtf(v.y) * sinf(twoPi*v.x);
 				dataBuffer[cell + 2] = sqrtf(v.w) * cosf(twoPi*v.z);
 				dataBuffer[cell + 3] = sqrtf(v.w) * sinf(twoPi*v.z);
-				unsigned int cell = ((k / 2) * size * size + j * size + i) * 4;
 
-										    
+										   
 				assert(dataBuffer[cell + 0] >= -1.f && dataBuffer[cell + 0] <= 1.f);				
 				assert(dataBuffer[cell + 1] >= -1.f && dataBuffer[cell + 1] <= 1.f);				
 				assert(dataBuffer[cell + 2] >= -1.f && dataBuffer[cell + 2] <= 1.f);				
 				assert(dataBuffer[cell + 3] >= -1.f && dataBuffer[cell + 3] <= 1.f);
+
 			}
+
 		}
 	}	
 

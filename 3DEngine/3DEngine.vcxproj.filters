@@ -265,6 +265,7 @@
     <ClInclude Include="src\light\ShadowUtil.h">
       <Filter>Source Files\light\shadow</Filter>
     </ClInclude>
+    <ClInclude Include="src\light\DirectionalLight.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -413,6 +414,9 @@
     </ClCompile>
     <ClCompile Include="src\light\ShadowUtil.cpp">
       <Filter>Source Files\light\shadow</Filter>
+    </ClCompile>
+    <ClCompile Include="src\light\DirectionalLight.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

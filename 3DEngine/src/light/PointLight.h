@@ -16,13 +16,15 @@ public:
 	SHARED_PTR_FACTORY(PointLight);
 
 	virtual ~PointLight();
-	virtual void SetPosition(glm::vec4& pos) override;
+	virtual	glm::vec4& GetPosition();
+	virtual void SetPosition(glm::vec4& pos);
 	virtual void SetColor(glm::vec3& color) override;
 	virtual Shape_ptr GetRepresentation() const override;
 
 protected:
 	PointLight();
 
+	glm::vec4 position;
 	Shape_ptr visMesh;
 };
 

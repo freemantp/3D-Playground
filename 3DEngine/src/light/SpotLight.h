@@ -20,12 +20,12 @@ class SpotLight : public PointLight, public std::enable_shared_from_this<SpotLig
 {
 public:
 	
-	SpotLight(const vec3& direction, float cutoffAngle, float exponent, bool castsShadow = true);
+	SpotLight(const glm::vec3& direction, float cutoffAngle, float exponent, bool castsShadow = true);
 
-	virtual vec3& GetDirection();
-	virtual vec3& GetUpVector();
-	virtual void SetDirection(const vec3& dir);
-	virtual void SetUpDirection(const vec3& dir);
+	virtual glm::vec3& GetDirection();
+	virtual glm::vec3& GetUpVector();
+	virtual void SetDirection(const glm::vec3& dir);
+	virtual void SetUpDirection(const glm::vec3& dir);
 	virtual void SetPosition(glm::vec4& pos) override;
 	virtual float GetCutoffAngle();
 
@@ -38,8 +38,9 @@ public:
 
 protected:
 
-	vec3 direction;
-	vec3 up;
+	
+	glm::vec3 direction;
+	glm::vec3 up;
 	float cutoffAngle;
 	float exponent;
 
