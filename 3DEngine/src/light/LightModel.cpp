@@ -1,9 +1,12 @@
 #include "stdafx.h"
+
 #include "LightModel.h"
+
 #include "../shader/UniformBuffer.h"
 #include "../shader/UniformBufferShader.h"
 #include "../light/PointLight.h"
 #include "../light/SpotLight.h"
+#include "../light/DirectionalLight.h"
 #include "../light/Shadow.h"
 #include "../light/ShadowUtil.h"
 #include "../camera/Camera.h"
@@ -81,6 +84,12 @@ void LightModel::UpdateUniformBuffer(Camera_cptr cam)
 
 		if (auto shdw = sl->GetShadow())
 			lightsBuffer->SetElement(lightName.str() + "ShadowMatrix",shdw->ShadowMatrix());
+	}
+
+	if (directionalLight)
+	{
+		lightsBuffer->SetElement("Lights.DirectionalLight.Direction", directionalLight->GetDirection());
+		lightsBuffer->SetElement("Lights.DirectionalLight.Color", directionalLight->GetColor());
 	}
 
 }

@@ -37,6 +37,7 @@ public:
 	void SetCamera(Camera_ptr cam);
 	void AddLight(PointLight_ptr shape);
 	void AddLight(SpotLight_ptr light);
+	void SetLight(DirectionalLight_ptr light);
 
 	virtual void TimeUpdate(long time);
 

@@ -7,6 +7,7 @@
 SHARED_PTR_CLASS_DECL(Camera);
 SHARED_PTR_CLASS_DECL(PointLight);
 SHARED_PTR_CLASS_DECL(SpotLight);
+SHARED_PTR_CLASS_DECL(DirectionalLight);
 SHARED_PTR_CLASS_DECL(LightModel);
 SHARED_PTR_CLASS_DECL(UniformBuffer);
 SHARED_PTR_CLASS_DECL(GLSLProgram);
@@ -23,15 +24,18 @@ public:
 
 	~LightModel();
 
-	vector<PointLight_ptr> pointLights;
-	vector<SpotLight_ptr> spotLights;
-
-	Texture3D_ptr pcfShadowRandomData;
-
 	UniformBuffer_ptr GetLightsBuffer() const;
 	void UpdateUniformBuffer(Camera_cptr cam);
 
 	bool IsValid();
+
+public:
+
+	vector<PointLight_ptr> pointLights;
+	vector<SpotLight_ptr> spotLights;
+	DirectionalLight_ptr directionalLight;
+
+	Texture3D_ptr pcfShadowRandomData;
 
 protected:
 

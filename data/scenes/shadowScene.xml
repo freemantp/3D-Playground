@@ -26,6 +26,12 @@
   </materials>
   
   <lights>
+
+    <light type="directional">
+      <direction x="-1.0" y="-0.5" z="-1.0"/>
+      <color r="1.0" g="1.0" b="0.0"/>
+    </light>
+    
     <light type="spot" cutoff="60" exponent="5">
       <position x="1.0" y="0.5" z="1.0"/>
       <direction x="-1.0" y="-0.5" z="-1.0"/>

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+
 #include "Scene.h"
 
 #include <vector>
@@ -245,4 +246,9 @@ void Scene::AddLight(PointLight_ptr light)
 void Scene::AddLight(SpotLight_ptr light)
 {
 	lightModel->spotLights.push_back(light);
+}
+
+void Scene::SetLight(DirectionalLight_ptr light)
+{
+	lightModel->directionalLight = light;
 }

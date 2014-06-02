@@ -135,7 +135,6 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 	{
 		lightModel->pcfShadowRandomData->BindTexture(++texUnit);
 		
-
 		auto pcfDim = lightModel->pcfShadowRandomData->Dimensions();
 
 		auto sl = lightModel->spotLights[0];

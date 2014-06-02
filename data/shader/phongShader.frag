@@ -17,6 +17,12 @@ struct PointLight
 	vec3 Color;
 };
 
+struct DirectionalLight
+{
+	vec3 Direction;
+	vec3 Color;
+};
+
 //PointLight declaration
 struct SpotLight
 {
@@ -32,6 +38,7 @@ layout (std140) uniform Lights
 {
 	PointLight PointLights[4];
 	SpotLight  SpotLights[4];
+	DirectionalLight DirectionalLight;
 } pLights;
 
 uniform sampler2DShadow ShadowMapArray[4];

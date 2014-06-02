@@ -6,8 +6,6 @@ Light::Light() : color(glm::vec3(1,1,1))
 
 }
 
-
-
 glm::vec3& Light::GetColor()
 {
 	return color;

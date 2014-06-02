@@ -29,6 +29,7 @@
 #include "../shape/Skybox.h"
 
 #include "../light/SpotLight.h"
+#include "../light/DirectionalLight.h"
 #include "../config.h"
 
 using tinyxml2::XMLDocument;
@@ -466,6 +467,21 @@ bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 			slight->SetColor(color);
 
 			generatedScene->AddLight(slight);
+		}
+		else if (lightType == "directional")
+		{
+			if (generatedScene->lightModel->directionalLight)
+				Warn("Multiple directional lights, in the scene. Only one is suported");
+			
+			vec3 color, direction;
+			GetColorVector3(lightElem->FirstChildElement("color"), color);
+			GetVector3(lightElem->FirstChildElement("direction"), direction);
+			
+			DirectionalLight_ptr dirLight = DirectionalLight::Create();
+			dirLight->SetColor(color);
+			dirLight->SetDirection(glm::normalize(direction));
+			generatedScene->SetLight(dirLight);
+
 		}
 		else
 		{
