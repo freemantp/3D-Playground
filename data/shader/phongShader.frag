@@ -221,15 +221,4 @@ void main()
 
 	FragColor = vec4(ambient + (diffuse + specular) , Material.Opacity);
 
-	//FragColor *= 0.000001;
-
-	//vec3 dir =  DDirection;
-	//if(dir.x == 0)
-	//	FragColor += vec4(0,0,1,1);
-	//else if(dir.x > 0)
-	//	FragColor += vec4(0,1,0,1);
-	//else
-	//	FragColor += vec4(1,0,0,1);
-
-
 }

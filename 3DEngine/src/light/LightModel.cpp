@@ -20,7 +20,6 @@ LightModel::LightModel()
 
 	if(unformBufferShader->isLinked())
 	{
-
 		std::vector<std::string> elemNames =
 		{
 			"Lights.PointLights[0].Position", "Lights.PointLights[0].Color",
@@ -91,7 +90,6 @@ void LightModel::UpdateUniformBuffer(Camera_cptr cam)
 	{
 		lightsBuffer->SetElement("Lights.DirectionalLight0.Direction", directionTransformMatrix * directionalLight->GetDirection());
 		lightsBuffer->SetElement("Lights.DirectionalLight0.Color", directionalLight->GetColor());
-
 	}
 
 }
