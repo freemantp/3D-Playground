@@ -40,7 +40,7 @@ layout (std140) uniform Lights
 {
 	PointLight PointLights[numLights];
 	SpotLight  SpotLights[numLights];
-	DirectionalLight DirectionalLights[numLights];
+	DirectionalLight DirectionalLight0;
 } sceneLights;
 
 uniform sampler2DShadow ShadowMapArray[4];
@@ -52,9 +52,6 @@ uniform int NumPointLights;
 uniform int NumSpotLights;
 uniform samplerCube EnvMapTex;
 uniform float EnvReflection; //[0,1]
-
-uniform vec3 DDirection;
-uniform vec3 DColor;
 
 //Subroutine declaration
 subroutine float shadeModelType(in vec3 s, in vec3 v, in vec3 normal);
@@ -168,10 +165,13 @@ void main()
 
 	//Directional light
 	{
-		shade(Position,normal,-DDirection,ambientCurrent, diffuseCurrent, specularCurrent);
-		ambient  += ambientCurrent  * DColor;
-		diffuse  += diffuseCurrent  * DColor;
-		specular += specularCurrent * DColor;
+		vec3 direction = sceneLights.DirectionalLight0.Direction;
+		vec3 color = sceneLights.DirectionalLight0.Color;
+
+		shade(Position,normal,-direction,ambientCurrent, diffuseCurrent, specularCurrent);
+		ambient  += ambientCurrent  * color;
+		diffuse  += diffuseCurrent  * color;
+		specular += specularCurrent * color;
 	}
 
 	//Point lights

@@ -32,7 +32,7 @@ layout (std140) uniform Lights
 {
 	PointLight PointLights[numLights];
 	SpotLight  SpotLights[numLights];
-	DirectionalLight DirectionalLights;
+	DirectionalLight DirectionalLight0s;
 } sceneLights;
 
 uniform int NumPointLights;

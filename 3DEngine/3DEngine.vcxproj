@@ -322,12 +322,12 @@
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
     <Import Project="..\packages\tinyxml2.redist.1.0.12\build\native\tinyxml2.redist.targets" Condition="Exists('..\packages\tinyxml2.redist.1.0.12\build\native\tinyxml2.redist.targets')" />
     <Import Project="..\packages\tinyxml2.1.0.12\build\native\tinyxml2.targets" Condition="Exists('..\packages\tinyxml2.1.0.12\build\native\tinyxml2.targets')" />
-    <Import Project="..\packages\glm.0.9.5.3\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.5.3\build\native\glm.targets')" />
+    <Import Project="..\packages\glm.0.9.5.4\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.5.4\build\native\glm.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\glm.0.9.5.3\build\native\glm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glm.0.9.5.3\build\native\glm.targets'))" />
+    <Error Condition="!Exists('..\packages\glm.0.9.5.4\build\native\glm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glm.0.9.5.4\build\native\glm.targets'))" />
   </Target>
 </Project>

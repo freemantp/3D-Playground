@@ -34,7 +34,7 @@ layout (std140) uniform Lights
 {
 	PointLight PointLights[numLights];
 	SpotLight  SpotLights[numLights];
-	DirectionalLight DirectionalLights[numLights];
+	DirectionalLight DirectionalLight0;
 } sceneLights;
 
 uniform int NumPointLights;
@@ -65,5 +65,5 @@ void main()
 		FragColor += vec4(light.Color,1);		
 	}
 	
-	FragColor += vec4(sceneLights.DirectionalLights[0].Color,1);	
+	FragColor += vec4(sceneLights.DirectionalLight0.Color,1);	
 }

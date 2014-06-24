@@ -20,7 +20,7 @@ LightModel::LightModel()
 
 	if(unformBufferShader->isLinked())
 	{
-		const int numElems = 28;
+		const int numElems = 34;
 		const GLchar* elemNames[] = 
 		{
 			"Lights.PointLights[0].Position", "Lights.PointLights[0].Color",
@@ -31,6 +31,7 @@ LightModel::LightModel()
 			"Lights.SpotLights[1].Position", "Lights.SpotLights[1].Color", "Lights.SpotLights[1].Direction", "Lights.SpotLights[1].CutoffAngle", "Lights.SpotLights[1].Exponent", "Lights.SpotLights[1].ShadowMatrix",
 			"Lights.SpotLights[2].Position", "Lights.SpotLights[2].Color", "Lights.SpotLights[2].Direction", "Lights.SpotLights[2].CutoffAngle", "Lights.SpotLights[2].Exponent", "Lights.SpotLights[2].ShadowMatrix",
 			"Lights.SpotLights[3].Position", "Lights.SpotLights[3].Color", "Lights.SpotLights[3].Direction", "Lights.SpotLights[3].CutoffAngle", "Lights.SpotLights[3].Exponent", "Lights.SpotLights[3].ShadowMatrix",
+			"Lights.DirectionalLight0.Direction", "Lights.DirectionalLight0.Color",
 		};
 
 		lightsBuffer.reset(new UniformBuffer(unformBufferShader,"Lights", elemNames, numElems));
@@ -88,9 +89,9 @@ void LightModel::UpdateUniformBuffer(Camera_cptr cam)
 
 	if (directionalLight)
 	{
+		lightsBuffer->SetElement("Lights.DirectionalLight0.Direction", directionTransformMatrix * directionalLight->GetDirection());
+		lightsBuffer->SetElement("Lights.DirectionalLight0.Color", directionalLight->GetColor());
 
-		lightsBuffer->SetElement("Lights.DirectionalLights[0].Direction", vec3(1,0,1));
-		lightsBuffer->SetElement("Lights.DirectionalLights[0].Color", directionalLight->GetColor());
 	}
 
 }
