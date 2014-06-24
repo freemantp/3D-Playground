@@ -2,7 +2,10 @@
 
 #include <string>
 #include <map>
+#include <vector>
+
 #include <glm/glm.hpp>
+
 #include "../util/SharedPointer.h"
 #include "../core/gl.h"
 
@@ -18,7 +21,7 @@ class UniformBuffer
 public:
 	///The glsl program and bufferName is needed to allocate the right amount of mem (queried)
 	
-	UniformBuffer(const GLSLProgram_ptr program, std::string bufferName, const GLchar* elemNames[], int numElems);
+	UniformBuffer(const GLSLProgram_ptr program, std::string bufferName, const std::vector<std::string>& names);
 
 	~UniformBuffer(void);
 
@@ -32,7 +35,7 @@ public:
 protected:
 	
 
-	void PrintUniforms(const GLSLProgram_ptr program, const GLchar* elemNames[],GLuint* indices, GLint* eOffsets, int numElems);
+	void PrintUniforms(const GLSLProgram_ptr program, const std::vector<std::string>& elemNames, GLuint* indices, GLint* eOffsets);
 	inline void SetElement(const std::string& name, const void* ptr, const GLsizei numBytes);
 
 	std::map<std::string,GLint> offsets;

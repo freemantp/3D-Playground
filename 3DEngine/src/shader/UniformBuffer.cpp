@@ -1,15 +1,27 @@
 #include "stdafx.h"
 
+#include <algorithm>
+
 #include "UniformBuffer.h"
 #include "GLSLProgram.h"
 
 #include "../error.h"
 
-UniformBuffer::UniformBuffer(const GLSLProgram_ptr program, std::string bufferName, const GLchar* elemNames[], const int numElems)
+UniformBuffer::UniformBuffer(const GLSLProgram_ptr program, std::string bufferName, const std::vector<std::string>& names)
 {	
 	if( ! program->isLinked () )
 		Error("[UniformBuffer] Program is not Linked");
-	
+
+	unsigned int numElems = static_cast<unsigned int>(names.size());
+
+	if (numElems <= 0)
+		throw std::runtime_error("UniformBuffer: At least one name has to be specified");
+
+	std::vector<const char*> names_raw;
+
+	std::transform(names.begin(), names.end(), std::back_inserter(names_raw),
+		[](const std::string & s) -> const GLchar* { return s.c_str(); } );
+
 	GLuint programHandle = program->GetProgramHandle();
 	GLuint blockIdx = glGetUniformBlockIndex(programHandle,bufferName.c_str());
 	assert(blockIdx !=  GL_INVALID_INDEX);
@@ -21,20 +33,19 @@ UniformBuffer::UniformBuffer(const GLSLProgram_ptr program, std::string bufferNa
 	//Generate buffer object
 	glGenBuffers(1,&uboHandle);
 
-
 	//Obtain indices and offsets
 	GLuint* indices = new GLuint[numElems];
 	GLint*  eOffsets = new GLint[numElems];
 
-	glGetUniformIndices(programHandle,numElems,elemNames,indices);
+	glGetUniformIndices(programHandle, numElems, &names_raw[0], indices);
 	glGetActiveUniformsiv(programHandle, numElems, indices, GL_UNIFORM_OFFSET, eOffsets);
 
-	//PrintUniforms(program,elemNames, indices,eOffsets,numElems);
+	//PrintUniforms(program,names, indices,eOffsets);
 
 	//Save offsets with element names as key
-	for(int i=0; i < numElems; i++)
+	for(unsigned int i=0; i < numElems; i++)
 	{
-		offsets.insert( std::pair<std::string,GLint>( elemNames[i], eOffsets[i] ) );
+		offsets.insert( std::pair<std::string,GLint>( names[i], eOffsets[i] ) );
 	}
 
 	delete[] eOffsets;
@@ -56,12 +67,12 @@ UniformBuffer::~UniformBuffer(void)
 	
 }
 
-void UniformBuffer::PrintUniforms(const GLSLProgram_ptr program, const GLchar* elemNames[],GLuint* indices, GLint* eOffsets, int numElems)
+void UniformBuffer::PrintUniforms(const GLSLProgram_ptr program, const std::vector<std::string>& elemNames, GLuint* indices, GLint* eOffsets)
 {
 
 	std::vector<std::string> ll = program->GetUniformAttributes();
 	std::cout << "Indices:" << std::endl;
-	for(int i=0; i < numElems; i++)
+	for (size_t i = 0; i < elemNames.size(); i++)
 	{
 		std::cout << elemNames[i] << " i:" << indices[i] << " o:" <<  eOffsets[i] << std::endl;
 	}
