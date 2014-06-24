@@ -15,6 +15,12 @@ struct PointLight
 	vec3 Color;
 };
 
+struct DirectionalLight
+{
+	vec3 Direction;
+	vec3 Color;
+};
+
 //PointLight declaration
 struct SpotLight
 {
@@ -31,6 +37,7 @@ layout (std140) uniform Lights
 {
 	PointLight PointLights[numLights];
 	SpotLight  SpotLights[numLights];
+	DirectionalLight DirectionalLights;
 } sceneLights;
 
 uniform mat4 ModelViewMatrix;

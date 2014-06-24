@@ -20,12 +20,19 @@ struct SpotLight
 	float Exponent;
 };
 
+struct DirectionalLight
+{
+	vec3 Direction;
+	vec3 Color;
+};
+
 // ----------------- uniforms -----------------
 
 layout (std140) uniform Lights
 {
 	PointLight PointLights[numLights];
 	SpotLight  SpotLights[numLights];
+	DirectionalLight DirectionalLights;
 } sceneLights;
 
 uniform int NumPointLights;

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<scene name="Simple scene">
+<scene name="Shadow scene">
 
   <!-- Initial camera position -->
   <camera type="perspective" fov="50.0">
@@ -29,7 +29,7 @@
 
     <light type="directional">
       <direction x="-1.0" y="-0.5" z="-1.0"/>
-      <color r="1.0" g="1.0" b="0.0"/>
+      <color r="0.5" g="0.5" b="0.5"/>
     </light>
     
     <light type="spot" cutoff="60" exponent="5">

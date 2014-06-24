@@ -26,7 +26,6 @@ struct SpotLight
 	float CutoffAngle;
 	float Exponent;
 	mat4 ShadowMatrix;
-
 };
 
 // ----------------- uniforms -----------------
@@ -35,7 +34,7 @@ layout (std140) uniform Lights
 {
 	PointLight PointLights[numLights];
 	SpotLight  SpotLights[numLights];
-	DirectionalLight DirectionalLight;
+	DirectionalLight DirectionalLights[numLights];
 } sceneLights;
 
 uniform int NumPointLights;
@@ -63,8 +62,8 @@ void main()
 	for(int i=0;  i < NumSpotLights; i++)
 	{
 		SpotLight light = sceneLights.SpotLights[i];
-		FragColor = vec4(light.Color,1);		
+		FragColor += vec4(light.Color,1);		
 	}
 	
-	FragColor = vec4(sceneLights.DirectionalLight.Color,1);	
+	FragColor += vec4(sceneLights.DirectionalLights[0].Color,1);	
 }

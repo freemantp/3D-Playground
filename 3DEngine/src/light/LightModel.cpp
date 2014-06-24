@@ -88,8 +88,9 @@ void LightModel::UpdateUniformBuffer(Camera_cptr cam)
 
 	if (directionalLight)
 	{
-		lightsBuffer->SetElement("Lights.DirectionalLight.Direction", directionalLight->GetDirection());
-		lightsBuffer->SetElement("Lights.DirectionalLight.Color", directionalLight->GetColor());
+
+		lightsBuffer->SetElement("Lights.DirectionalLights[0].Direction", vec3(1,0,1));
+		lightsBuffer->SetElement("Lights.DirectionalLights[0].Color", directionalLight->GetColor());
 	}
 
 }

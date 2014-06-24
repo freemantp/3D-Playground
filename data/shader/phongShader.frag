@@ -11,6 +11,8 @@ struct MaterialInfo
 	float Opacity; //[0,1]
 };
 
+const int numLights = 4;
+
 struct PointLight
 {
 	vec4 Position;
@@ -36,10 +38,10 @@ struct SpotLight
 
 layout (std140) uniform Lights
 {
-	PointLight PointLights[4];
-	SpotLight  SpotLights[4];
-	DirectionalLight DirectionalLight;
-} pLights;
+	PointLight PointLights[numLights];
+	SpotLight  SpotLights[numLights];
+	DirectionalLight DirectionalLights[numLights];
+} sceneLights;
 
 uniform sampler2DShadow ShadowMapArray[4];
 uniform sampler3D PCFDataOffsets;
@@ -50,6 +52,9 @@ uniform int NumPointLights;
 uniform int NumSpotLights;
 uniform samplerCube EnvMapTex;
 uniform float EnvReflection; //[0,1]
+
+uniform vec3 DDirection;
+uniform vec3 DColor;
 
 //Subroutine declaration
 subroutine float shadeModelType(in vec3 s, in vec3 v, in vec3 normal);
@@ -102,7 +107,7 @@ float getShadow(int sl_i)
 {
 	if(sl_i < NumSpotLights)
 	{
-		vec4 ShadowCoord = pLights.SpotLights[sl_i].ShadowMatrix * PositionModel;
+		vec4 ShadowCoord = sceneLights.SpotLights[sl_i].ShadowMatrix * PositionModel;
 
 		ivec3 offsetCoords;
 		offsetCoords.xy = ivec2( mod(gl_FragCoord.xy,  PCFDataOffsetsSize.xy) );
@@ -161,10 +166,18 @@ void main()
 
 	vec3 ambientCurrent, diffuseCurrent, specularCurrent;
 
+	//Directional light
+	{
+		shade(Position,normal,-DDirection,ambientCurrent, diffuseCurrent, specularCurrent);
+		ambient  += ambientCurrent  * DColor;
+		diffuse  += diffuseCurrent  * DColor;
+		specular += specularCurrent * DColor;
+	}
+
 	//Point lights
 	for(int i=0; i < NumPointLights; i++)
 	{	
-		PointLight light = pLights.PointLights[i];
+		PointLight light = sceneLights.PointLights[i];
 
 		vec3 s = normalize( vec3(light.Position) - Position);
 		shade(Position,normal,s,ambientCurrent, diffuseCurrent, specularCurrent);
@@ -172,13 +185,12 @@ void main()
 		ambient  += ambientCurrent  * light.Color;
 		diffuse  += diffuseCurrent  * light.Color;
 		specular += specularCurrent * light.Color;
-
 	}
 
 	//Spot lights
 	for(int i=0; i < NumSpotLights; i++)
 	{	
-		SpotLight light = pLights.SpotLights[i];
+		SpotLight light = sceneLights.SpotLights[i];
 
 		vec3 s = normalize( vec3(light.Position) - Position);
 		float angle = acos( dot(-s,light.Direction) );
@@ -208,6 +220,16 @@ void main()
 	}
 
 	FragColor = vec4(ambient + (diffuse + specular) , Material.Opacity);
+
+	//FragColor *= 0.000001;
+
+	//vec3 dir =  DDirection;
+	//if(dir.x == 0)
+	//	FragColor += vec4(0,0,1,1);
+	//else if(dir.x > 0)
+	//	FragColor += vec4(0,1,0,1);
+	//else
+	//	FragColor += vec4(1,0,0,1);
 
 
 }

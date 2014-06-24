@@ -4,6 +4,7 @@
 #include "../scene/Scene.h"
 #include "../light/PointLight.h"
 #include "../light/SpotLight.h"
+#include "../light/DirectionalLight.h"
 #include "../light/Shadow.h"
 #include "../shape/Skybox.h"
 #include "../texture/Texture3D.h"
@@ -150,6 +151,9 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 
 	SetUniformArray("ShadowMapArray", shadowMaps, 1, maxNumSpotLights);
 	
+	glm::mat3 directionTransformMatrix = glm::transpose(glm::inverse(glm::mat3(scene->activeCamera->viewMatrix)));
+	SetUniform("DDirection", directionTransformMatrix * lightModel->directionalLight->GetDirection());
+	SetUniform("DColor", lightModel->directionalLight->GetColor());
 
 	lightModel->GetLightsBuffer()->BindToShader(shared_from_this(),"Lights");
 }
