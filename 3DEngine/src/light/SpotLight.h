@@ -19,25 +19,29 @@ SHARED_PTR_CLASS_DECL(Shadow);
 class SpotLight : public PointLight, public std::enable_shared_from_this<SpotLight>
 {
 public:
-	
-	SpotLight(const glm::vec3& direction, float cutoffAngle, float exponent, bool castsShadow = true);
 
-	virtual glm::vec3& GetDirection();
-	virtual glm::vec3& GetUpVector();
+	static SpotLight_ptr Create(const glm::vec3& direction, float cutoffAngle, float exponent, bool castsShadow = true);
+	
+	virtual const glm::vec3& GetDirection() const;
+	virtual const glm::vec3& GetUpVector() const;
 	virtual void SetDirection(const glm::vec3& dir);
 	virtual void SetUpDirection(const glm::vec3& dir);
 	virtual void SetPosition(glm::vec4& pos) override;
-	virtual float GetCutoffAngle();
+
+	virtual float GetCutoffAngle() const;
 
 	/// Sets the cutoff angle theta
 	virtual void SetCutoffAngle(float theta);
 	virtual void SetExponent(float exponent);
-	virtual float GetExponent();
+	virtual float GetExponent() const;
 
 	Shadow_ptr GetShadow() const;
 
 protected:
 
+	SpotLight(const glm::vec3& direction, float cutoffAngle, float exponent, bool castsShadow);
+
+	inline void UpdateShadow();
 	
 	glm::vec3 direction;
 	glm::vec3 up;

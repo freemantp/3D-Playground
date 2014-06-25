@@ -9,7 +9,7 @@ class ShadowUtil
 public:
 
 	/**
-	* \brief Builds a 3D noise texture cointaining circular offsets with distance [-1,1] from the origin.
+	* \brief Builds a 3D noise texture containing circular offsets with distance [-1,1] from the origin.
 	* The resulting texture will be of dimension size,size,samplesU*samplesV/2, two samples are packed into one vec4
 	*
 	* See OpenGL 4.0 shading language Cookbook, Chapte 7 for details

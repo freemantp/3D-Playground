@@ -29,7 +29,7 @@ public:
 
 	virtual ~Scene();
 
-	void render(Viewport_ptr viewport);
+	void Render(Viewport_ptr viewport);
 
 	void AddShape(Shape_ptr shape);
 	void SetSkybox(Skybox_ptr skybox);

@@ -1,12 +1,21 @@
 #include "stdafx.h"
-#include "DirectionalLight.h"
 
-DirectionalLight_ptr DirectionalLight::Create()
+#include "DirectionalLight.h"
+#include "Shadow.h"
+
+DirectionalLight_ptr DirectionalLight::Create(bool castsShadow)
 {
-	return DirectionalLight_ptr(new DirectionalLight());
+	DirectionalLight_ptr ptr = DirectionalLight_ptr(new DirectionalLight(castsShadow));
+	ptr->UpdateShadow();
+	return ptr;
 }
 
-const glm::vec3& DirectionalLight::GetDirection()
+DirectionalLight::DirectionalLight(bool castsShadow)
+{
+	shadow = Shadow::Create();
+}
+
+const glm::vec3& DirectionalLight::GetDirection() const
 {
 	return direction;
 }
@@ -14,9 +23,17 @@ const glm::vec3& DirectionalLight::GetDirection()
 void DirectionalLight::SetDirection(glm::vec3& dir)
 {
 	direction = dir;
+	
+	UpdateShadow();
 }
 
-DirectionalLight::DirectionalLight()
+void DirectionalLight::UpdateShadow()
 {
+	if (shadow)
+		shadow->UpdateShadowMatrix(shared_from_this());
+}
 
+Shadow_ptr DirectionalLight::GetShadow() const
+{
+	return shadow;
 }

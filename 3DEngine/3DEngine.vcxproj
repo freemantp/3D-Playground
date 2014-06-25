@@ -190,7 +190,9 @@
     <Xml Include="..\data\scenes\road.xml">
       <SubType>Designer</SubType>
     </Xml>
-    <Xml Include="..\data\scenes\shadowScene.xml" />
+    <Xml Include="..\data\scenes\shadowScene.xml">
+      <SubType>Designer</SubType>
+    </Xml>
     <Xml Include="..\data\scenes\shScene.xml">
       <SubType>Designer</SubType>
     </Xml>

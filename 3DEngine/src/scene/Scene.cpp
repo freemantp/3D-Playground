@@ -19,6 +19,7 @@
 #include "../shape/Skybox.h"
 #include "../light/lightModel.h"
 #include "../light/PointLight.h"
+#include "../light/DirectionalLight.h"
 #include "../light/SpotLight.h"
 #include "../light/Shadow.h"
 #include "../texture/Framebuffer.h"
@@ -108,31 +109,41 @@ void Scene::RenderShadowMaps()
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_FRONT);
 
+		auto renderShadowMap = [this](Shadow_ptr smap)
+		{
+			auto smapTex = smap->ShadowMap();
+			framebuffer->Attach(smapTex, Framebuffer::Attachment::Depth);
+			framebuffer->SetDrawToColorBufferEnabled(false);
+
+			glClear(GL_DEPTH_BUFFER_BIT);
+
+			const glm::ivec2& smapDim = smapTex->Dimensions();
+			glViewport(0, 0, smapDim.x, smapDim.y);
+
+			shadowShader->SetLightMatrix(smap->LightViewProjectionMatrix());
+
+			for (Shape_ptr s : objects)
+			{
+				if (shadowShader->Use(shared_from_this(), s->worldTransform))
+				{
+					s->RenderShadowMap(shadowShader);
+				}
+			}
+		};
+
 		//Generate shadow maps
 		for (auto sl : lightModel->spotLights)
 		{
 			if (Shadow_ptr smap = sl->GetShadow())
-			{
-				auto smapTex = smap->ShadowMap();
-				framebuffer->Attach(smapTex, Framebuffer::Attachment::Depth);
-				framebuffer->SetDrawToColorBufferEnabled(false);
-
-				glClear(GL_DEPTH_BUFFER_BIT);
-
-				const glm::ivec2& smapDim = smapTex->Dimensions();
-				glViewport(0, 0, smapDim.x, smapDim.y);
-
-				shadowShader->SetLightMatrix(smap->LightViewProjectionMatrix());
-
-				for (Shape_ptr s : objects)
-				{
-					if (shadowShader->Use(shared_from_this(), s->worldTransform))
-					{
-						s->RenderShadowMap(shadowShader);
-					}
-				}
-			}
+				renderShadowMap(smap);
 		}
+
+		if (lightModel->directionalLight)
+		{
+			if (Shadow_ptr smap = lightModel->directionalLight->GetShadow())
+				renderShadowMap(smap);
+		}
+
 	}
 	shadowShader->UnUse();
 	framebuffer->Unbind();
@@ -141,7 +152,7 @@ void Scene::RenderShadowMaps()
 	glDisable(GL_CULL_FACE);
 }
 
-void Scene::render(Viewport_ptr viewport)
+void Scene::Render(Viewport_ptr viewport)
 {		
 	RenderShadowMaps();
 	

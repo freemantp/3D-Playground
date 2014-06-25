@@ -460,8 +460,7 @@ bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 
 			GetFloatAttrib(lightElem,"cutoff",cutoff);
 			GetFloatAttrib(lightElem,"exponent",exponent);
-
-			SpotLight_ptr slight(new SpotLight(direction,cutoff,exponent));
+			SpotLight_ptr slight = SpotLight::Create(direction,cutoff,exponent);
 
 			slight->SetPosition(vec4(pos,1.0));
 			slight->SetColor(color);

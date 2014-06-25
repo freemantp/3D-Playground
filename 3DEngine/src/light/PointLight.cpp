@@ -35,7 +35,7 @@ void PointLight::SetPosition(glm::vec4& pos)
 	visMesh->worldTransform = glm::scale(visMesh->worldTransform,vec3(0.05f));
 }
 
-glm::vec4& PointLight::GetPosition()
+const glm::vec4& PointLight::GetPosition() const
 {
 	return position;
 }

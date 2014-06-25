@@ -2,6 +2,12 @@
 #include "SpotLight.h"
 #include "Shadow.h"
 
+
+SpotLight_ptr SpotLight::Create(const glm::vec3& direction, float cutoffAngle, float exponent, bool castsShadow /*= true*/)
+{
+	return SpotLight_ptr(new SpotLight(direction, cutoffAngle, exponent, castsShadow));
+}
+
 SpotLight::SpotLight(const glm::vec3& direction, float cutoffAngle, float exponent, bool castsShadow)
 	: PointLight()
 	, cutoffAngle(cutoffAngle)
@@ -14,12 +20,12 @@ SpotLight::SpotLight(const glm::vec3& direction, float cutoffAngle, float expone
 }
 
 
-glm::vec3& SpotLight::GetDirection()
+const glm::vec3& SpotLight::GetDirection() const
 { 
 	return direction; 
 }
 
-glm::vec3& SpotLight::GetUpVector()
+const glm::vec3& SpotLight::GetUpVector() const
 {
 	return up;
 }
@@ -28,27 +34,23 @@ void SpotLight::SetPosition(glm::vec4& pos)
 {
 	__super::SetPosition(pos);
 
-	if (shadow)
-		shadow->UpdateShadowMatrix(shared_from_this());
+	UpdateShadow();
 }
-
 
 void SpotLight::SetDirection(const glm::vec3& dir)
 { 
 	direction = glm::normalize(dir); 
-	if (shadow)
-		shadow->UpdateShadowMatrix(shared_from_this());
+	UpdateShadow();
 }
 
 void SpotLight::SetUpDirection(const glm::vec3& upVector)
 {
 	up = glm::normalize(upVector);
-	if (shadow)
-		shadow->UpdateShadowMatrix(shared_from_this());
+	UpdateShadow();
 }
 
 
-float SpotLight::GetCutoffAngle() 
+float SpotLight::GetCutoffAngle() const
 { 
 	return cutoffAngle; 
 }
@@ -64,11 +66,18 @@ void SpotLight::SetExponent(float exponent)
 	this->exponent = exponent; 
 }
 
-float SpotLight::GetExponent() { 
+float SpotLight::GetExponent() const
+{ 
 	return exponent; 
 }
 
 Shadow_ptr SpotLight::GetShadow() const
 {
 	return shadow;
+}
+
+void SpotLight::UpdateShadow()
+{
+	if (shadow)
+		shadow->UpdateShadowMatrix(shared_from_this());
 }

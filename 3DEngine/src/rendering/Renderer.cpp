@@ -33,7 +33,7 @@ void Renderer::Render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	if(m_Scene)
 	{
-		m_Scene->render(m_Viewport);
+		m_Scene->Render(m_Viewport);
 	}
 }
 

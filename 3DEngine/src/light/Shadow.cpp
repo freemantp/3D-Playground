@@ -4,6 +4,7 @@
 
 #include "../texture/ShadowMapTexture.h"
 #include "../light/SpotLight.h"
+#include "../light/DirectionalLight.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp> 
@@ -20,7 +21,7 @@ Shadow::Shadow()
 		);
 }
 
-void Shadow::UpdateShadowMatrix(const SpotLight_ptr sl)
+void Shadow::UpdateShadowMatrix(SpotLight_cptr sl)
 {
 	//In fact this applies to directional lights only...	
 	glm::vec3 pos3(sl->GetPosition());
@@ -28,6 +29,15 @@ void Shadow::UpdateShadowMatrix(const SpotLight_ptr sl)
 
 	glm::mat4 depthViewMatrix = glm::lookAt(pos3, lookAtPos, sl->GetUpVector());
 	glm::mat4 depthProjectionMatrix = glm::perspective(sl->GetCutoffAngle() * 2, 1.0f, 0.1f, 100.0f);
+
+	depthViewProjectionMatrix = depthProjectionMatrix * depthViewMatrix;
+	shadowMat = biasMatrix * depthViewProjectionMatrix;
+}
+
+void Shadow::UpdateShadowMatrix(DirectionalLight_cptr dirLight)
+{	
+	glm::mat4 depthViewMatrix = glm::lookAt(-dirLight->GetDirection(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 20);
 
 	depthViewProjectionMatrix = depthProjectionMatrix * depthViewMatrix;
 	shadowMat = biasMatrix * depthViewProjectionMatrix;
