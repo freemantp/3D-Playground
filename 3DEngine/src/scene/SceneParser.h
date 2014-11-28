@@ -20,7 +20,7 @@ public:
 
 	SceneParser(InputHandlerFactory& factory);
 
-	bool parse(const char* xmlDocument);
+	bool parse(const std::string& xmlDocument);
 	Scene_ptr GetScene();
 
 protected:

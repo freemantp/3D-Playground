@@ -19,8 +19,8 @@ class Util
 public:
 
 	static unsigned long GetFileLength(std::ifstream& file);
-	static const char* LoadTextFile(char* filename);
-	static const char* Util::LoadTextFile(const std::string& s);
+	static std::string LoadTextFile(char* filename);
+	static std::string LoadTextFile(const std::string& s);
 	static void PrintStrings(const std::vector<std::string> strings);
 	static void PrintUniforms(const ShaderBase* shader);
 	static Mesh_ptr LoadModel(const std::string& path);

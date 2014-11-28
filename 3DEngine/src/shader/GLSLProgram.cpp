@@ -387,19 +387,18 @@ std::vector<std::string> GLSLProgram::GetVertexAttributes()
 	glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTES, &nAttribs);
 	glGetProgramiv(programHandle, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxLength);
 
-	GLchar* currentAttrib = new GLchar[maxLength];
+	auto currentAttrib = std::unique_ptr<GLchar[]>(new GLchar[maxLength]);
 
 	std::vector<std::string> attribNames(nAttribs);
 
 	for (int i = 0; i < nAttribs; i++)
 	{
 		glGetActiveAttrib(programHandle, i, maxLength, &charsWritten, 
-			&size, &type, currentAttrib);
+			&size, &type, currentAttrib.get());
 
-		attribNames.push_back( std::string(currentAttrib) );
+		attribNames.push_back( std::string(currentAttrib.get()) );
 	}
 
-	delete[] currentAttrib;
 	return attribNames;
 
 }
@@ -412,19 +411,18 @@ std::vector<std::string> GLSLProgram::GetUniformAttributes() const
 	glGetProgramiv(programHandle, GL_ACTIVE_UNIFORMS,&nAttribs);
 	glGetProgramiv(programHandle, GL_ACTIVE_UNIFORM_MAX_LENGTH,&maxLength);
 
-	GLchar* currentAttrib = new GLchar[maxLength];
+	auto currentAttrib = std::unique_ptr<GLchar[]>(new GLchar[maxLength]);
 
 	std::vector<std::string> attribNames(nAttribs);
 
 	for (int i = 0; i < nAttribs; i++)
 	{
 		glGetActiveUniform( programHandle, i, maxLength, &charsWritten, 
-			&size, &type, currentAttrib );
+			&size, &type, currentAttrib .get());
 
-		attribNames.push_back( std::string(currentAttrib) );
+		attribNames.push_back( std::string(currentAttrib.get()) );
 	}
 
-	delete[] currentAttrib;
 	return attribNames;
 
 }
@@ -463,18 +461,17 @@ string GLSLProgram::GetInfoLog(GLuint handle)
 	else
 		glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &length );
 
-	if(length > 0 ) {
-		GLchar * c_log = new GLchar[length];
+	if(length > 0 ) 
+	{
+		auto c_log = std::unique_ptr<GLchar[]>(new GLchar[length]);
 		int written = 0;
 
 		if(isShader)
-			glGetShaderInfoLog(handle, length, &written, c_log);
+			glGetShaderInfoLog(handle, length, &written, c_log.get());
 		else
-			glGetProgramInfoLog(handle, length, &written, c_log);
+			glGetProgramInfoLog(handle, length, &written, c_log.get());
 
-
-		logString = c_log;
-		delete [] c_log;
+		logString = c_log.get();
 	}
 
 	return logString;

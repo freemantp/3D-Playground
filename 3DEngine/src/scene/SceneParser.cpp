@@ -51,12 +51,12 @@ Scene_ptr SceneParser::GetScene()
 	return generatedScene;
 }
 
-bool SceneParser::parse(const char* xmlDocument)
+bool SceneParser::parse(const std::string& xmlDocument)
 {
 	bool parseOk = true;
 	
 	tinyxml2::XMLDocument doc;
-	if(doc.Parse(xmlDocument) == tinyxml2::XML_NO_ERROR)
+	if(doc.Parse(xmlDocument.c_str()) == tinyxml2::XML_NO_ERROR)
 	{	
 		XMLElement* root = doc.RootElement();
 
@@ -218,9 +218,8 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 			else if (materialType == "diffuseSH")
 			{
 				auto shMaterial = ShDiffuseMaterial::Create();
-				const char* data = Util::LoadTextFile(Config::DATA_BASE_PATH + "sh/grace.xml");
+				auto data = Util::LoadTextFile(Config::DATA_BASE_PATH + "sh/grace.xml");
 				shMaterial->shCoeffs = ShCoeffParser::Parse(data);
-				delete[] data;
 
 				material = shMaterial;
 			}

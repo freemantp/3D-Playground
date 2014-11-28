@@ -328,8 +328,8 @@ void ObjLoader::copyVec2(float* target, const vec2& v)
 void ObjLoader::GetNormalArray (vector<float>& normalArray)
 {
 	//Lookup directory, holds information about vertices that are already processed
-	bool* processedDictionary = new bool[vertices.size()];
-	memset(processedDictionary, false, vertices.size() * sizeof(bool));
+	std::unique_ptr <bool[]> processedDictionary(new bool[vertices.size()]);
+	memset(processedDictionary.get(), false, vertices.size() * sizeof(bool));
 
 	//3 floats per vertex
 	normalArray.resize(vertices.size() * 3);
@@ -359,15 +359,13 @@ void ObjLoader::GetNormalArray (vector<float>& normalArray)
 			processedDictionary[t.v3.x] = true;
 		}
 	}
-	
-	delete[] processedDictionary;
 }
 
 void ObjLoader::GetTangentArray (vector<float>& tangentArray)
 {
 	//Lookup directory, holds information about vertices that are already processed
-	bool* processedDictionary = new bool[vertices.size()];
-	memset(processedDictionary, false, vertices.size() * sizeof(bool));
+	std::unique_ptr <bool[]> processedDictionary(new bool[vertices.size()]);
+	memset(processedDictionary.get(), false, vertices.size() * sizeof(bool));
 
 	//3 floats per vertex
 	tangentArray.resize(vertices.size() * 4);
@@ -397,23 +395,21 @@ void ObjLoader::GetTangentArray (vector<float>& tangentArray)
 			processedDictionary[t.v3.x] = true;
 		}
 	}
-	
-	delete[] processedDictionary;
 }
 
 void ObjLoader::GetTexCoordArray(vector<float>& texCoordArray)
 {
 //Lookup directory, holds information about vertices that are already processed
 
-	bool* processedDictionary = new bool[vertices.size()];
-	memset(processedDictionary, false, vertices.size() * sizeof(bool));
+	std::unique_ptr <bool[]> processedDictionary(new bool[vertices.size()]);
+	memset(processedDictionary.get(), false, vertices.size() * sizeof(bool));
 
 	//2 floats per vertex
 	texCoordArray.resize(vertices.size() * 2);
 
 	float* txRaw = &texCoordArray[0];
 
-	auto processTexCoords = [this,txRaw,processedDictionary](ivec3& v) 
+	auto processTexCoords = [this,txRaw,&processedDictionary](ivec3& v) 
 	{
 		if( ! processedDictionary[v.x] && v.y >= 0)
 		{
@@ -431,8 +427,7 @@ void ObjLoader::GetTexCoordArray(vector<float>& texCoordArray)
 		processTexCoords(t.v2);
 		processTexCoords(t.v3);
 	}
-	
-	delete[] processedDictionary;
+
 }
 
 bool ObjLoader::ComputeNormals()

@@ -41,13 +41,6 @@ Mesh::Mesh(MeshRaw_ptr rawMesh)
 	
 }
 
-Mesh::~Mesh()
-{
-	delete[] bufferObjects;
-	delete[] indexBufferObjects;
-	delete[] vAttribData;
-}
-
 void Mesh::InitFromRawMesh(MeshRaw_ptr rawMesh)
 {
 	if(rawMesh)
@@ -178,8 +171,8 @@ bool Mesh::SetPositions(const std::vector<float>& positions, const std::vector<i
 	//Allocate mem for index buffer handles
 	bool hasIndexGroups =  indexGroups != nullptr;
 	int numIdxBuffers = hasIndexGroups ? (int)indexGroups->size() : 1;
-	indexBufferObjects = new GLuint[numIdxBuffers];	
-	glGenBuffers(numIdxBuffers, indexBufferObjects);
+	indexBufferObjects.reset(new GLuint[numIdxBuffers]);	
+	glGenBuffers(numIdxBuffers, indexBufferObjects.get());
 	
 	//Copy index groups if available, otherwise create one
 	if(hasIndexGroups)
@@ -225,7 +218,7 @@ bool Mesh::SetPositions(const std::vector<float>& positions, const std::vector<i
 	if(!success)
 	{		
 		glDeleteBuffers(1, &bufferObjects[Position]);
-		glDeleteBuffers(numIdxBuffers, indexBufferObjects);
+		glDeleteBuffers(numIdxBuffers, indexBufferObjects.get());
 	}
 
 	//Bind first index buffer  (1st group) per default
@@ -359,10 +352,10 @@ void Mesh::Init()
 		int numBuffers = 6;
 
 		//Init buffer names
-		bufferObjects = new GLuint[numBuffers];		
-		memset(bufferObjects,0, numBuffers * sizeof(GLuint) );
+		bufferObjects.reset(new GLuint[numBuffers]);		
+		memset(bufferObjects.get(),0, numBuffers * sizeof(GLuint) );
 
-		vAttribData = new VertexAttribData[numBuffers];
+		vAttribData.reset(new VertexAttribData[numBuffers]);
 
 		vAttribData[Position].channel = 0;
 		vAttribData[Position].size = 3;

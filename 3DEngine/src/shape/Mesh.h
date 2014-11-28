@@ -23,8 +23,6 @@ public:
 
 	static Mesh_ptr Create(MeshRaw_ptr);
 
-	virtual ~Mesh();
-
 	virtual void Render(const Scene_ptr scene) const override;
 	virtual void RenderShadowMap(ShadowMapShader_ptr) const override;
 	virtual void Init() override; 
@@ -63,9 +61,10 @@ protected:
 
 	GLuint vaoHandle;
 	std::string name;
-	GLuint* bufferObjects;
-	GLuint* indexBufferObjects;
-	VertexAttribData* vAttribData;
+
+	std::unique_ptr<GLuint[]> bufferObjects;
+	std::unique_ptr<GLuint[]> indexBufferObjects;
+	std::unique_ptr<VertexAttribData[]> vAttribData;
 
 	std::vector< std::pair<int,int> > ranges;
 	std::vector<Material_ptr> materialsNew;

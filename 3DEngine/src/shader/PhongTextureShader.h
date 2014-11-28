@@ -11,8 +11,6 @@ class PhongTextureShader : public PhongShader
 public:
 
 	SHARED_PTR_FACTORY(PhongTextureShader);
-	
-	virtual ~PhongTextureShader();
 
 	virtual bool Use(const Scene_ptr scene, const glm::mat4& modelTransform) override;
 
@@ -21,6 +19,8 @@ public:
 protected:
 
 	PhongTextureShader();
+
+	virtual ~PhongTextureShader();
 
 	enum TextureType { Albedo = 0, BumpMap = 1, Specular = 2 };
 	static const int numTextures = 3;

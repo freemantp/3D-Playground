@@ -21,7 +21,7 @@ Texture3D_ptr ShadowUtil::GenerateCircularOffsets(unsigned int size, unsigned  i
 
 	unsigned int numSamples = samplesPhi * samplesR;
 
-	value_t* dataBuffer = new value_t[size * size * numSamples * 2];
+	auto dataBuffer = std::unique_ptr<value_t[]>(new value_t[size * size * numSamples * 2]);
 
 	const value_t twoPi = glm::pi<value_t>() * 2;
 
@@ -65,9 +65,7 @@ Texture3D_ptr ShadowUtil::GenerateCircularOffsets(unsigned int size, unsigned  i
 		}
 	}	
 
-	Texture3D_ptr tex = Texture3D::Create(size, size, numSamples / 2, dataBuffer, Texture::Format::RGBA32F);
-
-	delete[] dataBuffer;
+	Texture3D_ptr tex = Texture3D::Create(size, size, numSamples / 2, dataBuffer.get(), Texture::Format::RGBA32F);;
 
 	return tex;
 }

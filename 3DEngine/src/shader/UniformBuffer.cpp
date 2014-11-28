@@ -34,32 +34,27 @@ UniformBuffer::UniformBuffer(const GLSLProgram_ptr program, std::string bufferNa
 	glGenBuffers(1,&uboHandle);
 
 	//Obtain indices and offsets
-	GLuint* indices = new GLuint[numElems];
-	GLint*  eOffsets = new GLint[numElems];
+	std::unique_ptr<GLuint[]> indices(new GLuint[numElems]);
+	std::unique_ptr<GLint[]> eOffsets(new GLint[numElems]);
 
-	glGetUniformIndices(programHandle, numElems, &names_raw[0], indices);
-	glGetActiveUniformsiv(programHandle, numElems, indices, GL_UNIFORM_OFFSET, eOffsets);
+	glGetUniformIndices(programHandle, numElems, &names_raw[0], indices.get());
+	glGetActiveUniformsiv(programHandle, numElems, indices.get(), GL_UNIFORM_OFFSET, eOffsets.get());
 
 	//PrintUniforms(program,names, indices,eOffsets);
 
 	//Save offsets with element names as key
 	for(unsigned int i=0; i < numElems; i++)
 	{
-		offsets.insert( std::pair<std::string,GLint>( names[i], eOffsets[i] ) );
+		offsets.insert(std::pair<std::string, GLint>(names[i], eOffsets[i]));
 	}
 
-	delete[] eOffsets;
-	delete[] indices;
-
 	//Allocate memory for buffer
-	GLubyte* blockBuffer = new GLubyte[blockSize];
-	memset(blockBuffer,0,blockSize);
+	std::unique_ptr<GLubyte[]> blockBuffer(new GLubyte[blockSize]);
+	memset(blockBuffer.get(),0,blockSize);
 
 	glBindBuffer(GL_UNIFORM_BUFFER, uboHandle);
-	glBufferData(GL_UNIFORM_BUFFER, blockSize, blockBuffer,GL_DYNAMIC_DRAW);
+	glBufferData(GL_UNIFORM_BUFFER, blockSize, blockBuffer.get(), GL_DYNAMIC_DRAW);
 	assert(glGetError() != GL_INVALID_ENUM || glGetError() != GL_INVALID_VALUE);
-
-	delete[] blockBuffer;
 }
 
 UniformBuffer::~UniformBuffer(void)

@@ -102,7 +102,7 @@ bool Initialize()
 	GLint num;
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &num);
 
-	const char* data = Util::LoadTextFile(Config::SCENE_BASE_PATH + sceneName.c_str());
+	auto data = Util::LoadTextFile(Config::SCENE_BASE_PATH + sceneName.c_str());
 
 	WindowEventHandler& winEventHandler = WindowEventHandler::GetInstance();
 

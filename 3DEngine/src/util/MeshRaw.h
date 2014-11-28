@@ -51,8 +51,6 @@ public:
 
 	SHARED_PTR_FACTORY(MeshRaw);
 
-	~MeshRaw();
-
 	typedef std::pair<int,int> Range;
 
 	bool HasNormals();
@@ -75,6 +73,8 @@ public:
 
 protected:
 	MeshRaw();
+
+	~MeshRaw();
 
 };
 

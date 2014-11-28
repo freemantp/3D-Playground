@@ -38,12 +38,12 @@ unsigned long Util::GetFileLength(std::ifstream& file)
 	return len;
 }
 
-const char* Util::LoadTextFile(const string& s)
+std::string Util::LoadTextFile(const string& s)
 {
 	return LoadTextFile((char*)s.c_str());
 }
 
-const char* Util::LoadTextFile(char* filename)
+std::string Util::LoadTextFile(char* filename)
 {
 	std::ifstream file;
 	file.open(filename, std::ios::in);
@@ -55,7 +55,10 @@ const char* Util::LoadTextFile(char* filename)
 	/*if (len==0) 
 	return -2;   // "Empty File" */
 
-	GLubyte* shaderSource = (GLubyte*) new char[len+1];
+	//auto shaderSource = std::unique_ptr<char[]>(new char[len + 1]);
+
+	std::string shaderSource(len, ' ');
+
 	/*if (shaderSource == 0) 
 	return -3;   // can't reserve memory*/
 
@@ -73,7 +76,8 @@ const char* Util::LoadTextFile(char* filename)
 
 	file.close();
 
-	return (const char*)shaderSource;
+
+	return shaderSource;
 }
 
 void Util::PrintStrings(const std::vector<string> strings)

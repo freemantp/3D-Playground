@@ -28,7 +28,7 @@ CubeMapTexture::CubeMapTexture(const std::string& cubeMapTexture)
 		LoadCubeTextures(cmtrd);
 		for (int i = 0; i < 6; i++)
 		{
-			delete[] cmtrd.imageData[i];
+			cmtrd.imageData[i].reset();
 		}
 	}
 }
@@ -54,7 +54,10 @@ CubeMapTexture::CubeMapTexture(const std::string& textureBasePath, const std::st
 			cmtrd.height = dim.height;
 			cmtrd.numComponents = (img.GetFormat().Components() == glimg::FMT_COLOR_RGB ? 3 : 4);
 			cmtrd.bytesPerComponent = 1;
-			cmtrd.imageData[i] = static_cast<const unsigned char*>(img.GetImageData());
+
+			const unsigned char* imgData = static_cast<const unsigned char*>(img.GetImageData());
+
+			cmtrd.imageData[i].reset(imgData);
 		}
 		else
 			Error("Could not load texture: " + fileName);
@@ -82,7 +85,7 @@ void CubeMapTexture::LoadCubeTextures(const CubeMapTextureRawData& cubemaps)
 
 	for (int i = 0; i < 6; i++)
 	{
-		glTexImage2D(targets[i], 0, format, cubemaps.width, cubemaps.height, 0, format, GL_UNSIGNED_BYTE, cubemaps.imageData[i]);
+		glTexImage2D(targets[i], 0, format, cubemaps.width, cubemaps.height, 0, format, GL_UNSIGNED_BYTE, cubemaps.imageData[i].get());
 	}
 
 	InitTextureParams();
@@ -152,7 +155,7 @@ bool CubeMapTexture::LoadCubemapImages(const std::string& texturePath, CubeMapTe
 					{
 						unsigned char* subimage = new unsigned char[cubeMap.width*cubeMap.height*bytePerPixel];
 						copyArea(areas[i][0], areas[i][1], areas[i][2], areas[i][3], subimage);
-						cubeMap.imageData[i] = subimage;
+						cubeMap.imageData[i].reset(static_cast<const unsigned char*>(subimage));
 					}
 
 					return true;

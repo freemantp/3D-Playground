@@ -18,5 +18,5 @@
 #define SHARED_PTR_FACTORY(T) \
 	static std::shared_ptr<T> Create() \
 	{ \
-		return std::shared_ptr<T>(new T()); \
+	return std::shared_ptr<T>(new T(),[](const T* p) {delete p; }); \
 	};

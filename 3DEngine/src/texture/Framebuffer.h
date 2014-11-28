@@ -44,10 +44,10 @@ public:
 	/// Uninds the current framebuffer
 	void Unbind();
 
-	virtual ~Framebuffer();
-
 protected:
 	Framebuffer();
+
+	virtual ~Framebuffer();
 
 	GLuint CreateRenderBuffer(GLenum format);
 
