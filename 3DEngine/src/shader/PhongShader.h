@@ -36,6 +36,7 @@ protected:
 
 	GLuint blinnSubroutineIdx;
 	GLuint phongSubroutineIdx;
+	bool hasShadows;
 	bool useShadows;
 	bool pcfShadows;
 

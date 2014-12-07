@@ -162,7 +162,7 @@ std::unique_ptr<glimg::ImageSet> Util::LoadImageFile(const std::string& textureP
 		Error("Loading of " + texturePath + " failed");
 	}
 
-	return imgSet;
+	return std::move(imgSet);
 }
 
 std::string Util::ExtractBaseFolder(std::string path)

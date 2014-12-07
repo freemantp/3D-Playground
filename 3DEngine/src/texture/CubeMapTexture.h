@@ -13,13 +13,14 @@ public:
 	int bytesPerComponent;
 	int width;
 	int height;
-	std::unique_ptr <const unsigned char[]> imageData[6];
+	const unsigned char* imageData[6];
 
 	CubeMapTextureRawData() 
 		: width(0), height(0)
 		, bytesPerComponent(0)
 		, numComponents(0)
 	{}
+
 };
 
 class CubeMapTexture

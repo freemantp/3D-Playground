@@ -22,6 +22,7 @@ PhongShader_ptr PhongShader::Create()
 
 PhongShader::PhongShader()
 : MaterialShader("phongShader")
+, hasShadows(true)
 , useShadows(true)
 , pcfShadows(false)
 {
@@ -37,7 +38,7 @@ PhongShader::PhongShader(const string& shaderName)
 
 void PhongShader::Init()
 {
-
+	
 }
 
 PhongShader::~PhongShader(void)
@@ -132,29 +133,37 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 		}
 				
 		shadowMaps[i] = i;
-	}
+	}	
 
-	SetUniform("UseShadows", useShadows);
-
-	if (useShadows && lightModel->pcfShadowRandomData)
+	if (hasShadows)
 	{
-		SetUniform("PcfShadows", pcfShadows);
+		SetUniform("UseShadows", useShadows);
 
-		lightModel->pcfShadowRandomData->BindTexture(++texUnit);
-		
-		auto pcfDim = lightModel->pcfShadowRandomData->Dimensions();
+		if (useShadows)
+		{
+			if (lightModel->pcfShadowRandomData)
+			{
+				SetUniform("PcfShadows", pcfShadows);
 
-		auto sl = lightModel->spotLights[0];
-		const glm::ivec2& sdims = sl->GetShadow()->ShadowMap()->Dimensions();
+				lightModel->pcfShadowRandomData->BindTexture(++texUnit);
 
-		const float pixelBlur = pcfDim.x / static_cast<float>(sdims.x);
-		SetUniform("PCFDataOffsetsSize", pcfDim);
-		SetUniform("PCFDataOffsets", texUnit);
-		SetUniform("PCFBlurRadius", pixelBlur);
-		
+				auto pcfDim = lightModel->pcfShadowRandomData->Dimensions();
+
+				auto sl = lightModel->spotLights[0];
+				const glm::ivec2& sdims = sl->GetShadow()->ShadowMap()->Dimensions();
+
+				const float pixelBlur = pcfDim.x / static_cast<float>(sdims.x);
+				SetUniform("PCFDataOffsetsSize", pcfDim);
+				SetUniform("PCFDataOffsets", texUnit);
+				SetUniform("PCFBlurRadius", pixelBlur);
+
+			}
+
+			SetUniformArray("ShadowMapArray", shadowMaps, 1, maxNumSpotLights);
+		}
 	}
 
-	SetUniformArray("ShadowMapArray", shadowMaps, 1, maxNumSpotLights);
+
 
 	lightModel->GetLightsBuffer()->BindToShader(shared_from_this(),"Lights");
 }

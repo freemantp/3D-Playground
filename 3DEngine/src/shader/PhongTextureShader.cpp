@@ -11,6 +11,7 @@
 
 PhongTextureShader::PhongTextureShader()
 : PhongShader("phongBumpShader")
+
 {
 	GLint maxTexUnits;
 	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,&maxTexUnits);
@@ -18,6 +19,8 @@ PhongTextureShader::PhongTextureShader()
 	texUnits[Albedo] = 0;
 	texUnits[BumpMap] = 1;
 	texUnits[Specular] = 2;
+
+	hasShadows = false;
 }
 
 PhongTextureShader::~PhongTextureShader()
