@@ -1,12 +1,16 @@
 #include "stdafx.h"
-#include "FirstPersonCameraAdapter.h"
-#include <iostream>
-#include "Camera.h"
+
+#define GLM_SWIZZLE
+#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
+#include <iostream>
+
+#include "FirstPersonCameraAdapter.h"
+#include "Camera.h"
 
 using glm::mat4;
 using glm::vec3;
-
 
 FirstPersonCameraAdapter::FirstPersonCameraAdapter(Camera_ptr cam)
 	: CameraAdapter(cam)

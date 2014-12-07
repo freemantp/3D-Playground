@@ -1,6 +1,11 @@
 #pragma once
 
 #include <vector>
+#include <array>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "../util/SharedPointer.h"
 #include "../light/LightModel.h"
 #include "../animation/TimeObserver.h"
@@ -19,9 +24,7 @@ SHARED_PTR_CLASS_DECL(ShadowMapShader);
 SHARED_PTR_CLASS_DECL(Framebuffer);
 SHARED_PTR_CLASS_DECL(Viewport);
 
-class Scene 
-	: public TimeObserver
-	, public std::enable_shared_from_this<Scene>
+class Scene : public TimeObserver, public std::enable_shared_from_this<Scene>
 {
 public:		
 
@@ -47,6 +50,16 @@ public:
 	std::vector<ShaderBase*> materials;
 	Skybox_ptr skybox;
 	std::string name;
+	
+	class LightAnimationParam
+	{
+		public:
+			glm::vec3 rotationAxis;
+			float radiansPerInterval;
+
+	};
+
+	std::array<LightAnimationParam,3> lightAnimParams;
 
 protected:
 

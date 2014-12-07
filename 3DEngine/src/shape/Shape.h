@@ -23,11 +23,6 @@ public:
 	void SetMaterial(Material_ptr material) { this->material = material; };
 
 	Material_ptr GetMaterial() const { return material; };
-
-	void SetWorldTransform(glm::mat4 transf)
-	{
-		worldTransform = transf;
-	}
 	
 	glm::mat4 worldTransform;
 

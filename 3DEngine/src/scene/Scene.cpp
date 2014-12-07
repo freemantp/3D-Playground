@@ -31,9 +31,7 @@
 
 #include "../error.h"
 
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+
 
 using std::vector;
 
@@ -71,22 +69,21 @@ Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 	}
 
 	winEventHandler.AddViewportObserver(cam);
+
+	lightAnimParams[0].radiansPerInterval = /*glm::radians(*/0.5f;
+	lightAnimParams[1].radiansPerInterval = /*glm::radians(*/0.7f;
+	lightAnimParams[2].radiansPerInterval = /*glm::radians(*/0.6f;
+
+	lightAnimParams[0].rotationAxis = glm::vec3(0.0f, 1.0f, 0.0f);
+	lightAnimParams[1].rotationAxis = glm::normalize(glm::vec3(0.5f, 1.0f, 0.0f));
+	lightAnimParams[2].rotationAxis = glm::normalize(glm::vec3(1.0f, 1.0f, 0.0f));
 }
 
 Scene::~Scene()
 {
-	////Delete objects
-	//std::vector<Shape_ptr>::iterator objIt;
-	//for(objIt = objects.begin(); objIt != objects.end(); objIt++)
-	//{
-	//	delete *objIt;
-	//}
-
-	//Delete materials
-	std::vector<ShaderBase*>::iterator mIt;
-	for(mIt = materials.begin(); mIt != materials.end(); mIt++)
+	for(auto mat : materials)
 	{
-		delete *mIt;
+		delete mat;
 	}
 }
 
@@ -199,42 +196,20 @@ void Scene::TimeUpdate(long time)
 	int numPLs = (int)lightModel->spotLights.size();
 	SpotLight_ptr pl;
 	
-	if(numPLs > 0)
-	{	
-		pl = lightModel->spotLights[0];
-		glm::mat4 lightTransform1 = (glm::rotate(mat4(1.0f), glm::radians(30.0f), glm::vec3(0.0f,1.0f,0.0f)));
+	auto rotate_light = [](SpotLight_ptr& pl, float radians, const glm::vec3& axis)
+	{
+		glm::mat4 lightTransform1 = glm::rotate(mat4(1.0f), radians, axis);
 		pl->SetPosition(lightTransform1 * pl->GetPosition());
 
 		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform1))) * pl->GetDirection();
-		pl->SetDirection(newDir);	
-	}
-
-	if(numPLs > 1)
-	{
-		pl = lightModel->spotLights[1];
-		glm::mat4 lightTransform2 = (glm::rotate(mat4(1.0f), glm::radians(15.0f), glm::normalize(glm::vec3(0.5f, 1.0f, 0.0f))));
-		pl->SetPosition(lightTransform2 * pl->GetPosition());
-	
-		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform2))) * pl->GetDirection();
 		pl->SetDirection(newDir);
-	}
 
-	if(numPLs > 2)
+	};
+
+	for (int i = 0; i < std::min(lightAnimParams.size(), lightModel->spotLights.size()); i++)
 	{
-		pl = lightModel->spotLights[2];
-		glm::mat4 lightTransform3 = (glm::rotate(mat4(1.0f), glm::radians(60.0f), glm::vec3(1.0f, 0.0f, 0.0f)));
-		pl->SetPosition(lightTransform3 * pl->GetPosition());
-	
-		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform3))) * pl->GetDirection();
-		pl->SetDirection(newDir);
+		rotate_light(lightModel->spotLights[i], lightAnimParams[i].radiansPerInterval, lightAnimParams[i].rotationAxis);
 	}
-
-	/*glm::mat4 translateM = glm::translate(glm::mat4(1.0f), activeCamera->getFrame().viewDir * 0.01f); 
-	glm::vec4 oldPos = glm::vec4( activeCamera->GetPosition(),1.0);
-	glm::vec4 newPos = translateM * oldPos;
-
-	activeCamera->setPosition(vec3(newPos.x, newPos.y, newPos.z));
-	activeCamera->updateViewMatrix();*/
 
 	lightModel->UpdateUniformBuffer(activeCamera);
 }

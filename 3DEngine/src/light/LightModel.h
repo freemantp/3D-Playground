@@ -13,10 +13,6 @@ SHARED_PTR_CLASS_DECL(UniformBuffer);
 SHARED_PTR_CLASS_DECL(GLSLProgram);
 SHARED_PTR_CLASS_DECL(Texture3D);
 
-using std::vector;
-
-typedef vector<PointLight*>::const_iterator PointLightIt;
-
 class LightModel
 {
 public:
@@ -31,8 +27,8 @@ public:
 
 public:
 
-	vector<PointLight_ptr> pointLights;
-	vector<SpotLight_ptr> spotLights;
+	std::vector<PointLight_ptr> pointLights;
+	std::vector<SpotLight_ptr> spotLights;
 	DirectionalLight_ptr directionalLight;
 
 	Texture3D_ptr pcfShadowRandomData;

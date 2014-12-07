@@ -337,7 +337,6 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 
 bool SceneParser::ParseTransforms(mat4& tMatrix, tinyxml2::XMLElement* transformElem)
 {
-	
 	bool success = true;
 	
 	XMLElement* transform = transformElem->FirstChildElement();

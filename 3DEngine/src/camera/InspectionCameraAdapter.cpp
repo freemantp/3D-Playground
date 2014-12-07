@@ -1,9 +1,12 @@
 #include "stdafx.h"
 
-#include "InspectionCameraAdapter.h"
+#define GLM_SWIZZLE
+#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
 #include <iostream>
 
+#include "InspectionCameraAdapter.h"
 #include "Camera.h"
 
 using glm::vec3;
