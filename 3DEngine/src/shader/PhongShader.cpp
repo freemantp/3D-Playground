@@ -22,6 +22,8 @@ PhongShader_ptr PhongShader::Create()
 
 PhongShader::PhongShader()
 : MaterialShader("phongShader")
+, useShadows(true)
+, pcfShadows(false)
 {
 	hasMM = true;
 	Init();
@@ -132,8 +134,12 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 		shadowMaps[i] = i;
 	}
 
-	if (lightModel->pcfShadowRandomData)
+	SetUniform("UseShadows", useShadows);
+
+	if (useShadows && lightModel->pcfShadowRandomData)
 	{
+		SetUniform("PcfShadows", pcfShadows);
+
 		lightModel->pcfShadowRandomData->BindTexture(++texUnit);
 		
 		auto pcfDim = lightModel->pcfShadowRandomData->Dimensions();

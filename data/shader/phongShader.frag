@@ -47,6 +47,8 @@ uniform sampler2DShadow ShadowMapArray[4];
 uniform sampler3D PCFDataOffsets;
 uniform ivec3 PCFDataOffsetsSize;
 uniform float PCFBlurRadius;
+uniform bool UseShadows;
+uniform bool PcfShadows;
 
 uniform int NumPointLights;
 uniform int NumSpotLights;
@@ -102,37 +104,20 @@ void shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir,
 
 float getShadow(int sl_i)
 {
-	if(sl_i < NumSpotLights)
+	if(UseShadows && sl_i < NumSpotLights)
 	{
 		vec4 ShadowCoord = sceneLights.SpotLights[sl_i].ShadowMatrix * PositionModel;
 
 		ivec3 offsetCoords;
-		offsetCoords.xy = ivec2( mod(gl_FragCoord.xy,  PCFDataOffsetsSize.xy) );
+		offsetCoords.xy = ivec2( mod(gl_FragCoord.xy,  PCFDataOffsetsSize.xy) );       
 
-		vec4 sc = ShadowCoord;
-		float sum = 0.0;
+		if(PcfShadows)
+		{	
+			vec4 sc = ShadowCoord;
+			float sum = 0.0;
 
-		//First test the four outermost offsets
-		for (int i=0; i<4; i++)
-		{
-			offsetCoords.z = i;
-			vec4 offsets = texelFetch(PCFDataOffsets,offsetCoords,0) * PCFBlurRadius * ShadowCoord.w;
-
-			sc.xy =  ShadowCoord.xy  + offsets.xy;
-			sum += textureProj(ShadowMapArray[sl_i], sc);
-			sc.xy =  ShadowCoord.xy  + offsets.zw;
-			sum += textureProj(ShadowMapArray[sl_i], sc);
-
-		}
-
-		float shadow = sum /8.0f;
-
-		//Only continue with inner offsets if outer ones are not completely shadowed or illuminated
-		if(shadow != 1.0 && shadow != 0.0)
-		{			
-			int numSamples = int(PCFDataOffsetsSize.z);
-
-			for (int i=4; i<numSamples; i++)
+			//First test the four outermost offsets
+			for (int i=0; i<4; i++)
 			{
 				offsetCoords.z = i;
 				vec4 offsets = texelFetch(PCFDataOffsets,offsetCoords,0) * PCFBlurRadius * ShadowCoord.w;
@@ -141,12 +126,35 @@ float getShadow(int sl_i)
 				sum += textureProj(ShadowMapArray[sl_i], sc);
 				sc.xy =  ShadowCoord.xy  + offsets.zw;
 				sum += textureProj(ShadowMapArray[sl_i], sc);
+
 			}
 
-			shadow = sum / float(numSamples * 2.0);
-		}
+			float shadow = sum /8.0f;
 
-		return shadow;
+			//Only continue with inner offsets if outer ones are not completely shadowed or illuminated
+			if(shadow != 1.0 && shadow != 0.0)
+			{			
+				int numSamples = int(PCFDataOffsetsSize.z);
+
+				for (int i=4; i<numSamples; i++)
+				{
+					offsetCoords.z = i;
+					vec4 offsets = texelFetch(PCFDataOffsets,offsetCoords,0) * PCFBlurRadius * ShadowCoord.w;
+
+					sc.xy =  ShadowCoord.xy  + offsets.xy;
+					sum += textureProj(ShadowMapArray[sl_i], sc);
+					sc.xy =  ShadowCoord.xy  + offsets.zw;
+					sum += textureProj(ShadowMapArray[sl_i], sc);
+				}
+
+				shadow = sum / float(numSamples * 2.0);
+			}
+			return shadow;
+		}
+		else
+		{
+			return textureProj(ShadowMapArray[sl_i],ShadowCoord);
+		}		
 	}
 	else
 		return 1.0f;
