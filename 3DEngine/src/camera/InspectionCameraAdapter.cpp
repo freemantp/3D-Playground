@@ -32,11 +32,11 @@ void InspectionCameraAdapter::OnMouseDrag(const glm::vec2& screenPos)
 {	
 	//std:: cout <<"sp, x=" << screenPos.x << " y=" << screenPos.y << std::endl ;
 	
-	float degreeRatio = 0.25f;
+	float radianRatio = 0.004f;
 	const CameraFrame& frame = cam->GetFrame();
 	const vec3& target = cam->GetTarget();
 
-	//direction of mouse movement on projetion plane
+	//direction of mouse movement on projection plane
 	vec2 screenDelta = screenPos - lastScreenPos;
 
 	float len = glm::length(screenDelta);
@@ -49,7 +49,7 @@ void InspectionCameraAdapter::OnMouseDrag(const glm::vec2& screenPos)
 
 	//Transformation: translate to origin, rotate about axis, translate back
 	glm::mat4 transformM = glm::translate(glm::mat4(1.0f),target);
-	transformM = glm::rotate(transformM, len * degreeRatio, rotAxis);
+	transformM = glm::rotate(transformM, len * radianRatio, rotAxis);
 	transformM = glm::translate(transformM,-target);
 
 	//Transform camera position

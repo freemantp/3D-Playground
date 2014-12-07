@@ -129,7 +129,7 @@ Mesh_ptr Util::GetHorse()
 {
 	Mesh_ptr model = Util::LoadModel("../data/models/horse.obj");
 	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.3f,0));
-	model->worldTransform = glm::rotate(model->worldTransform, 270.0f, glm::vec3(0,1,0));
+	model->worldTransform = glm::rotate(model->worldTransform, glm::radians(270.0f), glm::vec3(0,1,0));
 	return model;
 }
 

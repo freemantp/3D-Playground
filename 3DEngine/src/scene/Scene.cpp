@@ -70,9 +70,9 @@ Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
 
 	winEventHandler.AddViewportObserver(cam);
 
-	lightAnimParams[0].radiansPerInterval = /*glm::radians(*/0.5f;
-	lightAnimParams[1].radiansPerInterval = /*glm::radians(*/0.7f;
-	lightAnimParams[2].radiansPerInterval = /*glm::radians(*/0.6f;
+	lightAnimParams[0].radiansPerInterval = glm::radians(0.5f);
+	lightAnimParams[1].radiansPerInterval = glm::radians(0.7f);
+	lightAnimParams[2].radiansPerInterval = glm::radians(0.6f);
 
 	lightAnimParams[0].rotationAxis = glm::vec3(0.0f, 1.0f, 0.0f);
 	lightAnimParams[1].rotationAxis = glm::normalize(glm::vec3(0.5f, 1.0f, 0.0f));

@@ -48,7 +48,7 @@ void Camera::SetTarget(const vec3& pos)
 
 void Camera::SetUpVector(const vec3& up)
 {
-	frame.up = up;
+	frame.up = glm::normalize(up);
 	UpdateViewMatrix();
 }
 
@@ -56,14 +56,14 @@ void Camera::SetUpVector(const vec3& up)
 void Camera::SetOrientation(const vec3& pos, const vec3& up)
 {
 	position = pos;
-	frame.up = up;
+	frame.up = glm::normalize(up);
 	UpdateViewMatrix();
 }
 
 void Camera::SetOrientation2(const vec3& target, const vec3& up)
 {
 	this->target = target;
-	this->frame.up = up;
+	this->frame.up = glm::normalize(up);
 
 	UpdateViewMatrix();
 }

@@ -36,8 +36,8 @@ public:
 	float GetFarPlane() const;
 
 	void SetPosition(const vec3& pos);
-	void SetTarget(const vec3& pos);
-	void SetUpVector(const vec3& pos);
+	void SetTarget(const vec3& target);
+	void SetUpVector(const vec3& up);
 	void SetOrientation(const vec3& pos, const vec3& up);
 	void SetOrientation2(const vec3& target, const vec3& up);
 

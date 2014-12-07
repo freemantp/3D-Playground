@@ -58,9 +58,6 @@ void FirstPersonCameraAdapter::OnMouseMove(const glm::vec2& position)
 	const float degreesPerPixelYaw = 0.5f;
 	const float degreesPerPixelPitch = 0.2f;
 
-	auto dsd = glm::radians(45.0f);
-	glm::mat4 m1 = glm::rotate(glm::mat4(1.f), glm::radians(45.0f), glm::vec3(0.0, 0.0, 1.0));
-
 	const CameraFrame& frame = cam->GetFrame();
 	const vec3& target = cam->GetTarget();
 
@@ -78,18 +75,13 @@ void FirstPersonCameraAdapter::OnMouseMove(const glm::vec2& position)
 	glm::vec4 newDir = transformM * glm::vec4(frame.viewDir, 0.0f);
 	glm::vec4 newUp = transformM * glm::vec4( frame.up, 0.0f);
 
-	cam->SetOrientation2(cam->GetPosition() + vec3(newDir.x,newDir.y,newDir.z),vec3(newUp.x,newUp.y,newUp.z));
-
-	//cam->setOrientation(vec3(newPos.ss,newPos.y,newPos.z), vec3(newUp.x,newUp.y,newUp.z));
-
-	//std:: cout << position.x << " " << position.y << std::endl;
+	cam->SetOrientation2(cam->GetPosition() + newDir.xyz,newUp.xyz);
 
 	lastScreenPos = position;
 }
 
 void FirstPersonCameraAdapter::OnMouseDrag(const glm::vec2& screenPos)
 {	
-
 	lastScreenPos = screenPos;
 }
 

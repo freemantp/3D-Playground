@@ -27,7 +27,7 @@ PerspectiveCamera::~PerspectiveCamera()
 
 void PerspectiveCamera::UpdateProjectionMatrix()
 {
-	projectionMatrix  = glm::perspective(fov, aspectRatio, nearP, farP);
+	projectionMatrix  = glm::perspective(glm::radians(fov), aspectRatio, nearP, farP);
 }
 
 void PerspectiveCamera::SetAspectRatio(float aspectRatio)

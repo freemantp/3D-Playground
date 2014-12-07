@@ -363,7 +363,7 @@ bool SceneParser::ParseTransforms(mat4& tMatrix, tinyxml2::XMLElement* transform
 			float angle;
 			if( GetVector3(transform,axis) && GetFloatAttrib(transform, "angle",angle) )
 			{
-				tMatrix = glm::rotate(tMatrix,angle,axis);
+				tMatrix = glm::rotate(tMatrix,glm::radians(angle),axis);
 			}
 			else
 			{
