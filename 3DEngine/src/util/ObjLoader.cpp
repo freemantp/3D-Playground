@@ -151,7 +151,7 @@ MeshRaw_ptr ObjLoader::LoadObj(istream& istr, std::string path)
 
 	newMesh->addGroup(groupName,currentMtl, range);
 
-	cout << "Mesh loaded, f=" << faces.size() <<  " , v=" << vertices.size() << " , n=" << normals.size() << " ,tex coords=" << texCoords.size() << endl;
+	cout << "Mesh loaded, f=" << faces.size() <<  ", v=" << vertices.size() << ", n=" << normals.size() << ", tex coords=" << texCoords.size() << endl;
 
 	GetVertexArray(newMesh->vertices);
 	GetIndexArray(newMesh->faces);
@@ -167,10 +167,14 @@ MeshRaw_ptr ObjLoader::LoadObj(istream& istr, std::string path)
 	}
 	GetNormalArray(newMesh->normals);
 
-	if ( ComputeTangents() ) 
-		GetTangentArray(newMesh->tangents);
-	else
-		Error("Could not compute tangents");
+	if (HasNormals() && HasTexCoords())
+	{
+		if (ComputeTangents())
+			GetTangentArray(newMesh->tangents);
+		else
+			Error("Could not compute tangents");
+
+	}
 
 	return newMesh;
 }
@@ -482,6 +486,12 @@ bool ObjLoader::ComputeTangents()
 
 	if(! (HasNormals() && HasTexCoords()) )
 		return false;
+
+	if (texCoords.size() != vertices.size())
+	{
+		Error("ObjLoader: #tex coords does not equal #vertices");
+		return false;
+	}
 	
 	//ReInit normals to zero
 	tangents.clear();
@@ -518,7 +528,7 @@ bool ObjLoader::ComputeTangents()
 			vec2 dTc1 = tc2 - tc1;
 			vec2 dTc2 = tc3 - tc1;
 		
-			//Sove for tangents and bitangents
+			//Solve for tangents and bitangents
 			glm::mat3x2 Q = glm::transpose(glm::mat2x3(q1,q2));
 			glm::mat2 TX_1= glm::inverse(glm::mat2(dTc1,dTc2));
 			glm::mat2x3 R = glm::transpose(TX_1 * Q);
@@ -559,7 +569,7 @@ bool ObjLoader::ComputeTangents()
 
 		if (glm::length(gm_tmp) > 0)
 		{
-			// Gram-Schmidt orthogonalize
+			// Gram-Schmidt orthogonalization
 			tangents[i] = vec4(glm::normalize(gm_tmp), 1.0);
 
 			// Calculate handedness

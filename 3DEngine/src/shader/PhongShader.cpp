@@ -135,7 +135,7 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 		shadowMaps[i] = i;
 	}	
 
-	if (hasShadows)
+	if (hasShadows && lightModel->spotLights.size() > 0)
 	{
 		SetUniform("UseShadows", useShadows);
 

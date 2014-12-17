@@ -119,8 +119,8 @@ void Mesh::InitFromRawMesh(MeshRaw_ptr rawMesh)
 
 		if ( rawMesh->HasTangents() ) 
 			SetTangents(rawMesh->tangents);
-		else
-			Warn("Tangent data not present!");
+		else if (rawMesh->HasTexCoords())
+ 			Warn("No tangent data found, although texture coords are available");
 	}
 }
 
