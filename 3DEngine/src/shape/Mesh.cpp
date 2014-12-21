@@ -50,7 +50,7 @@ void Mesh::InitFromRawMesh(MeshRaw_ptr rawMesh)
 		else
 			name = Util::ExtractFileName(rawMesh->meshPath);
 
-		SetPositions(rawMesh->vertices,rawMesh->faces, &rawMesh->groupRanges);
+		SetPositions(rawMesh->vertices,rawMesh->indices, &rawMesh->groupRanges);
 
 		std::vector<PhongMaterial_ptr> meshMaterials;
 
@@ -159,7 +159,7 @@ void Mesh::SetAttribPointer(const VertexAttribute& attrib) const
 	glVertexAttribPointer( channel, size,  GL_FLOAT, GL_FALSE, 0, (GLubyte *)nullptr );
 }
 
-bool Mesh::SetPositions(const std::vector<float>& positions, const std::vector<int>& indices, IntPairVector *indexGroups)
+bool Mesh::SetPositions(const std::vector<glm::vec3>& positions, const std::vector<int>& indices, IntPairVector *indexGroups)
 {
 	bool success = true;
 
@@ -189,7 +189,7 @@ bool Mesh::SetPositions(const std::vector<float>& positions, const std::vector<i
 	if(glIsBuffer(bufferObjects[Position]))
 	{
 		glEnableVertexAttribArray(vAttribData[Position].channel);  
-		glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(float), &positions[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(float) * 3, &(positions[0].x), GL_STATIC_DRAW);
 		SetAttribPointer(Position);
 	} 
 	else 
@@ -228,7 +228,7 @@ bool Mesh::SetPositions(const std::vector<float>& positions, const std::vector<i
 	return success;
 }
 
-bool Mesh::SetNormals(const std::vector<float>& normals)
+bool Mesh::SetNormals(const std::vector<glm::vec3>& normals)
 {
 	glBindVertexArray(vaoHandle);
 	bool success = false;
@@ -240,7 +240,7 @@ bool Mesh::SetNormals(const std::vector<float>& normals)
 	{	
 		glEnableVertexAttribArray(vAttribData[Normal].channel);  // Vertex normal
 
-		glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(float), &normals[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(float) * 3, &(normals[0].x), GL_STATIC_DRAW);
 
 		SetAttribPointer(Normal);
 		success =  true;
@@ -255,7 +255,7 @@ bool Mesh::SetNormals(const std::vector<float>& normals)
 	return success;
 }
 
-bool Mesh::SetTangents(const std::vector<float>& tangents)
+bool Mesh::SetTangents(const std::vector<glm::vec4>& tangents)
 {	
 	glBindVertexArray(vaoHandle);
 	bool success = false;
@@ -267,7 +267,7 @@ bool Mesh::SetTangents(const std::vector<float>& tangents)
 	{	
 		glEnableVertexAttribArray(vAttribData[Tangent].channel);  // Vertex tangent
 
-		glBufferData(GL_ARRAY_BUFFER, tangents.size() * sizeof(float), &tangents[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, tangents.size() * sizeof(float) * 4, &(tangents[0].x), GL_STATIC_DRAW);
 
 		SetAttribPointer(Tangent);
 		success =  true;
@@ -282,7 +282,7 @@ bool Mesh::SetTangents(const std::vector<float>& tangents)
 	return success;
 }
 
-bool Mesh::SetTextureCoordinates(const std::vector<float>& texCoords)
+bool Mesh::SetTextureCoordinates(const std::vector<glm::vec2>& texCoords)
 {
 	glBindVertexArray(vaoHandle);
 	glGenBuffers(1, &bufferObjects[TextureCoord]);
@@ -294,7 +294,7 @@ bool Mesh::SetTextureCoordinates(const std::vector<float>& texCoords)
 	{	
 		glEnableVertexAttribArray(vAttribData[TextureCoord].channel);  // texture coord
 
-		glBufferData(GL_ARRAY_BUFFER, texCoords.size() * sizeof(float), &texCoords[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, texCoords.size() * sizeof(float) *2 , &(texCoords[0].x), GL_STATIC_DRAW);
 
 		SetAttribPointer(TextureCoord);
 		success =  true;
@@ -399,9 +399,9 @@ void Mesh::MapVertexAttributes(ShaderBase_ptr shader) const
 				{	
 #if _DEBUG
 					std::stringstream ss;
-					ss << attrib;
+					ss << vertexAttributeNames[attrib];
 					
-					Warn("Shader uses vertex attribute " + ss.str() + " for wich no data is present in mesh '" + name + "'");	
+					Warn("Shader uses vertex attribute '" + ss.str() + "' for which no data is present in mesh '" + name + "'");	
 					for (size_t i = 0; i < 6; i++)
 					{
 						std::cout << vtxAttribSet[i] << std::endl;

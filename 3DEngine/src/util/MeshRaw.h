@@ -6,15 +6,18 @@
 #include <string>
 #include <glm/glm.hpp>
 
-using std::vector;
-using std::string;
-using glm::vec2;
-using glm::vec3;
-using glm::vec4;
-using glm::ivec3;
 
 SHARED_PTR_CLASS_DECL(MeshRaw);
 SHARED_PTR_CLASS_DECL(ObjMaterial);
+
+struct Tri
+{
+	Tri(glm::ivec3 _v1, glm::ivec3 _v2, glm::ivec3 _v3) : v1(_v1), v2(_v2), v3(_v3) {};
+
+	glm::ivec3 v1;
+	glm::ivec3 v2;
+	glm::ivec3 v3;
+};
 
 class ObjMaterial
 {
@@ -41,8 +44,6 @@ public:
 	std::string bumpMapTexture;
 	std::string displacementMapTexture;
 	bool specularEnabled;
-
-
 };
 
 class MeshRaw
@@ -53,28 +54,34 @@ public:
 
 	typedef std::pair<int,int> Range;
 
-	bool HasNormals();
-	bool HasTangents();
-	bool HasTexCoords();
+	bool HasNormals() const;
+	bool HasTangents() const;
+	bool HasTexCoords() const;
 
-	void addGroup(string& name, string& material, Range idxRange);
+	bool ComputeNormals();
+	bool ComputeTangents();
+	void ConvertIndices();
 
-	vector<float> vertices;
-	vector<float> normals;
-	vector<float> tangents;
-	vector<float> texCoords;
-	vector<int> faces;
-	vector<Range> groupRanges;
-	vector<string> groupMaterial;
-	vector<string> groupNames;
+	void AddGroup(std::string& name, std::string& material, Range idxRange);
+
+	std::vector<glm::vec3> vertices;
+	std::vector<glm::vec3> normals;
+	std::vector<glm::vec4> tangents;
+	std::vector<glm::vec2> texCoords;
+	std::vector<int> indices;
+	std::vector<Tri> faces;
+	std::vector<Range> groupRanges;
+	std::vector<std::string> groupMaterial;
+	std::vector<std::string> groupNames;
 	std::vector<ObjMaterial_ptr> materials;
-	string name;
-	string meshPath;
+	std::string name;
+	std::string meshPath;
 
 protected:
 	MeshRaw();
 
 	~MeshRaw();
+	
 
 };
 

@@ -427,66 +427,66 @@ bool SceneParser::ParseCamera(Camera_ptr& cam, tinyxml2::XMLElement* camElement)
 
 bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 {
-	XMLElement* lightElem = lightsGroupElement->FirstChildElement("light");
-
-	do
+	if(XMLElement* lightElem = lightsGroupElement->FirstChildElement("light"))
 	{
-		string lightType = lightElem->Attribute("type");
-
-		if(lightType == "point")
+		do
 		{
-			PointLight_ptr plight = PointLight::Create();
-			vec3 pos, color;
+			string lightType = lightElem->Attribute("type");
 
-			GetVector3(lightElem->FirstChildElement("position"),pos);
-			GetColorVector3(lightElem->FirstChildElement("color"),color);
-			
-			plight->SetPosition(vec4(pos,1.0));
-			plight->SetColor(color);
+			if (lightType == "point")
+			{
+				PointLight_ptr plight = PointLight::Create();
+				vec3 pos, color;
 
-			generatedScene->AddLight(plight);
-			
-		}
-		else if(lightType == "spot")
-		{
-			
-			vec3 pos, color, direction;
-			float cutoff, exponent = 5;
-			GetVector3(lightElem->FirstChildElement("position"),pos);
-			GetVector3(lightElem->FirstChildElement("direction"),direction);
-			GetColorVector3(lightElem->FirstChildElement("color"),color);
+				GetVector3(lightElem->FirstChildElement("position"), pos);
+				GetColorVector3(lightElem->FirstChildElement("color"), color);
 
-			GetFloatAttrib(lightElem,"cutoff",cutoff);
-			GetFloatAttrib(lightElem,"exponent",exponent);
-			SpotLight_ptr slight = SpotLight::Create(direction,cutoff,exponent);
+				plight->SetPosition(vec4(pos, 1.0));
+				plight->SetColor(color);
 
-			slight->SetPosition(vec4(pos,1.0));
-			slight->SetColor(color);
+				generatedScene->AddLight(plight);
 
-			generatedScene->AddLight(slight);
-		}
-		else if (lightType == "directional")
-		{
-			if (generatedScene->lightModel->directionalLight)
-				Warn("Multiple directional lights, in the scene. Only one is suported");
-			
-			vec3 color, direction;
-			GetColorVector3(lightElem->FirstChildElement("color"), color);
-			GetVector3(lightElem->FirstChildElement("direction"), direction);
-			
-			DirectionalLight_ptr dirLight = DirectionalLight::Create();
-			dirLight->SetColor(color);
-			dirLight->SetDirection(glm::normalize(direction));
-			generatedScene->SetLight(dirLight);
+			}
+			else if (lightType == "spot")
+			{
 
-		}
-		else
-		{
-			Error("Light " + lightType + " not supported");
-			return false;
-		}
-	} 
-	while (lightElem = lightElem->NextSiblingElement("light"));
+				vec3 pos, color, direction;
+				float cutoff, exponent = 5;
+				GetVector3(lightElem->FirstChildElement("position"), pos);
+				GetVector3(lightElem->FirstChildElement("direction"), direction);
+				GetColorVector3(lightElem->FirstChildElement("color"), color);
+
+				GetFloatAttrib(lightElem, "cutoff", cutoff);
+				GetFloatAttrib(lightElem, "exponent", exponent);
+				SpotLight_ptr slight = SpotLight::Create(direction, cutoff, exponent);
+
+				slight->SetPosition(vec4(pos, 1.0));
+				slight->SetColor(color);
+
+				generatedScene->AddLight(slight);
+			}
+			else if (lightType == "directional")
+			{
+				if (generatedScene->lightModel->directionalLight)
+					Warn("Multiple directional lights, in the scene. Only one is suported");
+
+				vec3 color, direction;
+				GetColorVector3(lightElem->FirstChildElement("color"), color);
+				GetVector3(lightElem->FirstChildElement("direction"), direction);
+
+				DirectionalLight_ptr dirLight = DirectionalLight::Create();
+				dirLight->SetColor(color);
+				dirLight->SetDirection(glm::normalize(direction));
+				generatedScene->SetLight(dirLight);
+
+			}
+			else
+			{
+				Error("Light " + lightType + " not supported");
+				return false;
+			}
+		} while (lightElem = lightElem->NextSiblingElement("light"));
+	}
 	
 	return true;
 }

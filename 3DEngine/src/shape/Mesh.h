@@ -30,10 +30,10 @@ public:
 	typedef std::pair<int, int> IntPair;
 	typedef std::vector<IntPair> IntPairVector;
 
-	bool SetPositions(const std::vector<float>& positions, const std::vector<int>& indices, IntPairVector* indexGroups = nullptr);
-	bool SetNormals(const std::vector<float>& normals);
-	bool SetTangents(const std::vector<float>& tangents);
-	bool SetTextureCoordinates(const std::vector<float>& texCoords);
+	bool SetPositions(const std::vector<glm::vec3>& positions, const std::vector<int>& indices, IntPairVector* indexGroups = nullptr);
+	bool SetNormals(const std::vector<glm::vec3>& normals);
+	bool SetTangents(const std::vector<glm::vec4>& tangents);
+	bool SetTextureCoordinates(const std::vector<glm::vec2>& texCoords);
 	bool SetColors(const std::vector<float>& colors);
 
 	bool IsInitialized() const { return initialized; };

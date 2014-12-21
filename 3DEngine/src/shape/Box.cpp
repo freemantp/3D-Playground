@@ -11,103 +11,103 @@ void Box::Init() {
 	float side = 1.0f;
     float side2 = side / 2.0f;
 
-    float vertexData[24*3] = {
+	std::vector<glm::vec3> vertexData = {
         // Front
-       -side2, -side2, side2,
-        side2, -side2, side2,
-        side2,  side2, side2,
-       -side2,  side2, side2,
-       // Right
-        side2, -side2, side2,
-        side2, -side2, -side2,
-        side2,  side2, -side2,
-        side2,  side2, side2,
-       // Back
-       -side2, -side2, -side2,
-       -side2,  side2, -side2,
-        side2,  side2, -side2,
-        side2, -side2, -side2,
-       // Left
-       -side2, -side2, side2,
-       -side2,  side2, side2,
-       -side2,  side2, -side2,
-       -side2, -side2, -side2,
-       // Bottom
-       -side2, -side2, side2,
-       -side2, -side2, -side2,
-        side2, -side2, -side2,
-        side2, -side2, side2,
-       // Top
-       -side2,  side2, side2,
-        side2,  side2, side2,
-        side2,  side2, -side2,
-       -side2,  side2, -side2
+		glm::vec3(-side2, -side2, side2),
+		glm::vec3(side2, -side2, side2),
+		glm::vec3(side2, side2, side2),
+		glm::vec3(-side2, side2, side2),
+		
+		glm::vec3(side2, -side2, side2),
+		glm::vec3(side2, -side2, -side2),
+		glm::vec3(side2, side2, -side2),
+		glm::vec3(side2, side2, side2),
+		
+		glm::vec3(-side2, -side2, -side2),
+		glm::vec3(-side2, side2, -side2),
+		glm::vec3(side2, side2, -side2),
+		glm::vec3(side2, -side2, -side2),
+		
+		glm::vec3(-side2, -side2, side2),
+		glm::vec3(-side2, side2, side2),
+		glm::vec3(-side2, side2, -side2),
+		glm::vec3(-side2, -side2, -side2),
+		
+		glm::vec3(-side2, -side2, side2),
+		glm::vec3(-side2, -side2, -side2),
+		glm::vec3(side2, -side2, -side2),
+		glm::vec3(side2, -side2, side2),
+		
+		glm::vec3(-side2, side2, side2),
+		glm::vec3(side2, side2, side2),
+		glm::vec3(side2, side2, -side2),
+		glm::vec3(-side2, side2, -side2)
     };
 
-    float normalData[24*3] = {
+	std::vector<glm::vec3> normalData = {
         // Front
-        0.0f, 0.0f, 1.0f,
-        0.0f, 0.0f, 1.0f,
-        0.0f, 0.0f, 1.0f,
-        0.0f, 0.0f, 1.0f,
-        // Right
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        // Back
-        0.0f, 0.0f, -1.0f,
-        0.0f, 0.0f, -1.0f,
-        0.0f, 0.0f, -1.0f,
-        0.0f, 0.0f, -1.0f,
-        // Left
-        -1.0f, 0.0f, 0.0f,
-        -1.0f, 0.0f, 0.0f,
-        -1.0f, 0.0f, 0.0f,
-        -1.0f, 0.0f, 0.0f,
-        // Bottom
-        0.0f, -1.0f, 0.0f,
-        0.0f, -1.0f, 0.0f,
-        0.0f, -1.0f, 0.0f,
-        0.0f, -1.0f, 0.0f,
-        // Top
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f
+		glm::vec3(0.0f, 0.0f, 1.0f),
+		glm::vec3(0.0f, 0.0f, 1.0f),
+		glm::vec3(0.0f, 0.0f, 1.0f),
+		glm::vec3(0.0f, 0.0f, 1.0f),
+		// Right
+		glm::vec3(1.0f, 0.0f, 0.0f),
+		glm::vec3(1.0f, 0.0f, 0.0f),
+		glm::vec3(1.0f, 0.0f, 0.0f),
+		glm::vec3(1.0f, 0.0f, 0.0f),
+		// Back
+		glm::vec3(0.0f, 0.0f, -1.0f),
+		glm::vec3(0.0f, 0.0f, -1.0f),
+		glm::vec3(0.0f, 0.0f, -1.0f),
+		glm::vec3(0.0f, 0.0f, -1.0f),
+		// Left
+		glm::vec3(-1.0f, 0.0f, 0.0f),
+		glm::vec3(-1.0f, 0.0f, 0.0f),
+		glm::vec3(-1.0f, 0.0f, 0.0f),
+		glm::vec3(-1.0f, 0.0f, 0.0f),
+		// Bottom
+		glm::vec3(0.0f, -1.0f, 0.0f),
+		glm::vec3(0.0f, -1.0f, 0.0f),
+		glm::vec3(0.0f, -1.0f, 0.0f),
+		glm::vec3(0.0f, -1.0f, 0.0f),
+		// Top
+		glm::vec3(0.0f, 1.0f, 0.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f)
     };
 
-    float textureData[24*2] = {
-        // Front
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-        0.0f, 1.0f,
-        // Right
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-        0.0f, 1.0f,
-        // Back
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-        0.0f, 1.0f,
-        // Left
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-        0.0f, 1.0f,
-        // Bottom
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-        0.0f, 1.0f,
-        // Top
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-        0.0f, 1.0f
+	std::vector<glm::vec2> textureData = {
+		// Front
+		glm::vec2(0.0f, 0.0f),
+		glm::vec2(1.0f, 0.0f),
+		glm::vec2(1.0f, 1.0f),
+		glm::vec2(0.0f, 1.0f),
+		// Right
+		glm::vec2(0.0f, 0.0f),
+		glm::vec2(1.0f, 0.0f),
+		glm::vec2(1.0f, 1.0f),
+		glm::vec2(0.0f, 1.0f),
+		// Back
+		glm::vec2(0.0f, 0.0f),
+		glm::vec2(1.0f, 0.0f),
+		glm::vec2(1.0f, 1.0f),
+		glm::vec2(0.0f, 1.0f),
+		// Left
+		glm::vec2(0.0f, 0.0f),
+		glm::vec2(1.0f, 0.0f),
+		glm::vec2(1.0f, 1.0f),
+		glm::vec2(0.0f, 1.0f),
+		// Bottom
+		glm::vec2(0.0f, 0.0f),
+		glm::vec2(1.0f, 0.0f),
+		glm::vec2(1.0f, 1.0f),
+		glm::vec2(0.0f, 1.0f),
+		// Top
+		glm::vec2(0.0f, 0.0f),
+		glm::vec2(1.0f, 0.0f),
+		glm::vec2(1.0f, 1.0f),
+		glm::vec2(0.0f, 1.0f)
     };
 
     GLuint indexData[] = {
@@ -119,14 +119,11 @@ void Box::Init() {
         20,21,22,20,22,23
     };
 
-	std::vector<float> pos(vertexData, vertexData+24*3);
-	std::vector<float> normal(normalData, normalData+24*3);
-	std::vector<float> tex(textureData, textureData+24*2);
 	std::vector<int> idx(indexData, indexData+36);
 
-	SetPositions(pos,idx);
-	SetNormals(normal);
-	SetTextureCoordinates(tex);
+	SetPositions(vertexData, idx);
+	SetNormals(normalData);
+	SetTextureCoordinates(textureData);
 }
 
 Box::Box() :Mesh()
