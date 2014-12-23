@@ -12,11 +12,16 @@ SHARED_PTR_CLASS_DECL(ObjMaterial);
 
 struct Tri
 {
-	Tri(glm::ivec3 _v1, glm::ivec3 _v2, glm::ivec3 _v3) : v1(_v1), v2(_v2), v3(_v3) {};
+	glm::ivec3 v[3];
 
-	glm::ivec3 v1;
-	glm::ivec3 v2;
-	glm::ivec3 v3;
+	Tri(){};
+
+	Tri(glm::ivec3 v1, glm::ivec3 v2, glm::ivec3 v3) 		 
+	{
+		v[0] = v1;
+		v[1] = v2;
+		v[2] = v3;
+	};
 };
 
 class ObjMaterial

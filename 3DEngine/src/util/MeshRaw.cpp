@@ -68,10 +68,10 @@ bool MeshRaw::ComputeNormals()
 
 	for (int i = 0; i < faces.size(); i++)
 	{
-		int aIdx = faces[i].v1.x;
-		int bIdx = faces[i].v2.x;
-		int cIdx = faces[i].v3.x;
-
+		int aIdx = faces[i].v[0].x;
+		int bIdx = faces[i].v[1].x;
+		int cIdx = faces[i].v[2].x;
+							   
 		glm::vec3& a = vertices[aIdx];
 		glm::vec3& b = vertices[bIdx];
 		glm::vec3& c = vertices[cIdx];
@@ -90,9 +90,9 @@ bool MeshRaw::ComputeNormals()
 		normals[cIdx] += perpVector;
 
 		//Update vertex indices
-		faces[i].v1.z = aIdx;
-		faces[i].v2.z = bIdx;
-		faces[i].v3.z = cIdx;
+		faces[i].v[0].z = aIdx;
+		faces[i].v[1].z = bIdx;
+		faces[i].v[2].z = cIdx;
 	}
 
 	//Normalize normals (unit-length)
@@ -129,9 +129,9 @@ bool MeshRaw::ComputeTangents()
 	//Accumulate tangent directions
 	for (int i = 0; i < faces.size(); i++)
 	{
-		glm::ivec3 v1Idx = faces[i].v1;
-		glm::ivec3 v2Idx = faces[i].v2;
-		glm::ivec3 v3Idx = faces[i].v3;
+		glm::ivec3 v1Idx = faces[i].v[0];
+		glm::ivec3 v2Idx = faces[i].v[1];
+		glm::ivec3 v3Idx = faces[i].v[2];
 
 		if (v1Idx.y >= 0 && v2Idx.y >= 0 && v3Idx.y >= 0)
 		{
@@ -215,8 +215,8 @@ void MeshRaw::ConvertIndices()
 	indices.reserve(faces.size() * 3);
 	for (auto t : faces)
 	{
-		indices.push_back(t.v1.x);
-		indices.push_back(t.v2.x);
-		indices.push_back(t.v3.x);
+		indices.push_back(t.v[0].x);
+		indices.push_back(t.v[1].x);
+		indices.push_back(t.v[2].x);
 	}
 }

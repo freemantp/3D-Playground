@@ -23,9 +23,6 @@ protected:
 
 private:
 
-	/// parses a face string and stores indices in an ivec x=vertex, y=texCoord, z=normal 
-	void ParseIdx(std::string& s, glm::ivec3& indices);
-
 	std::string currentFile;
 };
 

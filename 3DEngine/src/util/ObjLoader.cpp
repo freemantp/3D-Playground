@@ -17,41 +17,6 @@ using glm::vec3;
 using glm::ivec3;
 
 
-void ObjLoader::ParseIdx(string& s,ivec3& indices)
-{
-	string::const_iterator sit;
-	stringstream ss;
-
-	int idxPtr = 0;
-	int number;
-	bool lastWasSlash = false;
-
-	for(sit = s.cbegin(); sit != s.cend(); sit++)
-	{
-		char c = *sit;
-		
-		if(c == '/') {
-			if( lastWasSlash)			
-				indices[idxPtr++] = -1;
-			else {
-				ss >> number;
-				indices[idxPtr++] = number - 1;
-				ss.str("");
-				ss.clear();
-			}				
-	
-			lastWasSlash = true;
-		}
-		else {
-			ss << c;
-			lastWasSlash = false;
-		}
-	}
-
-	ss >> number;
-	indices[idxPtr++] = number - 1;
-}
-
 MeshRaw_ptr ObjLoader::LoadObj(istream& istr, std::string path)
 {	
 	int lineCount = 0;
@@ -66,15 +31,18 @@ MeshRaw_ptr ObjLoader::LoadObj(istream& istr, std::string path)
 	std::string line;
 	while ( istr.good() )
 	{
-		getline (istr,line);
+		std::getline(istr,line);
+		auto num_chars = line.size();
 		lineCount++;
 
-		if(line.substr(0,2) == "o ")
+		if (line[0] == 'o' && num_chars > 2)
 		{
-			newMesh->name = line.substr(2);
+			newMesh->name = std::string(line.begin() + 2, line.end());
 		}
-		if(line.substr(0,2) == "g ")
+		if (line[0] == 'g' && num_chars > 2)
 		{			
+			groupName = std::string(line.begin() + 2, line.end());
+
 			if (newMesh->faces.size() > 0)
 			{
 				int groupEndIndex = static_cast<int>(newMesh->faces.size() - 1);
@@ -85,50 +53,62 @@ MeshRaw_ptr ObjLoader::LoadObj(istream& istr, std::string path)
 				//next group
 				groupFaceStartIdx = groupEndIndex + 1;
 			}
-
-			groupName = line.substr(2);
-
 		}
-		if(line.substr(0,2) == "v ")
+		if (line[0] == 'v' && line[1] == ' ')
 		{
-			istringstream s(line.substr(2));
-			vec3 v;
-			s >> v.x; s >> v.y; s >> v.z;
+			glm::vec3 v;
+			char* end_p1, *end_p2;
+			v.x = std::strtof(&line[2], &end_p1);
+			v.y = std::strtof(end_p1, &end_p2);
+			v.z = std::strtof(end_p2, nullptr);
 			newMesh->vertices.push_back(v);
-
 		}
-		else if(line.substr(0,3) == "vn ")
+		else if (line[0] == 'v' && line[1] == 'n')
 		{
-			istringstream s(line.substr(3));
-			glm::vec3 n; 
-			s >> n.x; s >> n.y; s >> n.z;
-			newMesh->normals.push_back(n);
+			glm::vec3 v;
+			char* end_p1, *end_p2;
+			v.x = std::strtof(&line[3], &end_p1);
+			v.y = std::strtof(end_p1, &end_p2);
+			v.z = std::strtof(end_p2, nullptr);
+			newMesh->normals.push_back(v);
 		}
-		else if(line.substr(0,3) == "vt ")
+		else if (line[0] == 'v' && line[1] == 't')
 		{
-			istringstream s(line.substr(3));
-			glm::vec2 tc; 
-			s >> tc.x;  s >> tc.y;
-
-			//Invert y-axis
-			 tc.y =  1 - tc.y;
-
-			 newMesh->texCoords.push_back(tc);
+			glm::vec2 v;
+			char* end_p1;
+			v.x = std::strtof(&line[3], &end_p1);
+			v.y = std::strtof(end_p1, nullptr);
+			newMesh->texCoords.push_back(v);
 		}
-		else if(line.substr(0,2) == "f ")
+		else if (line[0] == 'f' && line[1] == ' ')
 		{			
-			ivec3 v1,v2,v3;
-			string s1,s2,s3;
-			string sub = line.substr(2);
-			istringstream data(sub);
-			data >> s1; data >> s2; data >> s3;
+			istringstream str_stream(line);
+			str_stream.ignore(2);
 
-			ParseIdx(s1,v1);
-			ParseIdx(s2,v2);
-			ParseIdx(s3,v3);
+			Tri tri;
 
-			Tri t(v1,v2,v3);
-			newMesh->faces.push_back(t);
+			int vertex = 0;
+			int comp = 0;
+
+			while (!str_stream.eof())
+			{
+				str_stream >> tri.v[vertex][comp];
+				tri.v[vertex][comp]--;
+
+				if (str_stream.peek() == '/')
+				{
+					str_stream.ignore();
+					comp++;
+				}
+				else if (str_stream.peek() == ' ')
+				{
+					str_stream.ignore();
+					vertex++;
+					comp = 0;
+				}
+			}
+
+			newMesh->faces.push_back(tri);
 
 		}
 		else if(line.substr(0,7) == "mtllib ")
@@ -140,8 +120,6 @@ MeshRaw_ptr ObjLoader::LoadObj(istream& istr, std::string path)
 				std::cout << "Material lib loaded: " << mtlFile << std::endl;
 			else
 				std::cout << "Could not load mtllib: " << mtlFile << std::endl;
-
-
 		}
 		else if(line.substr(0,7) == "usemtl ")
 		{	
