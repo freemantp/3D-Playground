@@ -98,7 +98,15 @@ MeshRaw_ptr ObjLoader::LoadObj(istream& istr, std::string path)
 				if (str_stream.peek() == '/')
 				{
 					str_stream.ignore();
-					comp++;
+					int ignore = 1;
+					
+					if (str_stream.peek() == '/')
+					{
+						str_stream.ignore();
+						ignore++;
+					}
+						
+					comp += ignore;
 				}
 				else if (str_stream.peek() == ' ')
 				{
