@@ -28,6 +28,20 @@ MeshRaw_ptr ObjLoader::LoadObj(istream& istr, std::string path)
 	string currentMtl;
 	int groupFaceStartIdx = 0;
 
+	auto create_group = [&](std::string& groupName)
+	{
+		if (newMesh->faces.size() > 0)
+		{
+			int groupEndIndex = static_cast<int>(newMesh->faces.size() - 1);
+			MeshRaw::Range range(groupFaceStartIdx, groupEndIndex);
+
+			newMesh->AddGroup(groupName, currentMtl, range);
+
+			//next group
+			groupFaceStartIdx = groupEndIndex + 1;
+		}
+	};
+
 	std::string line;
 	while ( istr.good() )
 	{
@@ -38,6 +52,11 @@ MeshRaw_ptr ObjLoader::LoadObj(istream& istr, std::string path)
 		if (line[0] == 'o' && num_chars > 2)
 		{
 			newMesh->name = std::string(line.begin() + 2, line.end());
+
+			if (newMesh->faces.size() > 0)
+			{
+				create_group(newMesh->name);
+			}
 		}
 		if (line[0] == 'g' && num_chars > 2)
 		{			
@@ -45,13 +64,7 @@ MeshRaw_ptr ObjLoader::LoadObj(istream& istr, std::string path)
 
 			if (newMesh->faces.size() > 0)
 			{
-				int groupEndIndex = static_cast<int>(newMesh->faces.size() - 1);
-				MeshRaw::Range range(groupFaceStartIdx, groupEndIndex);
-
-				newMesh->AddGroup(groupName,currentMtl,range);
-				
-				//next group
-				groupFaceStartIdx = groupEndIndex + 1;
+				create_group(groupName);
 			}
 		}
 		if (line[0] == 'v' && line[1] == ' ')
@@ -136,10 +149,7 @@ MeshRaw_ptr ObjLoader::LoadObj(istream& istr, std::string path)
 	}
 
 	//Complete last index group
-	int groupEndIndex = static_cast<int>(newMesh->faces.size() - 1);
-	MeshRaw::Range range(groupFaceStartIdx, groupEndIndex);
-
-	newMesh->AddGroup(groupName,currentMtl, range);
+	create_group(groupName);
 
 	cout << "Mesh loaded, f=" << newMesh->faces.size() << ", v=" << newMesh->vertices.size() << ", n=" << newMesh->normals.size() << ", tex coords=" << newMesh->texCoords.size() << endl;
 
@@ -256,7 +266,7 @@ bool ObjLoader::LoadMtllib(std::istream& istr, MeshRaw_ptr newMesh)
 	return newMesh->materials.size() > 0;
 }
 
-MeshRaw_ptr ObjLoader::LoadObjFile(const string& path)
+MeshRaw_ptr ObjLoader::LoadObjFile(const std::string& path)
 {
 	currentFile = path;
 

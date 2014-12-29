@@ -39,16 +39,16 @@ public:
 
 	virtual bool Use(const Scene_ptr cam, const glm::mat4& modelTransform);
 
-	const string& GetName() const;	
+	const std::string& GetName() const;
 
 protected:
 
-	ShaderBase(const string& shaderName);
+	ShaderBase(const std::string& shaderName);
 
 	virtual void Init();
 
-	bool LoadShader(const string& vertexSource, const string& fragmentSource);
-	bool LoadShader(const string& shaderName);	
+	bool LoadShader(const std::string& vertexSource, const std::string& fragmentSource);
+	bool LoadShader(const std::string& shaderName);	
 
 	virtual void UpdateTransforms(const Camera_ptr cam, const glm::mat4& modelTransform);
 
@@ -59,7 +59,7 @@ protected:
 
 	bool hasMVP, hasNM, hasMVM, hasVM, hasMM, hasPM;
 
-	string shaderName;
+	std::string shaderName;
 	GLint currentProgram;
 
 private:

@@ -322,7 +322,7 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 			// Parse transform node
 			if(XMLElement* transformsElem = objeElem->FirstChildElement("transform"))
 			{
-				mat4 tMatrix;
+				glm::mat4 tMatrix;
 				ParseTransforms(tMatrix,transformsElem);
 				shape->worldTransform = tMatrix;
 			}
@@ -335,18 +335,18 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 	return true;
 }
 
-bool SceneParser::ParseTransforms(mat4& tMatrix, tinyxml2::XMLElement* transformElem)
+bool SceneParser::ParseTransforms(glm::mat4& tMatrix, tinyxml2::XMLElement* transformElem)
 {
 	bool success = true;
 	
 	XMLElement* transform = transformElem->FirstChildElement();
 	do
 	{
-		string type = transform->Name();
+		std::string type = transform->Name();
 
 		if(type == "translate")
 		{
-			vec3 transl;
+			glm::vec3 transl;
 			if( GetVector3(transform,transl) )
 			{
 				tMatrix = glm::translate(tMatrix,transl);
@@ -359,7 +359,7 @@ bool SceneParser::ParseTransforms(mat4& tMatrix, tinyxml2::XMLElement* transform
 		}
 		else if(type == "rotate")
 		{
-			vec3 axis;
+			glm::vec3 axis;
 			float angle;
 			if( GetVector3(transform,axis) && GetFloatAttrib(transform, "angle",angle) )
 			{
@@ -373,7 +373,7 @@ bool SceneParser::ParseTransforms(mat4& tMatrix, tinyxml2::XMLElement* transform
 		}
 		else if(type == "scale")
 		{
-			vec3 factors;
+			glm::vec3 factors;
 			if( GetVector3(transform,factors) )
 			{
 				tMatrix = glm::scale(tMatrix,factors);
@@ -395,7 +395,7 @@ bool SceneParser::ParseTransforms(mat4& tMatrix, tinyxml2::XMLElement* transform
 bool SceneParser::ParseCamera(Camera_ptr& cam, tinyxml2::XMLElement* camElement)
 {
 	bool success = true;
-	string type = camElement->Attribute("type");
+	std::string type = camElement->Attribute("type");
 
 	if(type == "perspective")
 	{
@@ -412,7 +412,7 @@ bool SceneParser::ParseCamera(Camera_ptr& cam, tinyxml2::XMLElement* camElement)
 		return false;
 	}
 
-	vec3 pos, target, up;
+	glm::vec3 pos, target, up;
 	success &= GetVector3( camElement->FirstChildElement("position"),pos);
 	success &= GetVector3( camElement->FirstChildElement("target"),target);
 	success &= GetVector3( camElement->FirstChildElement("up"),up);
@@ -436,12 +436,12 @@ bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 			if (lightType == "point")
 			{
 				PointLight_ptr plight = PointLight::Create();
-				vec3 pos, color;
+				glm::vec3 pos, color;
 
 				GetVector3(lightElem->FirstChildElement("position"), pos);
 				GetColorVector3(lightElem->FirstChildElement("color"), color);
 
-				plight->SetPosition(vec4(pos, 1.0));
+				plight->SetPosition(glm::vec4(pos, 1.0));
 				plight->SetColor(color);
 
 				generatedScene->AddLight(plight);
@@ -450,7 +450,7 @@ bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 			else if (lightType == "spot")
 			{
 
-				vec3 pos, color, direction;
+				glm::vec3 pos, color, direction;
 				float cutoff, exponent = 5;
 				GetVector3(lightElem->FirstChildElement("position"), pos);
 				GetVector3(lightElem->FirstChildElement("direction"), direction);
@@ -460,7 +460,7 @@ bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 				GetFloatAttrib(lightElem, "exponent", exponent);
 				SpotLight_ptr slight = SpotLight::Create(direction, cutoff, exponent);
 
-				slight->SetPosition(vec4(pos, 1.0));
+				slight->SetPosition(glm::vec4(pos, 1.0));
 				slight->SetColor(color);
 
 				generatedScene->AddLight(slight);
@@ -470,7 +470,7 @@ bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 				if (generatedScene->lightModel->directionalLight)
 					Warn("Multiple directional lights, in the scene. Only one is suported");
 
-				vec3 color, direction;
+				glm::vec3 color, direction;
 				GetColorVector3(lightElem->FirstChildElement("color"), color);
 				GetVector3(lightElem->FirstChildElement("direction"), direction);
 
@@ -491,7 +491,7 @@ bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 	return true;
 }
 
-bool SceneParser::GetVector3(XMLElement* element, vec3& vec)
+bool SceneParser::GetVector3(XMLElement* element, glm::vec3& vec)
 {
 	if(element == nullptr)
 		return false;
@@ -505,7 +505,7 @@ bool SceneParser::GetVector3(XMLElement* element, vec3& vec)
 	return success;
 }
 
-bool SceneParser::GetColorVector3(XMLElement* element, vec3& vec)
+bool SceneParser::GetColorVector3(XMLElement* element, glm::vec3& vec)
 {
 	if(element == nullptr)
 		return false;

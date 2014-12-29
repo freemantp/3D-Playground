@@ -30,7 +30,7 @@ PhongShader::PhongShader()
 	Init();
 }
 
-PhongShader::PhongShader(const string& shaderName)
+PhongShader::PhongShader(const std::string& shaderName)
 : MaterialShader(shaderName)
 {	
 	Init();
@@ -87,7 +87,7 @@ bool PhongShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 		{
 			sbm->texture->BindTexture(skymapTexUnit);
 			SetUniform("EnvMapTex", skymapTexUnit);
-			SetUniform("CameraPosWorld", scene->activeCamera->GetPosition());
+			SetUniform("CameraPosWorld", scene->activeCamera->Position());
 		}
 	}
 

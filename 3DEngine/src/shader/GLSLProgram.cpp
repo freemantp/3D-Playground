@@ -22,7 +22,7 @@ GLSLProgram::~GLSLProgram()
 	}
 }
 
-bool GLSLProgram::CompileShaderFromString( const string& source,  
+bool GLSLProgram::CompileShaderFromString( const std::string& source,  
 										  GLSLShader::GLSLShaderType type)
 {
 	GLuint shaderHandle = 0;
@@ -117,7 +117,7 @@ GLuint GLSLProgram::GetProgramHandle() const
 	return programHandle; 
 };
 
-string GLSLProgram::Log() const
+std::string GLSLProgram::Log() const
 {
 	return logString;
 }
@@ -147,7 +147,7 @@ void GLSLProgram::SetUniform(const GLchar *name, bool value)
 	else 
 	{
 #if _DEBUG
-		Error(string("Error setting parameter '") + name + "'");
+		Error(std::string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
@@ -162,7 +162,7 @@ void GLSLProgram::SetUniform(const GLchar *name, float value)
 	else 
 	{
 #if _DEBUG
-		Error(string("Error setting parameter '") + name + "'");
+		Error(std::string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
@@ -177,7 +177,7 @@ void GLSLProgram::SetUniform(const GLchar *name, int value)
 	else 
 	{
 #if _DEBUG
-		Error(string("Error setting parameter '") + name + "'");
+		Error(std::string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
@@ -192,12 +192,12 @@ void GLSLProgram::SetUniform(const GLchar *name, unsigned int value)
 	else 
 	{
 #if _DEBUG
-		Error(string("Error setting parameter '") + name + "'");
+		Error(std::string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
 
-void GLSLProgram::SetUniform(const GLchar *name, const vec2& v)
+void GLSLProgram::SetUniform(const GLchar *name, const glm::vec2& v)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) 
@@ -207,12 +207,12 @@ void GLSLProgram::SetUniform(const GLchar *name, const vec2& v)
 	else 
 	{
 #if _DEBUG
-		Error(string("Error setting parameter '") + name + "'");
+		Error(std::string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
 
-void GLSLProgram::SetUniform(const GLchar *name, const vec3& v)
+void GLSLProgram::SetUniform(const GLchar *name, const glm::vec3& v)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) 
@@ -222,7 +222,7 @@ void GLSLProgram::SetUniform(const GLchar *name, const vec3& v)
 	else 
 	{
 #if _DEBUG
-		Error(string("Error setting parameter '") + name + "'");
+		Error(std::string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
@@ -237,7 +237,7 @@ void GLSLProgram::SetUniform(const GLchar *name, const glm::ivec2& v)
 	else
 	{
 #if _DEBUG
-		Error(string("Error setting parameter '") + name + "'");
+		Error(std::string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
@@ -253,7 +253,7 @@ void GLSLProgram::SetUniform(const GLchar *name, const glm::ivec3& v)
 	else
 	{
 #if _DEBUG
-		Error(string("Error setting parameter '") + name + "'");
+		Error(std::string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
@@ -268,12 +268,12 @@ void GLSLProgram::SetUniform(const GLchar *name, const glm::ivec4& v)
 	else
 	{
 #if _DEBUG
-		Error(string("Error setting parameter '") + name + "'");
+		Error(std::string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
 
-void GLSLProgram::SetUniform(const char *name,  const vec4& v)
+void GLSLProgram::SetUniform(const char *name, const glm::vec4& v)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) 
@@ -283,12 +283,12 @@ void GLSLProgram::SetUniform(const char *name,  const vec4& v)
 	else 
 	{
 #if _DEBUG
-		Error(string("Error setting parameter '") + name + "'");
+		Error(std::string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
 
-void GLSLProgram::SetUniform(const GLchar *name, const mat3& m)
+void GLSLProgram::SetUniform(const GLchar *name, const glm::mat3& m)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) 
@@ -298,12 +298,12 @@ void GLSLProgram::SetUniform(const GLchar *name, const mat3& m)
 	else 
 	{
 #if _DEBUG
-		Error(string("Error setting parameter '") + name + "'");
+		Error(std::string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
 
-void GLSLProgram::SetUniform(const GLchar *name, const mat4& m)
+void GLSLProgram::SetUniform(const GLchar *name, const glm::mat4& m)
 {
 	GLint loc = glGetUniformLocation(programHandle, name);
 	if (loc >= 0) 
@@ -313,7 +313,7 @@ void GLSLProgram::SetUniform(const GLchar *name, const mat4& m)
 	else 
 	{
 #if _DEBUG
-		Error(string("Error setting parameter '") + name + "'");
+		Error(std::string("Error setting parameter '") + name + "'");
 #endif
 	}
 }
@@ -327,7 +327,7 @@ void GLSLProgram::SetUniformArray(const GLchar *name,
 	if (loc == -1) 
 	{
 #if _DEBUG
-		Error(string("Error setting parameter '") + name + "'");
+		Error(std::string("Error setting parameter '") + name + "'");
 #endif
 		return;
 	}
@@ -357,7 +357,7 @@ void GLSLProgram::SetUniformArray(const GLchar *name,
 	if (loc == -1)
 	{
 #if _DEBUG
-		Error(string("Error setting parameter '") + name + "'");
+		Error(std::string("Error setting parameter '") + name + "'");
 #endif
 		return;
 	}
@@ -447,14 +447,14 @@ bool GLSLProgram::BindFragDataLocation( GLuint colorNumber,  std::string& name)
 
 }
 
-string GLSLProgram::GetInfoLog(GLuint handle) 
+std::string GLSLProgram::GetInfoLog(GLuint handle) 
 {
 
 	GLboolean isShader = glIsShader(handle) ;
 
 	// Compile failed, store log and return false
 	int length = 0;
-	string  logString = "";
+	std::string  logString = "";
 
 	if(GL_TRUE == isShader)
 		glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &length );

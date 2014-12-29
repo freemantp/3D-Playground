@@ -8,8 +8,8 @@ SHARED_PTR_CLASS_DECL(MouseObserver);
 
 namespace Input 
 {
-	enum MouseButton {LEFT, MIDDLE, RIGHT};
-	enum Direction {UP, DOWN};
+	enum class MouseButton {LEFT, MIDDLE, RIGHT};
+	enum class Direction {UP, DOWN};
 };
 
 class MouseObserver

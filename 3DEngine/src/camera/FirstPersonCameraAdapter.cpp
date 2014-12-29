@@ -22,30 +22,30 @@ FirstPersonCameraAdapter::~FirstPersonCameraAdapter(void)
 {
 }
 
-void FirstPersonCameraAdapter::OnKey(const Input::KEY key, const Input::MODIFIER mod, const glm::vec2& position)
+void FirstPersonCameraAdapter::OnKey(const Input::Key key, const Input::Modifier mod, const glm::vec2& position)
 {
 	//std::cout << "Key " << key << " pressed" << std::endl;
 
 	switch(key)
 	{
-		case Input::ARROW_UP: Walk(0.2f); break;
-		case Input::ARROW_DOWN: Walk(-0.2f);  break;
-		case Input::ARROW_LEFT: StepSidewards(-0.2f);  break;
-		case Input::ARROW_RIGHT: StepSidewards(0.2f);  break;
+		case Input::Key::ARROW_UP: Walk(0.2f); break;
+		case Input::Key::ARROW_DOWN: Walk(-0.2f);  break;
+		case Input::Key::ARROW_LEFT: StepSidewards(-0.2f);  break;
+		case Input::Key::ARROW_RIGHT: StepSidewards(0.2f);  break;
 	}
 }
 
 void FirstPersonCameraAdapter::Walk(float amount)
 {
-	vec3 dir = glm::normalize( cam->GetTarget() - cam->GetPosition() );
-	cam->SetPosition( cam->GetPosition() + dir * amount );
+	vec3 dir = glm::normalize( cam->Target() - cam->Position() );
+	cam->SetPosition( cam->Position() + dir * amount );
 }
 
 void FirstPersonCameraAdapter::StepSidewards(float amount)
 {
-	vec3 step = cam->GetFrame().sideways * amount;
-	cam->SetPosition( cam->GetPosition() + step );
-	cam->SetTarget( cam->GetTarget() + step );	
+	vec3 step = cam->Frame().sideways * amount;
+	cam->SetPosition( cam->Position() + step );
+	cam->SetTarget( cam->Target() + step );	
 }
 
 void FirstPersonCameraAdapter::Turn(float degrees)
@@ -58,10 +58,10 @@ void FirstPersonCameraAdapter::OnMouseMove(const glm::vec2& position)
 	const float degreesPerPixelYaw = 0.5f;
 	const float degreesPerPixelPitch = 0.2f;
 
-	const CameraFrame& frame = cam->GetFrame();
-	const vec3& target = cam->GetTarget();
+	const CameraFrame& frame = cam->Frame();
+	const vec3& target = cam->Target();
 
-	vec2 screenDelta = position - lastScreenPos;
+	glm::vec2 screenDelta = position - lastScreenPos;
 	float yaw = -screenDelta.x * degreesPerPixelYaw;
 	float pitch = -screenDelta.y * degreesPerPixelPitch;
 
@@ -75,7 +75,7 @@ void FirstPersonCameraAdapter::OnMouseMove(const glm::vec2& position)
 	glm::vec4 newDir = transformM * glm::vec4(frame.viewDir, 0.0f);
 	glm::vec4 newUp = transformM * glm::vec4( frame.up, 0.0f);
 
-	cam->SetOrientation2(cam->GetPosition() + newDir.xyz,newUp.xyz);
+	cam->SetOrientation2(cam->Position() + newDir.xyz,newUp.xyz);
 
 	lastScreenPos = position;
 }

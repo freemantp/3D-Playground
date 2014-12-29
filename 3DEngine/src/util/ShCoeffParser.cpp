@@ -28,17 +28,17 @@ ShDiffuseShaderCoeffs_ptr ShCoeffParser::Parse(std::string coeffXmlDocument)
 			shCoeffs = ShDiffuseShaderCoeffs::Create();
 
 			shCoeffs->name = std::string(root->Attribute("name"));
-			string skymap = std::string(root->Attribute("skymap"));
+			std::string skymap = std::string(root->Attribute("skymap"));
 
 			if(const char* exp = root->Attribute("exposure"))
 			{
-					string exposure = std::string(exp);
+				std::string exposure = std::string(exp);
 			}
 
 			XMLElement* vecElement = root->FirstChildElement("vec3");;
 			do
 			{
-				vec3 v;
+				glm::vec3 v;
 				XmlUtils::GetColorVector3(vecElement,v);
 				shCoeffs->m_Coeffs.push_back(v);
 			}				

@@ -13,11 +13,11 @@ public:
 	FirstPersonCameraAdapter(Camera_ptr cam);
 	~FirstPersonCameraAdapter();
 
-	virtual void OnMouseMove(const glm::vec2& position);
-	virtual void OnMouseDrag(const glm::vec2& position);
-	virtual void OnMouseClick(Input::MouseButton button, Input::Direction state, const  glm::vec2& position);
-	virtual void OnMouseWheel(Input::Direction direction, const glm::vec2& position);
-	virtual void OnKey(const Input::KEY key, const Input::MODIFIER mod, const glm::vec2& position);
+	virtual void OnMouseMove(const glm::vec2& position) override;
+	virtual void OnMouseDrag(const glm::vec2& position) override;
+	virtual void OnMouseClick(Input::MouseButton button, Input::Direction state, const  glm::vec2& position) override;
+	virtual void OnMouseWheel(Input::Direction direction, const glm::vec2& position) override;
+	virtual void OnKey(const Input::Key key, const Input::Modifier mod, const glm::vec2& position) override;
 
 protected:
 
@@ -25,7 +25,7 @@ protected:
 	void StepSidewards(float amount);
 	void Turn(float degrees);
 
-	vec2 lastScreenPos;
+	glm::vec2 lastScreenPos;
 
 };
 

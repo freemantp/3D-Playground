@@ -2,8 +2,6 @@
 
 #include "Camera.h"
 
-using glm::vec2;
-
 SHARED_PTR_CLASS_DECL(PerspectiveCamera);
 
 class PerspectiveCamera : public Camera

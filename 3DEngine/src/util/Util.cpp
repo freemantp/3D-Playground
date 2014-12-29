@@ -38,7 +38,7 @@ unsigned long Util::GetFileLength(std::ifstream& file)
 	return len;
 }
 
-std::string Util::LoadTextFile(const string& s)
+std::string Util::LoadTextFile(const std::string& s)
 {
 	return LoadTextFile((char*)s.c_str());
 }
@@ -99,7 +99,7 @@ void Util::PrintUniforms(const ShaderBase* shader)
 	std::cout << std::endl;
 }
 
-Mesh_ptr Util::LoadModel(const string& path)
+Mesh_ptr Util::LoadModel(const std::string& path)
 {
 	ObjLoader oj;
 	clock_t begin = clock();

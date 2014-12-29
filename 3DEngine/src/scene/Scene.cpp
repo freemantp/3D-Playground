@@ -198,12 +198,11 @@ void Scene::TimeUpdate(long time)
 	
 	auto rotate_light = [](SpotLight_ptr& pl, float radians, const glm::vec3& axis)
 	{
-		glm::mat4 lightTransform1 = glm::rotate(mat4(1.0f), radians, axis);
+		glm::mat4 lightTransform1 = glm::rotate(glm::mat4(1.0f), radians, axis);
 		pl->SetPosition(lightTransform1 * pl->GetPosition());
 
-		vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform1))) * pl->GetDirection();
+		glm::vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform1))) * pl->GetDirection();
 		pl->SetDirection(newDir);
-
 	};
 
 	for (int i = 0; i < std::min(lightAnimParams.size(), lightModel->spotLights.size()); i++)

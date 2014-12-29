@@ -25,7 +25,7 @@ public:
 protected:
 
 	PhongShader();
-	PhongShader(const string& shaderName);
+	PhongShader(const std::string& shaderName);
 
 	void SetLightAndModel(const Scene_ptr scene);
 

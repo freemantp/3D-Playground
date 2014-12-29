@@ -4,14 +4,11 @@
 #include "../input/ViewportObserver.h"
 #include "../util/SharedPointer.h"
 
-using glm::mat4;
-using glm::vec3;
-
 struct CameraFrame
 {
-	vec3 up;
-	vec3 viewDir;
-	vec3 sideways;
+	glm::vec3 up;
+	glm::vec3 viewDir;
+	glm::vec3 sideways;
 };
 
 SHARED_PTR_CLASS_DECL(Camera);
@@ -22,35 +19,35 @@ public:
 
 	Camera(float nearPlane, float farPlane);
 
-	mat4 GetViewProjectionTransform() const;
+	glm::mat4 ViewProjectionTransform() const;
 
-	mat4 GetProjectionTransform() const;
+	glm::mat4 ProjectionTransform() const;
 
 	void UpdateViewMatrix();
 	virtual void UpdateProjectionMatrix() = 0;
 
-	const vec3& GetPosition() const;
-	const vec3& GetTarget() const;
-	const CameraFrame& GetFrame() const;
-	float GetNearPlane() const;
-	float GetFarPlane() const;
+	const glm::vec3& Position() const;
+	const glm::vec3& Target() const;
+	const CameraFrame& Frame() const;
+	float NearPlane() const;
+	float FarPlane() const;
 
-	void SetPosition(const vec3& pos);
-	void SetTarget(const vec3& target);
-	void SetUpVector(const vec3& up);
-	void SetOrientation(const vec3& pos, const vec3& up);
-	void SetOrientation2(const vec3& target, const vec3& up);
+	void SetPosition(const glm::vec3& pos);
+	void SetTarget(const glm::vec3& target);
+	void SetUpVector(const glm::vec3& up);
+	void SetOrientation(const glm::vec3& pos, const glm::vec3& up);
+	void SetOrientation2(const glm::vec3& target, const glm::vec3& up);
 
 	void SetNearPlane(float near);
 	void SetFarPlane(float fov);
 
-	mat4 viewMatrix;
-	mat4 projectionMatrix;
+	glm::mat4 viewMatrix;
+	glm::mat4 projectionMatrix;
 
 protected:
 
-	vec3 position;
-	vec3 target;
+	glm::vec3 position;
+	glm::vec3 target;
 	CameraFrame frame;
 	float nearP;
 	float farP;

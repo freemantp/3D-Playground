@@ -16,7 +16,7 @@ public:
 	virtual bool SetMaterial(Material_cptr material) = 0;
 
 protected:
-	MaterialShader(const string& shaderName) : ShaderBase(shaderName)
+	MaterialShader(const std::string& shaderName) : ShaderBase(shaderName)
 	{
 
 	}

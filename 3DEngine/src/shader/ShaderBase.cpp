@@ -6,7 +6,7 @@
 #include "../scene/Scene.h"
 #include "../config.h"
 
-ShaderBase::ShaderBase(const string& shaderName)
+ShaderBase::ShaderBase(const std::string& shaderName)
 	: hasMVP(true)
 	, hasNM(true)
 	, hasMVM(true)
@@ -46,7 +46,7 @@ GLint ShaderBase::GetCurentProgram()
 	return currentProgram;
 }
 
-const string& ShaderBase::GetName() const
+const std::string& ShaderBase::GetName() const
 { 
 	return shaderName; 
 }
@@ -117,18 +117,18 @@ GLint ShaderBase::GetAttributeChannel(GLSLShader::VertexAttribute attribute)
 	}
 }
 
-bool ShaderBase::LoadShader(const string& shaderName)
+bool ShaderBase::LoadShader(const std::string& shaderName)
 {
 	Info("Loading shader " + shaderName );
 
-	string vertexShaderSource = Util::LoadTextFile( Config::SHADER_BASE_PATH + shaderName + ".vert");
-	string fragmentShaderSource = Util::LoadTextFile( Config::SHADER_BASE_PATH + shaderName + ".frag");
+	std::string vertexShaderSource = Util::LoadTextFile( Config::SHADER_BASE_PATH + shaderName + ".vert");
+	std::string fragmentShaderSource = Util::LoadTextFile( Config::SHADER_BASE_PATH + shaderName + ".frag");
 
 	return LoadShader(vertexShaderSource, fragmentShaderSource);
 }
 
-bool ShaderBase::LoadShader( const string& vertexSource, 
-							 const string& fragmentSource)
+bool ShaderBase::LoadShader( const std::string& vertexSource, 
+							 const std::string& fragmentSource)
 {
 	if (!this->CompileShaderFromString(vertexSource, GLSLShader::VERTEX))  
 	{

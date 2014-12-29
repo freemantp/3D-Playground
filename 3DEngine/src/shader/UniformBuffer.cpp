@@ -74,29 +74,29 @@ void UniformBuffer::PrintUniforms(const GLSLProgram_ptr program, const std::vect
 	std::cout << std::endl;
 }
 
-void UniformBuffer::SetElement(const string& name, const void* ptr, const GLsizei numBytes)
+void UniformBuffer::SetElement(const std::string& name, const void* ptr, const GLsizei numBytes)
 {
 	glBindBuffer(GL_UNIFORM_BUFFER, uboHandle);
 	glBufferSubData(GL_UNIFORM_BUFFER, offsets[name], numBytes, ptr);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void UniformBuffer::SetElement(const std::string& name, const mat4& v)
+void UniformBuffer::SetElement(const std::string& name, const glm::mat4& v)
 {
 	SetElement(name, &v[0], 16 * sizeof(GLfloat));
 }
 
-void UniformBuffer::SetElement(const string& name, const vec3& v)
+void UniformBuffer::SetElement(const std::string& name, const glm::vec3& v)
 {
 	SetElement(name, &v[0],3 * sizeof(GLfloat));
 }
 
-void UniformBuffer::SetElement(const string& name, const vec4& v)
+void UniformBuffer::SetElement(const std::string& name, const glm::vec4& v)
 {
 	SetElement(name, &v[0],4 * sizeof(GLfloat));
 }
 
-void UniformBuffer::SetElement(const string& name, float v)
+void UniformBuffer::SetElement(const std::string& name, float v)
 {
 	SetElement(name, &v, sizeof(GLfloat));
 }

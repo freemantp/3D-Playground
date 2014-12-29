@@ -5,8 +5,6 @@
 SHARED_PTR_CLASS_DECL(CameraAdapter);
 SHARED_PTR_CLASS_DECL(Camera);
 
-using glm::vec2;
-
 class CameraAdapter
 {
 
