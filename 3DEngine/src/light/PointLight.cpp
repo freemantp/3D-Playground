@@ -13,12 +13,13 @@ using glm::vec3;
 PointLight::PointLight()
 	: Light()
 {
-	visMesh = Util::GetBox();
+	visMesh = Util::CreateBox();
 	visMesh->Init();
 
 	ConstantColorMaterial_ptr mat = ConstantColorMaterial::Create();
 	mat->color = color;
 	visMesh->SetMaterial(mat);
+	visMesh->worldTransform = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
 }
 
 
@@ -30,11 +31,10 @@ PointLight::~PointLight()
 void PointLight::SetPosition(glm::vec4& pos)
 {
 	position = pos;
-	visMesh->worldTransform = glm::translate(glm::mat4(1.0),vec3(pos.x,pos.y,pos.z));
-	visMesh->worldTransform = glm::scale(visMesh->worldTransform,vec3(0.05f));
+	visMesh->worldTransform[3] = position;
 }
 
-const glm::vec4& PointLight::GetPosition() const
+const glm::vec4& PointLight::Position() const
 {
 	return position;
 }
@@ -52,7 +52,7 @@ void PointLight::SetColor(vec3& color)
 	mat->color = color;
 }
 
-Shape_ptr PointLight::GetRepresentation() const
+Shape_ptr PointLight::ModelRepresentation() const
 {
 	return visMesh;
 }

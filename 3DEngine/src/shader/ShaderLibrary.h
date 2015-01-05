@@ -13,18 +13,18 @@ class ShaderLibrary
 {
 public:	
 	static ShaderLibrary_ptr GetInstance();
-		
-	virtual ~ShaderLibrary();
 
-	MaterialShader_ptr GetShader(Material_cptr material);
+	MaterialShader_ptr ShaderLookup(Material_cptr material);
 	
 	bool AddShader(Material_cptr material);
 	
 protected:
 
+	virtual ~ShaderLibrary();
+
 	bool AddShader(Material_cptr material, MaterialShader_ptr shader);
 
-	MaterialShader_ptr GetShader(const std::type_info& materialType);
+	MaterialShader_ptr ShaderLookup(const std::type_info& materialType);
 	bool AddShader(const std::type_info& materialType, MaterialShader_ptr shader);
 
 	static ShaderLibrary_ptr instance;

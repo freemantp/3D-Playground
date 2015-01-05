@@ -15,10 +15,10 @@ public:
 
 	Light();
 
-	virtual glm::vec3& GetColor();
+	virtual const glm::vec3& Color();
 	virtual void SetColor(glm::vec3& pos);
 
-	virtual Shape_ptr GetRepresentation() const;
+	virtual Shape_ptr ModelRepresentation() const;
 
 protected:
 	glm::vec3 color;

@@ -17,7 +17,7 @@
 
 PhongShader_ptr PhongShader::Create()
 {
-	return PhongShader_ptr(new PhongShader());
+	return PhongShader_ptr(new PhongShader(), [](PhongShader* p) {delete p;});
 }
 
 PhongShader::PhongShader()
@@ -41,7 +41,7 @@ void PhongShader::Init()
 	
 }
 
-PhongShader::~PhongShader(void)
+PhongShader::~PhongShader()
 {
 }
 
@@ -81,12 +81,12 @@ bool PhongShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 
 	if(scene->skybox)
 	{
-		const int skymapTexUnit = 0;
+		const int skymap_tex_unit = 0;
 
 		if (auto sbm = std::dynamic_pointer_cast<SkyboxMaterial>(scene->skybox->GetMaterial()))
 		{
-			sbm->texture->BindTexture(skymapTexUnit);
-			SetUniform("EnvMapTex", skymapTexUnit);
+			sbm->texture->BindTexture(skymap_tex_unit);
+			SetUniform("EnvMapTex", skymap_tex_unit);
 			SetUniform("CameraPosWorld", scene->activeCamera->Position());
 		}
 	}
@@ -116,7 +116,7 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 	auto bind_shadowmap_tex = [&lightModel](int sl_i, int texUnit)
 	{
 		auto sl = lightModel->spotLights[sl_i];
-		sl->GetShadow()->ShadowMap()->BindTexture(texUnit);
+		sl->Shadow()->ShadowMap()->BindTexture(texUnit);
 	};
 
 	const size_t maxNumSpotLights = 4;
@@ -150,20 +150,17 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 				auto pcfDim = lightModel->pcfShadowRandomData->Dimensions();
 
 				auto sl = lightModel->spotLights[0];
-				const glm::ivec2& sdims = sl->GetShadow()->ShadowMap()->Dimensions();
+				const glm::ivec2& sdims = sl->Shadow()->ShadowMap()->Dimensions();
 
 				const float pixelBlur = pcfDim.x / static_cast<float>(sdims.x);
 				SetUniform("PCFDataOffsetsSize", pcfDim);
 				SetUniform("PCFDataOffsets", texUnit);
 				SetUniform("PCFBlurRadius", pixelBlur);
-
 			}
 
 			SetUniformArray("ShadowMapArray", shadowMaps, 1, maxNumSpotLights);
 		}
 	}
-
-
 
 	lightModel->GetLightsBuffer()->BindToShader(shared_from_this(),"Lights");
 }

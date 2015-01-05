@@ -39,37 +39,44 @@ public:
 	bool IsInitialized() const { return initialized; };
 	bool MapVertexAttribute(GLSLShader::VertexAttribute attrib, GLuint channel) const;
 
+	enum class DrawMode : GLenum { Triangle = GL_TRIANGLES, Line = GL_LINES, Point = GL_POINTS };
+
+	void SetDrawingMode(DrawMode mode);
+
 protected:
 
 	Mesh(MeshRaw_ptr rawMesh);
-	Mesh();
+	Mesh(DrawMode = DrawMode::Triangle);
 
 	void InitFromRawMesh(MeshRaw_ptr rawMesh);
 
-	/* \brief Map vertex attributes to correct channels */
+	/// Map vertex attributes to correct channels
 	void MapVertexAttributes(ShaderBase_ptr shader) const;
 
-	struct VertexAttribData {
+	/// Naked draw commands without shaders
+	void Draw(const size_t& group) const;
+
+	inline void SetAttribPointer(const GLSLShader::VertexAttribute& attrib) const;
+
+	struct VertexAttribData
+	{
 		GLuint channel;
 		GLint  size;
 	};
 
-	/// Naked draw commands w/o shaders
-	void Draw(size_t group) const;
+	GLuint									vaoHandle;
+	DrawMode								drawMode;
+	int										primitiveSize;
+	std::string								name;
 
-	inline void SetAttribPointer(const GLSLShader::VertexAttribute& attrib) const;
+	std::unique_ptr<GLuint[]>				bufferObjects;
+	std::unique_ptr<GLuint[]>				indexBufferObjects;
+	std::unique_ptr<VertexAttribData[]>		vAttribData;
 
-	GLuint vaoHandle;
-	std::string name;
+	std::vector< std::pair<int,int> >		ranges;
+	std::vector<Material_ptr>				materialsNew;
 
-	std::unique_ptr<GLuint[]> bufferObjects;
-	std::unique_ptr<GLuint[]> indexBufferObjects;
-	std::unique_ptr<VertexAttribData[]> vAttribData;
-
-	std::vector< std::pair<int,int> > ranges;
-	std::vector<Material_ptr> materialsNew;
-
-	bool vtxAttribSet[6];
-	bool initialized;
+	bool									vtxAttribSet[6];
+	bool									initialized;
 };
 

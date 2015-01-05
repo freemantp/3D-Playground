@@ -28,14 +28,14 @@ public:
 	static std::unique_ptr<glimg::ImageSet> LoadImageFile(const std::string& texturePath);
 	static std::string Util::ExtractBaseFolder(std::string path);
 	static std::string Util::ExtractFileName(std::string path);	
-	static bool FileExists (const std::string& name);
+	static bool FileExists(const std::string& name);
 
 	static void Beep();
 
 	static Mesh_ptr GetDragon();
 	static Mesh_ptr GetHorse();
 	static Mesh_ptr GetElephant();
-	static Mesh_ptr GetBox();
+	static Mesh_ptr CreateBox();
 
 	static void Trim(std::string& str);
 

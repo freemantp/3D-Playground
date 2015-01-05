@@ -11,21 +11,20 @@
 #include <sstream>
 #include <array>
 
-using namespace std;
 using glm::vec2;
 using glm::vec3;
 using glm::ivec3;
 
 
-MeshRaw_ptr ObjLoader::LoadObj(istream& istr, std::string path)
+MeshRaw_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 {	
 	int lineCount = 0;
 
 	MeshRaw_ptr newMesh = MeshRaw::Create();
 	newMesh->meshPath = path;
 
-	string groupName;	
-	string currentMtl;
+	std::string groupName;	
+	std::string currentMtl;
 	int groupFaceStartIdx = 0;
 
 	auto create_group = [&](std::string& groupName)
@@ -95,7 +94,7 @@ MeshRaw_ptr ObjLoader::LoadObj(istream& istr, std::string path)
 		}
 		else if (line[0] == 'f' && line[1] == ' ')
 		{			
-			istringstream str_stream(line);
+			std::istringstream str_stream(line);
 			str_stream.ignore(2);
 
 			Tri tri;
@@ -151,9 +150,15 @@ MeshRaw_ptr ObjLoader::LoadObj(istream& istr, std::string path)
 	//Complete last index group
 	create_group(groupName);
 
-	cout << "Mesh loaded, f=" << newMesh->faces.size() << ", v=" << newMesh->vertices.size() << ", n=" << newMesh->normals.size() << ", tex coords=" << newMesh->texCoords.size() << endl;
+	std::cout << "Mesh loaded, f=" 
+		<< newMesh->faces.size() 
+		<< ", v=" << newMesh->vertices.size() 
+		<< ", n=" << newMesh->normals.size() 
+		<< ", tex coords=" 
+		<< newMesh->texCoords.size() 
+		<< std::endl;
 
-	newMesh->ConvertIndices();
+	newMesh->ConvertTrianglesToIndices();
 
 	if (!newMesh->HasNormals())
 	{		
@@ -193,37 +198,37 @@ bool ObjLoader::LoadMtllib(std::istream& istr, MeshRaw_ptr newMesh)
 		{
 			if(line.substr(0,2) == "Ka")
 			{
-				istringstream s(line.substr(2));
+				std::istringstream s(line.substr(2));
 				vec3 v;
 				s >> mat->ambient.r; s >>  mat->ambient.g; s >>  mat->ambient.b;
 			}
 			else if(line.substr(0,2) == "Kd")
 			{
-				istringstream s(line.substr(2));
+				std::istringstream s(line.substr(2));
 				vec3 v;
 				s >> mat->diffuse.r; s >>  mat->diffuse.g; s >>  mat->diffuse.b;
 			}
 			else if(line.substr(0,2) == "Ks")
 			{
-				istringstream s(line.substr(2));
+				std::istringstream s(line.substr(2));
 				vec3 v;
 				s >> mat->specular.r; s >>  mat->specular.g; s >>  mat->specular.b;
 			}
 			else if(line.substr(0,1) == "d")
 			{
-				istringstream s(line.substr(1));
+				std::istringstream s(line.substr(1));
 				vec3 v;
 				s >> mat->opacity;
 			}
 			else if(line.substr(0,2) == "Ns")
 			{
-				istringstream s(line.substr(2));
+				std::istringstream s(line.substr(2));
 				vec3 v;
 				s >> mat->shininess;
 			}
 			else if(line.substr(0,5) == "illum")
 			{
-				istringstream s(line.substr(5));
+				std::istringstream s(line.substr(5));
 				int illuminationModel;
 				s >> illuminationModel;
 				mat->specularEnabled = illuminationModel > 1;
@@ -270,7 +275,7 @@ MeshRaw_ptr ObjLoader::LoadObjFile(const std::string& path)
 {
 	currentFile = path;
 
-	ifstream myfile;
+	std::ifstream myfile;
 	myfile.open(path);
 
 	MeshRaw_ptr newMesh;
@@ -282,7 +287,7 @@ MeshRaw_ptr ObjLoader::LoadObjFile(const std::string& path)
 		myfile.close();
 	}
 	else 
-		cerr << "Unable to open OBJ file: "  << path << endl;
+		std::cerr << "Unable to open OBJ file: "  << path << std::endl;
 
 	return newMesh;
 }

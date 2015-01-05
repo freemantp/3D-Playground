@@ -14,7 +14,7 @@ public:
 	virtual const glm::vec3& GetDirection() const;
 	virtual void SetDirection(glm::vec3& direction);
 	
-	Shadow_ptr GetShadow() const;
+	Shadow_ptr Shadow() const;
 
 protected:
 
@@ -23,7 +23,6 @@ protected:
 	inline void UpdateShadow();
 
 	glm::vec3 direction;
-
 	Shadow_ptr shadow;
 
 };

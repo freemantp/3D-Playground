@@ -1,8 +1,9 @@
 #pragma once
 
-#include <glm/glm.hpp>
 #include "../input/ViewportObserver.h"
 #include "../util/SharedPointer.h"
+
+#include <glm/glm.hpp>
 
 struct CameraFrame
 {

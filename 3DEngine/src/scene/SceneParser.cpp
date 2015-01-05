@@ -46,12 +46,12 @@ SceneParser::SceneParser(InputHandlerFactory& factory)
 
 }
 
-Scene_ptr SceneParser::GetScene()
+Scene_ptr SceneParser::Scene()
 {
-	return generatedScene;
+	return generated_scene;
 }
 
-bool SceneParser::parse(const std::string& xmlDocument)
+bool SceneParser::Parse(const std::string& xmlDocument)
 {
 	bool parseOk = true;
 	
@@ -74,8 +74,8 @@ bool SceneParser::parse(const std::string& xmlDocument)
 				parseOk &= ParseCamera(cam,cameraElement);
 				try
 				{
-					generatedScene = Scene::Create(factory,cam);
-					generatedScene->name = sceneName;
+					generated_scene = Scene::Create(factory,cam);
+					generated_scene->name = sceneName;
 				}
 				catch (std::exception* e)
 				{
@@ -265,7 +265,7 @@ bool SceneParser::ParseSkybox(XMLElement* skyboxElem)
 
 	Skybox_ptr sb = Skybox_ptr(new Skybox(sbMat));
 	sb->Init();
-	generatedScene->SetSkybox(sb);
+	generated_scene->SetSkybox(sb);
 
 	return true;
 }
@@ -327,7 +327,7 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 				shape->worldTransform = tMatrix;
 			}
 
-			generatedScene->AddShape(shape);		
+			generated_scene->AddShape(shape);		
 		} 
 		while (objeElem = objeElem->NextSiblingElement());
 	}
@@ -444,7 +444,7 @@ bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 				plight->SetPosition(glm::vec4(pos, 1.0));
 				plight->SetColor(color);
 
-				generatedScene->AddLight(plight);
+				generated_scene->AddLight(plight);
 
 			}
 			else if (lightType == "spot")
@@ -463,11 +463,11 @@ bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 				slight->SetPosition(glm::vec4(pos, 1.0));
 				slight->SetColor(color);
 
-				generatedScene->AddLight(slight);
+				generated_scene->AddLight(slight);
 			}
 			else if (lightType == "directional")
 			{
-				if (generatedScene->lightModel->directionalLight)
+				if (generated_scene->lightModel->directionalLight)
 					Warn("Multiple directional lights, in the scene. Only one is suported");
 
 				glm::vec3 color, direction;
@@ -477,7 +477,7 @@ bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 				DirectionalLight_ptr dirLight = DirectionalLight::Create();
 				dirLight->SetColor(color);
 				dirLight->SetDirection(glm::normalize(direction));
-				generatedScene->SetLight(dirLight);
+				generated_scene->SetLight(dirLight);
 
 			}
 			else

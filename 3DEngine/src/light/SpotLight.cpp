@@ -2,6 +2,13 @@
 #include "SpotLight.h"
 #include "Shadow.h"
 
+#include "../shape/WireCone.h"
+
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/euler_angles.hpp>
+#include <glm/ext.hpp>
+
+#include <iostream>
 
 SpotLight_ptr SpotLight::Create(const glm::vec3& direction, float cutoffAngle, float exponent, bool castsShadow /*= true*/)
 {
@@ -17,6 +24,9 @@ SpotLight::SpotLight(const glm::vec3& direction, float cutoffAngle, float expone
 {
 	if (castsShadow)
 		shadow = Shadow::Create();
+
+	visMesh = WireCone::Create(cutoffAngle, 0.1f);
+	visMesh->Init();
 }
 
 
@@ -33,7 +43,6 @@ const glm::vec3& SpotLight::GetUpVector() const
 void SpotLight::SetPosition(glm::vec4& pos)
 {
 	__super::SetPosition(pos);
-
 	UpdateShadow();
 }
 
@@ -41,6 +50,22 @@ void SpotLight::SetDirection(const glm::vec3& dir)
 { 
 	direction = glm::normalize(dir); 
 	UpdateShadow();
+
+	const glm::vec3 z_vec(0, 0, 1);
+	float rot_angle = std::acos(glm::dot(dir, z_vec));
+
+	glm::vec3 xz_plane_dir = direction;
+	xz_plane_dir.y = 0;
+	xz_plane_dir = glm::normalize(xz_plane_dir);
+
+	float pitch_angle = std::acos(glm::dot(direction, xz_plane_dir));
+	float yaw_angle = std::acos(glm::dot(xz_plane_dir, z_vec));
+
+	if (xz_plane_dir.x < 0)
+		yaw_angle = glm::two_pi<float>() - yaw_angle;
+
+	visMesh->worldTransform = glm::yawPitchRoll(yaw_angle, pitch_angle, 0.f);
+	visMesh->worldTransform[3] = position;
 }
 
 void SpotLight::SetUpDirection(const glm::vec3& upVector)
@@ -50,7 +75,7 @@ void SpotLight::SetUpDirection(const glm::vec3& upVector)
 }
 
 
-float SpotLight::GetCutoffAngle() const
+float SpotLight::CutoffAngle() const
 { 
 	return cutoffAngle; 
 }
@@ -58,7 +83,13 @@ float SpotLight::GetCutoffAngle() const
 
 void SpotLight::SetCutoffAngle(float theta)
 { 
-	this->cutoffAngle = theta;
+	if (cutoffAngle != theta)
+	{
+		visMesh = WireCone::Create(theta, 0.1f);
+		visMesh->Init();
+	}
+	
+	cutoffAngle = theta;
 }
 
 void SpotLight::SetExponent(float exponent) 
@@ -66,12 +97,12 @@ void SpotLight::SetExponent(float exponent)
 	this->exponent = exponent; 
 }
 
-float SpotLight::GetExponent() const
+float SpotLight::Exponent() const
 { 
 	return exponent; 
 }
 
-Shadow_ptr SpotLight::GetShadow() const
+Shadow_ptr SpotLight::Shadow() const
 {
 	return shadow;
 }
@@ -81,3 +112,4 @@ void SpotLight::UpdateShadow()
 	if (shadow)
 		shadow->UpdateShadowMatrix(shared_from_this());
 }
+

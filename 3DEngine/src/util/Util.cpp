@@ -140,7 +140,7 @@ Mesh_ptr Util::GetElephant()
 	return model;
 }
 
-Mesh_ptr Util::GetBox()
+Mesh_ptr Util::CreateBox()
 {
 	Box_ptr box = Box::Create();
 	box->Init();

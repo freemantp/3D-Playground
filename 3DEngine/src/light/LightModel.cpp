@@ -64,8 +64,8 @@ void LightModel::UpdateUniformBuffer(Camera_cptr cam)
 		std::stringstream lightName;
 		lightName << "Lights.PointLights[" << i << "].";
 	
-		lightsBuffer->SetElement(lightName.str() + "Position", cam->viewMatrix * pl->GetPosition() );
-		lightsBuffer->SetElement(lightName.str() + "Color", pl->GetColor());
+		lightsBuffer->SetElement(lightName.str() + "Position", cam->viewMatrix * pl->Position() );
+		lightsBuffer->SetElement(lightName.str() + "Color", pl->Color());
 	}
 
 	for(int i=0; i < spotLights.size(); i++)
@@ -75,21 +75,21 @@ void LightModel::UpdateUniformBuffer(Camera_cptr cam)
 		std::stringstream lightName;
 		lightName << "Lights.SpotLights[" << i << "].";
 	
-		lightsBuffer->SetElement(lightName.str() + "Position", cam->viewMatrix * sl->GetPosition() );
-		lightsBuffer->SetElement(lightName.str() + "Color", sl->GetColor());
+		lightsBuffer->SetElement(lightName.str() + "Position", cam->viewMatrix * sl->Position() );
+		lightsBuffer->SetElement(lightName.str() + "Color", sl->Color());
 
 		lightsBuffer->SetElement(lightName.str() + "Direction", directionTransformMatrix * sl->GetDirection());
-		lightsBuffer->SetElement(lightName.str() + "CutoffAngle", sl->GetCutoffAngle());
-		lightsBuffer->SetElement(lightName.str() + "Exponent", sl->GetExponent());
+		lightsBuffer->SetElement(lightName.str() + "CutoffAngle", sl->CutoffAngle());
+		lightsBuffer->SetElement(lightName.str() + "Exponent", sl->Exponent());
 
-		if (auto shdw = sl->GetShadow())
+		if (auto shdw = sl->Shadow())
 			lightsBuffer->SetElement(lightName.str() + "ShadowMatrix",shdw->ShadowMatrix());
 	}
 
 	if (directionalLight)
 	{
 		lightsBuffer->SetElement("Lights.DirectionalLight0.Direction", directionTransformMatrix * directionalLight->GetDirection());
-		lightsBuffer->SetElement("Lights.DirectionalLight0.Color", directionalLight->GetColor());
+		lightsBuffer->SetElement("Lights.DirectionalLight0.Color", directionalLight->Color());
 	}
 
 }

@@ -7,14 +7,13 @@
 SHARED_PTR_CLASS_DECL(PhongShader)
 SHARED_PTR_CLASS_DECL(PhongMaterial)
 
-class PhongShader : public MaterialShader
+class PhongShader 
+	: public MaterialShader
 	, public std::enable_shared_from_this<PhongShader>
 {
 public:
 
 	static PhongShader_ptr Create();
-
-	virtual ~PhongShader();
 
 	virtual bool Use(const Scene_ptr scene, const glm::mat4& modelTransform) override;
 
@@ -27,8 +26,9 @@ protected:
 	PhongShader();
 	PhongShader(const std::string& shaderName);
 
-	void SetLightAndModel(const Scene_ptr scene);
+	virtual ~PhongShader();
 
+	void SetLightAndModel(const Scene_ptr scene);
 
 	virtual void Init();
 

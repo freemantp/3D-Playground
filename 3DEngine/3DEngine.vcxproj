@@ -68,6 +68,7 @@
     <ClInclude Include="src\shape\Mesh.h" />
     <ClInclude Include="src\shape\Shape.h" />
     <ClInclude Include="src\shape\Triangle.h" />
+    <ClInclude Include="src\shape\WireCone.h" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\texture\CubeMapTexture.h" />
     <ClInclude Include="src\texture\ShadowMapTexture.h" />
@@ -122,6 +123,7 @@
     <ClCompile Include="src\shape\Mesh.cpp" />
     <ClCompile Include="src\shape\Shape.cpp" />
     <ClCompile Include="src\shape\Triangle.cpp" />
+    <ClCompile Include="src\shape\WireCone.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

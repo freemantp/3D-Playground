@@ -54,7 +54,6 @@ public:
 class MeshRaw
 {
 public:
-
 	SHARED_PTR_FACTORY(MeshRaw);
 
 	typedef std::pair<int,int> Range;
@@ -65,9 +64,9 @@ public:
 
 	bool ComputeNormals();
 	bool ComputeTangents();
-	void ConvertIndices();
+	void ConvertTrianglesToIndices();
 
-	void AddGroup(std::string& name, std::string& material, Range idxRange);
+	void AddGroup(std::string& name, std::string& material, Range& idxRange);
 
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
@@ -86,7 +85,5 @@ protected:
 	MeshRaw();
 
 	~MeshRaw();
-	
-
 };
 

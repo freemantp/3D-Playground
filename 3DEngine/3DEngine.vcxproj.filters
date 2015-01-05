@@ -266,6 +266,9 @@
       <Filter>Source Files\light\shadow</Filter>
     </ClInclude>
     <ClInclude Include="src\light\DirectionalLight.h" />
+    <ClInclude Include="src\shape\WireCone.h">
+      <Filter>Source Files\shapes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -417,6 +420,9 @@
     </ClCompile>
     <ClCompile Include="src\light\DirectionalLight.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shape\WireCone.cpp">
+      <Filter>Source Files\shapes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

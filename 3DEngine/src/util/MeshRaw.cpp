@@ -51,7 +51,7 @@ bool MeshRaw::HasTexCoords() const
 	return texCoords.size() == vertices.size();
 }
 
-void MeshRaw::AddGroup(std::string& name, std::string& material, Range idxRange)
+void MeshRaw::AddGroup(std::string& name, std::string& material, Range& idxRange)
 {
 	groupRanges.push_back(idxRange);
 	groupNames.push_back(name);
@@ -209,7 +209,7 @@ bool MeshRaw::ComputeTangents()
 	return true;
 }
 
-void MeshRaw::ConvertIndices()
+void MeshRaw::ConvertTrianglesToIndices()
 {
 	indices.clear();
 	indices.reserve(faces.size() * 3);

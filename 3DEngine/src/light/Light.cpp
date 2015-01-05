@@ -6,7 +6,7 @@ Light::Light() : color(glm::vec3(1,1,1))
 
 }
 
-glm::vec3& Light::GetColor()
+const glm::vec3& Light::Color()
 {
 	return color;
 }
@@ -16,7 +16,7 @@ void Light::SetColor(glm::vec3& color)
 	this->color = color;
 }
 
-Shape_ptr Light::GetRepresentation() const
+Shape_ptr Light::ModelRepresentation() const
 {
 	return Shape_ptr();
 }

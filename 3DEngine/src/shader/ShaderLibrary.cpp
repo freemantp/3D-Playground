@@ -7,26 +7,26 @@
 #include "SHDiffuseShader.h"
 #include "SkyboxShader.h"
 
-// static initialisation
-ShaderLibrary_ptr ShaderLibrary::instance = ShaderLibrary_ptr(new ShaderLibrary());
+// static initialization
+ShaderLibrary_ptr ShaderLibrary::instance = ShaderLibrary_ptr();
 
-ShaderLibrary::ShaderLibrary()
-{
-}
+ShaderLibrary::ShaderLibrary() {}
 
-
-ShaderLibrary::~ShaderLibrary()
-{
-}
+ShaderLibrary::~ShaderLibrary() {}
 
 ShaderLibrary_ptr ShaderLibrary::GetInstance()
 {
+	if (!instance)
+	{
+		instance = ShaderLibrary_ptr(new ShaderLibrary(), [](ShaderLibrary* p) { delete p; });
+	}
+
 	return instance;
 }
 
 bool ShaderLibrary::AddShader(Material_cptr material)
 {
-	if (!GetShader(material))
+	if (!ShaderLookup(material))
 	{
 		if (std::dynamic_pointer_cast<const TextureMaterial>(material))
 			return AddShader(material, PhongTextureShader::Create());
@@ -62,19 +62,19 @@ bool ShaderLibrary::AddShader(const std::type_info& materialType, MaterialShader
 	return success;
 }
 
-MaterialShader_ptr ShaderLibrary::GetShader(Material_cptr material)
+MaterialShader_ptr ShaderLibrary::ShaderLookup(Material_cptr material)
 {
 	if (material)
 	{
 		const std::type_info& info = typeid(*material.get());
-		return GetShader(info);
+		return ShaderLookup(info);
 	}
 	else
 		return MaterialShader_ptr();
 
 }
 
-MaterialShader_ptr ShaderLibrary::GetShader(const std::type_info& materialType)
+MaterialShader_ptr ShaderLibrary::ShaderLookup(const std::type_info& materialType)
 {
 	if (materialShaderDictionary.count(&materialType) > 0)
 		return materialShaderDictionary[&materialType];

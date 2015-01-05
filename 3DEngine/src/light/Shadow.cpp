@@ -24,11 +24,11 @@ Shadow::Shadow()
 void Shadow::UpdateShadowMatrix(SpotLight_cptr sl)
 {
 	//In fact this applies to directional lights only...	
-	glm::vec3 pos3(sl->GetPosition());
+	glm::vec3 pos3(sl->Position());
 	glm::vec3 lookAtPos(pos3 + sl->GetDirection());
 
 	glm::mat4 depthViewMatrix = glm::lookAt(pos3, lookAtPos, sl->GetUpVector());
-	glm::mat4 depthProjectionMatrix = glm::perspective(glm::radians(sl->GetCutoffAngle() * 2), 1.0f, 0.1f, 100.0f);
+	glm::mat4 depthProjectionMatrix = glm::perspective(glm::radians(sl->CutoffAngle() * 2), 1.0f, 0.1f, 100.0f);
 
 	depthViewProjectionMatrix = depthProjectionMatrix * depthViewMatrix;
 	shadowMat = biasMatrix * depthViewProjectionMatrix;

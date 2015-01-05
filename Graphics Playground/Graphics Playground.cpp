@@ -31,12 +31,12 @@ void InitWindow();
 void RenderFunction();
 
 Renderer_ptr renderer;
-string sceneName = "pc24.xml";
+//string sceneName = "pc24.xml";
 //string sceneName = "headScene.xml";
 //string sceneName = "manyPlanes.xml";
 //string sceneName = "shadowScene.xml";
 //string sceneName = "road.xml";
-//string sceneName = "simpleScene.xml";
+string sceneName = "simpleScene.xml";
 //string sceneName = "shScene.xml";
 //string sceneName = "ogreScene.xml";
 
@@ -86,7 +86,6 @@ void initGL()
 
 bool Initialize()
 {
-
 	int glutArgc = 0;
 	char** glutArgv = nullptr;
 
@@ -112,9 +111,9 @@ bool Initialize()
 
 	GlutInputHandlerFactory gihf;
 	SceneParser sp(gihf);
-	if (sp.parse(data))
+	if (sp.Parse(data))
 	{
-		auto s = sp.GetScene();
+		auto s = sp.Scene();
 		renderer->SetScene(s);
 		TimeManager::GetInstance().AddTimeObserver(s);
 

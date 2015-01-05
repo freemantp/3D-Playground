@@ -52,7 +52,6 @@ void Camera::SetUpVector(const glm::vec3& up)
 	UpdateViewMatrix();
 }
 
-
 void Camera::SetOrientation(const glm::vec3& pos, const glm::vec3& up)
 {
 	position = pos;

@@ -3,6 +3,7 @@
 #include <vector>
 #include <array>
 
+#define GLM_SWIZZLE
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -29,8 +30,6 @@ class Scene : public TimeObserver, public std::enable_shared_from_this<Scene>
 public:		
 
 	static Scene_ptr Create(InputHandlerFactory& ihf, Camera_ptr cam);
-
-	virtual ~Scene();
 
 	void Render(Viewport_ptr viewport);
 
@@ -63,9 +62,11 @@ public:
 
 protected:
 
-	void RenderShadowMaps();
-
 	Scene(InputHandlerFactory& ihf, Camera_ptr cam);
+
+	virtual ~Scene();
+
+	void RenderShadowMaps();
 
 	InspectionCameraAdapter_ptr mAdapter;
 	FirstPersonCameraAdapter_ptr mAdapter2;

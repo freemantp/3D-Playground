@@ -28,14 +28,14 @@ public:
 	virtual void SetUpDirection(const glm::vec3& dir);
 	virtual void SetPosition(glm::vec4& pos) override;
 
-	virtual float GetCutoffAngle() const;
+	virtual float CutoffAngle() const;
 
 	/// Sets the cutoff angle theta
 	virtual void SetCutoffAngle(float theta);
 	virtual void SetExponent(float exponent);
-	virtual float GetExponent() const;
+	virtual float Exponent() const;
 
-	Shadow_ptr GetShadow() const;
+	Shadow_ptr Shadow() const;
 
 protected:
 

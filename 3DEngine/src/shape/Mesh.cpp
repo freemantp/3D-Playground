@@ -25,20 +25,18 @@ Mesh_ptr Mesh::Create(MeshRaw_ptr mesh)
 	return Mesh_ptr(new Mesh(mesh));
 }
 
-Mesh::Mesh() 
-	: initialized(false)
-	, Shape() 
+Mesh::Mesh(MeshRaw_ptr rawMesh)
+: Mesh()
 {
-	Init();
+	InitFromRawMesh(rawMesh);
 }
 
-Mesh::Mesh(MeshRaw_ptr rawMesh)
-	: initialized(false)
-	, Shape() 
+Mesh::Mesh(DrawMode mode)
+: initialized(false)
+, Shape()
 {
+	SetDrawingMode(mode);
 	Init();
-	InitFromRawMesh(rawMesh);
-	
 }
 
 void Mesh::InitFromRawMesh(MeshRaw_ptr rawMesh)
@@ -181,7 +179,7 @@ bool Mesh::SetPositions(const std::vector<glm::vec3>& positions, const std::vect
 	}
 	else
 	{
-		ranges.push_back(std::pair<int,int>(0, (int)indices.size() / 3 -1));
+		ranges.push_back(std::pair<int, int>(0, (int)indices.size() / primitiveSize - 1));
 	}
 
 	// Vertex positions
@@ -204,8 +202,8 @@ bool Mesh::SetPositions(const std::vector<glm::vec3>& positions, const std::vect
 		if(glIsBuffer(indexBufferObjects[i]))
 		{		
 			std::pair<int,int>& range = ranges[i];
-			int numIndices = (range.second - range.first + 1) * 3;
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, numIndices * sizeof(int), &indices[range.first * 3], GL_STATIC_DRAW);
+			int numIndices = (range.second - range.first + 1) * primitiveSize;
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, numIndices * sizeof(int), &indices[range.first * primitiveSize], GL_STATIC_DRAW);
 		} 
 		else
 		{
@@ -221,7 +219,7 @@ bool Mesh::SetPositions(const std::vector<glm::vec3>& positions, const std::vect
 		glDeleteBuffers(numIdxBuffers, indexBufferObjects.get());
 	}
 
-	//Bind first index buffer  (1st group) per default
+	//Bind first index buffer (1st group) per default
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[0]);
 	glBindVertexArray(0);
 
@@ -239,7 +237,6 @@ bool Mesh::SetNormals(const std::vector<glm::vec3>& normals)
 	if( glIsBuffer(bufferObjects[Normal]) )
 	{	
 		glEnableVertexAttribArray(vAttribData[Normal].channel);  // Vertex normal
-
 		glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(float) * 3, &(normals[0].x), GL_STATIC_DRAW);
 
 		SetAttribPointer(Normal);
@@ -353,7 +350,7 @@ void Mesh::Init()
 
 		//Init buffer names
 		bufferObjects.reset(new GLuint[numBuffers]);		
-		memset(bufferObjects.get(),0, numBuffers * sizeof(GLuint) );
+		std::memset(bufferObjects.get(),0, numBuffers * sizeof(GLuint) );
 
 		vAttribData.reset(new VertexAttribData[numBuffers]);
 
@@ -446,30 +443,30 @@ void Mesh::Render(const Scene_ptr scene) const
 	ShaderLibrary_ptr sl = ShaderLibrary::GetInstance();
 
 	//Render individual index groups if available
-	int numRanges = (int)ranges.size();
+	int numRanges = static_cast<int>(ranges.size());
 
-	std::set<ShaderBase_ptr> verxtexAttribsMapped;
+	std::set<ShaderBase_ptr> verxtex_attribs_mapped;
 
 	for (size_t i = 0; i < numRanges; i++)
 	{
-		Material_ptr currentMaterial = (i < materialsNew.size())
+		Material_ptr current_material = (i < materialsNew.size())
 			? materialsNew[i]
 			: this->material;
 
-		if (MaterialShader_ptr currentShader = sl->GetShader(currentMaterial))
+		if (MaterialShader_ptr current_shader = sl->ShaderLookup(current_material))
 		{
-			if (verxtexAttribsMapped.count(currentShader) <= 0)
+			if (verxtex_attribs_mapped.count(current_shader) <= 0)
 			{
-				MapVertexAttributes(currentShader);
-				verxtexAttribsMapped.insert(currentShader);
+				MapVertexAttributes(current_shader);
+				verxtex_attribs_mapped.insert(current_shader);
 			}
 
-			if (currentShader->SetMaterial(currentMaterial))
+			if (current_shader->SetMaterial(current_material))
 			{
-				if (currentShader->Use(scene, worldTransform))
+				if (current_shader->Use(scene, worldTransform))
 				{
 					Draw(i);
-					currentShader->UnUse();
+					current_shader->UnUse();
 				}
 				else
 					Error("Could not use shader");
@@ -487,12 +484,38 @@ void Mesh::Render(const Scene_ptr scene) const
 	glBindVertexArray(0);
 }
 
-void Mesh::Draw(size_t group) const
+void Mesh::Draw(const size_t& group) const
 {
-	//Bind i-th index bufferg
+	//Bind i-th index buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[group]);
 
 	//Here glDrawRangeElements is used to limit the amount of vertex data to be prefetched
-	int numElems = (ranges[group].second - ranges[group].first + 1) * 3;
-	glDrawRangeElements(GL_TRIANGLES, ranges[group].first, ranges[group].second, (GLsizei)numElems, GL_UNSIGNED_INT, (GLvoid*)nullptr);
+	int num_elems = (ranges[group].second - ranges[group].first + 1) * primitiveSize;
+
+	glDrawRangeElements(static_cast<GLenum>(drawMode),
+		ranges[group].first,
+		ranges[group].second,
+		static_cast<GLsizei>(num_elems),
+		GL_UNSIGNED_INT, nullptr);
+
+}
+
+void Mesh::SetDrawingMode(DrawMode mode)
+{
+	drawMode = mode;
+
+	switch (drawMode)
+	{
+	case Mesh::DrawMode::Triangle:
+		primitiveSize = 3;
+		break;
+	case Mesh::DrawMode::Line:
+		primitiveSize = 2;
+		break;
+	case Mesh::DrawMode::Point:
+		primitiveSize = 1;
+		break;
+	default:
+		break;
+	}
 }

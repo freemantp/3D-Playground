@@ -37,7 +37,7 @@ using std::vector;
 
 Scene_ptr Scene::Create(InputHandlerFactory& ihf, Camera_ptr cam)
 {
-	return Scene_ptr(new Scene(ihf,cam));
+	return Scene_ptr(new Scene(ihf, cam), [](Scene* p) {delete p;});
 }
 
 Scene::Scene(InputHandlerFactory& ihf, Camera_ptr cam)
@@ -131,13 +131,13 @@ void Scene::RenderShadowMaps()
 		//Generate shadow maps
 		for (auto sl : lightModel->spotLights)
 		{
-			if (Shadow_ptr smap = sl->GetShadow())
+			if (Shadow_ptr smap = sl->Shadow())
 				renderShadowMap(smap);
 		}
 
 		if (lightModel->directionalLight)
 		{
-			if (Shadow_ptr smap = lightModel->directionalLight->GetShadow())
+			if (Shadow_ptr smap = lightModel->directionalLight->Shadow())
 				renderShadowMap(smap);
 		}
 
@@ -174,7 +174,7 @@ void Scene::Render(Viewport_ptr viewport)
 	{
 		for (auto pl : lightModel->pointLights)
 		{
-			if (auto plr = pl->GetRepresentation())
+			if (auto plr = pl->ModelRepresentation())
 			{
 				plr->Render(shared_from_this());
 			}
@@ -182,7 +182,7 @@ void Scene::Render(Viewport_ptr viewport)
 
 		for(auto sl : lightModel->spotLights)
 		{
-			if (auto plr = sl->GetRepresentation())
+			if (auto plr = sl->ModelRepresentation())
 			{
 				plr->Render(shared_from_this());
 			}
@@ -196,13 +196,16 @@ void Scene::TimeUpdate(long time)
 	int numPLs = (int)lightModel->spotLights.size();
 	SpotLight_ptr pl;
 	
-	auto rotate_light = [](SpotLight_ptr& pl, float radians, const glm::vec3& axis)
+	auto rotate_light = [](SpotLight_ptr& sl, float radians, const glm::vec3& axis)
 	{
 		glm::mat4 lightTransform1 = glm::rotate(glm::mat4(1.0f), radians, axis);
-		pl->SetPosition(lightTransform1 * pl->GetPosition());
+		sl->SetPosition(lightTransform1 * sl->Position());
 
-		glm::vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform1))) * pl->GetDirection();
-		pl->SetDirection(newDir);
+		glm::vec3 dir = sl->Position().xyz;
+		dir = -glm::normalize(dir);
+
+		//glm::vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform1))) * pl->GetDirection();
+		sl->SetDirection(dir);
 	};
 
 	for (int i = 0; i < std::min(lightAnimParams.size(), lightModel->spotLights.size()); i++)

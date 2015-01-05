@@ -63,7 +63,7 @@
     <box material="dull">
       <transform>
         <translate x="0.0" y="-0.3" z="0.0"/>   
-        <scale x="20.0" y="0.01" z="20.0"/>
+        <scale x="100.0" y="0.01" z="100.0"/>
       </transform>
     </box>
   </objects>
