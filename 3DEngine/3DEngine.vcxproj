@@ -24,6 +24,7 @@
     <ClInclude Include="src\camera\CameraAdapter.h" />
     <ClInclude Include="src\camera\FirstPersonCameraAdapter.h" />
     <ClInclude Include="src\camera\InspectionCameraAdapter.h" />
+    <ClInclude Include="src\camera\OrthogonalCamera.h" />
     <ClInclude Include="src\camera\PerspectiveCamera.h" />
     <ClInclude Include="src\core\gl.h" />
     <ClInclude Include="src\enums.h" />
@@ -88,6 +89,7 @@
     <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\camera\FirstPersonCameraAdapter.cpp" />
     <ClCompile Include="src\camera\InspectionCameraAdapter.cpp" />
+    <ClCompile Include="src\camera\OrthogonalCamera.cpp" />
     <ClCompile Include="src\camera\PerspectiveCamera.cpp" />
     <ClCompile Include="src\common.cpp" />
     <ClCompile Include="src\input\WindowEventHandler.cpp" />

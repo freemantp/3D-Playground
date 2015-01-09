@@ -13,7 +13,7 @@
 
 //fwd decls
 class ShaderBase;
-class InputHandlerFactory;
+class InputHandler;
 
 SHARED_PTR_CLASS_DECL(Camera);	
 SHARED_PTR_CLASS_DECL(Scene);
@@ -29,7 +29,7 @@ class Scene : public TimeObserver, public std::enable_shared_from_this<Scene>
 {
 public:		
 
-	static Scene_ptr Create(InputHandlerFactory& ihf, Camera_ptr cam);
+	static Scene_ptr Create(Camera_ptr cam, bool has_frambufer = true);
 
 	void Render(Viewport_ptr viewport);
 
@@ -58,18 +58,20 @@ public:
 
 	};
 
+	void ConnectInputHandler(InputHandler& ih);
+
 	std::array<LightAnimationParam,3> lightAnimParams;
 
 protected:
 
-	Scene(InputHandlerFactory& ihf, Camera_ptr cam);
+	Scene(Camera_ptr cam,bool has_frambufer);
 
 	virtual ~Scene();
 
 	void RenderShadowMaps();
 
-	InspectionCameraAdapter_ptr mAdapter;
-	FirstPersonCameraAdapter_ptr mAdapter2;
+	InspectionCameraAdapter_ptr inspectionCamAdapter;
+	FirstPersonCameraAdapter_ptr fpCamAdapter;
 
 	ShadowMapShader_ptr shadowShader;
 	Framebuffer_ptr framebuffer;

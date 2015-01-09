@@ -17,7 +17,7 @@ SHARED_PTR_CLASS_DECL(Material);
 class SceneParser
 {
 public:
-	SceneParser(InputHandlerFactory& factory);
+	SceneParser();
 
 	bool Parse(const std::string& xml_document);
 	Scene_ptr Scene();
@@ -38,8 +38,5 @@ protected:
 
 	std::map<std::string, Material_ptr> materials;
 	Scene_ptr generated_scene;
-
-	InputHandlerFactory& factory;
-
 };
 

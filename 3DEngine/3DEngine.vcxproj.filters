@@ -269,6 +269,9 @@
     <ClInclude Include="src\shape\WireCone.h">
       <Filter>Source Files\shapes</Filter>
     </ClInclude>
+    <ClInclude Include="src\camera\OrthogonalCamera.h">
+      <Filter>Source Files\camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -423,6 +426,9 @@
     </ClCompile>
     <ClCompile Include="src\shape\WireCone.cpp">
       <Filter>Source Files\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera\OrthogonalCamera.cpp">
+      <Filter>Source Files\camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

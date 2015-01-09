@@ -134,24 +134,39 @@ void main()
 	for(int i=0;  i < NumPointLights; i++)
 	{
 		PointLight light = sceneLights.PointLights[i];
-		vec3 lightDir = isNormalMap ? PointlightDirTGT[i] : normalize( vec3(light.Position) - PositionEYE);
-		FragColor += vec4(light.Color * albedo * shade(normal,ViewDirection, lightDir,TexCoord),0);
+
+		vec3 lightToCamDir = vec3(light.Position) - PositionEYE;
+		vec3 lightToCamDirNormalized = normalize(lightToCamDir);
+
+		float distance = length(lightToCamDir);
+		float k = 0.2;
+		float distAttenuation = 1 / ( 1 + k*distance*distance);
+		
+		vec3 lightDir = isNormalMap ? PointlightDirTGT[i] : lightToCamDirNormalized;
+		FragColor += distAttenuation * vec4(light.Color * albedo * shade(normal,ViewDirection, lightDir,TexCoord),0);
 	}
 
 	//Spot lights
 	for(int i=0;  i < NumSpotLights; i++)
 	{
 		SpotLight light = sceneLights.SpotLights[i];
-		vec3 lightToCamDir = normalize( vec3(light.Position) - PositionEYE);
+		vec3 lightToCamDir = vec3(light.Position) - PositionEYE;
+		vec3 lightToCamDirNormalized = normalize(lightToCamDir);
 		
-		float angle = acos( clamp(dot(-lightToCamDir,normalize(light.Direction)),0.0,0.9999) );
+		float angle = acos( clamp(dot(-lightToCamDirNormalized,normalize(light.Direction)),0.0,0.9999) );
 		float cutoff = radians( clamp (light.CutoffAngle, 0.0, 90.0) ) ;
 		
 		if( angle  < cutoff)
 		{
-			float spotFactor = pow( dot( -lightToCamDir, light.Direction), light.Exponent);
+			float angleRatio =  angle / cutoff;
+			float borderFadeFacor = angleRatio <=0.8 ? 1:-25 * angleRatio*angleRatio + 40*angleRatio - 15; // quadratic decay starts at 80%
+
+			float distance = length(lightToCamDir);
+			float k = 0.2;
+			float distAttenuation = 1 / ( 1 + k*distance*distance);
+
 			vec3 lightDir = isNormalMap ? SpotlightDirTGT[i] : normalize( vec3(light.Position) - PositionEYE);
-			FragColor += spotFactor * vec4(light.Color * albedo * shade(normal,ViewDirection,lightDir,TexCoord),0);
+			FragColor += distAttenuation * borderFadeFacor * vec4(light.Color * albedo * shade(normal,ViewDirection,lightDir,TexCoord),0);
 		}
 	}
 

@@ -40,8 +40,7 @@ using std::vector;
 
 typedef std::pair<string,Material_ptr> ShaderKeyVal;
 
-SceneParser::SceneParser(InputHandlerFactory& factory) 
-	: factory(factory)
+SceneParser::SceneParser()
 {
 
 }
@@ -74,7 +73,7 @@ bool SceneParser::Parse(const std::string& xmlDocument)
 				parseOk &= ParseCamera(cam,cameraElement);
 				try
 				{
-					generated_scene = Scene::Create(factory,cam);
+					generated_scene = Scene::Create(cam);
 					generated_scene->name = sceneName;
 				}
 				catch (std::exception* e)
