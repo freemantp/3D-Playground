@@ -187,12 +187,18 @@ void main()
 	{	
 		PointLight light = sceneLights.PointLights[i];
 
-		vec3 s = normalize( vec3(light.Position) - Position);
-		shade(Position,normal,s,ambientCurrent, diffuseCurrent, specularCurrent);
+		vec3 lightVec =  vec3(light.Position) - Position;
+		vec3 lightVecNormalized = normalize(lightVec);
 
-		ambient  += ambientCurrent  * light.Color;
-		diffuse  += diffuseCurrent  * light.Color;
-		specular += specularCurrent * light.Color;
+		shade(Position,normal,lightVecNormalized,ambientCurrent, diffuseCurrent, specularCurrent);
+
+		float distance = length(lightVec);
+		float k = 0.2;
+		float distAttenuation = 1 / ( 1 + k*distance*distance);
+
+		ambient  += ambientCurrent  * light.Color * distAttenuation;
+		diffuse  += diffuseCurrent  * light.Color * distAttenuation;
+		specular += specularCurrent * light.Color * distAttenuation;
 	}
 
 	//Spot lights
@@ -200,20 +206,27 @@ void main()
 	{	
 		SpotLight light = sceneLights.SpotLights[i];
 
-		vec3 s = normalize( vec3(light.Position) - Position);
-		float angle = acos( dot(-s,light.Direction) );
+		vec3 lightVec =  vec3(light.Position) - Position;
+		vec3 lightVecNormalized = normalize(lightVec);
+		float angle = acos( dot(-lightVecNormalized,light.Direction) );
 		float cutoff = radians( clamp (light.CutoffAngle, 0.0, 90.0) ) ;
 		
 		if( angle  < cutoff)
 		{		
-			shade(Position,normal,s,ambientCurrent, diffuseCurrent, specularCurrent);
+			shade(Position,normal,lightVecNormalized,ambientCurrent, diffuseCurrent, specularCurrent);
 
-			float spotFactor = pow( dot( -s , light.Direction), light.Exponent);
+			float angleRatio =  angle / cutoff;
+			float borderFadeFacor = angleRatio <=0.8 ? 1:-25 * angleRatio*angleRatio + 40*angleRatio - 15; // quadratic decay starts at 80%
+			
+			float distance = length(lightVec);
+			float k = 0.2;
+			float distAttenuation = 1 / ( 1 + k*distance*distance);
+
 			float shadow = getShadow(i);
 
-			ambient  += spotFactor * ambientCurrent  * light.Color;
-			diffuse  += spotFactor * diffuseCurrent  * light.Color * shadow;
-			specular += spotFactor * specularCurrent * light.Color * shadow;
+			ambient  += distAttenuation * borderFadeFacor * ambientCurrent  * light.Color;			
+			diffuse  += distAttenuation * borderFadeFacor * diffuseCurrent  * light.Color * shadow;
+			specular += distAttenuation * borderFadeFacor * specularCurrent * light.Color * shadow;
 		}
 	}
 
