@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "TimeManager.h"
-#include "animation/TimeObserver.h"
+#include "../animation/TimeObserver.h"
 
 TimeManager TimeManager::instance = TimeManager();
 

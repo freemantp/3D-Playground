@@ -9,13 +9,12 @@
 #include <scene/SceneParser.h>
 #include <scene/Scene.h>
 #include <util/Util.h>
+#include <util/TimeManager.h>
 #include <input/WindowEventHandler.h>
 #include <config.h>
 
 #include "GlutInputHandler.h"
 #include "GlutInputHandlerFactory.h"
-#include "TimeManager.h"
-
 
 using std::string;
 

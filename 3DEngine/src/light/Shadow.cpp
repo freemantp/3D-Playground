@@ -36,7 +36,7 @@ void Shadow::UpdateShadowMatrix(SpotLight_cptr sl)
 
 void Shadow::UpdateShadowMatrix(DirectionalLight_cptr dirLight)
 {	
-	glm::mat4 depthViewMatrix = glm::lookAt(-dirLight->GetDirection(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	glm::mat4 depthViewMatrix = glm::lookAt(-dirLight->Direction(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 20);
 
 	depthViewProjectionMatrix = depthProjectionMatrix * depthViewMatrix;

@@ -11,7 +11,7 @@ public:
 	
 	static DirectionalLight_ptr Create(bool castsShadow = true);
 
-	virtual const glm::vec3& GetDirection() const;
+	virtual const glm::vec3& Direction() const;
 	virtual void SetDirection(glm::vec3& direction);
 	
 	Shadow_ptr Shadow() const;

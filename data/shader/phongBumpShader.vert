@@ -29,6 +29,7 @@ struct SpotLight
 	vec3 Direction;
 	float CutoffAngle;
 	float Exponent;
+	mat4 ShadowMatrix;
 };
 
 // ----------------- uniforms -----------------
@@ -37,7 +38,7 @@ layout (std140) uniform Lights
 {
 	PointLight PointLights[numLights];
 	SpotLight  SpotLights[numLights];
-	DirectionalLight DirectionalLight0s;
+	DirectionalLight DirectionalLight0;
 } sceneLights;
 
 uniform mat4 ModelViewMatrix;
@@ -48,8 +49,8 @@ uniform int NumPointLights;
 uniform int NumSpotLights;
 uniform bool isNormalMap;
 
-out vec3 PositionEYE;
-out vec3 NormalEYE;
+out vec3 PositionEye;
+out vec3 NormalEye;
 out vec3 LightDirection;
 out vec3 ViewDirection;
 out vec2 TexCoord;
@@ -58,25 +59,29 @@ out vec3 SpotlightDirTGT[numLights];
 
 void main()
 {
+	vec4 posHomogenous = vec4(VertexPosition,1.0);
+
 	// Building the matrix Eye Space -> Tangent Space
 	vec3 n = normalize(NormalMatrix * VertexNormal);
 	vec3 t = normalize(NormalMatrix * VertexTangent.xyz);
 	vec3 b = normalize( cross(n, t) ) * VertexTangent.w;
 	mat3 toTangentSpace = transpose( mat3(t,b,n) );
 
-	vec3 vertexPosition = vec3( ModelViewMatrix * vec4(VertexPosition, 1.0));
+	PositionEye = vec3( ModelViewMatrix * posHomogenous);
+	NormalEye = n;
+	TexCoord = VertexTexCoord;
 
 	/* If we're dealing with a normal map instead of a bump map we have 
 	   to transform vectors into tangent space for the fragment shader */
 	if(isNormalMap)
 	{
 		// transform light and half angle vectors by tangent basis
-		ViewDirection = normalize (toTangentSpace * -vertexPosition);
+		ViewDirection = normalize (toTangentSpace * -PositionEye);
 
 		//transform light directions to tangent space
 		for(int i=0;  i < NumPointLights; i++)
 		{
-			vec3 lightDir = normalize( vec3(sceneLights.PointLights[i].Position) - vertexPosition);
+			vec3 lightDir = normalize( vec3(sceneLights.PointLights[i].Position) - PositionEye);
 			PointlightDirTGT[i] = normalize( toTangentSpace * lightDir);
 		}
 
@@ -84,17 +89,14 @@ void main()
 		for(int i=0; i < NumSpotLights; i++)
 		{
 			SpotLight light = sceneLights.SpotLights[i];
-			vec3 lightDir = normalize( vec3(light.Position) - vertexPosition);
+			vec3 lightDir = normalize( vec3(light.Position) - PositionEye);
 			SpotlightDirTGT[i] = normalize( toTangentSpace * lightDir);
 		}
 	}
 	else
 	{
-		ViewDirection = normalize(-vertexPosition);
+		ViewDirection = normalize(-PositionEye);
 	}
-
-	PositionEYE = vertexPosition;
-	NormalEYE = n;
-	TexCoord = VertexTexCoord;
-	gl_Position = MVP * vec4(VertexPosition, 1.0);
+	
+	gl_Position = MVP * posHomogenous;
 }

@@ -7,9 +7,8 @@
 using glm::vec4;
 using glm::vec3;
 
-OrthogonalCamera::OrthogonalCamera(float fov) 
-	: aspectRatio(1.0f)
-	, Camera(0.01f, 100.0f)
+OrthogonalCamera::OrthogonalCamera() 
+	: Camera(0.01f, 10.0f)
 {
 	position =  vec3(0.0f, 0.0f, 1.0f);
 	target =    vec3(0.0f, 0.0f, 0.0f);
@@ -26,16 +25,14 @@ OrthogonalCamera::~OrthogonalCamera()
 
 void OrthogonalCamera::UpdateProjectionMatrix()
 {
-	projectionMatrix = glm::ortho(10, 11, 12, 13);
-}
-
-void OrthogonalCamera::SetAspectRatio(float aspectRatio)
-{
-	this->aspectRatio = aspectRatio;
-	UpdateProjectionMatrix();
+	projectionMatrix = glm::ortho(	0.f, static_cast<float>(width),
+									 static_cast<float>(height), 0.f,
+									nearP, farP);
 }
 
 void OrthogonalCamera::ViewportChanged(Viewport_ptr viewport)
 {
-	SetAspectRatio((float)viewport->width / viewport->height);
+	width = viewport->width;
+	height = viewport->height;
+	UpdateProjectionMatrix();
 }

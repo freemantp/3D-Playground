@@ -16,12 +16,14 @@ public:
 
 	virtual bool SetMaterial(Material_cptr material) override;	
 
+	VertexAttributeInfo_ptr GetVertexAttributeInfo() const override;
+
 protected:
 
 	PhongTextureShader();
 
 	virtual ~PhongTextureShader();
-
+	
 	enum TextureType { Albedo = 0, BumpMap = 1, Specular = 2 };
 	static const int numTextures = 3;
 

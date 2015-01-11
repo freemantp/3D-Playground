@@ -7,10 +7,8 @@ SHARED_PTR_CLASS_DECL(OrthogonalCamera);
 class OrthogonalCamera : public Camera
 {
 public:
-	OrthogonalCamera(float fov);
+	OrthogonalCamera();
 	~OrthogonalCamera();
-
-	void SetAspectRatio(float aspectRatio);
 
 	virtual void ViewportChanged(Viewport_ptr viewport) override;
 
@@ -18,7 +16,8 @@ protected:
 
 	virtual void UpdateProjectionMatrix();
 
-	float aspectRatio;
+	int width;
+	int height;
 
 };
 

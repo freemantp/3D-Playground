@@ -149,7 +149,6 @@
     <ClInclude Include="GlutInputHandler.h" />
     <ClInclude Include="GlutInputHandlerFactory.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="TimeManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GlutInputHandlerFactory.cpp" />
@@ -161,7 +160,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TimeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

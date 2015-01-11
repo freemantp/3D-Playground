@@ -24,12 +24,13 @@ public:
 
 protected:
 	Renderer(Viewport_ptr viewport);
+
 	virtual ~Renderer();
 
 	bool				m_ShowDebugElements;
 
 	Scene_ptr			m_Scene;
-	Scene_ptr			m_DebugScene;
+	Scene_ptr			debugScene;
 	GeometryBuffer_ptr	m_gBuffer;
 	Viewport_ptr		m_Viewport;
 

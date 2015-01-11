@@ -272,6 +272,10 @@
     <ClInclude Include="src\camera\OrthogonalCamera.h">
       <Filter>Source Files\camera</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\TimeManager.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\DebugScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -429,6 +433,12 @@
     </ClCompile>
     <ClCompile Include="src\camera\OrthogonalCamera.cpp">
       <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\TimeManager.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\DebugScene.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -9,17 +9,17 @@ uniform mat3 NormalMatrix;
 uniform mat4 MVP;
 uniform vec3 CameraPosWorld;
 
-out vec3 Position;
+out vec3 PositionEye;
 out vec4 PositionModel;
-out vec3 Normal;
+out vec3 NormalEye;
 out vec3 ReflectDir;
 
 void main()
 {
 	vec4 posHomogenous = vec4(VertexPosition,1.0);
 
-	Normal = normalize(NormalMatrix * VertexNormal);
-	Position = vec3(ModelViewMatrix * posHomogenous);
+	NormalEye = normalize(NormalMatrix * VertexNormal);
+	PositionEye = vec3(ModelViewMatrix * posHomogenous);
 	PositionModel = ModelMatrix * posHomogenous;
 
 	//Transform to world space

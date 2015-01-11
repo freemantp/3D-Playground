@@ -15,14 +15,14 @@ DirectionalLight::DirectionalLight(bool castsShadow)
 	shadow = Shadow::Create();
 }
 
-const glm::vec3& DirectionalLight::GetDirection() const
+const glm::vec3& DirectionalLight::Direction() const
 {
 	return direction;
 }
 
 void DirectionalLight::SetDirection(glm::vec3& dir)
 {
-	direction = dir;
+	direction = glm::normalize(dir);
 	
 	UpdateShadow();
 }

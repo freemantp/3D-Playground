@@ -54,7 +54,6 @@ UniformBuffer_ptr LightModel::GetLightsBuffer() const
 
 void LightModel::UpdateUniformBuffer(Camera_cptr cam)
 {
-	
 	glm::mat3 directionTransformMatrix	= glm::transpose(glm::inverse(glm::mat3(cam->viewMatrix)));
 	
 	for(int i=0; i < pointLights.size(); i++)
@@ -88,7 +87,7 @@ void LightModel::UpdateUniformBuffer(Camera_cptr cam)
 
 	if (directionalLight)
 	{
-		lightsBuffer->SetElement("Lights.DirectionalLight0.Direction", directionTransformMatrix * directionalLight->GetDirection());
+		lightsBuffer->SetElement("Lights.DirectionalLight0.Direction", directionTransformMatrix * directionalLight->Direction());
 		lightsBuffer->SetElement("Lights.DirectionalLight0.Color", directionalLight->Color());
 	}
 

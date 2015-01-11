@@ -28,10 +28,9 @@ public:
 public:
 
 	std::vector<PointLight_ptr> pointLights;
-	std::vector<SpotLight_ptr> spotLights;
-	DirectionalLight_ptr directionalLight;
-
-	Texture3D_ptr pcfShadowRandomData;
+	std::vector<SpotLight_ptr>	spotLights;
+	DirectionalLight_ptr		directionalLight;
+	Texture3D_ptr				pcfShadowRandomData;
 
 protected:
 

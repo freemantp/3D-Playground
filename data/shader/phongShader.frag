@@ -36,6 +36,8 @@ struct SpotLight
 	mat4 ShadowMatrix;
 };
 
+// ----------------- uniforms -----------------
+
 layout (std140) uniform Lights
 {
 	PointLight PointLights[numLights];
@@ -64,9 +66,9 @@ uniform MaterialInfo Material;
 subroutine uniform shadeModelType shadeModel;
 
 //input from previous stage
-in vec3 Position;
+in vec3 PositionEye;
 in vec4 PositionModel;
-in vec3 Normal;
+in vec3 NormalEye;
 in vec3 ReflectDir;
 
 //Blinn-Phong model
@@ -162,7 +164,7 @@ float getShadow(int sl_i)
 
 void main()
 {
-	vec3 normal = normalize(Normal);
+	vec3 normal = normalize(NormalEye);
 	vec4 fragmentColor = vec4(0,0,0,1);
 
 	vec3 ambient = vec3(0,0,0);
@@ -173,13 +175,10 @@ void main()
 
 	//Directional light
 	{
-		vec3 direction = sceneLights.DirectionalLight0.Direction;
-		vec3 color = sceneLights.DirectionalLight0.Color;
+		vec3 dirDirection = sceneLights.DirectionalLight0.Direction;
+		vec3 dirColor = sceneLights.DirectionalLight0.Color;
 
-		shade(Position,normal,-direction,ambientCurrent, diffuseCurrent, specularCurrent);
-		ambient  += ambientCurrent  * color;
-		diffuse  += diffuseCurrent  * color;
-		specular += specularCurrent * color;
+		//tbd: see bump shader
 	}
 
 	//Point lights
@@ -187,10 +186,10 @@ void main()
 	{	
 		PointLight light = sceneLights.PointLights[i];
 
-		vec3 lightVec =  vec3(light.Position) - Position;
+		vec3 lightVec =  vec3(light.Position) - PositionEye;
 		vec3 lightVecNormalized = normalize(lightVec);
 
-		shade(Position,normal,lightVecNormalized,ambientCurrent, diffuseCurrent, specularCurrent);
+		shade(PositionEye,normal,lightVecNormalized,ambientCurrent, diffuseCurrent, specularCurrent);
 
 		float distance = length(lightVec);
 		float k = 0.2;
@@ -205,22 +204,27 @@ void main()
 	for(int i=0; i < NumSpotLights; i++)
 	{	
 		SpotLight light = sceneLights.SpotLights[i];
+		vec3 lightToCamDir =  vec3(light.Position) - PositionEye;
+		vec3 lightVecNormalized = normalize(lightToCamDir);
 
-		vec3 lightVec =  vec3(light.Position) - Position;
-		vec3 lightVecNormalized = normalize(lightVec);
 		float angle = acos( dot(-lightVecNormalized,light.Direction) );
 		float cutoff = radians( clamp (light.CutoffAngle, 0.0, 90.0) ) ;
 		
 		if( angle  < cutoff)
 		{		
-			shade(Position,normal,lightVecNormalized,ambientCurrent, diffuseCurrent, specularCurrent);
+			shade(PositionEye,normal,lightVecNormalized,ambientCurrent, diffuseCurrent, specularCurrent);
 
-			float angleRatio =  angle / cutoff;
-			float borderFadeFacor = angleRatio <=0.8 ? 1:-25 * angleRatio*angleRatio + 40*angleRatio - 15; // quadratic decay starts at 80%
+			// Quadratic falloff towards borders starting at p percent of the angle
+			float p = 0.6;
 			
-			float distance = length(lightVec);
+			float angleRatio =  angle / cutoff;
+			float a = -1/(1-2*p+p*p);
+			float borderFadeFacor = angleRatio <=p ? 1: a * pow(angleRatio-p,2)+1;
+			
+			//Quadratic distance attenuation with factor k 
+			float dist = length(lightToCamDir);
 			float k = 0.2;
-			float distAttenuation = 1 / ( 1 + k*distance*distance);
+			float distAttenuation = 1 / ( 1 + k*dist*dist);
 
 			float shadow = getShadow(i);
 

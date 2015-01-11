@@ -2,10 +2,11 @@
 #include "Renderer.h"
 #include "Viewport.h"
 #include "GeometryBuffer.h"
+
 #include  "../scene/Scene.h"
+#include  "../scene/DebugScene.h"
 
-#include "../camera/OrthogonalCamera.h"
-
+#include  "../util/TimeManager.h"
 
 Renderer_ptr Renderer::Create(Viewport_ptr viewport)
 {
@@ -28,8 +29,8 @@ void Renderer::SetScene(Scene_ptr scene)
 	{
 		m_Scene = scene;
 
-		auto ortho_cam = std::shared_ptr<OrthogonalCamera>(new OrthogonalCamera(10));
-		m_DebugScene = Scene::Create(ortho_cam);
+// 		debugScene = DebugScene::Create(scene);
+// 		TimeManager::GetInstance().AddTimeObserver(debugScene);
 	}
 }
 Scene_ptr Renderer::Scene()
@@ -47,9 +48,11 @@ void Renderer::Render()
 		m_Scene->Render(m_Viewport);
 	}
 
-	if (m_ShowDebugElements && m_DebugScene)
+	if (m_ShowDebugElements && debugScene)
 	{
-		m_DebugScene->Render(m_Viewport);
+		glDisable(GL_DEPTH_TEST);
+		debugScene->Render(m_Viewport);
+		glEnable(GL_DEPTH_TEST);
 	}
 }
 

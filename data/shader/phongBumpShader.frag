@@ -10,6 +10,12 @@ struct PointLight
 	vec3 Color;
 };
 
+struct DirectionalLight
+{
+	vec3 Direction;
+	vec3 Color;
+};
+
 //PointLight declaration
 struct SpotLight
 {
@@ -18,12 +24,7 @@ struct SpotLight
 	vec3 Direction;
 	float CutoffAngle;
 	float Exponent;
-};
-
-struct DirectionalLight
-{
-	vec3 Direction;
-	vec3 Color;
+	mat4 ShadowMatrix;
 };
 
 // ----------------- uniforms -----------------
@@ -32,7 +33,7 @@ layout (std140) uniform Lights
 {
 	PointLight PointLights[numLights];
 	SpotLight  SpotLights[numLights];
-	DirectionalLight DirectionalLight0s;
+	DirectionalLight DirectionalLight0;
 } sceneLights;
 
 uniform int NumPointLights;
@@ -50,8 +51,8 @@ uniform int	Shininess;
 
 //input from previous stage
 in vec2 TexCoord;
-in vec3 PositionEYE;
-in vec3 NormalEYE;
+in vec3 PositionEye;
+in vec3 NormalEye;
 in vec3 LightDirection;
 in vec3 ViewDirection;
 in vec3 PointlightDirTGT[numLights];
@@ -76,7 +77,7 @@ float shade(const in vec3 normal, const in vec3 viewDir, const in vec3 lightDir,
 
 	float specularity = hasSpecularMap ? texture(SpecularTex,TexCoord).r : 1.0;
 
-	if(diffuse > 0)
+	if(specularity > 0)
 		specular = blinn(lightDir,viewDir,normal) ;
 
 	return diffuse + specularity * specular;
@@ -112,12 +113,12 @@ vec3 getNormal()
 		else
 		{
 			float bumpVal = texture(BumpmapTex, TexCoord).r;
-			normal = bump_normal(PositionEYE,NormalEYE,bumpVal);
+			normal = bump_normal(PositionEye,NormalEye,bumpVal);
 		}
 	}
 	else
 	{
-		normal = NormalEYE;
+		normal = NormalEye;
 	}
 	return normal;
 }
@@ -130,12 +131,19 @@ void main()
 
 	FragColor = vec4(0,0,0,1);
 
+	//Directional light
+	{
+		vec3 dirDirection = sceneLights.DirectionalLight0.Direction;
+		vec3 dirColor = sceneLights.DirectionalLight0.Color;
+		FragColor += vec4(dirColor * albedo * shade(normal,ViewDirection, dirDirection,TexCoord),0);
+	}
+
 	//Point lights
 	for(int i=0;  i < NumPointLights; i++)
 	{
 		PointLight light = sceneLights.PointLights[i];
 
-		vec3 lightToCamDir = vec3(light.Position) - PositionEYE;
+		vec3 lightToCamDir = vec3(light.Position) - PositionEye;
 		vec3 lightToCamDirNormalized = normalize(lightToCamDir);
 
 		float distance = length(lightToCamDir);
@@ -150,7 +158,7 @@ void main()
 	for(int i=0;  i < NumSpotLights; i++)
 	{
 		SpotLight light = sceneLights.SpotLights[i];
-		vec3 lightToCamDir = vec3(light.Position) - PositionEYE;
+		vec3 lightToCamDir = vec3(light.Position) - PositionEye;
 		vec3 lightToCamDirNormalized = normalize(lightToCamDir);
 		
 		float angle = acos( clamp(dot(-lightToCamDirNormalized,normalize(light.Direction)),0.0,0.9999) );
@@ -158,15 +166,20 @@ void main()
 		
 		if( angle  < cutoff)
 		{
+			// Quadratic falloff towards borders starting at p percent of the angle
+			float p = 0.6;
+			
 			float angleRatio =  angle / cutoff;
-			float borderFadeFacor = angleRatio <=0.8 ? 1:-25 * angleRatio*angleRatio + 40*angleRatio - 15; // quadratic decay starts at 80%
-
-			float distance = length(lightToCamDir);
+			float a = -1/(1-2*p+p*p);
+			float borderFadeFacor = angleRatio <=p ? 1: a * pow(angleRatio-p,2)+1;
+			
+			//Quadratic distance attenuation with factor k 
+			float dist = length(lightToCamDir);
 			float k = 0.2;
-			float distAttenuation = 1 / ( 1 + k*distance*distance);
+			float distAttenuation = 1 / ( 1 + k*dist*dist);
 
-			vec3 lightDir = isNormalMap ? SpotlightDirTGT[i] : normalize( vec3(light.Position) - PositionEYE);
-			FragColor += distAttenuation * borderFadeFacor * vec4(light.Color * albedo * shade(normal,ViewDirection,lightDir,TexCoord),0);
+			vec3 lightDir = isNormalMap ? SpotlightDirTGT[i] : normalize( vec3(light.Position) - PositionEye);
+			FragColor +=  distAttenuation * borderFadeFacor * vec4(light.Color * albedo * shade(normal,ViewDirection,lightDir,TexCoord),0);
 		}
 	}
 

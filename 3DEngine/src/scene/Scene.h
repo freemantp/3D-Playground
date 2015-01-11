@@ -64,7 +64,7 @@ public:
 
 protected:
 
-	Scene(Camera_ptr cam,bool has_frambufer);
+	Scene(Camera_ptr cam,bool has_framebufer);
 
 	virtual ~Scene();
 
