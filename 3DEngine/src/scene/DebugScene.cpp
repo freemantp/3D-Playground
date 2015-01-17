@@ -9,7 +9,7 @@
 #include  "../light/SpotLight.h"
 #include  "../light/DirectionalLight.h"
 #include  "../light/Shadow.h"
-#include  "../texture/ShadowMapTexture.h"
+#include  "../texture/DepthTexture.h"
 #include  "../texture/Texture2D.h"
 
 #include <memory>
@@ -26,7 +26,7 @@ DebugScene::DebugScene(Scene_ptr scene)
 		lightModel->directionalLight = dirLight;
 
 		const int spacing = 50;
-		const float width = 100.f;
+		const float width = 400.f;
 
 		float current_x = width / 2 + spacing;
 
@@ -38,15 +38,15 @@ DebugScene::DebugScene(Scene_ptr scene)
 			float height = width / dim.x * dim.y;
 
 			auto box = Util::CreateBox();
-			TextureMaterial_ptr mat = TextureMaterial::Create();
-
-			mat->albedoTexture = Texture2D::Create("E:\\Development\\Graphics Playground\\data\\texture\\crate.jpg");
-			//mat->albedoTexture = shadow;
+			DepthMapMaterial_ptr mat = DepthMapMaterial::Create();			
+			//mat->depthTexture = Texture2D::Create("E:\\Development\\Graphics Playground\\data\\texture\\crate.jpg");
+			mat->depthTexture = shadow;
 
 			box->SetMaterial(mat);
 
 			box->worldTransform = glm::translate(glm::mat4(1), glm::vec3(current_x, height / 2 + spacing, 0));
 			box->worldTransform = glm::scale(box->worldTransform, glm::vec3(width, height, 1));
+			box->worldTransform = glm::rotate(box->worldTransform, -glm::half_pi<float>(), glm::vec3(0, 0, 1));
 
 			AddShape(box);
 

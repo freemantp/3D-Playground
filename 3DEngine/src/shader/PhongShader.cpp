@@ -9,7 +9,7 @@
 #include "../shape/Skybox.h"
 #include "../texture/Texture3D.h"
 #include "../texture/CubeMapTexture.h"
-#include "../texture/ShadowMapTexture.h"
+#include "../texture/DepthTexture.h"
 #include "../materials/Material.h"
 #include "UniformBuffer.h"
 

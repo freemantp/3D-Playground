@@ -18,6 +18,7 @@ SHARED_MATERIAL_PTR_FACTORY_IMPL(IntrinsicColorMaterial);
 SHARED_MATERIAL_PTR_FACTORY_IMPL(ConstantColorMaterial);
 SHARED_MATERIAL_PTR_FACTORY_IMPL(ShDiffuseMaterial);
 SHARED_MATERIAL_PTR_FACTORY_IMPL(SkyboxMaterial);
+SHARED_MATERIAL_PTR_FACTORY_IMPL(DepthMapMaterial);
 
 void Material::SetName(const std::string& name)
 {

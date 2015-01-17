@@ -226,9 +226,6 @@
     <ClInclude Include="src\core\gl.h">
       <Filter>Source Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\texture\ShadowMapTexture.h">
-      <Filter>Source Files\texture</Filter>
-    </ClInclude>
     <ClInclude Include="src\texture\Framebuffer.h">
       <Filter>Source Files\texture</Filter>
     </ClInclude>
@@ -276,6 +273,12 @@
       <Filter>Source Files\util</Filter>
     </ClInclude>
     <ClInclude Include="src\scene\DebugScene.h" />
+    <ClInclude Include="src\shader\DepthMapShader.h">
+      <Filter>Source Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\texture\DepthTexture.h">
+      <Filter>Source Files\texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -383,9 +386,6 @@
     <ClCompile Include="src\shader\ConstColorShader.cpp">
       <Filter>Source Files\shaders</Filter>
     </ClCompile>
-    <ClCompile Include="src\texture\ShadowMapTexture.cpp">
-      <Filter>Source Files\texture</Filter>
-    </ClCompile>
     <ClCompile Include="src\texture\Framebuffer.cpp">
       <Filter>Source Files\texture</Filter>
     </ClCompile>
@@ -439,6 +439,12 @@
     </ClCompile>
     <ClCompile Include="src\scene\DebugScene.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\DepthMapShader.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture\DepthTexture.cpp">
+      <Filter>Source Files\texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -501,6 +507,12 @@
       <Filter>data\shaders\specialized</Filter>
     </None>
     <None Include="..\data\shader\shadowMapShader.vert">
+      <Filter>data\shaders\specialized</Filter>
+    </None>
+    <None Include="..\data\shader\depthMapShader.frag">
+      <Filter>data\shaders\specialized</Filter>
+    </None>
+    <None Include="..\data\shader\depthMapShader.vert">
       <Filter>data\shaders\specialized</Filter>
     </None>
   </ItemGroup>

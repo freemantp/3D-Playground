@@ -6,6 +6,7 @@
 #include "ConstColorShader.h"
 #include "SHDiffuseShader.h"
 #include "SkyboxShader.h"
+#include "DepthMapShader.h"
 
 // static initialization
 ShaderLibrary_ptr ShaderLibrary::instance = ShaderLibrary_ptr();
@@ -40,6 +41,8 @@ bool ShaderLibrary::AddShader(Material_cptr material)
 			return AddShader(material, ShDiffuseShader::Create());
 		else if (std::dynamic_pointer_cast<const SkyboxMaterial>(material))
 			return AddShader(material, SkyboxShader::Create());
+		else if (std::dynamic_pointer_cast<const DepthMapMaterial>(material))
+			return AddShader(material, DepthMapShader::Create());
 	}
 	return false;
 }

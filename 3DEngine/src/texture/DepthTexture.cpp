@@ -1,12 +1,12 @@
 #include "stdafx.h"
-#include "ShadowMapTexture.h"
+#include "DepthTexture.h"
 
-ShadowMapTexture_ptr ShadowMapTexture::Create(int width, int height)
+DepthTexture_ptr DepthTexture::Create(int width, int height)
 {
-	return ShadowMapTexture_ptr(new ShadowMapTexture(width, height, Texture2D::Format::Depth));
+	return DepthTexture_ptr(new DepthTexture(width, height, Texture2D::Format::Depth));
 }
 
-ShadowMapTexture::ShadowMapTexture(int width, int height, Format format)
+DepthTexture::DepthTexture(int width, int height, Format format)
 : Texture2D(width, height, format)
 {
 	glBindTexture(GL_TEXTURE_2D, texObject);
@@ -27,4 +27,10 @@ ShadowMapTexture::ShadowMapTexture(int width, int height, Format format)
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+}
+
+void DepthTexture::SetValueMode(const ValueMode& mode)
+{
+	GLint compare_mode = static_cast<GLint>(mode);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, compare_mode);
 }

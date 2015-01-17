@@ -9,10 +9,12 @@ SHARED_PTR_CLASS_DECL(ConstantColorMaterial);
 SHARED_PTR_CLASS_DECL(PhongMaterial);
 SHARED_PTR_CLASS_DECL(TextureMaterial);
 SHARED_PTR_CLASS_DECL(Texture2D);
+SHARED_PTR_CLASS_DECL(DepthTexture);
 SHARED_PTR_CLASS_DECL(ShDiffuseMaterial);
 SHARED_PTR_CLASS_DECL(ShDiffuseShaderCoeffs);
 SHARED_PTR_CLASS_DECL(SkyboxMaterial);
 SHARED_PTR_CLASS_DECL(CubeMapTexture);
+SHARED_PTR_CLASS_DECL(DepthMapMaterial);
 
 class Material
 {
@@ -88,5 +90,15 @@ public:
 	CubeMapTexture_ptr texture;
 protected:
 	SkyboxMaterial() {};
+};
+
+class DepthMapMaterial : public Material
+{
+public:
+	static DepthMapMaterial_ptr Create();
+
+	DepthTexture_ptr depthTexture;
+protected:
+	DepthMapMaterial() {};
 };
 

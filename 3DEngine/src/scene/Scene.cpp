@@ -22,7 +22,7 @@
 #include "../light/SpotLight.h"
 #include "../light/Shadow.h"
 #include "../texture/Framebuffer.h"
-#include "../texture/ShadowMapTexture.h"
+#include "../texture/DepthTexture.h"
 
 #include "../rendering/Viewport.h"
 

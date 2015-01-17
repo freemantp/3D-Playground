@@ -2,7 +2,7 @@
 
 #include "Shadow.h"
 
-#include "../texture/ShadowMapTexture.h"
+#include "../texture/DepthTexture.h"
 #include "../light/SpotLight.h"
 #include "../light/DirectionalLight.h"
 
@@ -11,7 +11,7 @@
 
 
 Shadow::Shadow()
-: shadowMapTex(ShadowMapTexture::Create(2048, 2048))
+: shadowMapTex(DepthTexture::Create(2048, 2048))
 {
 	biasMatrix = glm::mat4(
 		0.5, 0.0, 0.0, 0.0,
@@ -43,7 +43,7 @@ void Shadow::UpdateShadowMatrix(DirectionalLight_cptr dirLight)
 	shadowMat = biasMatrix * depthViewProjectionMatrix;
 }
 
-ShadowMapTexture_ptr Shadow::ShadowMap() const
+DepthTexture_ptr Shadow::ShadowMap() const
 {
 	return shadowMapTex;
 }

@@ -5,7 +5,7 @@
 SHARED_PTR_CLASS_DECL(DirectionalLight);
 SHARED_PTR_CLASS_DECL(SpotLight);
 SHARED_PTR_CLASS_DECL(Shadow);
-SHARED_PTR_CLASS_DECL(ShadowMapTexture);
+SHARED_PTR_CLASS_DECL(DepthTexture);
 
 #include <glm/glm.hpp>
 
@@ -15,7 +15,7 @@ public:
 
 	SHARED_PTR_FACTORY(Shadow);
 
-	ShadowMapTexture_ptr ShadowMap() const;
+	DepthTexture_ptr ShadowMap() const;
 
 	const glm::mat4& BiasMatrix() const;
 	const glm::mat4& ShadowMatrix() const;
@@ -28,7 +28,7 @@ protected:
 
 	Shadow();
 
-	ShadowMapTexture_ptr shadowMapTex;
+	DepthTexture_ptr shadowMapTex;
 
 	glm::mat4 biasMatrix;
 	glm::mat4 shadowMat;

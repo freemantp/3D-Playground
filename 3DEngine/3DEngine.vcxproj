@@ -51,6 +51,7 @@
     <ClInclude Include="src\scene\DebugScene.h" />
     <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="src\scene\SceneParser.h" />
+    <ClInclude Include="src\shader\DepthMapShader.h" />
     <ClInclude Include="src\shader\IntrinsicColorShader.h" />
     <ClInclude Include="src\shader\ConstColorShader.h" />
     <ClInclude Include="src\shader\GBufferShader.h" />
@@ -73,7 +74,7 @@
     <ClInclude Include="src\shape\WireCone.h" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\texture\CubeMapTexture.h" />
-    <ClInclude Include="src\texture\ShadowMapTexture.h" />
+    <ClInclude Include="src\texture\DepthTexture.h" />
     <ClInclude Include="src\texture\Framebuffer.h" />
     <ClInclude Include="src\texture\Texture.h" />
     <ClInclude Include="src\texture\Texture2D.h" />
@@ -110,6 +111,7 @@
     <ClCompile Include="src\scene\DebugScene.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\scene\SceneParser.cpp" />
+    <ClCompile Include="src\shader\DepthMapShader.cpp" />
     <ClCompile Include="src\shader\IntrinsicColorShader.cpp" />
     <ClCompile Include="src\shader\ConstColorShader.cpp" />
     <ClCompile Include="src\shader\GBufferShader.cpp" />
@@ -135,7 +137,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\texture\CubeMapTexture.cpp" />
-    <ClCompile Include="src\texture\ShadowMapTexture.cpp" />
+    <ClCompile Include="src\texture\DepthTexture.cpp" />
     <ClCompile Include="src\texture\Framebuffer.cpp" />
     <ClCompile Include="src\texture\Texture.cpp" />
     <ClCompile Include="src\texture\Texture2D.cpp" />
@@ -148,6 +150,8 @@
     <ClCompile Include="src\util\XmlUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\data\shader\depthMapShader.frag" />
+    <None Include="..\data\shader\depthMapShader.vert" />
     <None Include="..\data\shader\intrinsicColorShader.frag">
       <FileType>Document</FileType>
     </None>
