@@ -2,6 +2,7 @@
 
 #include "../util/SharedPointer.h"
 #include "../input/ViewportObserver.h"
+#include "../input/KeyboardObserver.h"
 
 SHARED_PTR_CLASS_DECL(Renderer);
 SHARED_PTR_CLASS_DECL(Viewport);
@@ -9,7 +10,7 @@ SHARED_PTR_CLASS_DECL(Scene);
 SHARED_PTR_CLASS_DECL(GeometryBuffer);
 
 
-class Renderer : public ViewportObserver
+class Renderer : public ViewportObserver, public KeyboardObserver
 {
 public:
 
@@ -19,13 +20,18 @@ public:
 
 	virtual void ViewportChanged(Viewport_ptr viewport) override;
 
+	virtual void OnKey(const Input::Key key, const Input::Modifier mod, const glm::vec2& position) override;
+
 	void SetScene(Scene_ptr scene);
+
 	Scene_ptr Scene();
 
 protected:
 	Renderer(Viewport_ptr viewport);
 
 	virtual ~Renderer();
+
+	void CreateDebugScene();
 
 	bool				m_ShowDebugElements;
 

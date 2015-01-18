@@ -15,7 +15,7 @@ Renderer_ptr Renderer::Create(Viewport_ptr viewport)
 
 Renderer::Renderer(Viewport_ptr viewport)
 	: m_Viewport(viewport)
-	, m_ShowDebugElements(true)
+	, m_ShowDebugElements(false)
 {
 }
 
@@ -25,13 +25,8 @@ Renderer::~Renderer()
 
 void Renderer::SetScene(Scene_ptr scene)
 {
-	if (scene)
-	{
-		m_Scene = scene;
-
-// 		debugScene = DebugScene::Create(scene);
-// 		TimeManager::GetInstance().AddTimeObserver(debugScene);
-	}
+	m_Scene = scene;
+	CreateDebugScene();
 }
 Scene_ptr Renderer::Scene()
 {
@@ -59,4 +54,27 @@ void Renderer::Render()
 void Renderer::ViewportChanged(Viewport_ptr viewport)
 {
 	m_Viewport = viewport;
+}
+
+void Renderer::OnKey(const Input::Key key, const Input::Modifier mod, const glm::vec2& position)
+{
+	if (key == Input::Key::D)
+	{
+		auto& tm = TimeManager::GetInstance();
+
+		if (!m_ShowDebugElements)
+			tm.AddTimeObserver(debugScene);
+		else
+			tm.RemoveTimeObserver(debugScene);
+
+		m_ShowDebugElements = !m_ShowDebugElements;
+	}
+}
+
+void Renderer::CreateDebugScene()
+{
+	if (m_Scene)
+	{
+		debugScene = DebugScene::Create(m_Scene);
+	}
 }

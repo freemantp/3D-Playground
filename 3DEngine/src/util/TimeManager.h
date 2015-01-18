@@ -14,6 +14,8 @@ public:
 
 	virtual void AddTimeObserver(TimeObserver_ptr observer);
 
+	virtual void RemoveTimeObserver(TimeObserver_ptr observer);
+
 protected:
 
 	void HandleTick();
