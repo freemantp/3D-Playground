@@ -53,6 +53,7 @@ uniform mat4 ViewMatrix;
 uniform bool isNormalMap;
 uniform bool hasSpecularMap;
 uniform bool hasBumpMap;
+uniform bool HasEnvMap;
 uniform int	Shininess;
 
 // ----------------- in / out -----------------
@@ -197,6 +198,12 @@ void main()
 			vec3 lightDir = isNormalMap ? SpotlightDirTGT[i] : normalize( vec3(light.Position) - PositionEye);
 			FragColor +=  distAttenuation * borderFadeFacor * vec4(light.Color * albedo * shade(normal,ViewDirection,lightDir,TexCoord),0);
 		}
+	}
+
+	if(HasEnvMap)
+	{
+		//TODO: add env mapping
+		FragColor += vec4(1e-10,1e-10,1e-10,0);
 	}
 
 }

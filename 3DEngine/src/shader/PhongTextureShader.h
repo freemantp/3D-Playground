@@ -14,6 +14,8 @@ public:
 
 	virtual bool Use(const Scene_ptr scene, const glm::mat4& modelTransform) override;
 
+	void UnUse() override;
+
 	virtual bool SetMaterial(Material_cptr material) override;	
 
 	VertexAttributeInfo_ptr GetVertexAttributeInfo() const override;

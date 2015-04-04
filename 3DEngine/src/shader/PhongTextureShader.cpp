@@ -74,6 +74,23 @@ bool PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransf
 	return ok;
 }
 
+
+void PhongTextureShader::UnUse()
+{
+	ShaderBase::UnUse();
+
+	if (textureMaterial)
+	{
+		glActiveTexture(GL_TEXTURE0 + texUnits[Albedo]);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glActiveTexture(GL_TEXTURE0 + texUnits[BumpMap]);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glActiveTexture(GL_TEXTURE0 + texUnits[Specular]);
+		glBindTexture(GL_TEXTURE_2D, 0);	
+	}
+}
+
+
 bool PhongTextureShader::SetMaterial(Material_cptr material)
 {
 	if (TextureMaterial_cptr texm = std::dynamic_pointer_cast<const TextureMaterial>(material))

@@ -48,7 +48,7 @@ bool MeshRaw::HasTangents() const
 
 bool MeshRaw::HasTexCoords() const
 {
-	return texCoords.size() == vertices.size();
+	return texCoords.size() > 0;
 }
 
 void MeshRaw::AddGroup(std::string& name, std::string& material, Range& idxRange)

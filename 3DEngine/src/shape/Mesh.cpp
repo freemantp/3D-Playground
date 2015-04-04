@@ -10,8 +10,6 @@
 #include "../util/MeshRaw.h"
 #include "../materials/Material.h"
 
-#include "../shader/PhongShader.h"
-#include "../light/SpotLight.h" //Remove me
 #include "../light/Shadow.h"
 
 #include "../error.h"
