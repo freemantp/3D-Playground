@@ -9,6 +9,11 @@ layout (location = 3) in vec2 VertexTexCoord;
 
 const int numLights = 4;
 
+struct AmbientLight
+{
+	vec3 Color;
+};
+
 struct PointLight
 {
 	vec4 Position;
@@ -39,6 +44,7 @@ layout (std140) uniform Lights
 	PointLight PointLights[numLights];
 	SpotLight  SpotLights[numLights];
 	DirectionalLight DirectionalLight0;
+	AmbientLight	 AmbientLight0;
 } sceneLights;
 
 uniform mat4 ModelViewMatrix;

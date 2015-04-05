@@ -4,6 +4,11 @@
 
 const int numLights = 4;
 
+struct AmbientLight
+{
+	vec3 Color;
+};
+
 struct PointLight
 {
 	vec4 Position;
@@ -34,10 +39,13 @@ layout (std140) uniform Lights
 	PointLight PointLights[numLights];
 	SpotLight  SpotLights[numLights];
 	DirectionalLight DirectionalLight0;
+	AmbientLight	 AmbientLight0;
 } sceneLights;
 
 uniform int NumPointLights;
 uniform int NumSpotLights;
+uniform bool HasDirectionalLight;
+uniform bool HasAmbientLight;
 uniform sampler2D AlbedoTex;
 uniform sampler2D BumpmapTex;
 uniform sampler2D SpecularTex;
@@ -131,7 +139,15 @@ void main()
 
 	FragColor = vec4(0,0,0,1);
 
+	//Ambient light
+	if(HasAmbientLight)
+	{
+		vec3 ambientColor = sceneLights.AmbientLight0.Color;
+		FragColor += vec4(ambientColor,0);
+	}
+
 	//Directional light
+	if(HasDirectionalLight)
 	{
 		vec3 dirDirection = sceneLights.DirectionalLight0.Direction;
 		vec3 dirColor = sceneLights.DirectionalLight0.Color;

@@ -14,7 +14,6 @@
 
 #include <memory>
 
-
 DebugScene::DebugScene(Scene_ptr scene)
 : Scene(std::shared_ptr<OrthogonalCamera>(new OrthogonalCamera()),false)
 {
@@ -39,7 +38,6 @@ DebugScene::DebugScene(Scene_ptr scene)
 
 			auto box = Util::CreateBox();
 			DepthMapMaterial_ptr mat = DepthMapMaterial::Create();			
-			//mat->depthTexture = Texture2D::Create("E:\\Development\\Graphics Playground\\data\\texture\\crate.jpg");
 			mat->depthTexture = shadow;
 
 			box->SetMaterial(mat);

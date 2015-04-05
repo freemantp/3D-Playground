@@ -28,6 +28,7 @@
 #include "../shape/Box.h"
 #include "../shape/Skybox.h"
 
+#include "../light/AmbientLight.h"
 #include "../light/SpotLight.h"
 #include "../light/DirectionalLight.h"
 #include "../config.h"
@@ -238,7 +239,7 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 	return true;
 }
 
-bool SceneParser::ParseSkybox(XMLElement* skyboxElem)
+bool SceneParser::ParseSkybox(XMLElement* skyboxElem)	
 {
 	CubeMapTexture_ptr texture;
 
@@ -478,6 +479,15 @@ bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 				dirLight->SetDirection(glm::normalize(direction));
 				generated_scene->SetLight(dirLight);
 
+			}
+			else if (lightType == "ambient")
+			{
+				glm::vec3 color;
+				GetColorVector3(lightElem->FirstChildElement("color"), color);
+
+				AmbientLight_ptr ambLight = AmbientLight::Create();
+				ambLight->SetColor(color);
+				generated_scene->SetLight(ambLight);				
 			}
 			else
 			{

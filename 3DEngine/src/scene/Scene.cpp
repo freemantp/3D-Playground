@@ -234,6 +234,11 @@ void Scene::SetLight(DirectionalLight_ptr light)
 	lightModel->directionalLight = light;
 }
 
+void Scene::SetLight(AmbientLight_ptr light)
+{
+	lightModel->ambientLight = light;
+}
+
 void Scene::ConnectInputHandler(InputHandler& ih)
 {
 	if (inspectionCamAdapter)

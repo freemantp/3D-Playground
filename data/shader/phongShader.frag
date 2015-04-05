@@ -13,6 +13,11 @@ struct MaterialInfo
 
 const int numLights = 4;
 
+struct AmbientLight
+{
+	vec3 Color;
+};
+
 struct PointLight
 {
 	vec4 Position;
@@ -43,6 +48,7 @@ layout (std140) uniform Lights
 	PointLight PointLights[numLights];
 	SpotLight  SpotLights[numLights];
 	DirectionalLight DirectionalLight0;
+	AmbientLight	 AmbientLight0;
 } sceneLights;
 
 uniform sampler2DShadow ShadowMapArray[4];
@@ -54,6 +60,9 @@ uniform bool PcfShadows;
 
 uniform int NumPointLights;
 uniform int NumSpotLights;
+uniform bool HasDirectionalLight;
+uniform bool HasAmbientLight;
+uniform bool HasEnvMap;
 uniform samplerCube EnvMapTex;
 uniform float EnvReflection; //[0,1]
 
@@ -87,10 +96,10 @@ float phong(in vec3 s, in vec3 v, in vec3 normal)
 	return pow( max( dot(r,v), 0.0), Material.Shininess );
 }
 
-void shade(const in vec3 position, const in vec3 normal, const in vec3 lightDir, 
+void shade(const in vec3 eyePosition, const in vec3 normal, const in vec3 lightDir, 
 		   inout vec3 ambient, inout vec3 diffuse, inout vec3 specular  )
 {	
-	vec3 v = normalize(-position);
+	vec3 v = normalize(-eyePosition);
 	
 	float sDotN = max(dot(lightDir,normal), 0.0);
 
@@ -165,7 +174,6 @@ float getShadow(int sl_i)
 void main()
 {
 	vec3 normal = normalize(NormalEye);
-	vec4 fragmentColor = vec4(0,0,0,1);
 
 	vec3 ambient = vec3(0,0,0);
 	vec3 diffuse = vec3(0,0,0);
@@ -173,12 +181,25 @@ void main()
 
 	vec3 ambientCurrent, diffuseCurrent, specularCurrent;
 
-	//Directional light
+	//Ambient light
+	if(HasAmbientLight)
 	{
-		vec3 dirDirection = sceneLights.DirectionalLight0.Direction;
-		vec3 dirColor = sceneLights.DirectionalLight0.Color;
+		vec3 ambientColor = sceneLights.AmbientLight0.Color;
+		ambient += Material.AmbientReflectivity * ambientColor;
+	}
 
-		//tbd: see bump shader
+	//Directional light
+	if(HasDirectionalLight)
+	{
+		vec3 dirDirection = normalize(sceneLights.DirectionalLight0.Direction);
+		vec3 dirColor = sceneLights.DirectionalLight0.Color;
+		
+		float sDotN = max(dot(dirDirection,normal), 0.0);
+
+		shade(PositionEye,normal,dirDirection,ambientCurrent, diffuseCurrent, specularCurrent);
+
+		diffuse += Material.DiffuseReflectivity * diffuseCurrent * dirColor;
+		specular += Material.SpecularReflectivity * specularCurrent * dirColor;
 	}
 
 	//Point lights
@@ -195,7 +216,6 @@ void main()
 		float k = 0.2;
 		float distAttenuation = 1 / ( 1 + k*distance*distance);
 
-		ambient  += ambientCurrent  * light.Color * distAttenuation;
 		diffuse  += diffuseCurrent  * light.Color * distAttenuation;
 		specular += specularCurrent * light.Color * distAttenuation;
 	}
@@ -227,23 +247,24 @@ void main()
 			float distAttenuation = 1 / ( 1 + k*dist*dist);
 
 			float shadow = getShadow(i);
-
-			ambient  += distAttenuation * borderFadeFacor * ambientCurrent  * light.Color;			
+		
 			diffuse  += distAttenuation * borderFadeFacor * diffuseCurrent  * light.Color * shadow;
 			specular += distAttenuation * borderFadeFacor * specularCurrent * light.Color * shadow;
 		}
 	}
 
 	//Environment mapping
-	if(Material.Shininess > 0.0) 
+	if(HasEnvMap && Material.Shininess > 0.0) 
 	{
 		float reflectionRatio = clamp(Material.Shininess / 30.0, 0.0, 1.0);
 		vec3 cubeMapColor = texture(EnvMapTex, ReflectDir).xyz;
 
-		specular *= cubeMapColor;
-		ambient  *= cubeMapColor;
+		//diffuse  +=  ??
+		specular += Material.SpecularReflectivity * cubeMapColor * reflectionRatio;
 	}
 
-	FragColor = vec4(ambient + (diffuse + specular) , Material.Opacity);
+	vec3 lightColor = vec3(ambient + diffuse + specular);
+
+	FragColor = vec4(lightColor , Material.Opacity);
 
 }

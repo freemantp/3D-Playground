@@ -262,7 +262,6 @@
     <ClInclude Include="src\light\ShadowUtil.h">
       <Filter>Source Files\light\shadow</Filter>
     </ClInclude>
-    <ClInclude Include="src\light\DirectionalLight.h" />
     <ClInclude Include="src\shape\WireCone.h">
       <Filter>Source Files\shapes</Filter>
     </ClInclude>
@@ -278,6 +277,12 @@
     </ClInclude>
     <ClInclude Include="src\texture\DepthTexture.h">
       <Filter>Source Files\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\light\DirectionalLight.h">
+      <Filter>Source Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\light\AmbientLight.h">
+      <Filter>Source Files\light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -425,9 +430,6 @@
     <ClCompile Include="src\light\ShadowUtil.cpp">
       <Filter>Source Files\light\shadow</Filter>
     </ClCompile>
-    <ClCompile Include="src\light\DirectionalLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\shape\WireCone.cpp">
       <Filter>Source Files\shapes</Filter>
     </ClCompile>
@@ -445,6 +447,12 @@
     </ClCompile>
     <ClCompile Include="src\texture\DepthTexture.cpp">
       <Filter>Source Files\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\light\DirectionalLight.cpp">
+      <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\light\AmbientLight.cpp">
+      <Filter>Source Files\light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

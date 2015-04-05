@@ -24,6 +24,7 @@ SHARED_PTR_CLASS_DECL(FirstPersonCameraAdapter);
 SHARED_PTR_CLASS_DECL(ShadowMapShader);
 SHARED_PTR_CLASS_DECL(Framebuffer);
 SHARED_PTR_CLASS_DECL(Viewport);
+SHARED_PTR_CLASS_DECL(AmbientLight)
 
 class Scene : public TimeObserver, public std::enable_shared_from_this<Scene>
 {
@@ -40,6 +41,7 @@ public:
 	void AddLight(PointLight_ptr shape);
 	void AddLight(SpotLight_ptr light);
 	void SetLight(DirectionalLight_ptr light);
+	void SetLight(AmbientLight_ptr light);
 
 	virtual void TimeUpdate(long time);
 

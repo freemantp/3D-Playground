@@ -35,6 +35,7 @@
     <ClInclude Include="src\input\MouseObserver.h" />
     <ClInclude Include="src\input\ViewportObserver.h" />
     <ClInclude Include="src\input\WindowEventHandler.h" />
+    <ClInclude Include="src\light\AmbientLight.h" />
     <ClInclude Include="src\light\DirectionalLight.h" />
     <ClInclude Include="src\light\Light.h" />
     <ClInclude Include="src\light\LightModel.h" />
@@ -96,6 +97,7 @@
     <ClCompile Include="src\camera\PerspectiveCamera.cpp" />
     <ClCompile Include="src\common.cpp" />
     <ClCompile Include="src\input\WindowEventHandler.cpp" />
+    <ClCompile Include="src\light\AmbientLight.cpp" />
     <ClCompile Include="src\light\DirectionalLight.cpp" />
     <ClCompile Include="src\light\Light.cpp" />
     <ClCompile Include="src\light\LightModel.cpp" />
@@ -335,16 +337,16 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-    <Import Project="..\packages\tinyxml2.redist.2.1.0\build\native\tinyxml2.redist.targets" Condition="Exists('..\packages\tinyxml2.redist.2.1.0\build\native\tinyxml2.redist.targets')" />
-    <Import Project="..\packages\tinyxml2.2.1.0\build\native\tinyxml2.targets" Condition="Exists('..\packages\tinyxml2.2.1.0\build\native\tinyxml2.targets')" />
-    <Import Project="..\packages\glm.0.9.6.1\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.6.1\build\native\glm.targets')" />
+    <Import Project="..\packages\glm.0.9.6.3\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.6.3\build\native\glm.targets')" />
+    <Import Project="..\packages\tinyxml2.redist.3.0.0\build\native\tinyxml2.redist.targets" Condition="Exists('..\packages\tinyxml2.redist.3.0.0\build\native\tinyxml2.redist.targets')" />
+    <Import Project="..\packages\tinyxml2.3.0.0\build\native\tinyxml2.targets" Condition="Exists('..\packages\tinyxml2.3.0.0\build\native\tinyxml2.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\tinyxml2.redist.2.1.0\build\native\tinyxml2.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\tinyxml2.redist.2.1.0\build\native\tinyxml2.redist.targets'))" />
-    <Error Condition="!Exists('..\packages\tinyxml2.2.1.0\build\native\tinyxml2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\tinyxml2.2.1.0\build\native\tinyxml2.targets'))" />
-    <Error Condition="!Exists('..\packages\glm.0.9.6.1\build\native\glm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glm.0.9.6.1\build\native\glm.targets'))" />
+    <Error Condition="!Exists('..\packages\glm.0.9.6.3\build\native\glm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glm.0.9.6.3\build\native\glm.targets'))" />
+    <Error Condition="!Exists('..\packages\tinyxml2.redist.3.0.0\build\native\tinyxml2.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\tinyxml2.redist.3.0.0\build\native\tinyxml2.redist.targets'))" />
+    <Error Condition="!Exists('..\packages\tinyxml2.3.0.0\build\native\tinyxml2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\tinyxml2.3.0.0\build\native\tinyxml2.targets'))" />
   </Target>
 </Project>

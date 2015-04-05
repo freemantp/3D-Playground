@@ -31,7 +31,7 @@
       <color r="1.0" g="1.0" b="0.0"/>
     </light>-->
 
-    <light type="point" cutoff="90" exponent="30">
+    <!--<light type="point" cutoff="90" exponent="30">
       <position x="0.0" y="-1.0" z="1.0"/>
       <direction x="0.0" y="0.0" z="1.0"/>
       <color r="0.35" g="0.35" b="0.4"/>
@@ -41,11 +41,21 @@
       <position x="0.0" y="1.0" z="1.0"/>
       <direction x="0.0" y="0.0" z="1.0"/>
       <color r="0.35" g="0.35" b="0.4"/>
+    </light>-->
+
+    <light type="ambient" >
+      <color r="0.2" g="0.2" b="0.2"/>
     </light>
+
+    <light type="directional">
+      <direction x="1.0" y="0.3" z="-0.1"/>
+      <color r="1.0" g="1.0" b="0.9"/>
+    </light>
+
 
   </lights>
 
-  <skybox cubeMapFile="cubeMap/clouds.png"/>
+  <skybox cubeMapFile="cubeMap/sea.jpeg"/>
 
   <objects>
 

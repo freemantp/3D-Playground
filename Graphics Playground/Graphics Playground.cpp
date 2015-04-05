@@ -104,11 +104,12 @@ bool Initialize()
 	auto data = Util::LoadTextFile(Config::SCENE_BASE_PATH + sceneName.c_str());
 
 	WindowEventHandler& winEventHandler = WindowEventHandler::GetInstance();
+	GlutInputHandlerFactory gihf;
 
 	renderer = Renderer::Create(viewport);
 	winEventHandler.AddViewportObserver(renderer);
-
-	GlutInputHandlerFactory gihf;
+	gihf.GetInputHandler().AddKeyboardObserver(renderer);
+	
 	SceneParser sp;
 	if (sp.Parse(data))
 	{

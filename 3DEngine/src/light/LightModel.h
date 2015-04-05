@@ -7,6 +7,7 @@
 SHARED_PTR_CLASS_DECL(Camera);
 SHARED_PTR_CLASS_DECL(PointLight);
 SHARED_PTR_CLASS_DECL(SpotLight);
+SHARED_PTR_CLASS_DECL(AmbientLight)
 SHARED_PTR_CLASS_DECL(DirectionalLight);
 SHARED_PTR_CLASS_DECL(LightModel);
 SHARED_PTR_CLASS_DECL(UniformBuffer);
@@ -30,6 +31,7 @@ public:
 	std::vector<PointLight_ptr> pointLights;
 	std::vector<SpotLight_ptr>	spotLights;
 	DirectionalLight_ptr		directionalLight;
+	AmbientLight_ptr			ambientLight;
 	Texture3D_ptr				pcfShadowRandomData;
 
 protected:

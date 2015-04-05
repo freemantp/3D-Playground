@@ -8,6 +8,8 @@
 
 #include  "../util/TimeManager.h"
 
+#include "../error.h"
+
 Renderer_ptr Renderer::Create(Viewport_ptr viewport)
 {
 	return Renderer_ptr(new Renderer(viewport), [](Renderer* r) {delete r; });
@@ -62,12 +64,16 @@ void Renderer::OnKey(const Input::Key key, const Input::Modifier mod, const glm:
 	{
 		auto& tm = TimeManager::GetInstance();
 
-		if (!m_ShowDebugElements)
+		if (!m_ShowDebugElements)			
 			tm.AddTimeObserver(debugScene);
 		else
 			tm.RemoveTimeObserver(debugScene);
 
 		m_ShowDebugElements = !m_ShowDebugElements;
+
+		std::string msg = (m_ShowDebugElements ? "Enabling" : "Disabling");
+		msg += " debug mode";
+		Debug(msg);
 	}
 }
 

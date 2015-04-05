@@ -10,7 +10,7 @@ uniform mat3 NormalMatrix;
 
 void main() 
 {	
-	//NormalWs = normalize(NormalMatrix * VertexNormal);
-	NormalWs = normalize(VertexNormal);
+	NormalWs = normalize(NormalMatrix * VertexNormal);
+	//NormalWs = normalize(VertexNormal);
 	gl_Position = MVP * vec4( VertexPosition, 1.0 );
 }

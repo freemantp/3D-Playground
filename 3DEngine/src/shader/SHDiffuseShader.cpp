@@ -38,15 +38,15 @@ bool ShDiffuseShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform
 		SetUniform("numShBands", numShBands);
 		SetUniform("exposure", exposure);
 
-		float shCoeffs[9 * 3];
+		std::array<float, 9 * 3> shCoeffs;
 
 		for (int i = 0; i<9; i++)
 		{
 			//TODO: use std::copy
-			memcpy(shCoeffs + i * 3, &(material->shCoeffs->m_Coeffs[i]).x, 3 * sizeof(float));
+			memcpy(shCoeffs.data() + i * 3, &(material->shCoeffs->m_Coeffs[i].x), 3 * sizeof(float));
 		}
 
-		SetUniformArray("shLightCoeffs", shCoeffs, 3, 9);
+		SetUniformArray("shLightCoeffs", shCoeffs.data(), 3, 9);
 	}
 	else
 	{

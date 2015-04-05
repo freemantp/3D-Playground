@@ -112,7 +112,10 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 	//set lights
 	SetUniform("NumPointLights", (int)lightModel->pointLights.size());
 	SetUniform("NumSpotLights", static_cast<int>(num_slights));
-	
+	SetUniform("HasDirectionalLight", static_cast<bool>(lightModel->directionalLight));
+	SetUniform("HasAmbientLight", static_cast<bool>(lightModel->ambientLight));	
+	SetUniform("HasEnvMap", static_cast<bool>(scene->skybox));
+			
 	auto bind_shadowmap_tex = [&lightModel](int sl_i, int texUnit)
 	{
 		auto sl = lightModel->spotLights[sl_i];
