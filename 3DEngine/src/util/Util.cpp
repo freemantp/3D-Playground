@@ -1,12 +1,12 @@
 #include "stdafx.h"
 
 #include "Util.h"
-#include "MeshRaw.h"
+#include "RawMesh.h"
 
 #include "../util/ObjLoader.h"
 
 #include "../shape/Box.h"
-#include "../shape/Mesh.h"
+#include "../shape/RenderMesh.h"
 
 #include "../shader/ShaderBase.h"
 #include "../shader/GLSLProgram.h"
@@ -99,48 +99,78 @@ void Util::PrintUniforms(const ShaderBase* shader)
 	std::cout << std::endl;
 }
 
-Mesh_ptr Util::LoadModel(const std::string& path)
+RenderMesh_ptr Util::LoadModel(const std::string& path)
 {
 	ObjLoader oj;
 	clock_t begin = clock();
 	
-	if(MeshRaw_ptr rawMesh = oj.LoadObjFile(path))
+	if(IndexedRawMesh_ptr rawMesh = oj.LoadObjFile(path))
 	{
-		Mesh_ptr mesh = Mesh::Create(rawMesh);
+		if(OpenGLRawMesh_ptr gl_raw_mesh = rawMesh->ConvertToOpenGLMesh())
+		{
+			if (!gl_raw_mesh->HasNormals())
+			{
+				Info(gl_raw_mesh->name + ": Computing normals..");
+				if(!gl_raw_mesh->ComputeNormals())
+				{
+					Error("Could not compute normals");
+				}
+			}
 
-		double elapsed_secs = double(clock() - begin) / CLOCKS_PER_SEC * 1000;
-		std::cout << "time [msec]: " << elapsed_secs << std::endl;
-		return mesh;
+			bool tangents_needed = std::any_of(gl_raw_mesh->materials.begin(), gl_raw_mesh->materials.begin(), 
+				[](const WavefrontObjMaterial_ptr& mat)
+			{
+				return mat->HasBumpMap() || mat->HasDisplacementMap();
+			});
+
+			if (tangents_needed)
+			{
+				if (gl_raw_mesh->HasNormals() && gl_raw_mesh->HasTexCoords())
+				{
+					Info(gl_raw_mesh->name + ": Computing tangents..");
+					if (!gl_raw_mesh->ComputeTangents())
+						Error("Computing tangents failed");
+				}
+				else
+					Error("Could not compute tangents, normals or tex coords missing");
+			}
+
+			RenderMesh_ptr mesh = RenderMesh::Create(gl_raw_mesh);
+
+			double elapsed_secs = double(clock() - begin) / CLOCKS_PER_SEC * 1000;
+			std::cout << "time [msec]: " << elapsed_secs << std::endl;
+			return mesh;
+		}
 	}
 
-	return Mesh_ptr();
+	return RenderMesh_ptr();
 	
 }
 
-Mesh_ptr Util::GetDragon()
+RenderMesh_ptr Util::GetDragon()
 {
-	Mesh_ptr model = Util::LoadModel("../data/models/dragon.obj");
+	RenderMesh_ptr model = Util::LoadModel("../data/models/dragon.obj");
 	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.85f,0));
 	model->worldTransform = glm::scale(model->worldTransform,glm::vec3(8,8,8));
 	return model;
 }
 
-Mesh_ptr Util::GetHorse()
+RenderMesh_ptr Util::GetHorse()
 {
-	Mesh_ptr model = Util::LoadModel("../data/models/horse.obj");
+	RenderMesh_ptr model = Util::LoadModel("../data/models/horse.obj");
 	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.3f,0));
 	model->worldTransform = glm::rotate(model->worldTransform, glm::radians(270.0f), glm::vec3(0,1,0));
 	return model;
 }
 
-Mesh_ptr Util::GetElephant()
+RenderMesh_ptr Util::GetElephant()
 {
-	Mesh_ptr model = Util::LoadModel("../data/models/elephant.obj");
+	RenderMesh_ptr model = Util::LoadModel("../data/models/elephant.obj");
 	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.5f,0));
 	return model;
 }
 
-Mesh_ptr Util::CreateBox()
+RenderMesh_ptr Util::CreateBox()
 {
 	Box_ptr box = Box::Create();
 	box->Init();

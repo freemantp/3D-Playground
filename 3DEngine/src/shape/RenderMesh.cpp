@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Mesh.h"
+#include "RenderMesh.h"
 #include "../scene/Scene.h"
 #include "../shader/ShaderLibrary.h"
 #include "../shader/ShaderBase.h"
@@ -7,7 +7,7 @@
 #include "../shader/ShadowMapShader.h"
 #include "../texture/Texture2D.h"
 #include "../util/Util.h"
-#include "../util/MeshRaw.h"
+#include "../util/RawMesh.h"
 #include "../materials/Material.h"
 
 #include "../light/Shadow.h"
@@ -18,18 +18,18 @@
 
 using namespace GLSLShader;
 
-Mesh_ptr Mesh::Create(MeshRaw_ptr mesh)
+RenderMesh_ptr RenderMesh::Create(OpenGLRawMesh_ptr mesh)
 {
-	return Mesh_ptr(new Mesh(mesh));
+	return RenderMesh_ptr(new RenderMesh(mesh));
 }
 
-Mesh::Mesh(MeshRaw_ptr rawMesh)
-: Mesh()
+RenderMesh::RenderMesh(OpenGLRawMesh_ptr rawMesh)
+: RenderMesh()
 {
 	InitFromRawMesh(rawMesh);
 }
 
-Mesh::Mesh(DrawMode mode)
+RenderMesh::RenderMesh(DrawMode mode)
 : initialized(false)
 , Shape()
 {
@@ -37,7 +37,7 @@ Mesh::Mesh(DrawMode mode)
 	Init();
 }
 
-void Mesh::InitFromRawMesh(MeshRaw_ptr rawMesh)
+void RenderMesh::InitFromRawMesh(OpenGLRawMesh_ptr rawMesh)
 {
 	if(rawMesh)
 	{
@@ -46,7 +46,7 @@ void Mesh::InitFromRawMesh(MeshRaw_ptr rawMesh)
 		else
 			name = Util::ExtractFileName(rawMesh->meshPath);
 
-		SetPositions(rawMesh->vertices,rawMesh->indices, &rawMesh->groupRanges);
+		SetPositions(rawMesh->vertices, rawMesh->triangleIndices, &rawMesh->groupRanges);
 
 		std::vector<PhongMaterial_ptr> meshMaterials;
 
@@ -120,7 +120,7 @@ void Mesh::InitFromRawMesh(MeshRaw_ptr rawMesh)
 	}
 }
 
-bool Mesh::MapVertexAttribute(VertexAttribute attrib, GLuint channel) const
+bool RenderMesh::MapVertexAttribute(VertexAttribute attrib, GLuint channel) const
 {
 	if ( attrib == Index) //Indices are NOT a vertex attribute!
 		return false;
@@ -148,14 +148,14 @@ bool Mesh::MapVertexAttribute(VertexAttribute attrib, GLuint channel) const
 	return true;
 }
 
-void Mesh::SetAttribPointer(const VertexAttribute& attrib) const
+void RenderMesh::SetAttribPointer(const VertexAttribute& attrib) const
 {
 	GLuint channel = vAttribData[attrib].channel;
 	GLint size = vAttribData[attrib].size;
 	glVertexAttribPointer( channel, size,  GL_FLOAT, GL_FALSE, 0, (GLubyte *)nullptr );
 }
 
-bool Mesh::SetPositions(const std::vector<glm::vec3>& positions, const std::vector<int>& indices, IntPairVector *indexGroups)
+bool RenderMesh::SetPositions(const std::vector<glm::vec3>& positions, const std::vector<int>& indices, IntPairVector *indexGroups)
 {
 	bool success = true;
 
@@ -185,7 +185,7 @@ bool Mesh::SetPositions(const std::vector<glm::vec3>& positions, const std::vect
 	if(glIsBuffer(bufferObjects[Position]))
 	{
 		glEnableVertexAttribArray(vAttribData[Position].channel);  
-		glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(float) * 3, &(positions[0].x), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(float) * 3, positions.data(), GL_STATIC_DRAW);
 		SetAttribPointer(Position);
 	} 
 	else 
@@ -224,7 +224,7 @@ bool Mesh::SetPositions(const std::vector<glm::vec3>& positions, const std::vect
 	return success;
 }
 
-bool Mesh::SetNormals(const std::vector<glm::vec3>& normals)
+bool RenderMesh::SetNormals(const std::vector<glm::vec3>& normals)
 {
 	glBindVertexArray(vaoHandle);
 	bool success = false;
@@ -235,7 +235,7 @@ bool Mesh::SetNormals(const std::vector<glm::vec3>& normals)
 	if( glIsBuffer(bufferObjects[Normal]) )
 	{	
 		glEnableVertexAttribArray(vAttribData[Normal].channel);  // Vertex normal
-		glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(float) * 3, &(normals[0].x), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(float) * 3, normals.data(), GL_STATIC_DRAW);
 
 		SetAttribPointer(Normal);
 		success =  true;
@@ -250,7 +250,7 @@ bool Mesh::SetNormals(const std::vector<glm::vec3>& normals)
 	return success;
 }
 
-bool Mesh::SetTangents(const std::vector<glm::vec4>& tangents)
+bool RenderMesh::SetTangents(const std::vector<glm::vec4>& tangents)
 {	
 	glBindVertexArray(vaoHandle);
 	bool success = false;
@@ -262,7 +262,7 @@ bool Mesh::SetTangents(const std::vector<glm::vec4>& tangents)
 	{	
 		glEnableVertexAttribArray(vAttribData[Tangent].channel);  // Vertex tangent
 
-		glBufferData(GL_ARRAY_BUFFER, tangents.size() * sizeof(float) * 4, &(tangents[0].x), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, tangents.size() * sizeof(float) * 4, tangents.data(), GL_STATIC_DRAW);
 
 		SetAttribPointer(Tangent);
 		success =  true;
@@ -277,7 +277,7 @@ bool Mesh::SetTangents(const std::vector<glm::vec4>& tangents)
 	return success;
 }
 
-bool Mesh::SetTextureCoordinates(const std::vector<glm::vec2>& texCoords)
+bool RenderMesh::SetTextureCoordinates(const std::vector<glm::vec2>& texCoords)
 {
 	glBindVertexArray(vaoHandle);
 	glGenBuffers(1, &bufferObjects[TextureCoord]);
@@ -289,7 +289,7 @@ bool Mesh::SetTextureCoordinates(const std::vector<glm::vec2>& texCoords)
 	{	
 		glEnableVertexAttribArray(vAttribData[TextureCoord].channel);  // texture coord
 
-		glBufferData(GL_ARRAY_BUFFER, texCoords.size() * sizeof(float) *2 , &(texCoords[0].x), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, texCoords.size() * sizeof(float) *2 , texCoords.data(), GL_STATIC_DRAW);
 
 		SetAttribPointer(TextureCoord);
 		success =  true;
@@ -305,7 +305,7 @@ bool Mesh::SetTextureCoordinates(const std::vector<glm::vec2>& texCoords)
 	return success;
 }
 
-bool Mesh::SetColors(const std::vector<float>& colors)
+bool RenderMesh::SetColors(const std::vector<float>& colors)
 {
 	glBindVertexArray(vaoHandle);
 	bool success = false;
@@ -316,7 +316,7 @@ bool Mesh::SetColors(const std::vector<float>& colors)
 	if( glIsBuffer(bufferObjects[Color]) )
 	{		
 		glEnableVertexAttribArray(vAttribData[Color].channel);  // Vertex color		
-		glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(float), &colors[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(float), colors.data(), GL_STATIC_DRAW);
 
 		SetAttribPointer(Color);
 		success =  true;
@@ -332,7 +332,7 @@ bool Mesh::SetColors(const std::vector<float>& colors)
 	return success;
 }
 
-void Mesh::Init()
+void RenderMesh::Init()
 {
 	if( ! initialized )
 	{
@@ -374,7 +374,7 @@ void Mesh::Init()
 	}
 }
 
-void Mesh::MapVertexAttributes(ShaderBase_ptr shader) const
+void RenderMesh::MapVertexAttributes(ShaderBase_ptr shader) const
 {
 	if (auto vai = shader->GetVertexAttributeInfo())
 	{
@@ -410,7 +410,7 @@ void Mesh::MapVertexAttributes(ShaderBase_ptr shader) const
 	glBindVertexArray(vaoHandle);
 }
 
-void Mesh::RenderShadowMap(ShadowMapShader_ptr shadow_shader) const
+void RenderMesh::RenderShadowMap(ShadowMapShader_ptr shadow_shader) const
 {
 	if (shadow_shader)
 	{
@@ -436,7 +436,7 @@ void Mesh::RenderShadowMap(ShadowMapShader_ptr shadow_shader) const
 	
 }
 
-void Mesh::Render(const Scene_ptr scene) const
+void RenderMesh::Render(const Scene_ptr scene) const
 {
 	ShaderLibrary_ptr sl = ShaderLibrary::GetInstance();
 
@@ -482,7 +482,7 @@ void Mesh::Render(const Scene_ptr scene) const
 	glBindVertexArray(0);
 }
 
-void Mesh::Draw(const size_t& group) const
+void RenderMesh::Draw(const size_t& group) const
 {
 	//Bind i-th index buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObjects[group]);
@@ -498,19 +498,19 @@ void Mesh::Draw(const size_t& group) const
 
 }
 
-void Mesh::SetDrawingMode(DrawMode mode)
+void RenderMesh::SetDrawingMode(DrawMode mode)
 {
 	drawMode = mode;
 
 	switch (drawMode)
 	{
-	case Mesh::DrawMode::Triangle:
+	case RenderMesh::DrawMode::Triangle:
 		primitiveSize = 3;
 		break;
-	case Mesh::DrawMode::Line:
+	case RenderMesh::DrawMode::Line:
 		primitiveSize = 2;
 		break;
-	case Mesh::DrawMode::Point:
+	case RenderMesh::DrawMode::Point:
 		primitiveSize = 1;
 		break;
 	default:

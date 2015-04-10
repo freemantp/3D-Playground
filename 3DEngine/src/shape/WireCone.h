@@ -1,9 +1,9 @@
 #pragma once
-#include "Mesh.h"
+#include "RenderMesh.h"
 
 SHARED_PTR_CLASS_DECL(WireCone);
 
-class WireCone : public Mesh
+class WireCone : public RenderMesh
 {
 public:
 	static WireCone_ptr Create(float opening_angle, float height);

@@ -5,7 +5,7 @@
 #include  "../util/Util.h"
 #include  "../util/TimeManager.h"
 #include "../camera/OrthogonalCamera.h"
-#include  "../shape/Mesh.h"
+#include  "../shape/RenderMesh.h"
 #include  "../light/SpotLight.h"
 #include  "../light/DirectionalLight.h"
 #include  "../light/Shadow.h"

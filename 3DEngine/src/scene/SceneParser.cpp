@@ -18,13 +18,13 @@
 #include "../materials/Material.h"
 
 #include "../util/Util.h"
-#include "../util/MeshRaw.h"
+#include "../util/RawMesh.h"
 #include "../util/ShCoeffParser.h"
 
 #include "../camera/PerspectiveCamera.h"
 #include "../scene/Scene.h"
 
-#include "../shape/Mesh.h"
+#include "../shape/RenderMesh.h"
 #include "../shape/Box.h"
 #include "../shape/Skybox.h"
 

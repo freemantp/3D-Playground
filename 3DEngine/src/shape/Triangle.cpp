@@ -2,7 +2,7 @@
 #include "Triangle.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-Triangle::Triangle() : Mesh()
+Triangle::Triangle() : RenderMesh()
 {
 
 }
@@ -13,7 +13,7 @@ Triangle::~Triangle()
 
 void Triangle::Init()  {
 
-	Mesh::Init();
+	RenderMesh::Init();
 
 	std::vector<glm::vec3> positionData = {
 		glm::vec3(-0.8f, -0.8f, 0.0f),

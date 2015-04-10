@@ -5,7 +5,7 @@
 #include <string>
 #include "SharedPointer.h"
 
-SHARED_PTR_CLASS_DECL(Mesh);
+SHARED_PTR_CLASS_DECL(RenderMesh);
 class GLSLProgram;
 class ShaderBase;
 
@@ -23,7 +23,7 @@ public:
 	static std::string LoadTextFile(const std::string& s);
 	static void PrintStrings(const std::vector<std::string> strings);
 	static void PrintUniforms(const ShaderBase* shader);
-	static Mesh_ptr LoadModel(const std::string& path);
+	static RenderMesh_ptr LoadModel(const std::string& path);
 
 	static std::unique_ptr<glimg::ImageSet> LoadImageFile(const std::string& texturePath);
 	static std::string Util::ExtractBaseFolder(std::string path);
@@ -32,10 +32,10 @@ public:
 
 	static void Beep();
 
-	static Mesh_ptr GetDragon();
-	static Mesh_ptr GetHorse();
-	static Mesh_ptr GetElephant();
-	static Mesh_ptr CreateBox();
+	static RenderMesh_ptr GetDragon();
+	static RenderMesh_ptr GetHorse();
+	static RenderMesh_ptr GetElephant();
+	static RenderMesh_ptr CreateBox();
 
 	static void Trim(std::string& str);
 

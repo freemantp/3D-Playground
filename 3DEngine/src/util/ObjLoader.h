@@ -7,19 +7,19 @@
 #include <vector>
 #include <glm/glm.hpp>
 
-SHARED_PTR_CLASS_DECL(ObjMaterial);
+SHARED_PTR_CLASS_DECL(WavefrontObjMaterial);
 SHARED_PTR_CLASS_DECL(ObjLoader);
-SHARED_PTR_CLASS_DECL(MeshRaw);
+SHARED_PTR_CLASS_DECL(IndexedRawMesh);
 
 class ObjLoader
 {
 public:
 
-	MeshRaw_ptr LoadObjFile(const std::string& path);
+	IndexedRawMesh_ptr LoadObjFile(const std::string& path);
 
 protected:
-	MeshRaw_ptr LoadObj(std::istream& istr, std::string path);
-	bool LoadMtllib(std::istream& istr, MeshRaw_ptr newMesh);
+	IndexedRawMesh_ptr LoadObj(std::istream& istr, std::string path);
+	bool LoadMtllib(std::istream& istr, IndexedRawMesh_ptr newMesh);
 
 private:
 

@@ -125,7 +125,7 @@ void Box::Init() {
 	SetTextureCoordinates(textureData);
 }
 
-Box::Box() :Mesh()
+Box::Box() :RenderMesh()
 {
 
 }

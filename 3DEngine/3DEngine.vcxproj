@@ -69,7 +69,7 @@
     <ClInclude Include="src\shader\UniformBufferShader.h" />
     <ClInclude Include="src\shape\Box.h" />
     <ClInclude Include="src\shape\Skybox.h" />
-    <ClInclude Include="src\shape\Mesh.h" />
+    <ClInclude Include="src\shape\RenderMesh.h" />
     <ClInclude Include="src\shape\Shape.h" />
     <ClInclude Include="src\shape\Triangle.h" />
     <ClInclude Include="src\shape\WireCone.h" />
@@ -81,7 +81,7 @@
     <ClInclude Include="src\texture\Texture2D.h" />
     <ClInclude Include="src\texture\Texture3D.h" />
     <ClInclude Include="src\util\gettersetter.h" />
-    <ClInclude Include="src\util\MeshRaw.h" />
+    <ClInclude Include="src\util\RawMesh.h" />
     <ClInclude Include="src\util\ObjLoader.h" />
     <ClInclude Include="src\util\SharedPointer.h" />
     <ClInclude Include="src\util\ShCoeffParser.h" />
@@ -129,7 +129,7 @@
     <ClCompile Include="src\shader\UniformBufferShader.cpp" />
     <ClCompile Include="src\shape\Box.cpp" />
     <ClCompile Include="src\shape\Skybox.cpp" />
-    <ClCompile Include="src\shape\Mesh.cpp" />
+    <ClCompile Include="src\shape\RenderMesh.cpp" />
     <ClCompile Include="src\shape\Shape.cpp" />
     <ClCompile Include="src\shape\Triangle.cpp" />
     <ClCompile Include="src\shape\WireCone.cpp" />
@@ -144,7 +144,7 @@
     <ClCompile Include="src\texture\Texture.cpp" />
     <ClCompile Include="src\texture\Texture2D.cpp" />
     <ClCompile Include="src\texture\Texture3D.cpp" />
-    <ClCompile Include="src\util\MeshRaw.cpp" />
+    <ClCompile Include="src\util\RawMesh.cpp" />
     <ClCompile Include="src\util\ObjLoader.cpp" />
     <ClCompile Include="src\util\ShCoeffParser.cpp" />
     <ClCompile Include="src\util\TimeManager.cpp" />

@@ -8,20 +8,19 @@
 
 #include "../core/gl.h"
 
-//forward declarations
-SHARED_PTR_CLASS_DECL(MeshRaw);
-SHARED_PTR_CLASS_DECL(Mesh);
-SHARED_PTR_CLASS_DECL(ObjMaterial);
+SHARED_PTR_CLASS_DECL(OpenGLRawMesh);
+SHARED_PTR_CLASS_DECL(RenderMesh);
+SHARED_PTR_CLASS_DECL(WavefrontObjMaterial);
 SHARED_PTR_CLASS_DECL(Scene);
 SHARED_PTR_CLASS_DECL(Texture2D);
 SHARED_PTR_CLASS_DECL(ShaderBase);
 SHARED_PTR_CLASS_DECL(MaterialShader);
 
-class Mesh : public Shape
+class RenderMesh : public Shape
 {
 public:
 
-	static Mesh_ptr Create(MeshRaw_ptr);
+	static RenderMesh_ptr Create(OpenGLRawMesh_ptr);
 
 	virtual void Render(const Scene_ptr scene) const override;
 	virtual void RenderShadowMap(ShadowMapShader_ptr) const override;
@@ -45,10 +44,10 @@ public:
 
 protected:
 
-	Mesh(MeshRaw_ptr rawMesh);
-	Mesh(DrawMode = DrawMode::Triangle);
+	RenderMesh(OpenGLRawMesh_ptr rawMesh);
+	RenderMesh(DrawMode = DrawMode::Triangle);
 
-	void InitFromRawMesh(MeshRaw_ptr rawMesh);
+	void InitFromRawMesh(OpenGLRawMesh_ptr rawMesh);
 
 	/// Map vertex attributes to correct channels
 	void MapVertexAttributes(ShaderBase_ptr shader) const;

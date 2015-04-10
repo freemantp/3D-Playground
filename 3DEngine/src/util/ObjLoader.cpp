@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include "ObjLoader.h"
-#include "MeshRaw.h"
+#include "RawMesh.h"
 #include "Util.h"
 
 #include "../error.h"
@@ -16,11 +16,11 @@ using glm::vec3;
 using glm::ivec3;
 
 
-MeshRaw_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
+IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 {	
 	int lineCount = 0;
 
-	MeshRaw_ptr newMesh = MeshRaw::Create();
+	IndexedRawMesh_ptr newMesh = IndexedRawMesh::Create();
 	newMesh->meshPath = path;
 
 	std::string groupName;	
@@ -32,7 +32,7 @@ MeshRaw_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 		if (newMesh->faces.size() > 0)
 		{
 			int groupEndIndex = static_cast<int>(newMesh->faces.size() - 1);
-			MeshRaw::Range range(groupFaceStartIdx, groupEndIndex);
+			IndexedRawMesh::Range range(groupFaceStartIdx, groupEndIndex);
 
 			newMesh->AddGroup(groupName, currentMtl, range);
 
@@ -89,7 +89,7 @@ MeshRaw_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 			glm::vec2 v;
 			char* end_p1;
 			v.x = std::strtof(&line[3], &end_p1);
-			v.y = std::strtof(end_p1, nullptr);
+			v.y = 1.f - std::strtof(end_p1, nullptr);
 			newMesh->texCoords.push_back(v);
 		}
 		else if (line[0] == 'f' && line[1] == ' ')
@@ -150,7 +150,10 @@ MeshRaw_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 	//Complete last index group
 	create_group(groupName);
 
-	std::cout << "Mesh loaded, f=" 
+	if (newMesh->name.empty())
+		newMesh->name = Util::ExtractFileName(newMesh->meshPath);
+
+	std::cout << "Wavefront OBJ mesh loaded, f=" 
 		<< newMesh->faces.size() 
 		<< ", v=" << newMesh->vertices.size() 
 		<< ", n=" << newMesh->normals.size() 
@@ -158,29 +161,14 @@ MeshRaw_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 		<< newMesh->texCoords.size() 
 		<< std::endl;
 
-	newMesh->ConvertTrianglesToIndices();
-
-	if (!newMesh->HasNormals())
-	{		
-		Info("Normal data not present... computing normals");		
-		if (!newMesh->ComputeNormals())
-			Error("Could not compute normals");
-	}
-
-	if (newMesh->HasNormals() && newMesh->HasTexCoords())
-	{
-		if (!newMesh->ComputeTangents())
-			Error("Could not compute tangents");
-	}
-
 	return newMesh;
 }
 
-bool ObjLoader::LoadMtllib(std::istream& istr, MeshRaw_ptr newMesh)
+bool ObjLoader::LoadMtllib(std::istream& istr, IndexedRawMesh_ptr newMesh)
 {
 	std::string line;
 
-	ObjMaterial_ptr mat;
+	WavefrontObjMaterial_ptr mat;
 
 	while ( istr.good() )
 	{
@@ -192,7 +180,7 @@ bool ObjLoader::LoadMtllib(std::istream& istr, MeshRaw_ptr newMesh)
 				newMesh->materials.push_back(mat);
 			}
 
-			mat = ObjMaterial::Create(line.substr(7));
+			mat = WavefrontObjMaterial::Create(line.substr(7));
 		}
 		else if(mat)
 		{
@@ -271,14 +259,14 @@ bool ObjLoader::LoadMtllib(std::istream& istr, MeshRaw_ptr newMesh)
 	return newMesh->materials.size() > 0;
 }
 
-MeshRaw_ptr ObjLoader::LoadObjFile(const std::string& path)
+IndexedRawMesh_ptr ObjLoader::LoadObjFile(const std::string& path)
 {
 	currentFile = path;
 
 	std::ifstream myfile;
 	myfile.open(path);
 
-	MeshRaw_ptr newMesh;
+	IndexedRawMesh_ptr newMesh;
 
 	std::string line;
 	if (myfile.is_open())

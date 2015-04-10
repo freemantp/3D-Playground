@@ -124,9 +124,6 @@
     <ClInclude Include="src\shape\Box.h">
       <Filter>Source Files\shapes</Filter>
     </ClInclude>
-    <ClInclude Include="src\shape\Mesh.h">
-      <Filter>Source Files\shapes</Filter>
-    </ClInclude>
     <ClInclude Include="src\shape\Shape.h">
       <Filter>Source Files\shapes</Filter>
     </ClInclude>
@@ -162,9 +159,6 @@
     </ClInclude>
     <ClInclude Include="src\shape\Skybox.h">
       <Filter>Source Files\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\MeshRaw.h">
-      <Filter>Source Files\util</Filter>
     </ClInclude>
     <ClInclude Include="src\util\SharedPointer.h">
       <Filter>Source Files\util</Filter>
@@ -284,6 +278,12 @@
     <ClInclude Include="src\light\AmbientLight.h">
       <Filter>Source Files\light</Filter>
     </ClInclude>
+    <ClInclude Include="src\shape\RenderMesh.h">
+      <Filter>Source Files\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\RawMesh.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -331,9 +331,6 @@
     <ClCompile Include="src\shape\Box.cpp">
       <Filter>Source Files\shapes</Filter>
     </ClCompile>
-    <ClCompile Include="src\shape\Mesh.cpp">
-      <Filter>Source Files\shapes</Filter>
-    </ClCompile>
     <ClCompile Include="src\shape\Shape.cpp">
       <Filter>Source Files\shapes</Filter>
     </ClCompile>
@@ -345,9 +342,6 @@
     </ClCompile>
     <ClCompile Include="src\texture\CubeMapTexture.cpp">
       <Filter>Source Files\texture</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\MeshRaw.cpp">
-      <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="src\util\ObjLoader.cpp">
       <Filter>Source Files\util</Filter>
@@ -453,6 +447,12 @@
     </ClCompile>
     <ClCompile Include="src\light\AmbientLight.cpp">
       <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shape\RenderMesh.cpp">
+      <Filter>Source Files\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\RawMesh.cpp">
+      <Filter>Source Files\util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

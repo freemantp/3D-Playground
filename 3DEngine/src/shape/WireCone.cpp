@@ -41,7 +41,7 @@ void WireCone::Init() {
 }
 
 WireCone::WireCone(float opening_angle,float height) 
-: Mesh(DrawMode::Line)
+: RenderMesh(DrawMode::Line)
 , openingAngle(opening_angle)
 , height(height)
 {
