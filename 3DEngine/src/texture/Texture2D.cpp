@@ -60,10 +60,7 @@ Texture2D::Texture2D(int width, int height, Format format)
 
 	glGenTextures(1, &texObject);
 	glBindTexture(GL_TEXTURE_2D, texObject);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);		
+	SetParameters();
 	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, dataType, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -76,6 +73,11 @@ Texture2D::Texture2D(const std::string& texturePath)
 		try
 		{
 			texObject = glimg::CreateTexture(imageSet.get(), 0);
+
+			glBindTexture(GL_TEXTURE_2D, texObject);
+			SetParameters();
+			glBindTexture(GL_TEXTURE_2D, 0);
+
 			glimg::Dimensions dim = imageSet->GetDimensions();
 
 			dimensions = glm::ivec2(dim.width, dim.height);
@@ -91,6 +93,15 @@ Texture2D::Texture2D(const std::string& texturePath)
 		Error("Image could not be loaded");
 	}
 }
+
+void Texture2D::SetParameters()
+{
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+}
+
 
 bool Texture2D::SetData(void* data)
 {

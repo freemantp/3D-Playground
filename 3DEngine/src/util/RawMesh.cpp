@@ -269,10 +269,10 @@ OpenGLRawMesh_ptr IndexedRawMesh::ConvertToOpenGLMesh() const
 			{
 				gl_mesh->vertices.push_back(vertices[pos_idx]);
 
-				if (uv_idx >= 0)
+				if (uv_idx >= 0 && texCoords.size() > uv_idx)
 					gl_mesh->texCoords.push_back(texCoords[uv_idx]);
 
-				if (normal_idx >= 0)
+				if (normal_idx >= 0 && normals.size() > normal_idx)
 					gl_mesh->normals.push_back(normals[normal_idx]);
 
 				current_index = static_cast<int>(gl_mesh->vertices.size() - 1);

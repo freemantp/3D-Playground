@@ -31,6 +31,8 @@ protected:
 
 	Texture2D(GLuint texHandle);
 
+	void SetParameters();
+
 	glm::ivec2 dimensions;
 };
 

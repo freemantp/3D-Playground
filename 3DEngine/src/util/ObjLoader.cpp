@@ -10,6 +10,7 @@
 #include <regex>
 #include <sstream>
 #include <array>
+#include <deque>
 
 using glm::vec2;
 using glm::vec3;
@@ -57,7 +58,7 @@ IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 				create_group(newMesh->name);
 			}
 		}
-		if (line[0] == 'g' && num_chars > 2)
+		else if (line[0] == 'g' && num_chars > 2)
 		{			
 			groupName = std::string(line.begin() + 2, line.end());
 
@@ -66,7 +67,7 @@ IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 				create_group(groupName);
 			}
 		}
-		if (line[0] == 'v' && line[1] == ' ')
+		else if (line[0] == 'v' && line[1] == ' ')
 		{
 			glm::vec3 v;
 			char* end_p1, *end_p2;
@@ -93,43 +94,68 @@ IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 			newMesh->texCoords.push_back(v);
 		}
 		else if (line[0] == 'f' && line[1] == ' ')
-		{			
+		{
 			std::istringstream str_stream(line);
 			str_stream.ignore(2);
 
-			Tri tri;
+			std::deque<glm::ivec3> vtx_queue;
 
-			int vertex = 0;
+			bool vtx_read = false;
+			glm::ivec3 first_vtx;
+			glm::ivec3 current_vtx(-1,-1,-1);
 			int comp = 0;
 
 			while (!str_stream.eof())
 			{
-				str_stream >> tri.v[vertex][comp];
-				tri.v[vertex][comp]--;
+				str_stream >> current_vtx[comp];
+				current_vtx[comp]--;
 
 				if (str_stream.peek() == '/')
 				{
 					str_stream.ignore();
-					int ignore = 1;
-					
+					int skip_comp = 1;
+
 					if (str_stream.peek() == '/')
 					{
 						str_stream.ignore();
-						ignore++;
+						skip_comp++;
 					}
-						
-					comp += ignore;
+
+					comp += skip_comp;
 				}
-				else if (str_stream.peek() == ' ')
+				else if (str_stream.eof() || str_stream.peek() == ' ')
 				{
 					str_stream.ignore();
-					vertex++;
 					comp = 0;
+
+					if (!vtx_read)
+					{
+						first_vtx = current_vtx;
+						vtx_read = true;
+					}
+					else
+					{
+						vtx_queue.push_back(current_vtx);						
+					}
+
+					current_vtx = glm::ivec3(-1, -1, -1);
+
+					if (vtx_queue.size() == 2)
+					{
+						Tri triangle;
+						triangle.Set(0, first_vtx);
+						triangle.Set(1, vtx_queue[0]);
+						triangle.Set(2, vtx_queue[1]);
+						vtx_queue.pop_front();
+
+						newMesh->faces.push_back(triangle);
+					}
+				}
+				else
+				{
+					str_stream.ignore();
 				}
 			}
-
-			newMesh->faces.push_back(tri);
-
 		}
 		else if(line.substr(0,7) == "mtllib ")
 		{			

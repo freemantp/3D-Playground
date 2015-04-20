@@ -12,12 +12,18 @@ SHARED_PTR_CLASS_DECL(WavefrontObjMaterial);
 
 struct Tri
 {
-	int v[3][3];
+	typedef int index_t;
+	index_t v[3][3];
 
 	Tri()
 	{	
-		std::fill(&v[0][0], &v[0][0] + sizeof(v)/sizeof(int), -1);	
+		std::fill(&v[0][0], &v[0][0] + sizeof(v) / sizeof(index_t), -1);
 	};
+
+	void Set(int idx, glm::ivec3& indices)
+	{
+		memcpy(v[idx], &indices[0], 3 * sizeof(glm::ivec3::value_type));
+	}
 
 	enum type { pos = 0, tex_uv = 1, normal = 2 };
 };
