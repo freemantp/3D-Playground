@@ -144,7 +144,7 @@ void main()
 	if(HasAmbientLight)
 	{
 		vec3 ambientColor = sceneLights.AmbientLight0.Color;
-		FragColor += vec4(ambientColor,0);
+		FragColor += vec4(ambientColor*albedo,0);
 	}
 
 	//Directional light

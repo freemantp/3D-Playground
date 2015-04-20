@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<scene name="Plane">
+<scene name="PC-24">
 
   <!-- initial camera position -->
   <camera type="perspective" fov="70.0">
@@ -26,7 +26,7 @@
 
     <light type="directional">
       <direction x="1.0" y="0.3" z="-0.1"/>
-      <color r="1.0" g="1.0" b="0.9"/>
+      <color r="0.8" g="0.8" b="0.7"/>
     </light>
 
 
@@ -36,11 +36,16 @@
 
   <objects>
 
+    <!--<mesh file="Tyranosaurus/dino.obj" material="glossy">
+      <transform>
+        <scale x="0.01" y="0.01" z="0.01"/>
+      </transform>
+    </mesh>-->
+
     <mesh file="777/777.obj" material="glossy">
       <!--<transform>
-        <scale x="0.2" y="0.2" z="0.2"/>
+        <scale x="0.1" y="0.1" z="0.1"/>
       </transform>-->
     </mesh>
-
   </objects>
 </scene>
