@@ -76,12 +76,12 @@ layout (location = 0) out vec4 FragColor;
 float blinn(in vec3 s, in vec3 v, in vec3 normal)
 {
 	vec3 h = normalize( v + s );
-	return pow( max( dot(h,normal), 0.0), Shininess ) ;
+	return pow( clamp( dot(h,normal), 0.0, 1.0), Shininess ) ;
 }
 
 float shade(const in vec3 normal, const in vec3 viewDir, const in vec3 lightDir, vec2 texCoord)
 {		
-	float diffuse = max( dot(lightDir,normal), 0.0 );	
+	float diffuse = clamp(dot(lightDir,normal), 0.0 , 1.0);	
 	float specular = 0;
 
 	float specularity = hasSpecularMap ? texture(SpecularTex,TexCoord).r : 1.0;
@@ -127,7 +127,7 @@ vec3 getNormal()
 	}
 	else
 	{
-		normal = NormalEye;
+		normal = normalize(NormalEye);
 	}
 	return normal;
 }

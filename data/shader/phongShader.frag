@@ -85,7 +85,7 @@ subroutine( shadeModelType )
 float blinn(in vec3 s, in vec3 v, in vec3 normal)
 {
 	vec3 h = normalize( v + s );
-	return pow( max( dot(h,normal), 0.0), Material.Shininess ) ;
+	return pow( clamp( dot(h,normal), 0.0, 1.0), Material.Shininess ) ;
 }
 
 //Phong model
@@ -93,7 +93,7 @@ subroutine( shadeModelType )
 float phong(in vec3 s, in vec3 v, in vec3 normal)
 {
 	vec3 r = reflect( -s , normal);
-	return pow( max( dot(r,v), 0.0), Material.Shininess );
+	return pow( clamp( dot(r,v), 0.0, 1.0), Material.Shininess );
 }
 
 void shade(const in vec3 eyePosition, const in vec3 normal, const in vec3 lightDir, 
@@ -101,7 +101,7 @@ void shade(const in vec3 eyePosition, const in vec3 normal, const in vec3 lightD
 {	
 	vec3 v = normalize(-eyePosition);
 	
-	float sDotN = max(dot(lightDir,normal), 0.0);
+	float sDotN = clamp(dot(lightDir,normal), 0.0 , 1.0);
 
 	ambient = Material.AmbientReflectivity;
 	diffuse = Material.DiffuseReflectivity * sDotN;

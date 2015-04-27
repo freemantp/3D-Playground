@@ -135,7 +135,7 @@ bool InitializeGlut(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
 
-	glutInitContextVersion(4, 2);
+	glutInitContextVersion(4, 4);
 	glutInitContextFlags(GLUT_CORE_PROFILE);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 

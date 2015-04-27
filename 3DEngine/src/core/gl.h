@@ -1,3 +1,3 @@
 #pragma once
 
-#include <glload/gl_4_3.h>
+#include <glload/gl_4_4.h>

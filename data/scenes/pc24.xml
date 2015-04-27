@@ -3,7 +3,7 @@
 
   <!-- initial camera position -->
   <camera type="perspective" fov="70.0">
-    <position x="0.0" y="0.0" z="6.0"/>
+    <position x="1.0" y="0.5" z="1.0"/>
     <target   x="0.0" y="0.0" z="0.0"/>
     <up       x="0.0" y="1.0" z="0.0"/>
   </camera>
@@ -28,8 +28,6 @@
       <direction x="1.0" y="0.3" z="-0.1"/>
       <color r="0.8" g="0.8" b="0.7"/>
     </light>
-
-
   </lights>
 
   <skybox cubeMapFile="cubeMap/sea.jpeg"/>
@@ -42,10 +40,15 @@
       </transform>
     </mesh>-->
 
-    <mesh file="777/777.obj" material="glossy">
-      <!--<transform>
+    <!--<mesh file="777/777.obj" material="glossy">
+    </mesh>-->
+
+    <mesh file="uh60/uh60.obj" material="glossy">
+      <transform>
         <scale x="0.1" y="0.1" z="0.1"/>
-      </transform>-->
+        <rotate angle="90.0" x="1.0" y="0.0" z="0.0"/>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+      </transform>
     </mesh>
   </objects>
 </scene>

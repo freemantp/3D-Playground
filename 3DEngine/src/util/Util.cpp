@@ -187,9 +187,9 @@ std::unique_ptr<glimg::ImageSet> Util::LoadImageFile(const std::string& textureP
 	{
 		imgSet.reset(glimg::loaders::stb::LoadFromFile(texturePath));
 	}
-	catch (glimg::loaders::stb::StbLoaderException)
+	catch (glimg::loaders::stb::StbLoaderException& se)
 	{
-		Error("Loading of " + texturePath + " failed");
+		Error("Loading of " + texturePath + " failed: " + se.what());
 	}
 
 	return std::move(imgSet);

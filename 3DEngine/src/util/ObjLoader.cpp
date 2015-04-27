@@ -42,6 +42,10 @@ IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 		}
 	};
 
+	unsigned int usemtl_counter = 0;
+	unsigned int tot_mtls = 0;
+	std::string current_group = "DefaultGroup";
+
 	std::string line;
 	while ( istr.good() )
 	{
@@ -51,21 +55,23 @@ IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 
 		if (line[0] == 'o' && num_chars > 2)
 		{
-			newMesh->name = std::string(line.begin() + 2, line.end());
-
 			if (newMesh->faces.size() > 0)
 			{
 				create_group(newMesh->name);
 			}
-		}
-		else if (line[0] == 'g' && num_chars > 2)
-		{			
-			groupName = std::string(line.begin() + 2, line.end());
 
+			newMesh->name = std::string(line.begin() + 2, line.end());
+			usemtl_counter = 0;
+		}
+		if (line[0] == 'g' && num_chars > 2)
+		{
 			if (newMesh->faces.size() > 0)
-			{
-				create_group(groupName);
+			{				
+				create_group((usemtl_counter > 1) ? (current_group + "-" + currentMtl + std::to_string(tot_mtls)) : current_group);
 			}
+
+			current_group = std::string(line.begin() + 2, line.end());
+			usemtl_counter = 0;
 		}
 		else if (line[0] == 'v' && line[1] == ' ')
 		{
@@ -169,7 +175,16 @@ IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 		}
 		else if(line.substr(0,7) == "usemtl ")
 		{	
-			currentMtl= line.substr(7);
+			if (usemtl_counter == 1)
+				create_group(current_group);
+			else if (usemtl_counter > 1)
+				create_group(current_group + "-" + currentMtl + std::to_string(tot_mtls));
+			
+ 			usemtl_counter++;
+
+			tot_mtls++;
+
+			currentMtl = line.substr(7);
 		}
 	}
 
