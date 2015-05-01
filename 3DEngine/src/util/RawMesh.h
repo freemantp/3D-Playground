@@ -107,7 +107,6 @@ class IndexedRawMesh : public AbstractRawMesh
 public:
 	SHARED_PTR_FACTORY(IndexedRawMesh);
 	
-
 	OpenGLRawMesh_ptr ConvertToOpenGLMesh() const;
 
 	std::vector<Tri> faces;

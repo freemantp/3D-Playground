@@ -13,6 +13,7 @@ out vec3 PositionEye;
 out vec4 PositionModel;
 out vec3 NormalEye;
 out vec3 ReflectDir;
+out vec3 ViewDirection;
 
 void main()
 {
@@ -29,6 +30,8 @@ void main()
 
 	ReflectDir = reflect(camDirectionWorld, normalWorld);
 	ReflectDir *= -1; //Why so?
+
+	ViewDirection = normalize(-PositionEye);
 
     gl_Position = MVP * posHomogenous;
 }

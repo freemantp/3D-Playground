@@ -523,6 +523,9 @@
     <None Include="..\data\shader\depthMapShader.vert">
       <Filter>data\shaders\specialized</Filter>
     </None>
+    <None Include="..\data\shader\light_common.glsl">
+      <Filter>data\shaders\phong</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\data\scenes\boxScene.xml">

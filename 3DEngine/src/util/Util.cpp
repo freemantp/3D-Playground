@@ -47,23 +47,12 @@ std::string Util::LoadTextFile(char* filename)
 {
 	std::ifstream file;
 	file.open(filename, std::ios::in);
-	/*if(!file) 
-	return -1;*/
 
 	unsigned long len = GetFileLength(file);
 
-	/*if (len==0) 
-	return -2;   // "Empty File" */
-
-	//auto shaderSource = std::unique_ptr<char[]>(new char[len + 1]);
-
 	std::string shaderSource(len, ' ');
 
-	/*if (shaderSource == 0) 
-	return -3;   // can't reserve memory*/
-
-	shaderSource[len] = 0;  // len isn't always strlen cause some characters are stripped in ascii read...
-	// it is important to 0-terminate the real length later, len is just max possible value...
+	shaderSource[len] = 0;
 	unsigned int i=0;
 	while (file.good())
 	{
@@ -72,12 +61,10 @@ std::string Util::LoadTextFile(char* filename)
 			i++;
 	}
 
-	shaderSource[i] = 0;  // 0 terminate it.
-
 	file.close();
 
 
-	return shaderSource;
+	return std::string(shaderSource.begin(), shaderSource.begin()+i);
 }
 
 void Util::PrintStrings(const std::vector<string> strings)
@@ -99,7 +86,7 @@ void Util::PrintUniforms(const ShaderBase* shader)
 	std::cout << std::endl;
 }
 
-RenderMesh_ptr Util::LoadModel(const std::string& path)
+RenderMesh_ptr Util::LoadModel(const std::string& path, bool computeTangentsHint /*= false*/)
 {
 	ObjLoader oj;
 	clock_t begin = clock();
@@ -123,7 +110,7 @@ RenderMesh_ptr Util::LoadModel(const std::string& path)
 				return mat->HasBumpMap() || mat->HasDisplacementMap();
 			});
 
-			if (tangents_needed)
+			if (computeTangentsHint || tangents_needed)
 			{
 				if (gl_raw_mesh->HasNormals() && gl_raw_mesh->HasTexCoords())
 				{

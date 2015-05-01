@@ -168,7 +168,7 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 						string type(subElem->Attribute("type"));
 
 						tm->bumpTexture = Texture2D::Create(Config::TEXTURE_BASE_PATH + bumpMapFile);
-						tm->bumpIsNormalMap = (type == "normal");
+						tm->bumpBumpTexIsNormalMap = (type == "normal");
 					}
 
 					//specular mapping				
@@ -277,6 +277,22 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 	{
 		do
 		{
+			Material_ptr material;
+			
+			if (const char* materialName = objeElem->Attribute("material"))
+			{
+				if (materials[materialName])
+					material = materials[materialName];
+				else
+					Warn("The specified material " + string(materialName) + " is not defined");
+			}
+
+			bool needs_tangents = false;
+			if (auto tex_mat = std::dynamic_pointer_cast<TextureMaterial>(material))
+			{
+				needs_tangents = tex_mat->bumpTexture && tex_mat->bumpBumpTexIsNormalMap;
+			}
+
 			string type = objeElem->Name();
 			Shape_ptr shape;
 
@@ -287,7 +303,7 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 				string file = objeElem->Attribute("file");
 
 				modelPath += file;
-				shape = Util::LoadModel(modelPath);
+				shape = Util::LoadModel(modelPath, needs_tangents);
 				if (!shape)
 					return false;
 			}
@@ -304,20 +320,11 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 			shape->Init();
 
 			//See if a material is specified, if yes override mtllib in case of mesh
-			if(const char* materialName = objeElem->Attribute("material"))
-			{
-				if(shape->GetMaterial())
-				{
-					Warn("The shape already has a material assigned, ignoring specified material");	
-				}
-				else
-				{
-					if(Material_ptr material = materials[materialName])		
-						shape->SetMaterial(material);
-					else
-						Warn("The specified material " + string(materialName) +" is not defined");	
-				}
-			}
+			if (shape->GetMaterial())			
+				Warn("The shape already has a material assigned, ignoring specified material");			
+			else			
+				shape->SetMaterial(material);
+			
 
 			// Parse transform node
 			if(XMLElement* transformsElem = objeElem->FirstChildElement("transform"))

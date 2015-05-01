@@ -1,74 +1,34 @@
 #version 400
 
-// ----------------- declarations -----------------
+#include light_common.glsl
 
-const int numLights = 4;
-
-struct AmbientLight
+struct TextureMaterial
 {
-	vec3 Color;
+	sampler2D AlbedoTex;
+	sampler2D BumpmapTex;
+	sampler2D SpecularTex;
+	bool BumpTexIsNormalMap;
+	bool HasSpecularMap;
+	bool HasBumpMap;
+	int Shininess;
 };
 
-struct PointLight
-{
-	vec4 Position;
-	vec3 Color;
-};
-
-struct DirectionalLight
-{
-	vec3 Direction;
-	vec3 Color;
-};
-
-//PointLight declaration
-struct SpotLight
-{
-	vec4 Position;
-	vec3 Color;
-	vec3 Direction;
-	float CutoffAngle;
-	float Exponent;
-	mat4 ShadowMatrix;
-};
-
-// ----------------- uniforms -----------------
-
-layout (std140) uniform Lights
-{
-	PointLight PointLights[numLights];
-	SpotLight  SpotLights[numLights];
-	DirectionalLight DirectionalLight0;
-	AmbientLight	 AmbientLight0;
-} sceneLights;
-
-uniform int NumPointLights;
-uniform int NumSpotLights;
-uniform bool HasDirectionalLight;
-uniform bool HasAmbientLight;
-uniform sampler2D AlbedoTex;
-uniform sampler2D BumpmapTex;
-uniform sampler2D SpecularTex;
-uniform mat4 ViewMatrix;
-uniform bool isNormalMap;
-uniform bool hasSpecularMap;
-uniform bool hasBumpMap;
 uniform bool HasEnvMap;
-uniform int	Shininess;
+uniform mat4 ViewMatrix;
+uniform TextureMaterial Material;
 
 // ----------------- in / out -----------------
 
 //input from previous stage
-in vec2 TexCoord;
 in vec3 PositionEye;
 in vec3 NormalEye;
 in vec3 LightDirection;
 in vec3 ViewDirection;
+in vec2 TexCoord;
 in vec3 PointlightDirTGT[numLights];
 in vec3 SpotlightDirTGT[numLights];
 
 layout (location = 0) out vec4 FragColor;
-
 
 // ----------------- subroutines -----------------
 
@@ -76,15 +36,14 @@ layout (location = 0) out vec4 FragColor;
 float blinn(in vec3 s, in vec3 v, in vec3 normal)
 {
 	vec3 h = normalize( v + s );
-	return pow( clamp( dot(h,normal), 0.0, 1.0), Shininess ) ;
+	return pow( clamp( dot(h,normal), 0.0, 1.0), Material.Shininess ) ;
 }
 
 float shade(const in vec3 normal, const in vec3 viewDir, const in vec3 lightDir, vec2 texCoord)
 {		
 	float diffuse = clamp(dot(lightDir,normal), 0.0 , 1.0);	
 	float specular = 0;
-
-	float specularity = hasSpecularMap ? texture(SpecularTex,TexCoord).r : 1.0;
+	float specularity = Material.HasSpecularMap ? texture(Material.SpecularTex,TexCoord).r : 1.0;
 
 	if(specularity > 0)
 		specular = blinn(lightDir,viewDir,normal) ;
@@ -92,8 +51,8 @@ float shade(const in vec3 normal, const in vec3 viewDir, const in vec3 lightDir,
 	return diffuse + specularity * specular;
 }
 
-//see http://athile.net/library/wiki/index.php/Library/Graphics/Bump_Mapping
-vec3 bump_normal(vec3 fragVertex, vec3 fragNormal, float value)
+//see https://web.archive.org/web/20120307174333/http://athile.net/library/wiki/index.php/Library/Graphics/Bump_Mapping
+vec3 getBumpNormal(vec3 fragVertex, vec3 fragNormal, float value)
 {
     vec2 dV = vec2(dFdx(value), dFdy(value));
  
@@ -112,17 +71,17 @@ vec3 bump_normal(vec3 fragVertex, vec3 fragNormal, float value)
 vec3 getNormal()
 {
 	vec3 normal;
-	if(hasBumpMap)
+	if(Material.HasBumpMap)
 	{
-		if(isNormalMap)
+		if(Material.BumpTexIsNormalMap)
 		{
 			// fetch normal from normal map, expand to the [-1, 1] range, and normalize
-			normal = normalize(2.0 * texture (BumpmapTex, TexCoord).rgb - 1.0);
+			normal = normalize(2.0 * texture (Material.BumpmapTex, TexCoord).rgb - 1.0);
 		}
 		else
 		{
-			float bumpVal = texture(BumpmapTex, TexCoord).r;
-			normal = bump_normal(PositionEye,NormalEye,bumpVal);
+			float bumpVal = texture(Material.BumpmapTex, TexCoord).r;
+			normal = getBumpNormal(PositionEye,NormalEye,bumpVal);
 		}
 	}
 	else
@@ -136,15 +95,14 @@ vec3 getNormal()
 void main() 
 {
 	vec3 normal = getNormal();
-	vec3 albedo = texture(AlbedoTex,TexCoord).rgb;
+	vec3 albedo = texture(Material.AlbedoTex,TexCoord).rgb;
 
 	FragColor = vec4(0,0,0,1);
 
 	//Ambient light
 	if(HasAmbientLight)
 	{
-		vec3 ambientColor = sceneLights.AmbientLight0.Color;
-		FragColor += vec4(ambientColor*albedo,0);
+		FragColor += vec4(sceneLights.AmbientLight0.Color*albedo,0);
 	}
 
 	//Directional light
@@ -152,7 +110,8 @@ void main()
 	{
 		vec3 dirDirection = sceneLights.DirectionalLight0.Direction;
 		vec3 dirColor = sceneLights.DirectionalLight0.Color;
-		FragColor += vec4(dirColor * albedo * shade(normal,ViewDirection, dirDirection,TexCoord),0);
+		float shade_val = shade(normal,ViewDirection, dirDirection,TexCoord);
+		FragColor += vec4(dirColor * albedo * shade_val,0);
 	}
 
 	//Point lights
@@ -167,8 +126,9 @@ void main()
 		float k = 0.2;
 		float distAttenuation = 1 / ( 1 + k*distance*distance);
 		
-		vec3 lightDir = isNormalMap ? PointlightDirTGT[i] : lightToCamDirNormalized;
-		FragColor += distAttenuation * vec4(light.Color * albedo * shade(normal,ViewDirection, lightDir,TexCoord),0);
+		vec3 lightDir = Material.BumpTexIsNormalMap ? PointlightDirTGT[i] : lightToCamDirNormalized;
+		float shade_val = shade(normal,ViewDirection, lightDir,TexCoord);
+		FragColor += distAttenuation * vec4(light.Color * albedo * shade_val,0);
 	}
 
 	//Spot lights
@@ -195,8 +155,9 @@ void main()
 			float k = 0.2;
 			float distAttenuation = 1 / ( 1 + k*dist*dist);
 
-			vec3 lightDir = isNormalMap ? SpotlightDirTGT[i] : normalize( vec3(light.Position) - PositionEye);
-			FragColor +=  distAttenuation * borderFadeFacor * vec4(light.Color * albedo * shade(normal,ViewDirection,lightDir,TexCoord),0);
+			vec3 lightDir = Material.BumpTexIsNormalMap ? SpotlightDirTGT[i] : normalize( vec3(light.Position) - PositionEye);
+			float shade_val = shade(normal,ViewDirection, lightDir,TexCoord);
+			FragColor +=  distAttenuation * borderFadeFacor * vec4(light.Color * albedo * shade_val,0);
 		}
 	}
 

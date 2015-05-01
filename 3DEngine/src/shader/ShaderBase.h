@@ -50,6 +50,8 @@ protected:
 	bool LoadShader(const std::string& vertexSource, const std::string& fragmentSource);
 	bool LoadShader(const std::string& shaderName);	
 
+	bool HandleIncludes(std::string& fragmentSource);
+
 	virtual void UpdateTransforms(const Camera_ptr cam, const glm::mat4& modelTransform);
 
 	GLint GetCurentProgram();

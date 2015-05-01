@@ -62,7 +62,7 @@ void RenderMesh::InitFromRawMesh(OpenGLRawMesh_ptr rawMesh)
 				if (!mat->bumpMapTexture.empty())
 				{
 					texMat->bumpTexture = Texture2D::Create(Util::ExtractBaseFolder(rawMesh->meshPath) + mat->bumpMapTexture);
-					texMat->bumpIsNormalMap = true;
+					texMat->bumpBumpTexIsNormalMap = true;
 				}
 				if (!mat->diffuseColorTexture.empty())
 				{
@@ -467,7 +467,12 @@ void RenderMesh::Render(const Scene_ptr scene) const
 					current_shader->UnUse();
 				}
 				else
+				{
 					Error("Could not use shader");
+					int a;
+					std::cin >> a;
+				}
+					
 			}
 			else
 				Error("Could not set material");

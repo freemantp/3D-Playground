@@ -1,6 +1,6 @@
 #version 400
 
-layout (location = 0) out vec4 FragColor;
+#include light_common.glsl
 
 struct MaterialInfo
 {
@@ -11,46 +11,6 @@ struct MaterialInfo
 	float Opacity; //[0,1]
 };
 
-const int numLights = 4;
-
-struct AmbientLight
-{
-	vec3 Color;
-};
-
-struct PointLight
-{
-	vec4 Position;
-	vec3 Color;
-};
-
-struct DirectionalLight
-{
-	vec3 Direction;
-	vec3 Color;
-};
-
-//PointLight declaration
-struct SpotLight
-{
-	vec4 Position;
-	vec3 Color;
-	vec3 Direction;
-	float CutoffAngle;
-	float Exponent;
-	mat4 ShadowMatrix;
-};
-
-// ----------------- uniforms -----------------
-
-layout (std140) uniform Lights
-{
-	PointLight PointLights[numLights];
-	SpotLight  SpotLights[numLights];
-	DirectionalLight DirectionalLight0;
-	AmbientLight	 AmbientLight0;
-} sceneLights;
-
 uniform sampler2DShadow ShadowMapArray[4];
 uniform sampler3D PCFDataOffsets;
 uniform ivec3 PCFDataOffsetsSize;
@@ -58,59 +18,43 @@ uniform float PCFBlurRadius;
 uniform bool UseShadows;
 uniform bool PcfShadows;
 
-uniform int NumPointLights;
-uniform int NumSpotLights;
-uniform bool HasDirectionalLight;
-uniform bool HasAmbientLight;
 uniform bool HasEnvMap;
 uniform samplerCube EnvMapTex;
 uniform float EnvReflection; //[0,1]
 
-//Subroutine declaration
-subroutine float shadeModelType(in vec3 s, in vec3 v, in vec3 normal);
-
-//Uniforms
 //uniform LightInfo Light;
 uniform MaterialInfo Material;
-subroutine uniform shadeModelType shadeModel;
 
 //input from previous stage
 in vec3 PositionEye;
 in vec4 PositionModel;
 in vec3 NormalEye;
 in vec3 ReflectDir;
+in vec3 ViewDirection;
+
+layout (location = 0) out vec4 FragColor;
+
+// ----------------- functions -----------------
 
 //Blinn-Phong model
-subroutine( shadeModelType )
 float blinn(in vec3 s, in vec3 v, in vec3 normal)
 {
 	vec3 h = normalize( v + s );
 	return pow( clamp( dot(h,normal), 0.0, 1.0), Material.Shininess ) ;
 }
 
-//Phong model
-subroutine( shadeModelType )
-float phong(in vec3 s, in vec3 v, in vec3 normal)
-{
-	vec3 r = reflect( -s , normal);
-	return pow( clamp( dot(r,v), 0.0, 1.0), Material.Shininess );
-}
+float shade(const in vec3 normal, const in vec3 viewDir, const in vec3 lightDir)
+{			
+	float diffuse = clamp(dot(lightDir,normal), 0.0 , 1.0);
+	float specular = 0;
+	float specularity = length(Material.SpecularReflectivity);
 
-void shade(const in vec3 eyePosition, const in vec3 normal, const in vec3 lightDir, 
-		   inout vec3 ambient, inout vec3 diffuse, inout vec3 specular  )
-{	
-	vec3 v = normalize(-eyePosition);
-	
-	float sDotN = clamp(dot(lightDir,normal), 0.0 , 1.0);
-
-	ambient = Material.AmbientReflectivity;
-	diffuse = Material.DiffuseReflectivity * sDotN;
-	specular = vec3(0);
-
-	if(sDotN > 0)
+	if(specularity > 0)
 	{
-		specular = Material.SpecularReflectivity * shadeModel(lightDir,v,normal) ;
+		specular = blinn(lightDir,viewDir,normal);	
 	}
+
+	return diffuse + specular * specularity;
 }
 
 float getShadow(int sl_i)
@@ -174,32 +118,23 @@ float getShadow(int sl_i)
 void main()
 {
 	vec3 normal = normalize(NormalEye);
+	vec3 albedo = Material.DiffuseReflectivity;
 
-	vec3 ambient = vec3(0,0,0);
-	vec3 diffuse = vec3(0,0,0);
-	vec3 specular = vec3(0,0,0);
-
-	vec3 ambientCurrent, diffuseCurrent, specularCurrent;
+	FragColor = vec4(0,0,0,1);
 
 	//Ambient light
 	if(HasAmbientLight)
 	{
-		vec3 ambientColor = sceneLights.AmbientLight0.Color;
-		ambient += Material.AmbientReflectivity * ambientColor;
+		FragColor += vec4(Material.AmbientReflectivity * sceneLights.AmbientLight0.Color,0);
 	}
 
 	//Directional light
 	if(HasDirectionalLight)
 	{
 		vec3 dirDirection = normalize(sceneLights.DirectionalLight0.Direction);
-		vec3 dirColor = sceneLights.DirectionalLight0.Color;
-		
-		float sDotN = max(dot(dirDirection,normal), 0.0);
-
-		shade(PositionEye,normal,dirDirection,ambientCurrent, diffuseCurrent, specularCurrent);
-
-		diffuse += Material.DiffuseReflectivity * diffuseCurrent * dirColor;
-		specular += Material.SpecularReflectivity * specularCurrent * dirColor;
+		vec3 dirColor = sceneLights.DirectionalLight0.Color;		
+		float shade_val = shade(normal,ViewDirection,dirDirection);
+		FragColor += vec4(dirColor * albedo * shade_val,0);
 	}
 
 	//Point lights
@@ -207,17 +142,15 @@ void main()
 	{	
 		PointLight light = sceneLights.PointLights[i];
 
-		vec3 lightVec =  vec3(light.Position) - PositionEye;
-		vec3 lightVecNormalized = normalize(lightVec);
-
-		shade(PositionEye,normal,lightVecNormalized,ambientCurrent, diffuseCurrent, specularCurrent);
+		vec3 lightVec = vec3(light.Position) - PositionEye;
+		vec3 lightVecNormalized = normalize(lightVec);		
 
 		float distance = length(lightVec);
 		float k = 0.2;
 		float distAttenuation = 1 / ( 1 + k*distance*distance);
 
-		diffuse  += diffuseCurrent  * light.Color * distAttenuation;
-		specular += specularCurrent * light.Color * distAttenuation;
+		float shade_val = shade(normal,ViewDirection,lightVecNormalized);
+		FragColor += distAttenuation * vec4(light.Color * albedo * shade_val,0);
 	}
 
 	//Spot lights
@@ -232,8 +165,6 @@ void main()
 		
 		if( angle  < cutoff)
 		{		
-			shade(PositionEye,normal,lightVecNormalized,ambientCurrent, diffuseCurrent, specularCurrent);
-
 			// Quadratic falloff towards borders starting at p percent of the angle
 			float p = 0.6;
 			
@@ -247,9 +178,10 @@ void main()
 			float distAttenuation = 1 / ( 1 + k*dist*dist);
 
 			float shadow = getShadow(i);
+
+			float shade_val = shade(normal,ViewDirection,lightVecNormalized);
 		
-			diffuse  += distAttenuation * borderFadeFacor * diffuseCurrent  * light.Color * shadow;
-			specular += distAttenuation * borderFadeFacor * specularCurrent * light.Color * shadow;
+			FragColor += shadow * distAttenuation * borderFadeFacor * vec4(light.Color * albedo * shade_val, 0);
 		}
 	}
 
@@ -260,11 +192,9 @@ void main()
 		vec3 cubeMapColor = texture(EnvMapTex, ReflectDir).xyz;
 
 		//diffuse  +=  ??
-		specular += Material.SpecularReflectivity * cubeMapColor * reflectionRatio;
+		FragColor += vec4(Material.SpecularReflectivity * cubeMapColor * reflectionRatio,0);
 	}
 
-	vec3 lightColor = vec3(ambient + diffuse + specular);
-
-	FragColor = vec4(lightColor , Material.Opacity);
+	FragColor.a = Material.Opacity;
 
 }

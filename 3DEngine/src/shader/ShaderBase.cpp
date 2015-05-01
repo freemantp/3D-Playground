@@ -6,6 +6,8 @@
 #include "../scene/Scene.h"
 #include "../config.h"
 
+#include <sstream>
+
 ShaderBase::ShaderBase(const std::string& shaderName)
 	: hasMVP(true)
 	, hasNM(true)
@@ -124,8 +126,53 @@ bool ShaderBase::LoadShader(const std::string& shaderName)
 	std::string vertexShaderSource = Util::LoadTextFile( Config::SHADER_BASE_PATH + shaderName + ".vert");
 	std::string fragmentShaderSource = Util::LoadTextFile( Config::SHADER_BASE_PATH + shaderName + ".frag");
 
-	return LoadShader(vertexShaderSource, fragmentShaderSource);
+	bool ok = HandleIncludes(vertexShaderSource);
+	ok &= HandleIncludes(fragmentShaderSource);
+	ok &= LoadShader(vertexShaderSource, fragmentShaderSource);
+
+	return ok;
 }
+
+
+
+bool ShaderBase::HandleIncludes(std::string& shader_src)
+{
+	std::stringstream sstream(shader_src);
+	std::ostringstream new_string;
+	bool includes_found = false;
+
+	const std::string incl_str("#include ");
+
+	std::string line;
+	while (sstream.good())
+	{
+		std::getline(sstream, line);
+
+		if (line[0] == '#')
+		{
+			if (line.compare(0, incl_str.length(), incl_str) == 0)
+			{
+				std::string incl_file(line.begin() + incl_str.length(), line.end());
+
+				std::string incl_content = Util::LoadTextFile(Config::SHADER_BASE_PATH + incl_file);
+
+				new_string << incl_content;
+				includes_found = true;
+			}
+			else
+				new_string << line << std::endl;;
+		}
+		else
+			new_string << line << std::endl;;
+
+	}
+
+	if (includes_found)
+		shader_src = new_string.str();
+
+	return true;
+}
+
 
 bool ShaderBase::LoadShader( const std::string& vertexSource, 
 							 const std::string& fragmentSource)

@@ -36,13 +36,13 @@ bool PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransf
 
 	if (textureMaterial)
 	{
-		SetUniform("Shininess", textureMaterial->shininess);
+		SetUniform("Material.Shininess", textureMaterial->shininess);
 
 		//Bind albedo texture to texture unit 0
 		if (auto at = textureMaterial->albedoTexture)
 		{
 			at->BindTexture(texUnits[Albedo]);
-			SetUniform("AlbedoTex", texUnits[Albedo]);
+			SetUniform("Material.AlbedoTex", texUnits[Albedo]);
 		}
 
 		bool hasBumpMap = false;
@@ -52,8 +52,8 @@ bool PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransf
 		{
 			//Bind normal texture to texture unit 1
 			bt->BindTexture(texUnits[BumpMap]);
-			SetUniform("BumpmapTex", texUnits[BumpMap]);
-			SetUniform("isNormalMap", textureMaterial->bumpIsNormalMap);
+			SetUniform("Material.BumpmapTex", texUnits[BumpMap]);
+			SetUniform("Material.BumpTexIsNormalMap", textureMaterial->bumpBumpTexIsNormalMap);
 			hasBumpMap = true;			
 		}
 
@@ -61,12 +61,12 @@ bool PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransf
 		{
 			//Bind specular texture to texture unit 2
 			st->BindTexture(texUnits[Specular]);
-			SetUniform("SpecularTex", texUnits[Specular]);
+			SetUniform("Material.SpecularTex", texUnits[Specular]);
 			hasSpecularMap = true;
 		}
 
-		SetUniform("hasBumpMap", hasBumpMap);
-		SetUniform("hasSpecularMap", hasSpecularMap);
+		SetUniform("Material.HasBumpMap", hasBumpMap);
+		SetUniform("Material.HasSpecularMap", hasSpecularMap);
 	}
 	else
 		ok = false;

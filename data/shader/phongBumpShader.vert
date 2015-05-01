@@ -5,55 +5,23 @@ layout (location = 1) in vec3 VertexNormal;
 layout (location = 2) in vec4 VertexTangent;	
 layout (location = 3) in vec2 VertexTexCoord;
 
-// ----------------- declarations -----------------
+#include light_common.glsl
 
-const int numLights = 4;
-
-struct AmbientLight
+struct TextureMaterial
 {
-	vec3 Color;
+	sampler2D AlbedoTex;
+	sampler2D BumpmapTex;
+	sampler2D SpecularTex;
+	bool BumpTexIsNormalMap;
+	bool HasSpecularMap;
+	bool HasBumpMap;
+	int Shininess;
 };
 
-struct PointLight
-{
-	vec4 Position;
-	vec3 Color;
-};
-
-struct DirectionalLight
-{
-	vec3 Direction;
-	vec3 Color;
-};
-
-//PointLight declaration
-struct SpotLight
-{
-	vec4 Position;
-	vec3 Color;
-	vec3 Direction;
-	float CutoffAngle;
-	float Exponent;
-	mat4 ShadowMatrix;
-};
-
-// ----------------- uniforms -----------------
-
-layout (std140) uniform Lights
-{
-	PointLight PointLights[numLights];
-	SpotLight  SpotLights[numLights];
-	DirectionalLight DirectionalLight0;
-	AmbientLight	 AmbientLight0;
-} sceneLights;
-
+uniform TextureMaterial Material;
 uniform mat4 ModelViewMatrix;
 uniform mat3 NormalMatrix;
 uniform mat4 MVP;
-
-uniform int NumPointLights;
-uniform int NumSpotLights;
-uniform bool isNormalMap;
 
 out vec3 PositionEye;
 out vec3 NormalEye;
@@ -79,24 +47,23 @@ void main()
 
 	/* If we're dealing with a normal map instead of a bump map we have 
 	   to transform vectors into tangent space for the fragment shader */
-	if(isNormalMap)
+	if(Material.BumpTexIsNormalMap)
 	{
 		// transform light and half angle vectors by tangent basis
-		ViewDirection = normalize (toTangentSpace * -PositionEye);
+		ViewDirection = toTangentSpace * normalize (-PositionEye);
 
 		//transform light directions to tangent space
 		for(int i=0;  i < NumPointLights; i++)
 		{
 			vec3 lightDir = normalize( vec3(sceneLights.PointLights[i].Position) - PositionEye);
-			PointlightDirTGT[i] = normalize( toTangentSpace * lightDir);
+			PointlightDirTGT[i] = toTangentSpace * lightDir;
 		}
 
 		//transform light directions to tangent space
 		for(int i=0; i < NumSpotLights; i++)
 		{
-			SpotLight light = sceneLights.SpotLights[i];
-			vec3 lightDir = normalize( vec3(light.Position) - PositionEye);
-			SpotlightDirTGT[i] = normalize( toTangentSpace * lightDir);
+			vec3 lightDir = normalize( vec3(sceneLights.SpotLights[i].Position) - PositionEye);
+			SpotlightDirTGT[i] = toTangentSpace * lightDir;
 		}
 	}
 	else

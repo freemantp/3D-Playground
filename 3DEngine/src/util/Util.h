@@ -23,7 +23,7 @@ public:
 	static std::string LoadTextFile(const std::string& s);
 	static void PrintStrings(const std::vector<std::string> strings);
 	static void PrintUniforms(const ShaderBase* shader);
-	static RenderMesh_ptr LoadModel(const std::string& path);
+	static RenderMesh_ptr LoadModel(const std::string& path, bool computeTangents = false);
 
 	static std::unique_ptr<glimg::ImageSet> LoadImageFile(const std::string& texturePath);
 	static std::string Util::ExtractBaseFolder(std::string path);

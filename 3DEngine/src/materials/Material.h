@@ -59,7 +59,7 @@ public:
 	Texture2D_ptr albedoTexture;
 	Texture2D_ptr bumpTexture;
 	Texture2D_ptr specularTexture;
-	bool bumpIsNormalMap;
+	bool bumpBumpTexIsNormalMap;
 
 protected:
 	TextureMaterial() { };

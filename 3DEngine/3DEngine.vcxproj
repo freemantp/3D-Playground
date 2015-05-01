@@ -170,6 +170,7 @@
     <None Include="..\data\shader\diffuseSH.vert" />
     <None Include="..\data\shader\gBufferShader.frag" />
     <None Include="..\data\shader\gBufferShader.vert" />
+    <None Include="..\data\shader\light_common.glsl" />
     <None Include="..\data\shader\normalShader.frag">
       <FileType>Document</FileType>
     </None>
