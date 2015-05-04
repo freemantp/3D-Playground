@@ -18,13 +18,16 @@ struct TextureMaterial
 	int Shininess;
 };
 
+uniform vec3 CameraPosWorld;
 uniform TextureMaterial Material;
 uniform mat4 ModelViewMatrix;
+uniform mat4 ModelMatrix;
 uniform mat3 NormalMatrix;
 uniform mat4 MVP;
 
 out vec3 PositionEye;
 out vec3 NormalEye;
+out vec3 ReflectDir;
 out vec3 LightDirection;
 out vec3 ViewDirection;
 out vec2 TexCoord;
@@ -70,6 +73,14 @@ void main()
 	{
 		ViewDirection = normalize(-PositionEye);
 	}
+
+	//Transform to world space
+	vec3 positionWorld = vec3(ModelMatrix * posHomogenous);
+	vec3 normalWorld   = normalize(vec3(ModelMatrix * vec4(VertexNormal, 0.0)));
+	vec3 camDirectionWorld = normalize( CameraPosWorld - positionWorld);
+
+	ReflectDir = reflect(camDirectionWorld, normalWorld);
+	ReflectDir *= -1; //Why so?
 	
 	gl_Position = MVP * posHomogenous;
 }

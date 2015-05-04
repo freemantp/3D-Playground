@@ -6,7 +6,9 @@
 #include "../camera/Camera.h"
 #include "../scene/Scene.h"
 #include "../light/PointLight.h"
+#include "../shape/Skybox.h"
 #include "../texture/Texture2D.h"
+#include "../texture/CubeMapTexture.h"
 #include "../materials/Material.h"
 
 PhongTextureShader::PhongTextureShader()
@@ -19,8 +21,11 @@ PhongTextureShader::PhongTextureShader()
 	texUnits[Albedo] = 0;
 	texUnits[BumpMap] = 1;
 	texUnits[Specular] = 2;
+	texUnits[Evironment] = 3;
 
 	hasShadows = false;
+
+	hasMM = true;
 }
 
 PhongTextureShader::~PhongTextureShader()
@@ -32,11 +37,26 @@ bool PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransf
 {	
 	bool ok = ShaderBase::Use(scene, modelTransform);
 
+	if (scene->skybox)
+	{
+		if (auto sbm = std::dynamic_pointer_cast<SkyboxMaterial>(scene->skybox->GetMaterial()))
+		{
+			sbm->texture->BindTexture(texUnits[Evironment]);
+			SetUniform("EnvMap.Exists", static_cast<bool>(scene->skybox));
+			SetUniform("EnvMap.CubeTexture", texUnits[Evironment]);
+			SetUniform("CameraPosWorld", scene->activeCamera->Position());
+		}
+	}
+
 	SetLightAndModel(scene);
 
 	if (textureMaterial)
 	{
+		SetUniform("Material.AmbientReflectivity", textureMaterial->ambientReflection);
+		SetUniform("Material.DiffuseReflectivity", textureMaterial->diffuseReflection);
+		SetUniform("Material.SpecularReflectivity", textureMaterial->glossyReflection);
 		SetUniform("Material.Shininess", textureMaterial->shininess);
+		SetUniform("Material.Opacity", textureMaterial->opacity);
 
 		//Bind albedo texture to texture unit 0
 		if (auto at = textureMaterial->albedoTexture)

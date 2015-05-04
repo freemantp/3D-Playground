@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "Material.h"
 
+#include "../util/RawMesh.h"
+#include "../texture/Texture2D.h"
+
 #include "../shader/ShaderLibrary.h"
 
 #define SHARED_MATERIAL_PTR_FACTORY_IMPL(T) \
@@ -25,7 +28,7 @@ void Material::SetName(const std::string& name)
 	this->name = name;
 }
 
-std::string Material::GetName()
+std::string Material::Name()
 {
 	return name;
 }
@@ -35,4 +38,38 @@ PhongMaterial::PhongMaterial()
 , opacity(1)
 {
 
+}
+
+void PhongMaterial::InitFromWavefrontMaterial(WavefrontObjMaterial_ptr mat ,const std::string& base_folder)
+{
+	name = mat->name;
+	ambientReflection = mat->ambient;
+	diffuseReflection = mat->diffuse;
+	glossyReflection = mat->specular;
+	shininess = static_cast<int>(mat->shininess);
+	opacity = mat->opacity;
+}
+
+bool PhongMaterial::IsTransparent() const
+{
+	return opacity != 1;
+}
+
+void TextureMaterial::InitFromWavefrontMaterial(WavefrontObjMaterial_ptr mat, const std::string& base_folder)
+{
+	__super::InitFromWavefrontMaterial(mat, base_folder);
+
+	if (!mat->bumpMapTexture.empty())
+	{
+		bumpTexture = Texture2D::Create(base_folder + mat->bumpMapTexture);
+		bumpBumpTexIsNormalMap = true;
+	}
+	if (!mat->diffuseColorTexture.empty())
+	{
+		albedoTexture = Texture2D::Create(base_folder + mat->diffuseColorTexture);
+	}
+	if (!mat->specularColorTexture.empty())
+	{
+		specularTexture = Texture2D::Create(base_folder + mat->specularColorTexture);
+	}
 }

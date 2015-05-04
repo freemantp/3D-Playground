@@ -4,24 +4,35 @@
 
 struct TextureMaterial
 {
+	vec3 AmbientReflectivity;
+	vec3 DiffuseReflectivity;
+	vec3 SpecularReflectivity;
+	int Shininess;
+	float Opacity; //[0,1]
 	sampler2D AlbedoTex;
 	sampler2D BumpmapTex;
 	sampler2D SpecularTex;
 	bool BumpTexIsNormalMap;
 	bool HasSpecularMap;
 	bool HasBumpMap;
-	int Shininess;
 };
 
-uniform bool HasEnvMap;
+struct EnvironmentMap
+{
+	bool Exists;	
+	samplerCube CubeTexture;
+};
+
 uniform mat4 ViewMatrix;
 uniform TextureMaterial Material;
+uniform EnvironmentMap EnvMap;
 
 // ----------------- in / out -----------------
 
 //input from previous stage
 in vec3 PositionEye;
 in vec3 NormalEye;
+in vec3 ReflectDir;
 in vec3 LightDirection;
 in vec3 ViewDirection;
 in vec2 TexCoord;
@@ -161,10 +172,13 @@ void main()
 		}
 	}
 
-	if(HasEnvMap)
+	if(EnvMap.Exists && length(Material.SpecularReflectivity) > 0.0)
 	{
-		//TODO: add env mapping
-		FragColor += vec4(1e-10,1e-10,1e-10,0);
+		float reflectionRatio = clamp(Material.Shininess / 100.0, 0.0, 1.0);
+		vec3 cubeMapColor = texture(EnvMap.CubeTexture, ReflectDir).xyz;
+
+		//diffuse  +=  ??
+		FragColor += vec4(cubeMapColor * Material.SpecularReflectivity,0);
 	}
 
 }

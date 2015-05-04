@@ -50,8 +50,10 @@ void RenderMesh::InitFromRawMesh(OpenGLRawMesh_ptr rawMesh)
 
 		std::vector<PhongMaterial_ptr> meshMaterials;
 
+		std::string base_path = Util::ExtractBaseFolder(rawMesh->meshPath);
+
 		// Mesh has material descriptors
-		for (auto mat : rawMesh->materials)
+		for (WavefrontObjMaterial_ptr mat : rawMesh->materials)
 		{
 			PhongMaterial_ptr pMaterial;
 			if (mat->HasTextures())
@@ -59,31 +61,13 @@ void RenderMesh::InitFromRawMesh(OpenGLRawMesh_ptr rawMesh)
 				TextureMaterial_ptr texMat = TextureMaterial::Create();
 				pMaterial = texMat;
 
-				if (!mat->bumpMapTexture.empty())
-				{
-					texMat->bumpTexture = Texture2D::Create(Util::ExtractBaseFolder(rawMesh->meshPath) + mat->bumpMapTexture);
-					texMat->bumpBumpTexIsNormalMap = true;
-				}
-				if (!mat->diffuseColorTexture.empty())
-				{
-					texMat->albedoTexture = Texture2D::Create(Util::ExtractBaseFolder(rawMesh->meshPath) + mat->diffuseColorTexture);
-				}
-				if (!mat->specularColorTexture.empty())
-				{
-					texMat->specularTexture = Texture2D::Create(Util::ExtractBaseFolder(rawMesh->meshPath) + mat->specularColorTexture);
-				}
+				texMat->InitFromWavefrontMaterial(mat, base_path);
 			}
 			else
 			{
 				pMaterial = PhongMaterial::Create();
+				pMaterial->InitFromWavefrontMaterial(mat, base_path);
 			}
-
-			pMaterial->SetName(mat->name);
-			pMaterial->ambientReflection = mat->ambient;
-			pMaterial->diffuseReflection = mat->diffuse;
-			pMaterial->glossyReflection = mat->specular;
-			pMaterial->shininess = static_cast<int>(mat->shininess);
-			pMaterial->opacity = mat->opacity;
 
 			meshMaterials.push_back(pMaterial);
 		}
@@ -95,7 +79,7 @@ void RenderMesh::InitFromRawMesh(OpenGLRawMesh_ptr rawMesh)
 
 			for (Material_ptr mat : meshMaterials)
 			{
-				std::string mn = mat->GetName();
+				std::string mn = mat->Name();
 
 				if(matName == mn)
 				{
@@ -445,44 +429,53 @@ void RenderMesh::Render(const Scene_ptr scene) const
 
 	std::set<ShaderBase_ptr> verxtex_attribs_mapped;
 
-	for (size_t i = 0; i < numRanges; i++)
+	auto render_pass = [&](bool transparent)
 	{
-		Material_ptr current_material = (i < materialsNew.size())
-			? materialsNew[i]
-			: this->material;
-
-		if (MaterialShader_ptr current_shader = sl->ShaderLookup(current_material))
+		for (size_t i = 0; i < numRanges; i++)
 		{
-			if (verxtex_attribs_mapped.count(current_shader) <= 0)
-			{
-				MapVertexAttributes(current_shader);
-				verxtex_attribs_mapped.insert(current_shader);
-			}
+			Material_ptr current_material = (i < materialsNew.size())
+				? materialsNew[i]
+				: this->material;
 
-			if (current_shader->SetMaterial(current_material))
+			if (current_material->IsTransparent() == transparent)
 			{
-				if (current_shader->Use(scene, worldTransform))
+				if (MaterialShader_ptr current_shader = sl->ShaderLookup(current_material))
 				{
-					Draw(i);
-					current_shader->UnUse();
+					if (verxtex_attribs_mapped.count(current_shader) <= 0)
+					{
+						MapVertexAttributes(current_shader);
+						verxtex_attribs_mapped.insert(current_shader);
+					}
+
+					if (current_shader->SetMaterial(current_material))
+					{
+						if (current_shader->Use(scene, worldTransform))
+						{
+							Draw(i);
+							current_shader->UnUse();
+						}
+						else
+						{
+							Error("Could not use shader");
+							int a;
+							std::cin >> a;
+						}
+
+					}
+					else
+						Error("Could not set material");
+
 				}
 				else
 				{
-					Error("Could not use shader");
-					int a;
-					std::cin >> a;
+					Error("Could not obtain shader for this material");
 				}
-					
 			}
-			else
-				Error("Could not set material");
-			
 		}
-		else
-		{
-			Error("Could not obtain shader for this material");
-		}
-	}
+	};
+
+	render_pass(false);
+	render_pass(true);
 
 	glBindVertexArray(0);
 }

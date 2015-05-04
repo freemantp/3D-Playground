@@ -11,6 +11,12 @@ struct MaterialInfo
 	float Opacity; //[0,1]
 };
 
+struct EnvironmentMap
+{
+	bool Exists;	
+	samplerCube CubeTexture;
+};
+
 uniform sampler2DShadow ShadowMapArray[4];
 uniform sampler3D PCFDataOffsets;
 uniform ivec3 PCFDataOffsetsSize;
@@ -18,11 +24,7 @@ uniform float PCFBlurRadius;
 uniform bool UseShadows;
 uniform bool PcfShadows;
 
-uniform bool HasEnvMap;
-uniform samplerCube EnvMapTex;
-uniform float EnvReflection; //[0,1]
-
-//uniform LightInfo Light;
+uniform EnvironmentMap EnvMap;
 uniform MaterialInfo Material;
 
 //input from previous stage
@@ -186,10 +188,10 @@ void main()
 	}
 
 	//Environment mapping
-	if(HasEnvMap && Material.Shininess > 0.0) 
+	if(EnvMap.Exists && Material.Shininess > 0.0) 
 	{
 		float reflectionRatio = clamp(Material.Shininess / 30.0, 0.0, 1.0);
-		vec3 cubeMapColor = texture(EnvMapTex, ReflectDir).xyz;
+		vec3 cubeMapColor = texture(EnvMap.CubeTexture, ReflectDir).xyz;
 
 		//diffuse  +=  ??
 		FragColor += vec4(Material.SpecularReflectivity * cubeMapColor * reflectionRatio,0);

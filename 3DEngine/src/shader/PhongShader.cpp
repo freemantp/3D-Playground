@@ -86,7 +86,8 @@ bool PhongShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 		if (auto sbm = std::dynamic_pointer_cast<SkyboxMaterial>(scene->skybox->GetMaterial()))
 		{
 			sbm->texture->BindTexture(skymap_tex_unit);
-			SetUniform("EnvMapTex", skymap_tex_unit);
+			SetUniform("EnvMap.Exists", static_cast<bool>(scene->skybox));
+			SetUniform("EnvMap.CubeTexture", skymap_tex_unit);
 			SetUniform("CameraPosWorld", scene->activeCamera->Position());
 		}
 	}
@@ -114,7 +115,6 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 	SetUniform("NumSpotLights", static_cast<int>(num_slights));
 	SetUniform("HasDirectionalLight", static_cast<bool>(lightModel->directionalLight));
 	SetUniform("HasAmbientLight", static_cast<bool>(lightModel->ambientLight));	
-	SetUniform("HasEnvMap", static_cast<bool>(scene->skybox));
 			
 	auto bind_shadowmap_tex = [&lightModel](int sl_i, int texUnit)
 	{

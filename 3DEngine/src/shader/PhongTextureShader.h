@@ -26,8 +26,8 @@ protected:
 
 	virtual ~PhongTextureShader();
 	
-	enum TextureType { Albedo = 0, BumpMap = 1, Specular = 2 };
-	static const int numTextures = 3;
+	enum TextureType { Albedo = 0, BumpMap = 1, Specular = 2, Evironment = 3 };
+	static const int numTextures = 4;
 
 	GLuint texUnits[numTextures];
 	TextureMaterial_cptr textureMaterial;

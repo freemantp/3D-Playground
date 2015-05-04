@@ -15,6 +15,7 @@ SHARED_PTR_CLASS_DECL(ShDiffuseShaderCoeffs);
 SHARED_PTR_CLASS_DECL(SkyboxMaterial);
 SHARED_PTR_CLASS_DECL(CubeMapTexture);
 SHARED_PTR_CLASS_DECL(DepthMapMaterial);
+SHARED_PTR_CLASS_DECL(WavefrontObjMaterial);
 
 class Material
 {
@@ -22,7 +23,9 @@ public:
 	virtual ~Material() {};
 
 	void SetName(const std::string& name);
-	std::string GetName();
+	std::string Name();
+
+	virtual bool IsTransparent() const { return false; };
 
 protected:
 	Material() {};
@@ -43,11 +46,15 @@ class PhongMaterial : public Material
 public:
 	static PhongMaterial_ptr Create();
 
+	virtual void InitFromWavefrontMaterial(WavefrontObjMaterial_ptr mat, const std::string& base_folder);
+
 	glm::vec3 ambientReflection;
 	glm::vec3 diffuseReflection;
 	glm::vec3 glossyReflection;
 	int shininess;
 	float opacity;
+
+	virtual bool IsTransparent() const override;
 protected:
 	PhongMaterial();
 };
@@ -60,6 +67,8 @@ public:
 	Texture2D_ptr bumpTexture;
 	Texture2D_ptr specularTexture;
 	bool bumpBumpTexIsNormalMap;
+
+	virtual void InitFromWavefrontMaterial(WavefrontObjMaterial_ptr mat, const std::string& base_folder) override;
 
 protected:
 	TextureMaterial() { };
