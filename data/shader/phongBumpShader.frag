@@ -50,16 +50,13 @@ float blinn(in vec3 s, in vec3 v, in vec3 normal)
 	return pow( clamp( dot(h,normal), 0.0, 1.0), Material.Shininess ) ;
 }
 
-float shade(const in vec3 normal, const in vec3 viewDir, const in vec3 lightDir, vec2 texCoord)
+void shade(const in vec3 normal, const in vec3 viewDir, const in vec3 lightDir, vec2 texCoord, inout float diffuse, inout float specular)
 {		
-	float diffuse = clamp(dot(lightDir,normal), 0.0 , 1.0);	
-	float specular = 0;
+	diffuse = clamp(dot(lightDir,normal), 0.0 , 1.0);	
 	float specularity = Material.HasSpecularMap ? texture(Material.SpecularTex,TexCoord).r : 1.0;
 
-	if(specularity > 0)
-		specular = blinn(lightDir,viewDir,normal) ;
-
-	return diffuse + specularity * specular;
+	if(specularity > 0 && Material.Shininess > 0)
+		specular = specularity * blinn(lightDir,viewDir,normal) ;
 }
 
 //see https://web.archive.org/web/20120307174333/http://athile.net/library/wiki/index.php/Library/Graphics/Bump_Mapping
@@ -108,6 +105,8 @@ void main()
 	vec3 normal = getNormal();
 	vec3 albedo = texture(Material.AlbedoTex,TexCoord).rgb;
 
+	float diffuse = 0, specular = 0;
+
 	FragColor = vec4(0,0,0,1);
 
 	//Ambient light
@@ -121,8 +120,8 @@ void main()
 	{
 		vec3 dirDirection = sceneLights.DirectionalLight0.Direction;
 		vec3 dirColor = sceneLights.DirectionalLight0.Color;
-		float shade_val = shade(normal,ViewDirection, dirDirection,TexCoord);
-		FragColor += vec4(dirColor * albedo * shade_val,0);
+		shade(normal,ViewDirection, dirDirection,TexCoord,diffuse,specular);
+		FragColor += vec4(dirColor * albedo * (diffuse + specular),0);
 	}
 
 	//Point lights
@@ -138,8 +137,8 @@ void main()
 		float distAttenuation = 1 / ( 1 + k*distance*distance);
 		
 		vec3 lightDir = Material.BumpTexIsNormalMap ? PointlightDirTGT[i] : lightToCamDirNormalized;
-		float shade_val = shade(normal,ViewDirection, lightDir,TexCoord);
-		FragColor += distAttenuation * vec4(light.Color * albedo * shade_val,0);
+		shade(normal,ViewDirection, lightDir,TexCoord,diffuse,specular);
+		FragColor += distAttenuation * vec4(light.Color * albedo * (diffuse + specular),0);
 	}
 
 	//Spot lights
@@ -167,8 +166,8 @@ void main()
 			float distAttenuation = 1 / ( 1 + k*dist*dist);
 
 			vec3 lightDir = Material.BumpTexIsNormalMap ? SpotlightDirTGT[i] : normalize( vec3(light.Position) - PositionEye);
-			float shade_val = shade(normal,ViewDirection, lightDir,TexCoord);
-			FragColor +=  distAttenuation * borderFadeFacor * vec4(light.Color * albedo * shade_val,0);
+			shade(normal,ViewDirection, lightDir,TexCoord,diffuse,specular);
+			FragColor +=  distAttenuation * borderFadeFacor * vec4(light.Color * albedo * (diffuse + specular),0);
 		}
 	}
 

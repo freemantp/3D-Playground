@@ -45,18 +45,15 @@ float blinn(in vec3 s, in vec3 v, in vec3 normal)
 	return pow( clamp( dot(h,normal), 0.0, 1.0), Material.Shininess ) ;
 }
 
-float shade(const in vec3 normal, const in vec3 viewDir, const in vec3 lightDir)
+void shade(const in vec3 normal, const in vec3 viewDir, const in vec3 lightDir, inout float diffuse, inout float specular)
 {			
-	float diffuse = clamp(dot(lightDir,normal), 0.0 , 1.0);
-	float specular = 0;
+	if( Material.Opacity  == 1)	
+		diffuse = clamp(dot(lightDir,normal), 0.0 , 1.0);
+
 	float specularity = length(Material.SpecularReflectivity);
 
-	if(specularity > 0)
-	{
-		specular = blinn(lightDir,viewDir,normal);	
-	}
-
-	return diffuse + specular * specularity;
+	if(specularity > 0 && Material.Shininess > 0)	
+		specular = specularity * blinn(lightDir,viewDir,normal);
 }
 
 float getShadow(int sl_i)
@@ -122,6 +119,8 @@ void main()
 	vec3 normal = normalize(NormalEye);
 	vec3 albedo = Material.DiffuseReflectivity;
 
+	float diffuse = 0, specular = 0;
+
 	FragColor = vec4(0,0,0,1);
 
 	//Ambient light
@@ -135,8 +134,8 @@ void main()
 	{
 		vec3 dirDirection = normalize(sceneLights.DirectionalLight0.Direction);
 		vec3 dirColor = sceneLights.DirectionalLight0.Color;		
-		float shade_val = shade(normal,ViewDirection,dirDirection);
-		FragColor += vec4(dirColor * albedo * shade_val,0);
+		shade(normal,ViewDirection,dirDirection,diffuse,specular);
+		FragColor += vec4(dirColor * (albedo * diffuse + specular),0);
 	}
 
 	//Point lights
@@ -151,8 +150,8 @@ void main()
 		float k = 0.2;
 		float distAttenuation = 1 / ( 1 + k*distance*distance);
 
-		float shade_val = shade(normal,ViewDirection,lightVecNormalized);
-		FragColor += distAttenuation * vec4(light.Color * albedo * shade_val,0);
+		shade(normal,ViewDirection,lightVecNormalized,diffuse,specular);
+		FragColor += distAttenuation * vec4(light.Color * albedo * (diffuse + specular),0);
 	}
 
 	//Spot lights
@@ -181,9 +180,9 @@ void main()
 
 			float shadow = getShadow(i);
 
-			float shade_val = shade(normal,ViewDirection,lightVecNormalized);
+			shade(normal,ViewDirection,lightVecNormalized,diffuse,specular);
 		
-			FragColor += shadow * distAttenuation * borderFadeFacor * vec4(light.Color * albedo * shade_val, 0);
+			FragColor += shadow * distAttenuation * borderFadeFacor * vec4(light.Color * albedo * (diffuse + specular), 0);
 		}
 	}
 
@@ -193,7 +192,6 @@ void main()
 		float reflectionRatio = clamp(Material.Shininess / 30.0, 0.0, 1.0);
 		vec3 cubeMapColor = texture(EnvMap.CubeTexture, ReflectDir).xyz;
 
-		//diffuse  +=  ??
 		FragColor += vec4(Material.SpecularReflectivity * cubeMapColor * reflectionRatio,0);
 	}
 

@@ -33,12 +33,16 @@ IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 		if (newMesh->faces.size() > 0)
 		{
 			int groupEndIndex = static_cast<int>(newMesh->faces.size() - 1);
-			IndexedRawMesh::Range range(groupFaceStartIdx, groupEndIndex);
 
-			newMesh->AddGroup(groupName, currentMtl, range);
+			if (groupEndIndex - groupFaceStartIdx > 0 )
+			{
+				IndexedRawMesh::Range range(groupFaceStartIdx, groupEndIndex);
 
-			//next group
-			groupFaceStartIdx = groupEndIndex + 1;
+				newMesh->AddGroup(groupName, currentMtl, range);
+
+				//next group
+				groupFaceStartIdx = groupEndIndex + 1;
+			}
 		}
 	};
 
@@ -175,16 +179,14 @@ IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 		}
 		else if(line.substr(0,7) == "usemtl ")
 		{	
-			if (usemtl_counter == 1)
+			if (usemtl_counter <= 1)
 				create_group(current_group);
 			else if (usemtl_counter > 1)
 				create_group(current_group + "-" + currentMtl + std::to_string(tot_mtls));
-			
- 			usemtl_counter++;
-
-			tot_mtls++;
-
+	
 			currentMtl = line.substr(7);
+			usemtl_counter++;
+			tot_mtls++;
 		}
 	}
 
