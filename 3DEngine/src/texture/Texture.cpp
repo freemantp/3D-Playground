@@ -18,6 +18,7 @@ Texture::Texture(GLenum texTarget, GLuint texHandle, Format format)
 : target(texTarget)
 , texObject(texHandle)
 , textureFormat(format)
+, wrapMode(TextureWrapMode::Repeat)
 {
 
 }

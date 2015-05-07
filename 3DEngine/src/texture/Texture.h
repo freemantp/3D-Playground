@@ -18,6 +18,14 @@ public:
 		Unknown = -1,
 	};
 
+	enum class TextureWrapMode : GLint
+	{
+		ClampToEdge = GL_CLAMP_TO_EDGE,
+		ClampToBorder = GL_CLAMP_TO_BORDER,
+		Repeat = GL_REPEAT,
+		MirroredRepeat = GL_MIRRORED_REPEAT,
+	};
+
 	virtual ~Texture();
 
 	void BindTexture(int textureUnit);
@@ -48,5 +56,7 @@ protected:
 	GLenum target;
 
 	Format textureFormat;
+
+	TextureWrapMode wrapMode;
 };
 

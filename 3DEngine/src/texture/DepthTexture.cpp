@@ -9,6 +9,8 @@ DepthTexture_ptr DepthTexture::Create(int width, int height)
 DepthTexture::DepthTexture(int width, int height, Format format)
 : Texture2D(width, height, format)
 {
+	wrapMode = TextureWrapMode::ClampToBorder;
+
 	glBindTexture(GL_TEXTURE_2D, texObject);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // TODO: Set to linear
