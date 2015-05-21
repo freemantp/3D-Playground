@@ -58,8 +58,9 @@ void SpotLight::SetDirection(const glm::vec3& dir)
 	xz_plane_dir.y = 0;
 	xz_plane_dir = glm::normalize(xz_plane_dir);
 
-	float pitch_angle = std::acos(glm::dot(direction, xz_plane_dir));
-	float yaw_angle = std::acos(glm::dot(xz_plane_dir, z_vec));
+	// How can a normalized vector not have length?? rounding? clamping is a workaround
+	float pitch_angle = std::acos(glm::clamp(glm::dot(direction, xz_plane_dir),-1.f,1.f));
+	float yaw_angle   = std::acos(glm::dot(xz_plane_dir, z_vec));
 
 	if (xz_plane_dir.x < 0)
 		yaw_angle = glm::two_pi<float>() - yaw_angle;
