@@ -218,10 +218,26 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 			else if (materialType == "diffuseSH")
 			{
 				auto shMaterial = ShDiffuseMaterial::Create();
-				auto data = Util::LoadTextFile(Config::DATA_BASE_PATH + "sh/grace.xml");
-				shMaterial->shCoeffs = ShCoeffParser::Parse(data);
 
-				material = shMaterial;
+				bool parse_ok = false;
+
+				XMLElement* subElem;
+				if (subElem = materialElement->FirstChildElement("shcoeffs"))
+				{
+					if (auto shfile = subElem->Attribute("file"))
+					{
+						auto data = Util::LoadTextFile(Config::DATA_BASE_PATH + "sh/" + shfile);
+						shMaterial->shCoeffs = ShCoeffParser::Parse(data);
+						material = shMaterial;
+						parse_ok = true;
+					}
+				}
+
+				if (!parse_ok)
+				{
+					Error("Could not load SH shader params");
+				}
+
 			}
 			else
 			{

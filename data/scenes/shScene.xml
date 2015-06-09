@@ -10,7 +10,9 @@
 
   <materials>
     <!-- shiny material -->
-    <material name="diffuse" shader="diffuseSH"/>
+    <material name="diffuse" shader="diffuseSH">
+      <shcoeffs file="grace.xml"/>
+    </material>
   </materials>
 
   <skybox cubeMapFile="cubeMap/GraceCathedral.png"/>

@@ -44,8 +44,8 @@ void main()
 	vec3 b = normalize( cross(n, t) ) * VertexTangent.w;
 	mat3 toTangentSpace = transpose( mat3(t,b,n) );
 
-	PositionEye = vec3( ModelViewMatrix * posHomogenous);
 	NormalEye = n;
+	PositionEye = vec3( ModelViewMatrix * posHomogenous);	
 	TexCoord = VertexTexCoord;
 
 	/* If we're dealing with a normal map instead of a bump map we have 

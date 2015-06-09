@@ -25,6 +25,7 @@ public:
 	virtual const glm::vec3& GetDirection() const;
 	virtual const glm::vec3& GetUpVector() const;
 	virtual void SetDirection(const glm::vec3& dir);
+
 	virtual void SetUpDirection(const glm::vec3& dir);
 	virtual void SetPosition(glm::vec4& pos) override;
 
@@ -42,6 +43,8 @@ protected:
 	SpotLight(const glm::vec3& direction, float cutoffAngle, float exponent, bool castsShadow);
 
 	inline void UpdateShadow();
+
+	void UpdateVisMesh();
 	
 	glm::vec3 direction;
 	glm::vec3 up;

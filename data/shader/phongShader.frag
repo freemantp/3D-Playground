@@ -39,10 +39,11 @@ layout (location = 0) out vec4 FragColor;
 // ----------------- functions -----------------
 
 //Blinn-Phong model
-float blinn(in vec3 s, in vec3 v, in vec3 normal)
+float blinn(in vec3 lightDir, in vec3 viewDir, in vec3 normal)
 {
-	vec3 h = normalize( v + s );
-	return pow( clamp( dot(h,normal), 0.0, 1.0), Material.Shininess ) ;
+	vec3 halfvec = normalize( viewDir + lightDir );
+	float dotP = dot(lightDir,normal);
+	return pow( clamp( dotP, 0.0, 1.0), Material.Shininess ) ;
 }
 
 void shade(const in vec3 normal, const in vec3 viewDir, const in vec3 lightDir, inout float diffuse, inout float specular)
