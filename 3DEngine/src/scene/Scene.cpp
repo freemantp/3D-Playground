@@ -203,7 +203,8 @@ void Scene::TimeUpdate(long time)
 
 	for (int i = 0; i < std::min(lightAnimParams.size(), lightModel->spotLights.size()); i++)
 	{
-		rotate_light(lightModel->spotLights[i], lightAnimParams[i].radiansPerInterval, lightAnimParams[i].rotationAxis);
+		if (lightModel->spotLights[i]->Animated())
+			rotate_light(lightModel->spotLights[i], lightAnimParams[i].radiansPerInterval, lightAnimParams[i].rotationAxis);
 	}
 
 	lightModel->UpdateUniformBuffer(activeCamera);

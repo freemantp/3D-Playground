@@ -481,10 +481,13 @@ bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 
 				GetFloatAttrib(lightElem, "cutoff", cutoff);
 				GetFloatAttrib(lightElem, "exponent", exponent);
+				bool animated;
+				GetBoolAttrib(lightElem, "animated", animated);
 				SpotLight_ptr slight = SpotLight::Create(direction, cutoff, exponent);
 
 				slight->SetPosition(glm::vec4(pos, 1.0));
 				slight->SetColor(color);
+				slight->SetAnimated(animated);
 
 				generated_scene->AddLight(slight);
 			}
@@ -567,4 +570,19 @@ bool SceneParser::GetIntAttrib(XMLElement* element, const char* attribName, int&
 	
 	std::istringstream isstr(element->Attribute(attribName));
 	return !(isstr >> value).fail();
+}
+
+bool SceneParser::GetBoolAttrib(XMLElement* element, const char* attrib_name, bool& value)
+{
+	if (element == nullptr)
+		return false;
+
+	if (std::string(element->Attribute(attrib_name)).compare("true") == 0)
+		value = true;
+	else if (std::string(element->Attribute(attrib_name)).compare("false") == 0)
+		value = false;
+	else
+		return false;
+
+	return true;
 }

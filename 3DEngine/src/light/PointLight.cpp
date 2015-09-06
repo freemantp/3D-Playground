@@ -12,6 +12,7 @@ using glm::vec3;
 
 PointLight::PointLight()
 	: Light()
+	, animated(false)
 {
 	visMesh = Util::CreateBox();
 	visMesh->Init();
@@ -55,4 +56,14 @@ void PointLight::SetColor(vec3& color)
 Shape_ptr PointLight::ModelRepresentation() const
 {
 	return visMesh;
+}
+
+void PointLight::SetAnimated(bool animated)
+{
+	this->animated = animated;
+}
+
+bool PointLight::Animated() const
+{
+	return animated;
 }

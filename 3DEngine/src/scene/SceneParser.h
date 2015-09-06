@@ -25,6 +25,7 @@ public:
 protected:
 
 	inline bool GetIntAttrib(tinyxml2::XMLElement* element, const char* attrib_name, int& value);
+	inline bool GetBoolAttrib(tinyxml2::XMLElement* element, const char* attrib_name, bool& value);
 	inline bool GetFloatAttrib(tinyxml2::XMLElement* element, const char* attrib_name, float& value);
 	inline bool GetVector3(tinyxml2::XMLElement* element, glm::vec3& vec);
 	inline bool GetColorVector3(tinyxml2::XMLElement* element, glm::vec3& vec);
