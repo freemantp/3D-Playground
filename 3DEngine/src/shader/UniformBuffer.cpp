@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include <algorithm>
+#include <iterator>
 
 #include "UniformBuffer.h"
 #include "GLSLProgram.h"

@@ -139,7 +139,7 @@ bool CubeMapTexture::LoadCubemapImages(const std::string& texturePath, CubeMapTe
 						}
 					};
 
-					size_t areas[6][4] = { 
+					int areas[6][4] = { 
 						{ cubeMap.width, 0, cubeMap.width, cubeMap.height },
 						{ 0, cubeMap.height, cubeMap.width, cubeMap.height },
 						{ 1 * cubeMap.width, cubeMap.height, cubeMap.width, cubeMap.height },
