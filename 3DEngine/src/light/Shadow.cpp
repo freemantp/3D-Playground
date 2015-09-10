@@ -11,7 +11,7 @@
 
 
 Shadow::Shadow()
-: shadowMapTex(DepthTexture::Create(2048, 2048))
+: shadowMapTex(DepthTexture::Create(8192, 8192))
 {
 	biasMatrix = glm::mat4(
 		0.5, 0.0, 0.0, 0.0,

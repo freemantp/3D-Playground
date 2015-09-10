@@ -4,11 +4,11 @@
 
 struct TextureMaterial
 {
-	vec3 AmbientReflectivity;
-	vec3 DiffuseReflectivity;
+	//vec3 AmbientReflectivity;
+	//vec3 DiffuseReflectivity;
 	vec3 SpecularReflectivity;
 	int Shininess;
-	float Opacity; //[0,1]
+	//float Opacity; //[0,1]
 	sampler2D AlbedoTex;
 	sampler2D BumpmapTex;
 	sampler2D SpecularTex;
@@ -23,6 +23,13 @@ struct EnvironmentMap
 	samplerCube CubeTexture;
 };
 
+uniform sampler2DShadow ShadowMapArray[4];
+uniform sampler3D PCFDataOffsets;
+uniform ivec3 PCFDataOffsetsSize;
+uniform float PCFBlurRadius;
+uniform bool UseShadows;
+uniform bool PcfShadows;
+
 uniform mat4 ViewMatrix;
 uniform TextureMaterial Material;
 uniform EnvironmentMap EnvMap;
@@ -31,6 +38,7 @@ uniform EnvironmentMap EnvMap;
 
 //input from previous stage
 in vec3 PositionEye;
+in vec4 PositionModel;
 in vec3 NormalEye;
 in vec3 ReflectDir;
 in vec3 LightDirection;
@@ -100,6 +108,18 @@ vec3 getNormal()
 	return normal;
 }
 
+float getShadow(int sl_i)
+{
+	if(PcfShadows || UseShadows && sl_i < NumSpotLights)
+	{
+		vec4 ShadowCoord = sceneLights.SpotLights[sl_i].ShadowMatrix * PositionModel;
+
+		return textureProj(ShadowMapArray[sl_i],ShadowCoord);			
+	}
+	else
+		return 1.0f;
+}
+
 // ----------------- main -----------------
 void main() 
 {
@@ -130,14 +150,14 @@ void main()
 	{
 		PointLight light = sceneLights.PointLights[i];
 
-		vec3 lightToCamDir = vec3(light.Position) - PositionEye;
-		vec3 lightToCamDirNormalized = normalize(lightToCamDir);
+		vec3 lightDirEyeSpace = vec3(light.Position) - PositionEye;
+		vec3 lightDirEyeSpaceNormalized = normalize(lightDirEyeSpace);
 
-		float distance = length(lightToCamDir);
+		float distance = length(lightDirEyeSpace);
 		float k = 0.2;
 		float distAttenuation = 1 / ( 1 + k*distance*distance);
 		
-		vec3 lightDir = Material.BumpTexIsNormalMap ? PointlightDirTGT[i] : lightToCamDirNormalized;
+		vec3 lightDir = Material.BumpTexIsNormalMap ? PointlightDirTGT[i] : lightDirEyeSpaceNormalized;
 		shade(normal,ViewDirection, lightDir,TexCoord,diffuse,specular);
 		FragColor += distAttenuation * vec4(light.Color * albedo * (diffuse + specular),0);
 	}
@@ -146,10 +166,10 @@ void main()
 	for(int i=0;  i < NumSpotLights; i++)
 	{
 		SpotLight light = sceneLights.SpotLights[i];
-		vec3 lightToCamDir = vec3(light.Position) - PositionEye;
-		vec3 lightToCamDirNormalized = normalize(lightToCamDir);
+		vec3 lightDirEyeSpace = vec3(light.Position) - PositionEye;
+		vec3 lightDirEyeSpaceNormalized = normalize(lightDirEyeSpace);
 		
-		float angle = acos( clamp(dot(-lightToCamDirNormalized,normalize(light.Direction)),0.0,0.9999) );
+		float angle = acos( clamp(dot(-lightDirEyeSpaceNormalized,normalize(light.Direction)),0.0,0.9999) );
 		float cutoff = radians( clamp (light.CutoffAngle, 0.0, 90.0) ) ;
 		
 		if( angle  < cutoff)
@@ -162,13 +182,17 @@ void main()
 			float borderFadeFacor = angleRatio <=p ? 1: a * pow(angleRatio-p,2)+1;
 			
 			//Quadratic distance attenuation with factor k 
-			float dist = length(lightToCamDir);
+			float dist = length(lightDirEyeSpace);
 			float k = 0.2;
 			float distAttenuation = 1 / ( 1 + k*dist*dist);
+			
 
 			vec3 lightDir = Material.BumpTexIsNormalMap ? SpotlightDirTGT[i] : normalize( vec3(light.Position) - PositionEye);
 			shade(normal,ViewDirection, lightDir,TexCoord,diffuse,specular);
-			FragColor +=  distAttenuation * borderFadeFacor * vec4(light.Color * albedo * (diffuse + specular),0);
+
+			float shadow = getShadow(i);
+
+			FragColor +=  shadow * distAttenuation * borderFadeFacor * vec4(light.Color * albedo * (diffuse + specular),0);
 		}
 	}
 

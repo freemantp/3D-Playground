@@ -28,7 +28,7 @@ protected:
 
 	virtual ~PhongShader();
 
-	void SetLightAndModel(const Scene_ptr scene);
+	void SetLightAndModel(const Scene_ptr scene, const unsigned int tex_unit_offset = 0);
 
 	virtual void Init();
 

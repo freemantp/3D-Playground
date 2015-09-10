@@ -104,7 +104,7 @@ void PhongShader::UnUse()
 	glDepthMask(GL_TRUE);
 }
 
-void PhongShader::SetLightAndModel(const Scene_ptr scene)
+void PhongShader::SetLightAndModel(const Scene_ptr scene, const unsigned int tex_unit_offset)
 {
 	LightModel_ptr lightModel = scene->lightModel;
 
@@ -125,7 +125,7 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 	const size_t maxNumSpotLights = 4;
 	GLint shadowMaps[maxNumSpotLights];
 
-	unsigned int texUnit = 0;
+	unsigned int texUnit = tex_unit_offset;
 
 	for (unsigned int i = 0; i < maxNumSpotLights; i++)
 	{
@@ -135,7 +135,7 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 			texUnit++;
 		}
 				
-		shadowMaps[i] = i;
+		shadowMaps[i] = i + tex_unit_offset;
 	}	
 
 	if (hasShadows && lightModel->spotLights.size() > 0)
@@ -156,9 +156,13 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene)
 				const glm::ivec2& sdims = sl->Shadow()->ShadowMap()->Dimensions();
 
 				const float pixelBlur = pcfDim.x / static_cast<float>(sdims.x);
-				SetUniform("PCFDataOffsetsSize", pcfDim);
-				SetUniform("PCFDataOffsets", texUnit);
-				SetUniform("PCFBlurRadius", pixelBlur);
+
+				if (pcfShadows)
+				{
+					SetUniform("PCFDataOffsetsSize", pcfDim);
+					SetUniform("PCFDataOffsets", texUnit);
+					SetUniform("PCFBlurRadius", pixelBlur);
+				}
 			}
 
 			SetUniformArray("ShadowMapArray", shadowMaps, 1, maxNumSpotLights);

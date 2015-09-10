@@ -14,7 +14,7 @@
       <ambientReflect r="0.0" g="0.0" b="0.0"/>
       <diffuseReflect r="0.8" g="0.3" b="0.3"/>
       <glossyReflect r="0.9" g="0.2" b="0.1"/>
-      <shininess value="2"/>
+      <shininess value="200"/>
     </material>
     <!-- diffuse material -->
     <material name="dull" shader="phong">
@@ -27,33 +27,56 @@
   
   <lights>
 
-    <light type="directional">
-      <direction x="-1.0" y="-0.5" z="-1.0"/>
-      <color r="0.5" g="0.5" b="0.5"/>
+    <light type="ambient" >
+      <color r="0.2" g="0.2" b="0.2"/>
     </light>
+
+    <!--<light type="directional">
+      <direction x="-1.0" y="0.5" z="-1.0"/>
+      <color r="0.5" g="0.5" b="0.5"/>
+    </light>-->
     
-    <light type="spot" cutoff="60" exponent="5">
+    <light type="point" cutoff="60" exponent="5" animated="false">
       <position x="1.0" y="0.5" z="1.0"/>
       <direction x="-1.0" y="-0.5" z="-1.0"/>
       <color r="1.0" g="1.0" b="1.0"/>
     </light>
+    
   </lights>
 
  <objects>
-     <mesh file="horse.obj" material="glossy">
+     <!--<mesh file="horse.obj" material="glossy">
       <position x="0" y="0" z="0"/>
       <transform>
         <translate x="0.0" y="-0.31" z="0.0"/>
         <rotate angle="270.0" x="0.0" y="1.0" z="0.0"/>
       </transform>
-    </mesh>
-   
-    <box material="dull">
+    </mesh>-->
+
+
+   <mesh file="F-16C_FightingFalcon/F-16C_FightingFalcon.obj" material="glossy">
       <transform>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
         <translate x="0.0" y="-0.3" z="0.0"/>   
-        <scale x="100.0" y="0.01" z="100.0"/>
+        <scale x="0.1" y="0.1" z="0.1"/>
       </transform>
-    </box>
-  </objects>
+    </mesh>
+
+   <!--<mesh file="UH60/UH60.obj" material="glossy">
+     <transform>
+       <scale x="0.1" y="0.1" z="0.1"/>
+       <rotate angle="90.0" x="1.0" y="0.0" z="0.0"/>
+       <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+     </transform>
+   </mesh>-->
+
+   <box material="dull">
+     <transform>
+       <scale x="100.0" y="1" z="100.0"/>§
+       <translate x="0.0" y="-1.0" z="0.0"/>
+     </transform>
+   </box>
+
+ </objects>
    
 </scene>

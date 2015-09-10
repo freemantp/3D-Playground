@@ -23,7 +23,8 @@ PhongTextureShader::PhongTextureShader()
 	texUnits[Specular] = 2;
 	texUnits[Evironment] = 3;
 
-	hasShadows = false;
+	hasShadows = true;
+	pcfShadows = false;
 
 	hasMM = true;
 }
@@ -48,15 +49,15 @@ bool PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransf
 		}
 	}
 
-	SetLightAndModel(scene);
+	SetLightAndModel(scene,4);
 
 	if (textureMaterial)
 	{
-		SetUniform("Material.AmbientReflectivity", textureMaterial->ambientReflection);
-		SetUniform("Material.DiffuseReflectivity", textureMaterial->diffuseReflection);
+// 		SetUniform("Material.AmbientReflectivity", textureMaterial->ambientReflection);
+// 		SetUniform("Material.DiffuseReflectivity", textureMaterial->diffuseReflection);
 		SetUniform("Material.SpecularReflectivity", textureMaterial->glossyReflection);
 		SetUniform("Material.Shininess", textureMaterial->shininess);
-		SetUniform("Material.Opacity", textureMaterial->opacity);
+/*		SetUniform("Material.Opacity", textureMaterial->opacity);*/
 
 		//Bind albedo texture to texture unit 0
 		if (auto at = textureMaterial->albedoTexture)

@@ -26,6 +26,7 @@ uniform mat3 NormalMatrix;
 uniform mat4 MVP;
 
 out vec3 PositionEye;
+out vec4 PositionModel;
 out vec3 NormalEye;
 out vec3 ReflectDir;
 out vec3 LightDirection;
@@ -46,6 +47,7 @@ void main()
 
 	NormalEye = n;
 	PositionEye = vec3( ModelViewMatrix * posHomogenous);	
+	PositionModel = ModelMatrix * posHomogenous;
 	TexCoord = VertexTexCoord;
 
 	/* If we're dealing with a normal map instead of a bump map we have 

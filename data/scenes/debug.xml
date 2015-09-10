@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<scene name="Debug scene">
+
+  <!-- Initial camera position -->
+  <camera type="perspective" fov="50.0">
+    <position x="0.0" y="0.0" z="2.0"/>
+    <target   x="0.0" y="0.0" z="0.0"/>
+    <up       x="0.0" y="1.0" z="0.0"/>
+  </camera>
+
+  <materials>
+    <!-- diffuse material -->
+    <material name="dull" shader="phong">
+      <ambientReflect r="0.0" g="0.00" b="0.0"/>
+      <diffuseReflect r="1.0" g="1.0" b="1.0"/>
+      <glossyReflect r="0.0" g="0.0" b="0.0"/>
+      <shininess value="90"/>
+    </material>
+  </materials>
+  
+  <lights>
+    <light type="point" cutoff="60" exponent="5" animated="false">
+      <position x="1.0" y="0.5" z="1.0"/>
+      <direction x="-1.0" y="-0.5" z="-1.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </light>
+  </lights>
+
+ <objects>
+    <box material="dull">
+      <transform>
+        <translate x="0.0" y="-0.3" z="0.0"/>   
+        <scale x="100.0" y="0.01" z="100.0"/>
+      </transform>
+    </box>
+  </objects>
+   
+</scene>
