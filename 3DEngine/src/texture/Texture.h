@@ -11,6 +11,7 @@ public:
 
 	enum class Format : GLint  
 	{ 
+		RED = GL_RED,
 		RGB = GL_RGB8, 
 		RGBA = GL_RGBA8, 
 		RGBA32F = GL_RGBA32F, /// < 4 components, 32-bit floating point

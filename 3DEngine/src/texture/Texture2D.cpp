@@ -21,6 +21,11 @@ Texture2D_ptr Texture2D::Create(GLuint texHandle)
 	return Texture2D_ptr(new Texture2D(texHandle));
 }
 
+Texture2D_ptr Texture2D::Create(int width, int height, const void* data, Format format)
+{
+	return Texture2D_ptr(new Texture2D(width,height,data,format));
+}
+
 const glm::ivec2& Texture2D::Dimensions() const
 {
 	return dimensions;
@@ -62,6 +67,29 @@ Texture2D::Texture2D(int width, int height, Format format)
 	glBindTexture(GL_TEXTURE_2D, texObject);
 	SetParameters();
 	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, dataType, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+Texture2D::Texture2D(int width, int height, const void* data, Format format)
+	: Texture(GL_TEXTURE_2D, format)
+	, dimensions(glm::ivec2(width, height))
+{
+	GLint internalFormat = static_cast<GLint>(format);
+	GLenum dataFormat = DataFormat(format);
+	GLenum dataType = DataType(format);
+
+	glGenTextures(1, &texObject);
+	glBindTexture(GL_TEXTURE_2D, texObject);
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, 8, 8, 0, dataFormat, GL_UNSIGNED_BYTE, data);
+
+	wrapMode = Texture::TextureWrapMode::Repeat;
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, static_cast<GLint>(wrapMode));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, static_cast<GLint>(wrapMode));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, static_cast<GLint>(wrapMode));
+
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 

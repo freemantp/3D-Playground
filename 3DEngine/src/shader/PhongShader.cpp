@@ -14,6 +14,7 @@
 #include "UniformBuffer.h"
 
 #include <algorithm>   
+#include <numeric>
 
 PhongShader_ptr PhongShader::Create()
 {
@@ -122,21 +123,17 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene, const unsigned int tex
 		sl->Shadow()->ShadowMap()->BindTexture(texUnit);
 	};
 
+	unsigned int current_tex_unit = tex_unit_offset;
+
 	const size_t maxNumSpotLights = 4;
 	GLint shadowMaps[maxNumSpotLights];
+	std::iota(std::begin(shadowMaps), std::end(shadowMaps), current_tex_unit);
 
-	unsigned int texUnit = tex_unit_offset;
-
-	for (unsigned int i = 0; i < maxNumSpotLights; i++)
+	for (unsigned int i = 0; i < std::min(maxNumSpotLights, num_slights); i++)
 	{
-		if (i < num_slights)
-		{
-			bind_shadowmap_tex(i, texUnit);
-			texUnit++;
-		}
-				
-		shadowMaps[i] = i + tex_unit_offset;
-	}	
+		bind_shadowmap_tex(i, shadowMaps[i]);
+		current_tex_unit++;
+	}
 
 	if (hasShadows && lightModel->spotLights.size() > 0)
 	{
@@ -148,7 +145,7 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene, const unsigned int tex
 			{
 				SetUniform("PcfShadows", pcfShadows);
 
-				lightModel->pcfShadowRandomData->BindTexture(++texUnit);
+				lightModel->pcfShadowRandomData->BindTexture(++current_tex_unit);
 
 				auto pcfDim = lightModel->pcfShadowRandomData->Dimensions();
 
@@ -160,7 +157,7 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene, const unsigned int tex
 				if (pcfShadows)
 				{
 					SetUniform("PCFDataOffsetsSize", pcfDim);
-					SetUniform("PCFDataOffsets", texUnit);
+					SetUniform("PCFDataOffsets", current_tex_unit);
 					SetUniform("PCFBlurRadius", pixelBlur);
 				}
 			}
