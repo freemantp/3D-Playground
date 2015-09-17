@@ -365,54 +365,57 @@ bool SceneParser::ParseTransforms(glm::mat4& tMatrix, tinyxml2::XMLElement* tran
 {
 	bool success = true;
 	
-	XMLElement* transform = transformElem->FirstChildElement();
-	do
+	if (XMLElement* transform = transformElem->FirstChildElement())
 	{
-		std::string type = transform->Name();
+		do
+		{
+			std::string type = transform->Name();
 
-		if(type == "translate")
-		{
-			glm::vec3 transl;
-			if( GetVector3(transform,transl) )
+			if (type == "translate")
 			{
-				tMatrix = glm::translate(tMatrix,transl);
+				glm::vec3 transl;
+				if (GetVector3(transform, transl))
+				{
+					tMatrix = glm::translate(tMatrix, transl);
+				}
+				else
+				{
+					Error("Could not parse translation");
+					success = false;
+				}
 			}
-			else
+			else if (type == "rotate")
 			{
-				Error("Could not parse translation");
-				success = false;
+				glm::vec3 axis;
+				float angle;
+				if (GetVector3(transform, axis) && GetFloatAttrib(transform, "angle", angle))
+				{
+					tMatrix = glm::rotate(tMatrix, glm::radians(angle), axis);
+				}
+				else
+				{
+					Error("Could not parse rotation");
+					success = false;
+				}
 			}
-		}
-		else if(type == "rotate")
-		{
-			glm::vec3 axis;
-			float angle;
-			if( GetVector3(transform,axis) && GetFloatAttrib(transform, "angle",angle) )
+			else if (type == "scale")
 			{
-				tMatrix = glm::rotate(tMatrix,glm::radians(angle),axis);
+				glm::vec3 factors;
+				if (GetVector3(transform, factors))
+				{
+					tMatrix = glm::scale(tMatrix, factors);
+				}
+				else
+				{
+					Error("Could not parse scale");
+					success = false;
+				}
 			}
-			else
-			{
-				Error("Could not parse rotation");
-				success = false;
-			}
-		}
-		else if(type == "scale")
-		{
-			glm::vec3 factors;
-			if( GetVector3(transform,factors) )
-			{
-				tMatrix = glm::scale(tMatrix,factors);
-			}
-			else
-			{
-				Error("Could not parse scale");
-				success = false;
-			}
-		}
 
-	} 
-	while (transform = transform->NextSiblingElement());
+		} while (transform = transform->NextSiblingElement());
+	}
+	else
+		success = false;
 
 	return success;
 

@@ -33,12 +33,12 @@ Renderer_ptr renderer;
 //string sceneName = "pc24.xml";
 //string sceneName = "headScene.xml";
 //string sceneName = "manyPlanes.xml";
-//string sceneName = "shadowScene.xml";
+string sceneName = "shadowScene.xml";
 //string sceneName = "road.xml";
 //string sceneName = "simpleScene.xml";
 //string sceneName = "shScene.xml";
 //string sceneName = "ogreScene.xml";
-string sceneName = "debug.xml";
+//string sceneName = "debug.xml";
 
 int main(int argc, char* argv[])
 {

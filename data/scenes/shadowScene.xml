@@ -38,9 +38,9 @@
     </light>-->
     
     <light type="spot" cutoff="60" exponent="5" animated="true">
-      <position x="1.0" y="0.5" z="1.0"/>
+      <position x="2.0" y="1" z="2.0"/>
       <direction x="-1.0" y="-0.5" z="-1.0"/>
-      <color r="1.0" g="1.0" b="1.0"/>
+      <color r="2.0" g="2.0" b="2.0"/>
     </light>
     
   </lights>
@@ -55,11 +55,11 @@
     </mesh>-->
 
 
-   <mesh file="F-16C_FightingFalcon/F-16C_FightingFalcon.obj" material="glossy">
+   <mesh file="building.obj" material="glossy">
       <transform>
-        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
-        <translate x="0.0" y="-0.3" z="0.0"/>   
-        <scale x="0.1" y="0.1" z="0.1"/>
+        <!--<rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>        
+        <scale x="0.1" y="0.1" z="0.1"/>-->
+        <translate x="0.0" y="-0.55" z="0.0"/>
       </transform>
     </mesh>
 
