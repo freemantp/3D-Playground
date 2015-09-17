@@ -22,13 +22,14 @@
       <diffuseReflect r="1.0" g="1.0" b="1.0"/>
       <glossyReflect r="0.0" g="0.0" b="0.0"/>
       <shininess value="90"/>
+      <options dither="true"/>
     </material>
   </materials>
   
   <lights>
 
     <light type="ambient" >
-      <color r="0.2" g="0.2" b="0.2"/>
+      <color r="0.1" g="0.1" b="0.1"/>
     </light>
 
     <!--<light type="directional">
@@ -36,7 +37,7 @@
       <color r="0.5" g="0.5" b="0.5"/>
     </light>-->
     
-    <light type="point" cutoff="60" exponent="5" animated="false">
+    <light type="spot" cutoff="60" exponent="5" animated="true">
       <position x="1.0" y="0.5" z="1.0"/>
       <direction x="-1.0" y="-0.5" z="-1.0"/>
       <color r="1.0" g="1.0" b="1.0"/>

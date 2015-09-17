@@ -25,7 +25,7 @@ PhongShader::PhongShader()
 : MaterialShader("phongShader")
 , hasShadows(true)
 , useShadows(true)
-, pcfShadows(false)
+, pcfShadows(true)
 {
 	hasMM = true;
 	Init();
@@ -125,7 +125,7 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene, const unsigned int tex
 
 	unsigned int current_tex_unit = tex_unit_offset;
 
-	bool dithering = material->dither && lightModel->ditherData;
+	bool dithering = material && material->dither && lightModel->ditherData;
 	SetUniform("UseDiterhing", dithering);
 
 	if (dithering)

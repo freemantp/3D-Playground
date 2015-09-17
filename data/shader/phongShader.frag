@@ -154,7 +154,7 @@ void main()
 		float distAttenuation = 1 / ( 1 + k*distance*distance);
 
 		shade(normal,ViewDirection,lightVecNormalized,diffuse,specular);
-		FragColor += /*distAttenuation * */vec4(light.Color * albedo * (diffuse + specular),0);
+		FragColor += distAttenuation * vec4(light.Color * albedo * (diffuse + specular),0);
 	}
 
 	//Spot lights

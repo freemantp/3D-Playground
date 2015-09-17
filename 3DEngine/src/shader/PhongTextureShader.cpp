@@ -24,7 +24,7 @@ PhongTextureShader::PhongTextureShader()
 	texUnits[Evironment] = 3;
 
 	hasShadows = true;
-	pcfShadows = false;
+	pcfShadows = true;
 
 	hasMM = true;
 }

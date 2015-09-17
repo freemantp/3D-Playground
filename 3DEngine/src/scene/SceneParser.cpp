@@ -577,15 +577,25 @@ bool SceneParser::GetIntAttrib(XMLElement* element, const char* attribName, int&
 
 bool SceneParser::GetBoolAttrib(XMLElement* element, const char* attrib_name, bool& value)
 {
-	if (element == nullptr)
-		return false;
+	bool ok = false;
 
-	if (std::string(element->Attribute(attrib_name)).compare("true") == 0)
-		value = true;
-	else if (std::string(element->Attribute(attrib_name)).compare("false") == 0)
-		value = false;
-	else
-		return false;
+	if (element != nullptr)
+	{
+		if (auto attr = element->Attribute(attrib_name))
+		{
+			if (std::string(attr).compare("true") == 0)
+			{ 
+				value = true;
+				ok = true;
+			}
+				
+			else if (std::string(attr).compare("false") == 0)
+			{
+				value = false;
+				ok = true;
+			}
+		}
+	}
 
-	return true;
+	return ok;
 }
