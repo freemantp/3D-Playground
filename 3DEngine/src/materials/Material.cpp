@@ -36,6 +36,7 @@ std::string Material::Name()
 PhongMaterial::PhongMaterial()
 : shininess(1)
 , opacity(1)
+, dither(false)
 {
 
 }

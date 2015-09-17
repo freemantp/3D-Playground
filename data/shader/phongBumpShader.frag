@@ -25,10 +25,12 @@ struct EnvironmentMap
 
 uniform sampler2DShadow ShadowMapArray[4];
 uniform sampler3D PCFDataOffsets;
+uniform sampler2D DitherMap;
 uniform ivec3 PCFDataOffsetsSize;
 uniform float PCFBlurRadius;
 uniform bool UseShadows;
 uniform bool PcfShadows;
+uniform bool UseDiterhing;
 
 uniform mat4 ViewMatrix;
 uniform TextureMaterial Material;
@@ -203,6 +205,12 @@ void main()
 
 		//diffuse  +=  ??
 		FragColor += vec4(cubeMapColor * Material.SpecularReflectivity,0);
+	}
+
+	if(UseDiterhing)
+	{
+		float dither_val = texture2D(DitherMap, gl_FragCoord.xy / 10 ).r / 64;
+		FragColor.rgb += dither_val;
 	}
 
 }

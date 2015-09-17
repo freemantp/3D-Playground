@@ -41,6 +41,8 @@ LightModel::LightModel()
 
 	pcfShadowRandomData = ShadowUtil::GenerateCircularOffsets(8, 4, 8);
 
+	ditherData = ShadowUtil::GenerateBayerDitherData();
+
 }
 
 LightModel::~LightModel()

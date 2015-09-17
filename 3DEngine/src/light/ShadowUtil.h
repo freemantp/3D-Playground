@@ -3,6 +3,7 @@
 #include "../util/SharedPointer.h"
 
 SHARED_PTR_CLASS_DECL(Texture3D);
+SHARED_PTR_CLASS_DECL(Texture2D);
 
 class ShadowUtil
 {
@@ -20,6 +21,6 @@ public:
 	*/
 	static Texture3D_ptr GenerateCircularOffsets(unsigned int size, unsigned  int samplesPhi, unsigned  int samplesR);
 
-
+	static Texture2D_ptr GenerateBayerDitherData();
 };
 

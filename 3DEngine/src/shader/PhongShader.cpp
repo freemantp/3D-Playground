@@ -125,6 +125,16 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene, const unsigned int tex
 
 	unsigned int current_tex_unit = tex_unit_offset;
 
+	bool dithering = material->dither && lightModel->ditherData;
+	SetUniform("UseDiterhing", dithering);
+
+	if (dithering)
+	{
+		lightModel->ditherData->BindTexture(current_tex_unit);
+		SetUniform("DitherMap", current_tex_unit);
+		current_tex_unit++;
+	}
+
 	const size_t maxNumSpotLights = 4;
 	GLint shadowMaps[maxNumSpotLights];
 	std::iota(std::begin(shadowMaps), std::end(shadowMaps), current_tex_unit);

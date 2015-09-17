@@ -13,6 +13,7 @@ SHARED_PTR_CLASS_DECL(LightModel);
 SHARED_PTR_CLASS_DECL(UniformBuffer);
 SHARED_PTR_CLASS_DECL(GLSLProgram);
 SHARED_PTR_CLASS_DECL(Texture3D);
+SHARED_PTR_CLASS_DECL(Texture2D);
 
 class LightModel
 {
@@ -33,6 +34,7 @@ public:
 	DirectionalLight_ptr		directionalLight;
 	AmbientLight_ptr			ambientLight;
 	Texture3D_ptr				pcfShadowRandomData;
+	Texture2D_ptr				ditherData;
 
 protected:
 

@@ -486,7 +486,6 @@
     <None Include="..\data\shader\skyboxShader.vert">
       <Filter>data\shaders\specialized</Filter>
     </None>
-    <None Include="packages.config" />
     <None Include="..\data\shader\gBufferShader.frag">
       <Filter>data\shaders\specialized</Filter>
     </None>

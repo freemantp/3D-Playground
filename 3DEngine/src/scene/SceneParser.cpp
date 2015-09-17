@@ -199,6 +199,9 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 				if (subElem = materialElement->FirstChildElement("shininess"))
 					GetIntAttrib(subElem, "value", phongMat->shininess);
 
+				if (subElem = materialElement->FirstChildElement("options"))
+					GetBoolAttrib(subElem, "dither" , phongMat->dither);
+
 				material = phongMat;
 			}
 			else if (materialType == "color")

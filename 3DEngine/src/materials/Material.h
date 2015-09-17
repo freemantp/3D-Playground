@@ -53,6 +53,7 @@ public:
 	glm::vec3 glossyReflection;
 	int shininess;
 	float opacity;
+	bool dither;
 
 	virtual bool IsTransparent() const override;
 protected:

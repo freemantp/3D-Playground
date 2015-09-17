@@ -19,10 +19,12 @@ struct EnvironmentMap
 
 uniform sampler2DShadow ShadowMapArray[4];
 uniform sampler3D PCFDataOffsets;
+uniform sampler2D DitherMap;
 uniform ivec3 PCFDataOffsetsSize;
 uniform float PCFBlurRadius;
 uniform bool UseShadows;
 uniform bool PcfShadows;
+uniform bool UseDiterhing;
 
 uniform EnvironmentMap EnvMap;
 uniform MaterialInfo Material;
@@ -152,7 +154,7 @@ void main()
 		float distAttenuation = 1 / ( 1 + k*distance*distance);
 
 		shade(normal,ViewDirection,lightVecNormalized,diffuse,specular);
-		FragColor += distAttenuation * vec4(light.Color * albedo * (diffuse + specular),0);
+		FragColor += /*distAttenuation * */vec4(light.Color * albedo * (diffuse + specular),0);
 	}
 
 	//Spot lights
@@ -197,5 +199,12 @@ void main()
 	}
 
 	FragColor.a = Material.Opacity;
+
+	//see http://www.anisopteragames.com/how-to-fix-color-banding-with-dithering/
+	if(UseDiterhing)
+	{
+		float dither_val = texture2D(DitherMap, gl_FragCoord.xy / 10 ).r / 64;
+		FragColor.rgb += dither_val;
+	}
 
 }

@@ -4,8 +4,10 @@
 
 #include <random>
 #include <chrono>
+#include <numeric>
 
 #include "../texture/Texture3D.h"
+#include "../texture/Texture2D.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
@@ -65,7 +67,25 @@ Texture3D_ptr ShadowUtil::GenerateCircularOffsets(unsigned int size, unsigned  i
 		}
 	}	
 
-	Texture3D_ptr tex = Texture3D::Create(size, size, numSamples / 2, dataBuffer.get(), Texture::Format::RGBA32F);;
+	Texture3D_ptr tex = Texture3D::Create(size, size, numSamples / 2, dataBuffer.get(), Texture::Format::RGBA32F);
+
+	return tex;
+}
+
+Texture2D_ptr ShadowUtil::GenerateBayerDitherData()
+{
+
+	static const char pattern[] = {
+		0, 1,  8, 40,  2, 34, 10, 42,   /* 8x8 bayer ordered dithering  */
+		48, 16, 56, 24, 50, 18, 58, 26,  /* pattern.  each input pixel   */
+		12, 44,  4, 36, 14, 46,  6, 38,  /* is scaled to the 0..63 range */
+		60, 28, 52, 20, 62, 30, 54, 22,  /* before looking in this table */
+		3, 35, 11, 43,  1, 33,  9, 41,   /* to determine the action.     */
+		51, 19, 59, 27, 49, 17, 57, 25,
+		15, 47,  7, 39, 13, 45,  5, 37,
+		63, 31, 55, 23, 61, 29, 53, 21 };
+
+	Texture2D_ptr tex = Texture2D::Create(8, 8, pattern, Texture::Format::RED);
 
 	return tex;
 }

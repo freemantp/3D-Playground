@@ -44,7 +44,10 @@ GLenum Texture::DataFormat(Format format) const
 {
 	switch (format)
 	{
-		case Format::Depth: return GL_DEPTH_COMPONENT;
+		case Format::Depth: 
+			return GL_DEPTH_COMPONENT;
+		case Format::RED: 
+			return GL_RED;
 		default: return GL_RGBA;
 	}
 }
@@ -53,8 +56,10 @@ GLenum Texture::DataType(Format format) const
 {
 	switch (format)
 	{
-		case Format::Depth: return GL_FLOAT;
-		case Format::RGBA32F: return GL_FLOAT;
+		case Format::Depth: 
+			return GL_FLOAT;
+		case Format::RGBA32F: 
+			return GL_FLOAT;
 		default: return GL_UNSIGNED_BYTE;
 	}
 }
