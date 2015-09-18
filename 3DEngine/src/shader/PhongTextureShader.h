@@ -2,6 +2,8 @@
 
 #include "PhongShader.h"
 
+#include <array>
+
 SHARED_PTR_CLASS_DECL(Texture2D)
 SHARED_PTR_CLASS_DECL(PhongTextureShader)
 SHARED_PTR_CLASS_DECL(TextureMaterial)
@@ -29,7 +31,8 @@ protected:
 	enum TextureType { Albedo = 0, BumpMap = 1, Specular = 2, Evironment = 3 };
 	static const int numTextures = 4;
 
-	GLuint texUnits[numTextures];
+	std::array<GLuint, numTextures> textureUnits;
+
 	TextureMaterial_cptr textureMaterial;
 
 };

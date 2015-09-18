@@ -18,10 +18,10 @@ PhongTextureShader::PhongTextureShader()
 	GLint maxTexUnits;
 	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,&maxTexUnits);
 
-	texUnits[Albedo] = 0;
-	texUnits[BumpMap] = 1;
-	texUnits[Specular] = 2;
-	texUnits[Evironment] = 3;
+	textureUnits[Albedo] = 0;
+	textureUnits[BumpMap] = 1;
+	textureUnits[Specular] = 2;
+	textureUnits[Evironment] = 3;
 
 	hasShadows = true;
 	pcfShadows = true;
@@ -42,14 +42,14 @@ bool PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransf
 	{
 		if (auto sbm = std::dynamic_pointer_cast<SkyboxMaterial>(scene->skybox->GetMaterial()))
 		{
-			sbm->texture->BindTexture(texUnits[Evironment]);
+			sbm->texture->BindTexture(textureUnits[Evironment]);
 			SetUniform("EnvMap.Exists", static_cast<bool>(scene->skybox));
-			SetUniform("EnvMap.CubeTexture", texUnits[Evironment]);
+			SetUniform("EnvMap.CubeTexture", textureUnits[Evironment]);
 			SetUniform("CameraPosWorld", scene->activeCamera->Position());
 		}
 	}
 
-	SetLightAndModel(scene,4);
+	SetLightAndModel(scene, static_cast<int>(textureUnits.size() ));
 
 	if (textureMaterial)
 	{
@@ -62,8 +62,8 @@ bool PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransf
 		//Bind albedo texture to texture unit 0
 		if (auto at = textureMaterial->albedoTexture)
 		{
-			at->BindTexture(texUnits[Albedo]);
-			SetUniform("Material.AlbedoTex", texUnits[Albedo]);
+			at->BindTexture(textureUnits[Albedo]);
+			SetUniform("Material.AlbedoTex", textureUnits[Albedo]);
 		}
 
 		bool hasBumpMap = false;
@@ -72,8 +72,8 @@ bool PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransf
 		if (auto bt = textureMaterial->bumpTexture)
 		{
 			//Bind normal texture to texture unit 1
-			bt->BindTexture(texUnits[BumpMap]);
-			SetUniform("Material.BumpmapTex", texUnits[BumpMap]);
+			bt->BindTexture(textureUnits[BumpMap]);
+			SetUniform("Material.BumpmapTex", textureUnits[BumpMap]);
 			SetUniform("Material.BumpTexIsNormalMap", textureMaterial->bumpBumpTexIsNormalMap);
 			hasBumpMap = true;			
 		}
@@ -81,8 +81,8 @@ bool PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransf
 		if (auto st = textureMaterial->specularTexture)
 		{
 			//Bind specular texture to texture unit 2
-			st->BindTexture(texUnits[Specular]);
-			SetUniform("Material.SpecularTex", texUnits[Specular]);
+			st->BindTexture(textureUnits[Specular]);
+			SetUniform("Material.SpecularTex", textureUnits[Specular]);
 			hasSpecularMap = true;
 		}
 
@@ -102,11 +102,11 @@ void PhongTextureShader::UnUse()
 
 	if (textureMaterial)
 	{
-		glActiveTexture(GL_TEXTURE0 + texUnits[Albedo]);
+		glActiveTexture(GL_TEXTURE0 + textureUnits[Albedo]);
 		glBindTexture(GL_TEXTURE_2D, 0);
-		glActiveTexture(GL_TEXTURE0 + texUnits[BumpMap]);
+		glActiveTexture(GL_TEXTURE0 + textureUnits[BumpMap]);
 		glBindTexture(GL_TEXTURE_2D, 0);
-		glActiveTexture(GL_TEXTURE0 + texUnits[Specular]);
+		glActiveTexture(GL_TEXTURE0 + textureUnits[Specular]);
 		glBindTexture(GL_TEXTURE_2D, 0);	
 	}
 }

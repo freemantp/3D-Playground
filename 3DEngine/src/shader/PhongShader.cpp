@@ -22,18 +22,18 @@ PhongShader_ptr PhongShader::Create()
 }
 
 PhongShader::PhongShader()
-: MaterialShader("phongShader")
-, hasShadows(true)
-, useShadows(true)
-, pcfShadows(true)
+: PhongShader("phongShader")
 {
-	hasMM = true;
-	Init();
+
 }
 
 PhongShader::PhongShader(const std::string& shaderName)
 : MaterialShader(shaderName)
+, hasShadows(true)
+, useShadows(true)
+, pcfShadows(true)
 {	
+	hasMM = true;
 	Init();
 }
 
