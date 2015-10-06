@@ -29,16 +29,15 @@ DebugScene::DebugScene(Scene_ptr scene)
 
 		float current_x = width / 2 + spacing;
 
-		for (auto sl : scene->lightModel->spotLights)
+		auto add_shadowmap_box = [&](DepthTexture_ptr dt)
 		{
-			auto shadow = sl->Shadow()->ShadowMap();
-			auto dim = shadow->Dimensions();
+			auto dim = dt->Dimensions();
 
 			float height = width / dim.x * dim.y;
 
 			auto box = Util::CreateBox();
-			DepthMapMaterial_ptr mat = DepthMapMaterial::Create();			
-			mat->depthTexture = shadow;
+			DepthMapMaterial_ptr mat = DepthMapMaterial::Create();
+			mat->depthTexture = dt;
 
 			box->SetMaterial(mat);
 
@@ -49,7 +48,15 @@ DebugScene::DebugScene(Scene_ptr scene)
 			AddShape(box);
 
 			current_x += width + spacing;
+		};
+
+		for (auto sl : scene->lightModel->spotLights)
+		{
+			add_shadowmap_box(sl->Shadow()->ShadowMap());	
 		}
+
+		if(scene->lightModel->directionalLight)
+			add_shadowmap_box(scene->lightModel->directionalLight->Shadow()->ShadowMap());
 	}
 }
 

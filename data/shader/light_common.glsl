@@ -15,6 +15,7 @@ struct DirectionalLight
 {
 	vec3 Direction;
 	vec3 Color;
+	mat4 ShadowMatrix;
 };
 
 //PointLight declaration

@@ -116,12 +116,6 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene, const unsigned int tex
 	SetUniform("NumSpotLights", static_cast<int>(num_slights));
 	SetUniform("HasDirectionalLight", static_cast<bool>(lightModel->directionalLight));
 	SetUniform("HasAmbientLight", static_cast<bool>(lightModel->ambientLight));	
-			
-	auto bind_shadowmap_tex = [&lightModel](int sl_i, int texUnit)
-	{
-		auto sl = lightModel->spotLights[sl_i];
-		sl->Shadow()->ShadowMap()->BindTexture(texUnit);
-	};
 
 	unsigned int current_tex_unit = tex_unit_offset;
 
@@ -136,16 +130,26 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene, const unsigned int tex
 	}
 
 	const size_t maxNumSpotLights = 4;
-	GLint shadowMaps[maxNumSpotLights];
-	std::iota(std::begin(shadowMaps), std::end(shadowMaps), current_tex_unit);
+	GLint spotlightShadowMaps[maxNumSpotLights];
+	std::iota(std::begin(spotlightShadowMaps), std::end(spotlightShadowMaps), current_tex_unit);
+	GLint dirLightShadowMap;
 
 	for (unsigned int i = 0; i < std::min(maxNumSpotLights, num_slights); i++)
 	{
-		bind_shadowmap_tex(i, shadowMaps[i]);
+		auto sl = lightModel->spotLights[i];
+		sl->Shadow()->ShadowMap()->BindTexture(current_tex_unit++);
+	}
+
+	if (auto dl = lightModel->directionalLight)
+	{
+		dirLightShadowMap = current_tex_unit;
+		dl->Shadow()->ShadowMap()->BindTexture(dirLightShadowMap);
 		current_tex_unit++;
 	}
 
-	if (hasShadows && lightModel->spotLights.size() > 0)
+	bool hasSpotLights = lightModel->spotLights.size() > 0;
+
+	if (hasShadows && (hasSpotLights || lightModel->directionalLight) )
 	{
 		SetUniform("UseShadows", useShadows);
 
@@ -159,9 +163,13 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene, const unsigned int tex
 
 				auto pcfDim = lightModel->pcfShadowRandomData->Dimensions();
 
-				auto sl = lightModel->spotLights[0];
-				const glm::ivec2& sdims = sl->Shadow()->ShadowMap()->Dimensions();
+				glm::ivec2 sdims;
 
+				if (hasSpotLights)
+					sdims = lightModel->spotLights[0]->Shadow()->ShadowMap()->Dimensions();
+				else if (lightModel->directionalLight)
+					sdims = lightModel->directionalLight->Shadow()->ShadowMap()->Dimensions();
+				
 				const float pixelBlur = pcfDim.x / static_cast<float>(sdims.x);
 
 				if (pcfShadows)
@@ -172,7 +180,9 @@ void PhongShader::SetLightAndModel(const Scene_ptr scene, const unsigned int tex
 				}
 			}
 
-			SetUniformArray("ShadowMapArray", shadowMaps, 1, maxNumSpotLights);
+			SetUniformArray("ShadowMapArray", spotlightShadowMaps, 1, maxNumSpotLights);
+			SetUniform("ShadowMapDirectional", dirLightShadowMap);
+			
 		}
 	}
 

@@ -57,7 +57,6 @@ public:
 		public:
 			glm::vec3 rotationAxis;
 			float radiansPerInterval;
-
 	};
 
 	void ConnectInputHandler(InputHandler& ih);
