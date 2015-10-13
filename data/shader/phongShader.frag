@@ -18,6 +18,7 @@ struct EnvironmentMap
 };
 
 uniform sampler2DShadow ShadowMapArray[4];
+uniform sampler2DShadow ShadowMapDirectional;
 uniform sampler3D PCFDataOffsets;
 uniform sampler2D DitherMap;
 uniform ivec3 PCFDataOffsetsSize;
@@ -59,59 +60,82 @@ void shade(const in vec3 normal, const in vec3 viewDir, const in vec3 lightDir, 
 		specular = specularity * blinn(lightDir,viewDir,normal);
 }
 
-float getShadow(int sl_i)
+float getPCFShadow(const in vec4 ShadowCoord, const in sampler2DShadow shadowSampler)
+{
+	vec4 sc = ShadowCoord;
+	float sum = 0.0;
+	
+	ivec3 offsetCoords;
+	offsetCoords.xy = ivec2( mod(gl_FragCoord.xy,  PCFDataOffsetsSize.xy) );    
+
+	//First test the four outermost offsets
+	for (int i=0; i<4; i++)
+	{
+		offsetCoords.z = i;
+		vec4 offsets = texelFetch(PCFDataOffsets,offsetCoords,0) * PCFBlurRadius * ShadowCoord.w;
+
+		sc.xy =  ShadowCoord.xy  + offsets.xy;
+		sum += textureProj(shadowSampler, sc);
+		sc.xy =  ShadowCoord.xy  + offsets.zw;
+		sum += textureProj(shadowSampler, sc);
+	}
+
+	float shadow = sum /8.0f;
+
+	//Only continue with inner offsets if outer ones are not completely shadowed or illuminated
+	if(shadow != 1.0 && shadow != 0.0)
+	{			
+		int numSamples = int(PCFDataOffsetsSize.z);
+
+		for (int i=4; i<numSamples; i++)
+		{
+			offsetCoords.z = i;
+			vec4 offsets = texelFetch(PCFDataOffsets,offsetCoords,0) * PCFBlurRadius * ShadowCoord.w;
+
+			sc.xy =  ShadowCoord.xy  + offsets.xy;
+			sum += textureProj(shadowSampler, sc);
+			sc.xy =  ShadowCoord.xy  + offsets.zw;
+			sum += textureProj(shadowSampler, sc);
+		}
+
+		shadow = sum / float(numSamples * 2.0);
+	}
+	return shadow;
+}
+
+float getSpotLightShadow(int sl_i)
 {
 	if(UseShadows && sl_i < NumSpotLights)
 	{
-		vec4 ShadowCoord = sceneLights.SpotLights[sl_i].ShadowMatrix * PositionModel;
-
-		ivec3 offsetCoords;
-		offsetCoords.xy = ivec2( mod(gl_FragCoord.xy,  PCFDataOffsetsSize.xy) );       
+		vec4 ShadowCoord = sceneLights.SpotLights[sl_i].ShadowMatrix * PositionModel;   
 
 		if(PcfShadows)
 		{	
-			vec4 sc = ShadowCoord;
-			float sum = 0.0;
-
-			//First test the four outermost offsets
-			for (int i=0; i<4; i++)
-			{
-				offsetCoords.z = i;
-				vec4 offsets = texelFetch(PCFDataOffsets,offsetCoords,0) * PCFBlurRadius * ShadowCoord.w;
-
-				sc.xy =  ShadowCoord.xy  + offsets.xy;
-				sum += textureProj(ShadowMapArray[sl_i], sc);
-				sc.xy =  ShadowCoord.xy  + offsets.zw;
-				sum += textureProj(ShadowMapArray[sl_i], sc);
-
-			}
-
-			float shadow = sum /8.0f;
-
-			//Only continue with inner offsets if outer ones are not completely shadowed or illuminated
-			if(shadow != 1.0 && shadow != 0.0)
-			{			
-				int numSamples = int(PCFDataOffsetsSize.z);
-
-				for (int i=4; i<numSamples; i++)
-				{
-					offsetCoords.z = i;
-					vec4 offsets = texelFetch(PCFDataOffsets,offsetCoords,0) * PCFBlurRadius * ShadowCoord.w;
-
-					sc.xy =  ShadowCoord.xy  + offsets.xy;
-					sum += textureProj(ShadowMapArray[sl_i], sc);
-					sc.xy =  ShadowCoord.xy  + offsets.zw;
-					sum += textureProj(ShadowMapArray[sl_i], sc);
-				}
-
-				shadow = sum / float(numSamples * 2.0);
-			}
-			return shadow;
+			return getPCFShadow(ShadowCoord,ShadowMapArray[sl_i]);
 		}
 		else
 		{
 			return textureProj(ShadowMapArray[sl_i],ShadowCoord);
-		}		
+		}
+	}
+	else
+		return 1.0f;
+}
+
+float getDirectionalLightShadow()
+{
+	if(UseShadows)
+	{
+		vec4 ShadowCoord = sceneLights.DirectionalLight0.ShadowMatrix * PositionModel;   
+
+		if(PcfShadows)
+		{	
+			return getPCFShadow(ShadowCoord,ShadowMapDirectional);
+		}
+		else
+		{
+			return textureProj(ShadowMapDirectional,ShadowCoord);
+		}
 	}
 	else
 		return 1.0f;
@@ -138,7 +162,10 @@ void main()
 		vec3 dirDirection = normalize(sceneLights.DirectionalLight0.Direction);
 		vec3 dirColor = sceneLights.DirectionalLight0.Color;		
 		shade(normal,ViewDirection,dirDirection,diffuse,specular);
-		FragColor += vec4(dirColor * (albedo * diffuse + specular),0);
+
+		float shadow = getDirectionalLightShadow();
+
+		FragColor += shadow * vec4(dirColor * (albedo * diffuse + specular),0);
 	}
 
 	//Point lights
@@ -181,7 +208,7 @@ void main()
 			float k = 0.2;
 			float distAttenuation = 1 / ( 1 + k*dist*dist);
 
-			float shadow = getShadow(i);
+			float shadow = getSpotLightShadow(i);
 
 			shade(normal,ViewDirection,lightVecNormalized,diffuse,specular);
 		

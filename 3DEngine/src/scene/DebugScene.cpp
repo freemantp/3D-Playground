@@ -29,34 +29,40 @@ DebugScene::DebugScene(Scene_ptr scene)
 
 		float current_x = width / 2 + spacing;
 
-		auto add_shadowmap_box = [&](DepthTexture_ptr dt)
+		auto add_shadowmap_box = [&](Shadow_ptr shadow)
 		{
-			auto dim = dt->Dimensions();
+			if(auto dt = shadow->ShadowMap())
+			{
+				auto dim = dt->Dimensions();
 
-			float height = width / dim.x * dim.y;
+				float height = width / dim.x * dim.y;
 
-			auto box = Util::CreateBox();
-			DepthMapMaterial_ptr mat = DepthMapMaterial::Create();
-			mat->depthTexture = dt;
+				auto box = Util::CreateBox();
+				DepthMapMaterial_ptr mat = DepthMapMaterial::Create();
+				mat->depthTexture = dt;
+				mat->nearPlane = shadow->NearPlane();
+				mat->farPlane = shadow->FarPlane();
+				mat->perspective = shadow->Type() == Shadow::ProjectionType::Perspective;
 
-			box->SetMaterial(mat);
+				box->SetMaterial(mat);
 
-			box->worldTransform = glm::translate(glm::mat4(1), glm::vec3(current_x, height / 2 + spacing, 0));
-			box->worldTransform = glm::scale(box->worldTransform, glm::vec3(width, height, 1));
-			box->worldTransform = glm::rotate(box->worldTransform, -glm::half_pi<float>(), glm::vec3(0, 0, 1));
+				box->worldTransform = glm::translate(glm::mat4(1), glm::vec3(current_x, height / 2 + spacing, 0));
+				box->worldTransform = glm::scale(box->worldTransform, glm::vec3(width, height, 1));
+				box->worldTransform = glm::rotate(box->worldTransform, -glm::half_pi<float>(), glm::vec3(0, 0, 1));
 
-			AddShape(box);
+				AddShape(box);
 
-			current_x += width + spacing;
+				current_x += width + spacing;
+			}
 		};
 
 		for (auto sl : scene->lightModel->spotLights)
 		{
-			add_shadowmap_box(sl->Shadow()->ShadowMap());	
+			add_shadowmap_box(sl->Shadow());	
 		}
 
 		if(scene->lightModel->directionalLight)
-			add_shadowmap_box(scene->lightModel->directionalLight->Shadow()->ShadowMap());
+			add_shadowmap_box(scene->lightModel->directionalLight->Shadow());
 	}
 }
 

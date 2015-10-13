@@ -19,8 +19,11 @@ bool DepthMapShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 	if (material)
 	{
 		material->depthTexture->BindTexture(0);
-		material->depthTexture->SetValueMode(DepthTexture::ValueMode::VALUE);
+		material->depthTexture->SetCompareMode(DepthTexture::CompareMode::Value);
 		SetUniform("DepthTex", 0);
+		SetUniform("NearPlane", material->nearPlane);
+		SetUniform("FarPlane", material->farPlane);
+		SetUniform("Perspective", material->perspective);
 	}
 	else
 		ok = false;
@@ -41,6 +44,6 @@ bool DepthMapShader::SetMaterial(Material_cptr material)
 
 void DepthMapShader::UnUse()
 {
-	material->depthTexture->SetValueMode(DepthTexture::ValueMode::COMPARE);
+	material->depthTexture->SetCompareMode(DepthTexture::CompareMode::RefToTexture);
 	__super::UnUse();
 }

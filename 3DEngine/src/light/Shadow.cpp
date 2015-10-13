@@ -27,20 +27,31 @@ void Shadow::UpdateShadowMatrix(SpotLight_cptr sl)
 	glm::vec3 pos3(sl->Position());
 	glm::vec3 lookAtPos(pos3 + sl->GetDirection());
 
+	nearPlane = 0.1f;
+	farPlane = 10.0f;
+
 	glm::mat4 depthViewMatrix = glm::lookAt(pos3, lookAtPos, sl->GetUpVector());
-	glm::mat4 depthProjectionMatrix = glm::perspective(glm::radians(sl->CutoffAngle() * 2), 1.0f, 0.1f, 100.0f);
+	glm::mat4 depthProjectionMatrix = glm::perspective(glm::radians(sl->CutoffAngle() * 2), 1.0f, nearPlane, farPlane);
 
 	depthViewProjectionMatrix = depthProjectionMatrix * depthViewMatrix;
 	shadowMat = biasMatrix * depthViewProjectionMatrix;
+	type = ProjectionType::Perspective;
 }
 
 void Shadow::UpdateShadowMatrix(DirectionalLight_cptr dirLight)
 {	
-	glm::mat4 depthViewMatrix = glm::lookAt(-dirLight->Direction(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 20);
+	//glm::mat4 depthViewMatrix = glm::lookAt(-dirLight->Direction(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+
+	glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(0,10,0), glm::vec3(0.0f), glm::vec3(1,0,1));
+
+	nearPlane = 1.0f; 
+	farPlane = 100.5f;
+	float ortho_dim = 5.f;
+	glm::mat4 depthProjectionMatrix = glm::ortho(-ortho_dim, ortho_dim, -ortho_dim, ortho_dim, nearPlane, farPlane);
 
 	depthViewProjectionMatrix = depthProjectionMatrix * depthViewMatrix;
 	shadowMat = biasMatrix * depthViewProjectionMatrix;
+	type = ProjectionType::Orthogonal;
 }
 
 DepthTexture_ptr Shadow::ShadowMap() const
@@ -61,4 +72,14 @@ const glm::mat4& Shadow::ShadowMatrix() const
 const glm::mat4& Shadow::LightViewProjectionMatrix() const
 {
 	return depthViewProjectionMatrix;
+}
+
+float Shadow::NearPlane() const
+{
+	return nearPlane;
+}
+
+float Shadow::FarPlane() const
+{
+	return farPlane;
 }

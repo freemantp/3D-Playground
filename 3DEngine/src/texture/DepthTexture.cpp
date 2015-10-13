@@ -7,13 +7,14 @@ DepthTexture_ptr DepthTexture::Create(int width, int height)
 }
 
 DepthTexture::DepthTexture(int width, int height, Format format)
-: Texture2D(width, height, format)
+	: Texture2D(width, height, format)
+	, compareMode(CompareMode::RefToTexture)
 {
 	wrapMode = TextureWrapMode::ClampToBorder;
 
 	glBindTexture(GL_TEXTURE_2D, texObject);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // TODO: Set to linear
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 	/*Prevent points outside of shadow map as shadowed by setting the border to 1 
@@ -31,8 +32,14 @@ DepthTexture::DepthTexture(int width, int height, Format format)
 
 }
 
-void DepthTexture::SetValueMode(const ValueMode& mode)
+void DepthTexture::SetCompareMode(const CompareMode& mode)
 {
+	compareMode = mode;
 	GLint compare_mode = static_cast<GLint>(mode);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, compare_mode);
+}
+
+const DepthTexture::CompareMode& DepthTexture::TexCompareMode() const
+{
+	return compareMode;
 }

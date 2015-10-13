@@ -5,14 +5,15 @@
 
 DirectionalLight_ptr DirectionalLight::Create(bool castsShadow)
 {
-	DirectionalLight_ptr ptr = DirectionalLight_ptr(new DirectionalLight(castsShadow));
+	DirectionalLight_ptr ptr = DirectionalLight_ptr(new DirectionalLight(castsShadow));	
 	ptr->UpdateShadow();
 	return ptr;
 }
 
 DirectionalLight::DirectionalLight(bool castsShadow)
 {
-	shadow = Shadow::Create();
+	if(castsShadow)
+		shadow = Shadow::Create();
 }
 
 const glm::vec3& DirectionalLight::Direction() const

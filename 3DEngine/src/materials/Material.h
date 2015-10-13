@@ -108,7 +108,10 @@ public:
 	static DepthMapMaterial_ptr Create();
 
 	DepthTexture_ptr depthTexture;
+	float nearPlane;
+	float farPlane;
+	bool perspective;
 protected:
-	DepthMapMaterial() {};
+	DepthMapMaterial() : perspective(true) {};
 };
 

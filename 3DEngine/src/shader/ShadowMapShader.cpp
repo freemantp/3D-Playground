@@ -34,11 +34,6 @@ void ShadowMapShader::SetLightMatrix(const glm::mat4& mat)
 void ShadowMapShader::UpdateTransforms(const Camera_ptr cam, const glm::mat4& modelTransform)
 {
 	__super::UpdateTransforms(cam, modelTransform);
-	//BeforeUniformSet();
-
-	//SetUniform("ShadowMatrix", shadowMatrix * modelTransform);
-
-	//AfterUniformSet();
 }
 
 ShadowMapShader::~ShadowMapShader()

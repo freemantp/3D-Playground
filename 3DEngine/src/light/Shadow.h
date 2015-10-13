@@ -15,11 +15,16 @@ public:
 
 	SHARED_PTR_FACTORY(Shadow);
 
+	enum class ProjectionType { Perspective, Orthogonal};
+
 	DepthTexture_ptr ShadowMap() const;
 
 	const glm::mat4& BiasMatrix() const;
 	const glm::mat4& ShadowMatrix() const;
 	const glm::mat4& LightViewProjectionMatrix() const;
+	float NearPlane() const;
+	float FarPlane() const;
+	ProjectionType Type() const { return type; };
 
 	void UpdateShadowMatrix(SpotLight_cptr spotLight);
 	void UpdateShadowMatrix(DirectionalLight_cptr dirLight);
@@ -33,6 +38,8 @@ protected:
 	glm::mat4 biasMatrix;
 	glm::mat4 shadowMat;
 	glm::mat4 depthViewProjectionMatrix;
+	float nearPlane, farPlane;
+	ProjectionType type;
 
 };
 
