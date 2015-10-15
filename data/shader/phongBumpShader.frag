@@ -4,11 +4,8 @@
 
 struct TextureMaterial
 {
-	//vec3 AmbientReflectivity;
-	//vec3 DiffuseReflectivity;
 	vec3 SpecularReflectivity;
 	int Shininess;
-	//float Opacity; //[0,1]
 	sampler2D AlbedoTex;
 	sampler2D BumpmapTex;
 	sampler2D SpecularTex;

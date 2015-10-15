@@ -16,7 +16,7 @@ class HaltonSphere
 
 public:
 
-	/// Halton point set generation, two p-adic Van der Corport sequences,Useful for incremental approach
+	/// Halton point set generation, two p-adic Van der put sequences, useful for incremental approach
 	static void GenerateRays(std::vector<glm::vec3> &points, int p2=7);
 
 	/// Rotates each vector with a random euler matrix

@@ -4,6 +4,8 @@
 #include "../util/SharedPointer.h"
 #include "../rendering/Renderable.h"
 
+#include "../math/OBB.h"
+
 
 //forward declarations
 class Scene;
@@ -25,6 +27,8 @@ public:
 	Material_ptr GetMaterial() const { return material; };
 	
 	glm::mat4 worldTransform;
+
+	OBB boxModelSpace;
 
 protected:
 	Material_ptr material;

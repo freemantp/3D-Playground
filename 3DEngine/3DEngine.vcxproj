@@ -37,6 +37,7 @@
     <ClInclude Include="src\light\SpotLight.h" />
     <ClInclude Include="src\materials\Material.h" />
     <ClInclude Include="src\math\HaltonSphere.h" />
+    <ClInclude Include="src\math\OBB.h" />
     <ClInclude Include="src\rendering\GeometryBuffer.h" />
     <ClInclude Include="src\rendering\Renderable.h" />
     <ClInclude Include="src\rendering\Renderer.h" />
@@ -99,6 +100,7 @@
     <ClCompile Include="src\light\SpotLight.cpp" />
     <ClCompile Include="src\materials\Material.cpp" />
     <ClCompile Include="src\math\HaltonSphere.cpp" />
+    <ClCompile Include="src\math\OBB.cpp" />
     <ClCompile Include="src\rendering\GeometryBuffer.cpp" />
     <ClCompile Include="src\rendering\Renderer.cpp" />
     <ClCompile Include="src\rendering\Viewport.cpp" />

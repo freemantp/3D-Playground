@@ -75,8 +75,6 @@ void RenderMesh::InitFromRawMesh(OpenGLRawMesh_ptr rawMesh)
 		// TODO: Refactor this (ugly, inefficient hack)
 		for(auto matName : rawMesh->groupMaterial)
 		{
-			bool found = false;
-
 			for (Material_ptr mat : meshMaterials)
 			{
 				std::string mn = mat->Name();
@@ -84,7 +82,6 @@ void RenderMesh::InitFromRawMesh(OpenGLRawMesh_ptr rawMesh)
 				if(matName == mn)
 				{
 					materialsNew.push_back(mat);
-					found = true;
 				}
 			}
 		}
@@ -456,7 +453,7 @@ void RenderMesh::Render(const Scene_ptr scene) const
 						}
 						else
 						{
-							Error("Could not use shader");
+							Error("Could not use shader " + current_shader->GetName());
 							int a;
 							std::cin >> a;
 						}

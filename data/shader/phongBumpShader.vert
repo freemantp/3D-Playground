@@ -9,13 +9,14 @@ layout (location = 3) in vec2 VertexTexCoord;
 
 struct TextureMaterial
 {
+	vec3 SpecularReflectivity;
+	int Shininess;
 	sampler2D AlbedoTex;
 	sampler2D BumpmapTex;
 	sampler2D SpecularTex;
 	bool BumpTexIsNormalMap;
 	bool HasSpecularMap;
 	bool HasBumpMap;
-	int Shininess;
 };
 
 uniform vec3 CameraPosWorld;

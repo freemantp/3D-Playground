@@ -284,6 +284,9 @@
     <ClInclude Include="src\util\RawMesh.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="src\math\OBB.h">
+      <Filter>Source Files\math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -453,6 +456,9 @@
     </ClCompile>
     <ClCompile Include="src\util\RawMesh.cpp">
       <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\OBB.cpp">
+      <Filter>Source Files\math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
