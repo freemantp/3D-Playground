@@ -9,7 +9,7 @@ class Skybox : public Box
 {
 public:
 
-	Skybox(SkyboxMaterial_ptr material);
+	Skybox(const SkyboxMaterial_ptr& material);
 	virtual ~Skybox();
 
 };

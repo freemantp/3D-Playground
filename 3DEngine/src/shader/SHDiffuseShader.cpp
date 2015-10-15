@@ -27,7 +27,7 @@ ShDiffuseShader::~ShDiffuseShader(void)
 {
 }
 
-bool ShDiffuseShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
+bool ShDiffuseShader::Use(const Scene_ptr& scene, const glm::mat4& modelTransform)
 {	
 	bool ok = __super::Use(scene,modelTransform);
 
@@ -57,7 +57,7 @@ bool ShDiffuseShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform
 	return ok;
 }
 
-bool ShDiffuseShader::SetMaterial(Material_cptr material)
+bool ShDiffuseShader::SetMaterial(const Material_cptr& material)
 {
 	if (ShDiffuseMaterial_cptr mat = std::dynamic_pointer_cast<const ShDiffuseMaterial>(material))
 	{

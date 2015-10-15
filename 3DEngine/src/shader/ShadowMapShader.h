@@ -25,7 +25,7 @@ public:
 protected:
 	ShadowMapShader();
 
-	virtual void UpdateTransforms(const Camera_ptr cam, const glm::mat4& modelTransform) override;
+	virtual void UpdateTransforms(const Camera_ptr& cam, const glm::mat4& modelTransform) override;
 
 	glm::mat4 shadowMatrix;
 

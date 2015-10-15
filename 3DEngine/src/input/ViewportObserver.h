@@ -8,6 +8,6 @@ SHARED_PTR_CLASS_DECL(Viewport);
 class ViewportObserver
 {
 public:
-	virtual void ViewportChanged(Viewport_ptr viewport) = 0;
+	virtual void ViewportChanged(const Viewport_ptr& viewport) = 0;
 
 };

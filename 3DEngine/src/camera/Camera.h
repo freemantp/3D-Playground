@@ -12,8 +12,6 @@ struct CameraFrame
 	glm::vec3 sideways;
 };
 
-SHARED_PTR_CLASS_DECL(Camera);
-
 class Camera : public ViewportObserver
 {
 public:

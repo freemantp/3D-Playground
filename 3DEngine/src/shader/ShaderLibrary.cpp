@@ -25,7 +25,7 @@ ShaderLibrary_ptr ShaderLibrary::GetInstance()
 	return instance;
 }
 
-bool ShaderLibrary::AddShader(Material_cptr material)
+bool ShaderLibrary::AddShader(const Material_cptr& material)
 {
 	if (!ShaderLookup(material))
 	{
@@ -47,13 +47,13 @@ bool ShaderLibrary::AddShader(Material_cptr material)
 	return false;
 }
 
-bool ShaderLibrary::AddShader(Material_cptr material, MaterialShader_ptr shader)
+bool ShaderLibrary::AddShader(const Material_cptr& material, const MaterialShader_ptr& shader)
 {
 	const std::type_info& info = typeid(*material.get());
 	return AddShader(info, shader);
 }
 
-bool ShaderLibrary::AddShader(const std::type_info& materialType, MaterialShader_ptr shader)
+bool ShaderLibrary::AddShader(const std::type_info& materialType, const MaterialShader_ptr& shader)
 {
 	bool success = false;
 
@@ -65,7 +65,7 @@ bool ShaderLibrary::AddShader(const std::type_info& materialType, MaterialShader
 	return success;
 }
 
-MaterialShader_ptr ShaderLibrary::ShaderLookup(Material_cptr material)
+MaterialShader_ptr ShaderLibrary::ShaderLookup(const Material_cptr& material)
 {
 	if (material)
 	{

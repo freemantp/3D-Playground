@@ -12,7 +12,7 @@
 using glm::mat4;
 using glm::vec3;
 
-FirstPersonCameraAdapter::FirstPersonCameraAdapter(Camera_ptr cam)
+FirstPersonCameraAdapter::FirstPersonCameraAdapter(const Camera_ptr& cam)
 	: CameraAdapter(cam)
 {
 }

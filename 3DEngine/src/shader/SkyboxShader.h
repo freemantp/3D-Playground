@@ -12,9 +12,9 @@ public:
 	
 	SHARED_PTR_FACTORY(SkyboxShader);
 
-	virtual bool Use(const Scene_ptr scene, const glm::mat4& modelTransform) override;
+	virtual bool Use(const Scene_ptr& scene, const glm::mat4& modelTransform) override;
 
-	virtual bool SetMaterial(Material_cptr material) override;
+	virtual bool SetMaterial(const Material_cptr& material) override;
 
 protected:
 

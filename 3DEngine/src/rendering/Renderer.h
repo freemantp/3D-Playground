@@ -14,11 +14,11 @@ class Renderer : public ViewportObserver, public KeyboardObserver
 {
 public:
 
-	static Renderer_ptr Create(Viewport_ptr viewport);
+	static Renderer_ptr Create(const Viewport_ptr& viewport);
 
 	void Render();
 
-	virtual void ViewportChanged(Viewport_ptr viewport) override;
+	virtual void ViewportChanged(const Viewport_ptr& viewport) override;
 
 	virtual void OnKey(const Input::Key key, const Input::Modifier mod, const glm::vec2& position) override;
 
@@ -27,7 +27,7 @@ public:
 	Scene_ptr Scene();
 
 protected:
-	Renderer(Viewport_ptr viewport);
+	Renderer(const Viewport_ptr& viewport);
 
 	virtual ~Renderer();
 

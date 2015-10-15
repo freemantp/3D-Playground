@@ -10,7 +10,7 @@ IntrinsicColorShader::IntrinsicColorShader()
 	hasMVM = false;
 }
 
-bool IntrinsicColorShader::SetMaterial(Material_cptr material)
+bool IntrinsicColorShader::SetMaterial(const Material_cptr& material)
 {
 	if (IntrinsicColorMaterial_cptr icm = std::dynamic_pointer_cast<const IntrinsicColorMaterial>(material))
 	{

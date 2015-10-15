@@ -16,7 +16,7 @@ WindowEventHandler& WindowEventHandler::GetInstance()
 	return instance;
 }
 
-void WindowEventHandler::AddViewportObserver(ViewportObserver_ptr observer)
+void WindowEventHandler::AddViewportObserver(const ViewportObserver_ptr& observer)
 {
 	viewportObservers.push_back(observer);
 }

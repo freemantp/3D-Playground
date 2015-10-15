@@ -68,7 +68,7 @@ void ShaderBase::AfterUniformSet()
 		glUseProgram(currentProgram);
 }
 
-void ShaderBase::UpdateTransforms(const Camera_ptr cam, const glm::mat4& modelTransform)
+void ShaderBase::UpdateTransforms(const Camera_ptr& cam, const glm::mat4& modelTransform)
 {
 	glm::mat4 modelViewMatrix = cam->viewMatrix * modelTransform;
 	
@@ -198,7 +198,7 @@ bool ShaderBase::LoadShader( const std::string& vertexSource,
 
 }
 
-bool ShaderBase::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
+bool ShaderBase::Use(const Scene_ptr& scene, const glm::mat4& modelTransform)
 {
 	bool ok = __super::Use();
 	UpdateTransforms(scene->activeCamera,modelTransform);

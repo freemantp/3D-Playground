@@ -79,7 +79,7 @@ void Util::PrintStrings(const std::vector<string> strings)
 	}
 }
 
-void Util::PrintUniforms(const ShaderBase* shader)
+void Util::PrintUniforms(const ShaderBase_ptr& shader)
 {
 	std::cout << shader->GetName() << std::endl << "------------------" << std::endl;
 	PrintStrings(shader->GetUniformAttributes());

@@ -9,7 +9,8 @@ class CameraAdapter
 {
 
 protected:
-	CameraAdapter(Camera_ptr cam) : cam(cam) {  };
+	CameraAdapter(const Camera_ptr& cam) 
+		: cam(cam) {};
 
 	Camera_ptr cam;
 

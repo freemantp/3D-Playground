@@ -265,7 +265,6 @@
     <ClInclude Include="src\util\TimeManager.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\DebugScene.h" />
     <ClInclude Include="src\shader\DepthMapShader.h">
       <Filter>Source Files\shaders</Filter>
     </ClInclude>
@@ -286,6 +285,9 @@
     </ClInclude>
     <ClInclude Include="src\math\OBB.h">
       <Filter>Source Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\DebugScene.h">
+      <Filter>Source Files\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -436,9 +438,6 @@
     <ClCompile Include="src\util\TimeManager.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="src\scene\DebugScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\shader\DepthMapShader.cpp">
       <Filter>Source Files\shaders</Filter>
     </ClCompile>
@@ -459,6 +458,9 @@
     </ClCompile>
     <ClCompile Include="src\math\OBB.cpp">
       <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\DebugScene.cpp">
+      <Filter>Source Files\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,7 @@ class ShCoeffParser
 {
 public:
 
-	static ShDiffuseShaderCoeffs_ptr Parse(std::string coeffXmlDocument);
+	static ShDiffuseShaderCoeffs_ptr Parse(const std::string& coeffXmlDocument);
 
 
 };

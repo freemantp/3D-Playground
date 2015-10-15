@@ -54,7 +54,7 @@ GeometryBuffer::~GeometryBuffer()
 	glDeleteFramebuffers(1,&m_DeferredFboHandle);
 }
 
- void GeometryBuffer::StartGBufferComp(Scene_ptr scene)
+ void GeometryBuffer::StartGBufferComp(const Scene_ptr& scene)
  {	 
 	 glBindFramebuffer(GL_FRAMEBUFFER, m_DeferredFboHandle);
 	 //glm::mat4 m;

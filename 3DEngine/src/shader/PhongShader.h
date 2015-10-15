@@ -15,9 +15,9 @@ public:
 
 	static PhongShader_ptr Create();
 
-	virtual bool Use(const Scene_ptr scene, const glm::mat4& modelTransform) override;
+	virtual bool Use(const Scene_ptr& scene, const glm::mat4& modelTransform) override;
 
-	virtual bool SetMaterial(Material_cptr material) override;
+	virtual bool SetMaterial(const Material_cptr& material) override;
 
 	virtual void UnUse() override;
 
@@ -28,7 +28,7 @@ protected:
 
 	virtual ~PhongShader();
 
-	void SetLightAndModel(const Scene_ptr scene, const unsigned int tex_unit_offset = 0);
+	void SetLightAndModel(const Scene_ptr& scene, const unsigned int tex_unit_offset = 0);
 
 	virtual void Init();
 

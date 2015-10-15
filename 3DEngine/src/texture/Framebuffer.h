@@ -20,7 +20,7 @@ public:
 	enum class Attachment : GLuint { Color = 0, Depth = 1, Stencil = 2 };
 
 	/// Attaches the given texture to the specified buffer target, returns true on success
-	bool Attach(Texture2D_ptr texture, Attachment target);
+	bool Attach(const Texture2D_ptr& texture, Attachment target);
 
 	/** Attaches a depth renderbuffer to the Framebuffer. Only applicabe
 	 *  if a color attachement has been set, returns true on success */

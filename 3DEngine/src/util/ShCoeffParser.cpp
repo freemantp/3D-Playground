@@ -14,7 +14,7 @@ using tinyxml2::XMLNode;
 using std::string;
 using std::vector;
 
-ShDiffuseShaderCoeffs_ptr ShCoeffParser::Parse(std::string coeffXmlDocument)
+ShDiffuseShaderCoeffs_ptr ShCoeffParser::Parse(const std::string& coeffXmlDocument)
 {
 	ShDiffuseShaderCoeffs_ptr shCoeffs;
 	

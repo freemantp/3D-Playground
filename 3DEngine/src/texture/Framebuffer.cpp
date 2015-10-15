@@ -27,7 +27,7 @@ bool Framebuffer::IsBound() const
 	return boundFbo == bufferHandle;
 }
 
-bool Framebuffer::Attach(Texture2D_ptr texture, Attachment target)
+bool Framebuffer::Attach(const Texture2D_ptr& texture, Attachment target)
 {
 	
 	if (texture && texture->IsValid())

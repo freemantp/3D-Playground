@@ -10,7 +10,7 @@ ConstColorShader::ConstColorShader()
 }
 
 
-bool ConstColorShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
+bool ConstColorShader::Use(const Scene_ptr& scene, const glm::mat4& modelTransform)
 {	
 	bool ok = __super::Use(scene, modelTransform);
 	
@@ -24,7 +24,7 @@ bool ConstColorShader::Use(const Scene_ptr scene, const glm::mat4& modelTransfor
 	return ok;
 }
 
-bool ConstColorShader::SetMaterial(Material_cptr material)
+bool ConstColorShader::SetMaterial(const Material_cptr& material)
 {
 	if (ConstantColorMaterial_cptr mat = std::dynamic_pointer_cast<const ConstantColorMaterial>(material))
 	{

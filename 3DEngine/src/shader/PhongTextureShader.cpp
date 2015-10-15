@@ -34,7 +34,7 @@ PhongTextureShader::~PhongTextureShader()
 
 }
 
-bool PhongTextureShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
+bool PhongTextureShader::Use(const Scene_ptr& scene, const glm::mat4& modelTransform)
 {	
 	bool ok = ShaderBase::Use(scene, modelTransform);
 
@@ -112,7 +112,7 @@ void PhongTextureShader::UnUse()
 }
 
 
-bool PhongTextureShader::SetMaterial(Material_cptr material)
+bool PhongTextureShader::SetMaterial(const Material_cptr& material)
 {
 	if (TextureMaterial_cptr texm = std::dynamic_pointer_cast<const TextureMaterial>(material))
 	{

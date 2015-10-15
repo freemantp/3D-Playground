@@ -18,12 +18,12 @@
 
 using namespace GLSLShader;
 
-RenderMesh_ptr RenderMesh::Create(OpenGLRawMesh_ptr mesh)
+RenderMesh_ptr RenderMesh::Create(const OpenGLRawMesh_ptr& mesh)
 {
 	return RenderMesh_ptr(new RenderMesh(mesh));
 }
 
-RenderMesh::RenderMesh(OpenGLRawMesh_ptr rawMesh)
+RenderMesh::RenderMesh(const OpenGLRawMesh_ptr&  rawMesh)
 : RenderMesh()
 {
 	InitFromRawMesh(rawMesh);
@@ -37,7 +37,7 @@ RenderMesh::RenderMesh(DrawMode mode)
 	Init();
 }
 
-void RenderMesh::InitFromRawMesh(OpenGLRawMesh_ptr rawMesh)
+void RenderMesh::InitFromRawMesh(const OpenGLRawMesh_ptr& rawMesh)
 {
 	if(rawMesh)
 	{
@@ -391,7 +391,7 @@ void RenderMesh::MapVertexAttributes(ShaderBase_ptr shader) const
 	glBindVertexArray(vaoHandle);
 }
 
-void RenderMesh::RenderShadowMap(ShadowMapShader_ptr shadow_shader) const
+void RenderMesh::RenderShadowMap(const ShadowMapShader_ptr& shadow_shader) const
 {
 	if (shadow_shader)
 	{
@@ -417,7 +417,7 @@ void RenderMesh::RenderShadowMap(ShadowMapShader_ptr shadow_shader) const
 	
 }
 
-void RenderMesh::Render(const Scene_ptr scene) const
+void RenderMesh::Render(const Scene_ptr& scene) const
 {
 	ShaderLibrary_ptr sl = ShaderLibrary::GetInstance();
 

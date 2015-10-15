@@ -18,8 +18,8 @@ public:
 	static void key(unsigned char key, int x, int y);
 	static void specialKey(int key, int x, int y);
 
-	virtual void AddMouseObserver(MouseObserver_ptr observer);
-	virtual void AddKeyboardObserver(KeyboardObserver_ptr observer);
+	virtual void AddMouseObserver(const MouseObserver_ptr& observer);
+	virtual void AddKeyboardObserver(const KeyboardObserver_ptr& observer);
 
 protected:
 

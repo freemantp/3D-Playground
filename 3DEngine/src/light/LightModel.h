@@ -23,7 +23,7 @@ public:
 	~LightModel();
 
 	UniformBuffer_ptr GetLightsBuffer() const;
-	void UpdateUniformBuffer(Camera_cptr cam);
+	void UpdateUniformBuffer(const Camera_cptr& cam);
 
 	bool IsValid();
 

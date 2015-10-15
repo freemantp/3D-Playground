@@ -19,7 +19,7 @@ public:
 	virtual ~GeometryBuffer();
 
 	/// 
-	void StartGBufferComp(Scene_ptr scene);
+	void StartGBufferComp(const Scene_ptr& scene);
 	
 	
 	void EndGBufferComp();

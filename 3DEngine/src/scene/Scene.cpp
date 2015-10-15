@@ -32,12 +32,12 @@
 
 using std::vector;
 
-Scene_ptr Scene::Create(Camera_ptr cam, bool has_frambufer)
+Scene_ptr Scene::Create(const Camera_ptr& cam, bool has_frambufer)
 {
 	return Scene_ptr(new Scene(cam, has_frambufer), [](Scene* p) {delete p; });
 }
 
-Scene::Scene(Camera_ptr cam,bool has_frambufer)
+Scene::Scene(const Camera_ptr& cam,bool has_frambufer)
 	: skybox(nullptr)
 	, shadowShader(ShadowMapShader::Create())
 {
@@ -82,12 +82,12 @@ Scene::~Scene()
 	}
 }
 
-void Scene::AddShape(Shape_ptr shape)
+void Scene::AddShape(const Shape_ptr& shape)
 {
 	objects.push_back(shape);
 }
 
-void Scene::SetSkybox(Skybox_ptr skybox)
+void Scene::SetSkybox(const Skybox_ptr& skybox)
 {
 	this->skybox = skybox;
 }
@@ -147,7 +147,7 @@ void Scene::RenderShadowMaps()
 	};
 }
 
-void Scene::Render(Viewport_ptr viewport)
+void Scene::Render(const Viewport_ptr& viewport)
 {		
 	RenderShadowMaps();
 	
@@ -210,32 +210,32 @@ void Scene::TimeUpdate(long time)
 	lightModel->UpdateUniformBuffer(activeCamera);
 }
 
-void Scene::AddMaterial(ShaderBase* material)
+void Scene::AddMaterial(const ShaderBase* material)
 {
 	materials.push_back(material);
 }
 
-void Scene::SetCamera(Camera_ptr cam)
+void Scene::SetCamera(const Camera_ptr& cam)
 {
 	activeCamera = cam;
 }
 
-void Scene::AddLight(PointLight_ptr light)
+void Scene::AddLight(const PointLight_ptr& light)
 {
 	lightModel->pointLights.push_back(light);
 }
 
-void Scene::AddLight(SpotLight_ptr light)
+void Scene::AddLight(const SpotLight_ptr& light)
 {
 	lightModel->spotLights.push_back(light);
 }
 
-void Scene::SetLight(DirectionalLight_ptr light)
+void Scene::SetLight(const DirectionalLight_ptr& light)
 {
 	lightModel->directionalLight = light;
 }
 
-void Scene::SetLight(AmbientLight_ptr light)
+void Scene::SetLight(const AmbientLight_ptr& light)
 {
 	lightModel->ambientLight = light;
 }

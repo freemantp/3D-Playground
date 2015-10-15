@@ -10,7 +10,7 @@ public:
 	OrthogonalCamera();
 	~OrthogonalCamera();
 
-	virtual void ViewportChanged(Viewport_ptr viewport) override;
+	virtual void ViewportChanged(const Viewport_ptr& viewport) override;
 
 protected:
 

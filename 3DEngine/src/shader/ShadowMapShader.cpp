@@ -31,7 +31,7 @@ void ShadowMapShader::SetLightMatrix(const glm::mat4& mat)
 	AfterUniformSet();
 }
 
-void ShadowMapShader::UpdateTransforms(const Camera_ptr cam, const glm::mat4& modelTransform)
+void ShadowMapShader::UpdateTransforms(const Camera_ptr& cam, const glm::mat4& modelTransform)
 {
 	__super::UpdateTransforms(cam, modelTransform);
 }

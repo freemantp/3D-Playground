@@ -41,7 +41,7 @@ PhongMaterial::PhongMaterial()
 
 }
 
-void PhongMaterial::InitFromWavefrontMaterial(WavefrontObjMaterial_ptr mat ,const std::string& base_folder)
+void PhongMaterial::InitFromWavefrontMaterial(const WavefrontObjMaterial_cptr& mat,const std::string& base_folder)
 {
 	name = mat->name;
 	ambientReflection = mat->ambient;
@@ -56,7 +56,7 @@ bool PhongMaterial::IsTransparent() const
 	return opacity != 1;
 }
 
-void TextureMaterial::InitFromWavefrontMaterial(WavefrontObjMaterial_ptr mat, const std::string& base_folder)
+void TextureMaterial::InitFromWavefrontMaterial(const WavefrontObjMaterial_cptr& mat, const std::string& base_folder)
 {
 	__super::InitFromWavefrontMaterial(mat, base_folder);
 

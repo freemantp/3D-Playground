@@ -20,7 +20,7 @@ SkyboxShader::~SkyboxShader(void)
 }
 
 
-bool SkyboxShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
+bool SkyboxShader::Use(const Scene_ptr& scene, const glm::mat4& modelTransform)
 {	
 	bool ok = __super::Use(scene,modelTransform);
 
@@ -39,7 +39,7 @@ bool SkyboxShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
 
 }
 
-bool SkyboxShader::SetMaterial(Material_cptr material)
+bool SkyboxShader::SetMaterial(const Material_cptr& material)
 {
 	if (SkyboxMaterial_cptr mat = std::dynamic_pointer_cast<const SkyboxMaterial>(material))
 	{

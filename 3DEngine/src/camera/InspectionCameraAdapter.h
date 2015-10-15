@@ -15,12 +15,12 @@ class Camera;
 class InspectionCameraAdapter : public CameraAdapter, public MouseObserver
 {
 public:
-	InspectionCameraAdapter(Camera_ptr cam);
+	InspectionCameraAdapter(const Camera_ptr& cam);
 	~InspectionCameraAdapter();
 
 	virtual void OnMouseMove(const glm::vec2& position) override;
 	virtual void OnMouseDrag(const glm::vec2& position) override;
-	virtual void OnMouseClick(Input::MouseButton button, Input::Direction state, const  glm::vec2& position) override;
+	virtual void OnMouseClick(Input::MouseButton button, Input::Direction state, const glm::vec2& position) override;
 	virtual void OnMouseWheel(Input::Direction direction, const glm::vec2& position) override;
 
 protected:

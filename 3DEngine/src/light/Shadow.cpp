@@ -21,7 +21,7 @@ Shadow::Shadow()
 		);
 }
 
-void Shadow::UpdateShadowMatrix(SpotLight_cptr sl)
+void Shadow::UpdateShadowMatrix(const SpotLight_cptr& sl)
 {
 	//In fact this applies to directional lights only...	
 	glm::vec3 pos3(sl->Position());
@@ -38,7 +38,7 @@ void Shadow::UpdateShadowMatrix(SpotLight_cptr sl)
 	type = ProjectionType::Perspective;
 }
 
-void Shadow::UpdateShadowMatrix(DirectionalLight_cptr dirLight)
+void Shadow::UpdateShadowMatrix(const DirectionalLight_cptr& dirLight)
 {	
 	//glm::mat4 depthViewMatrix = glm::lookAt(-dirLight->Direction(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 

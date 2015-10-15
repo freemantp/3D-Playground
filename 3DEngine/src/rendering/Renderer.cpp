@@ -10,12 +10,12 @@
 
 #include "../error.h"
 
-Renderer_ptr Renderer::Create(Viewport_ptr viewport)
+Renderer_ptr Renderer::Create(const Viewport_ptr& viewport)
 {
 	return Renderer_ptr(new Renderer(viewport), [](Renderer* r) {delete r; });
 }
 
-Renderer::Renderer(Viewport_ptr viewport)
+Renderer::Renderer(const Viewport_ptr& viewport)
 	: m_Viewport(viewport)
 	, m_ShowDebugElements(false)
 {
@@ -53,7 +53,7 @@ void Renderer::Render()
 	}
 }
 
-void Renderer::ViewportChanged(Viewport_ptr viewport)
+void Renderer::ViewportChanged(const Viewport_ptr& viewport)
 {
 	m_Viewport = viewport;
 }

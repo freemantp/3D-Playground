@@ -15,12 +15,12 @@ TimeManager& TimeManager::GetInstance()
 	return TimeManager::instance;
 }
 
-void TimeManager::AddTimeObserver(TimeObserver_ptr observer)
+void TimeManager::AddTimeObserver(const TimeObserver_ptr& observer)
 {
 	timeObservers.push_back(observer);
 }
 
-void TimeManager::RemoveTimeObserver(TimeObserver_ptr observer)
+void TimeManager::RemoveTimeObserver(const TimeObserver_ptr& observer)
 {
 	auto item = std::find_if(timeObservers.begin(), timeObservers.end(), [&observer](TimeObserver_wptr p)
 	{

@@ -12,7 +12,7 @@ public:
 
 	SHARED_PTR_FACTORY(IntrinsicColorShader);
 
-	virtual bool SetMaterial(Material_cptr material) override;
+	virtual bool SetMaterial(const Material_cptr& material) override;
 
 protected:
 

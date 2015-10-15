@@ -12,9 +12,9 @@ public:
 	static TimeManager& GetInstance();
 	static void Tick();
 
-	virtual void AddTimeObserver(TimeObserver_ptr observer);
+	virtual void AddTimeObserver(const TimeObserver_ptr& observer);
 
-	virtual void RemoveTimeObserver(TimeObserver_ptr observer);
+	virtual void RemoveTimeObserver(const TimeObserver_ptr& observer);
 
 protected:
 

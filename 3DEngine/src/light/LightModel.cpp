@@ -56,7 +56,7 @@ UniformBuffer_ptr LightModel::GetLightsBuffer() const
 	return lightsBuffer;
 }
 
-void LightModel::UpdateUniformBuffer(Camera_cptr cam)
+void LightModel::UpdateUniformBuffer(const Camera_cptr& cam)
 {
 	glm::mat3 directionTransformMatrix	= glm::transpose(glm::inverse(glm::mat3(cam->viewMatrix)));
 	

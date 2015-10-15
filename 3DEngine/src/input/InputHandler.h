@@ -8,6 +8,6 @@ SHARED_PTR_CLASS_DECL(KeyboardObserver);
 class InputHandler
 {
 public:
-	virtual void AddMouseObserver(MouseObserver_ptr observer) = 0;
-	virtual void AddKeyboardObserver(KeyboardObserver_ptr observer) = 0;
+	virtual void AddMouseObserver(const MouseObserver_ptr& observer) = 0;
+	virtual void AddKeyboardObserver(const KeyboardObserver_ptr& observer) = 0;
 };

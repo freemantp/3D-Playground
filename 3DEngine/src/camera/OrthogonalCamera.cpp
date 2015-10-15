@@ -30,7 +30,7 @@ void OrthogonalCamera::UpdateProjectionMatrix()
 									nearP, farP);
 }
 
-void OrthogonalCamera::ViewportChanged(Viewport_ptr viewport)
+void OrthogonalCamera::ViewportChanged(const Viewport_ptr& viewport)
 {
 	width = viewport->width;
 	height = viewport->height;

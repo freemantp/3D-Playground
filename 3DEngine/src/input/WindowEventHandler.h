@@ -12,7 +12,7 @@ public:
 	static WindowEventHandler& GetInstance();
 	static void resize(int width, int height);
 
-	void AddViewportObserver(ViewportObserver_ptr observer);
+	void AddViewportObserver(const ViewportObserver_ptr& observer);
 
 
 protected:

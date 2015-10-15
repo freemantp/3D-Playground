@@ -26,8 +26,8 @@ public:
 	float FarPlane() const;
 	ProjectionType Type() const { return type; };
 
-	void UpdateShadowMatrix(SpotLight_cptr spotLight);
-	void UpdateShadowMatrix(DirectionalLight_cptr dirLight);
+	void UpdateShadowMatrix(const SpotLight_cptr& spotLight);
+	void UpdateShadowMatrix(const DirectionalLight_cptr& dirLight);
 
 protected:
 

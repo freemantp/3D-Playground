@@ -6,8 +6,7 @@
 #include "SharedPointer.h"
 
 SHARED_PTR_CLASS_DECL(RenderMesh);
-class GLSLProgram;
-class ShaderBase;
+SHARED_PTR_CLASS_DECL(ShaderBase);
 
 namespace glimg
 {
@@ -22,7 +21,7 @@ public:
 	static std::string LoadTextFile(char* filename);
 	static std::string LoadTextFile(const std::string& s);
 	static void PrintStrings(const std::vector<std::string> strings);
-	static void PrintUniforms(const ShaderBase* shader);
+	static void PrintUniforms(const ShaderBase_ptr& shader);
 	static RenderMesh_ptr LoadModel(const std::string& path, bool computeTangents = false);
 
 	static std::unique_ptr<glimg::ImageSet> LoadImageFile(const std::string& texturePath);

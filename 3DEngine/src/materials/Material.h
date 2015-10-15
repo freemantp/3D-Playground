@@ -46,7 +46,7 @@ class PhongMaterial : public Material
 public:
 	static PhongMaterial_ptr Create();
 
-	virtual void InitFromWavefrontMaterial(WavefrontObjMaterial_ptr mat, const std::string& base_folder);
+	virtual void InitFromWavefrontMaterial(const WavefrontObjMaterial_cptr& mat, const std::string& base_folder);
 
 	glm::vec3 ambientReflection;
 	glm::vec3 diffuseReflection;
@@ -69,7 +69,7 @@ public:
 	Texture2D_ptr specularTexture;
 	bool bumpBumpTexIsNormalMap;
 
-	virtual void InitFromWavefrontMaterial(WavefrontObjMaterial_ptr mat, const std::string& base_folder) override;
+	virtual void InitFromWavefrontMaterial(const WavefrontObjMaterial_cptr& mat, const std::string& base_folder) override;
 
 protected:
 	TextureMaterial() { };

@@ -14,7 +14,7 @@
 using glm::vec3;
 using glm::vec4;
 
-InspectionCameraAdapter::InspectionCameraAdapter(Camera_ptr cam) 
+InspectionCameraAdapter::InspectionCameraAdapter(const Camera_ptr& cam) 
 	: CameraAdapter(cam)
 {
 

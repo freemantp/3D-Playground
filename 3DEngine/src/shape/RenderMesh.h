@@ -20,10 +20,10 @@ class RenderMesh : public Shape
 {
 public:
 
-	static RenderMesh_ptr Create(OpenGLRawMesh_ptr);
+	static RenderMesh_ptr Create(const OpenGLRawMesh_ptr&);
 
-	virtual void Render(const Scene_ptr scene) const override;
-	virtual void RenderShadowMap(ShadowMapShader_ptr) const override;
+	virtual void Render(const Scene_ptr& scene) const override;
+	virtual void RenderShadowMap(const ShadowMapShader_ptr&) const override;
 	virtual void Init() override; 
 
 	typedef std::pair<int, int> IntPair;
@@ -44,10 +44,10 @@ public:
 
 protected:
 
-	RenderMesh(OpenGLRawMesh_ptr rawMesh);
+	RenderMesh(const OpenGLRawMesh_ptr& rawMesh);
 	RenderMesh(DrawMode = DrawMode::Triangle);
 
-	void InitFromRawMesh(OpenGLRawMesh_ptr rawMesh);
+	void InitFromRawMesh(const OpenGLRawMesh_ptr& rawMesh);
 
 	/// Map vertex attributes to correct channels
 	void MapVertexAttributes(ShaderBase_ptr shader) const;

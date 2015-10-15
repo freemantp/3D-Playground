@@ -29,7 +29,7 @@ PointLight::~PointLight()
 
 }
 
-void PointLight::SetPosition(glm::vec4& pos)
+void PointLight::SetPosition(const glm::vec4& pos)
 {
 	position = pos;
 	visMesh->worldTransform[3] = position;
@@ -40,7 +40,7 @@ const glm::vec4& PointLight::Position() const
 	return position;
 }
 
-void PointLight::SetColor(vec3& color)
+void PointLight::SetColor(const vec3& color)
 {
 	Light::SetColor(color);
 	ConstantColorMaterial_ptr mat = std::dynamic_pointer_cast<ConstantColorMaterial>(visMesh->GetMaterial());

@@ -40,7 +40,7 @@ const glm::vec3& SpotLight::GetUpVector() const
 	return up;
 }
 
-void SpotLight::SetPosition(glm::vec4& pos)
+void SpotLight::SetPosition(const glm::vec4& pos)
 {
 	__super::SetPosition(pos);
 	UpdateShadow();

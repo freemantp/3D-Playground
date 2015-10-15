@@ -46,7 +46,7 @@ PhongShader::~PhongShader()
 {
 }
 
-bool PhongShader::SetMaterial(Material_cptr material)
+bool PhongShader::SetMaterial(const Material_cptr& material)
 {
 	if (PhongMaterial_cptr pm = std::dynamic_pointer_cast<const PhongMaterial>(material))
 	{
@@ -57,7 +57,7 @@ bool PhongShader::SetMaterial(Material_cptr material)
 	return false;
 }
 
-bool PhongShader::Use(const Scene_ptr scene, const glm::mat4& modelTransform)
+bool PhongShader::Use(const Scene_ptr& scene, const glm::mat4& modelTransform)
 {	
 	bool ok = __super::Use(scene, modelTransform);
 
@@ -105,7 +105,7 @@ void PhongShader::UnUse()
 	glDepthMask(GL_TRUE);
 }
 
-void PhongShader::SetLightAndModel(const Scene_ptr scene, const unsigned int tex_unit_offset)
+void PhongShader::SetLightAndModel(const Scene_ptr& scene, const unsigned int tex_unit_offset)
 {
 	LightModel_ptr lightModel = scene->lightModel;
 

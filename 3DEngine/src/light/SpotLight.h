@@ -27,7 +27,7 @@ public:
 	virtual void SetDirection(const glm::vec3& dir);
 
 	virtual void SetUpDirection(const glm::vec3& dir);
-	virtual void SetPosition(glm::vec4& pos) override;
+	virtual void SetPosition(const glm::vec4& pos) override;
 
 	virtual float CutoffAngle() const;
 

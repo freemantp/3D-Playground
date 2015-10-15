@@ -30,25 +30,25 @@ class Scene : public TimeObserver, public std::enable_shared_from_this<Scene>
 {
 public:		
 
-	static Scene_ptr Create(Camera_ptr cam, bool has_frambufer = true);
+	static Scene_ptr Create(const Camera_ptr& cam, bool has_frambufer = true);
 
-	void Render(Viewport_ptr viewport);
+	void Render(const Viewport_ptr& viewport);
 
-	void AddShape(Shape_ptr shape);
-	void SetSkybox(Skybox_ptr skybox);
-	void AddMaterial(ShaderBase* shape);
-	void SetCamera(Camera_ptr cam);
-	void AddLight(PointLight_ptr shape);
-	void AddLight(SpotLight_ptr light);
-	void SetLight(DirectionalLight_ptr light);
-	void SetLight(AmbientLight_ptr light);
+	void AddShape(const Shape_ptr& shape);
+	void SetSkybox(const Skybox_ptr& skybox);
+	void AddMaterial(const ShaderBase* shape);
+	void SetCamera(const Camera_ptr& cam);
+	void AddLight(const PointLight_ptr& shape);
+	void AddLight(const SpotLight_ptr& light);
+	void SetLight(const DirectionalLight_ptr& light);
+	void SetLight(const AmbientLight_ptr& light);
 
 	virtual void TimeUpdate(long time);
 
 	Camera_ptr activeCamera;
 	LightModel_ptr lightModel;
 	std::vector<Shape_ptr> objects;
-	std::vector<ShaderBase*> materials;
+	std::vector<const ShaderBase*> materials;
 	Skybox_ptr skybox;
 	std::string name;
 	
@@ -65,7 +65,7 @@ public:
 
 protected:
 
-	Scene(Camera_ptr cam,bool has_framebufer);
+	Scene(const Camera_ptr& cam,bool has_framebufer);
 
 	virtual ~Scene();
 

@@ -22,7 +22,7 @@ public:
 
 	virtual void Init() = 0;
 
-	void SetMaterial(Material_ptr material) { this->material = material; };
+	void SetMaterial(const Material_ptr& material) { this->material = material; };
 
 	Material_ptr GetMaterial() const { return material; };
 	
