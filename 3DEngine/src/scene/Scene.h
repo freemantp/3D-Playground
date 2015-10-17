@@ -20,6 +20,7 @@ SHARED_PTR_CLASS_DECL(Camera);
 SHARED_PTR_CLASS_DECL(Scene);
 SHARED_PTR_CLASS_DECL(Shape);
 SHARED_PTR_CLASS_DECL(Skybox);
+SHARED_PTR_CLASS_DECL(WireCube);
 SHARED_PTR_CLASS_DECL(InspectionCameraAdapter);
 SHARED_PTR_CLASS_DECL(FirstPersonCameraAdapter);
 SHARED_PTR_CLASS_DECL(ShadowMapShader);
@@ -54,6 +55,7 @@ public:
 	std::vector<const ShaderBase*> materials;
 	Skybox_ptr skybox;
 	std::string name;
+	WireCube_ptr wireCube;
 	
 	class LightAnimationParam
 	{

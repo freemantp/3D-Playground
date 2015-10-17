@@ -6,6 +6,7 @@
 #include "../util/ObjLoader.h"
 
 #include "../shape/Box.h"
+#include "../shape/WireCube.h"
 #include "../shape/RenderMesh.h"
 
 #include "../shader/ShaderBase.h"
@@ -161,9 +162,13 @@ RenderMesh_ptr Util::CreateBox()
 {
 	Box_ptr box = Box::Create();
 	box->Init();
+	return box;
+}
 
-	//box->worldTransform = glm::translate(box->worldTransform, glm::vec3(-0.5, -0.5f, -0.5));
-
+WireCube_ptr Util::CreateWireBox()
+{
+	WireCube_ptr box = WireCube::Create();
+	box->Init();
 	return box;
 }
 

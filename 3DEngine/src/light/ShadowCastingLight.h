@@ -16,6 +16,8 @@ public:
 
 	virtual void SetSceneBoundingBox(AABBox& box);
 
+	const AABBox& SceneBoundingBox() const;
+
 protected:	
 
 	Shadow_ptr shadow;

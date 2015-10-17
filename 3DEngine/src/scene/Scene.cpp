@@ -16,6 +16,7 @@
 #include "../shader/ShadowMapShader.h"
 #include "../shape/Shape.h"
 #include "../shape/Skybox.h"
+#include "../shape/WireCube.h"
 #include "../light/lightModel.h"
 #include "../light/PointLight.h"
 #include "../light/DirectionalLight.h"
@@ -72,6 +73,12 @@ Scene::Scene(const Camera_ptr& cam,bool has_frambufer)
 	lightAnimParams[0].rotationAxis = glm::vec3(0.0f, 1.0f, 0.0f);
 	lightAnimParams[1].rotationAxis = glm::normalize(glm::vec3(0.5f, 1.0f, 0.0f));
 	lightAnimParams[2].rotationAxis = glm::normalize(glm::vec3(1.0f, 1.0f, 0.0f));
+
+
+	wireCube = Util::CreateWireBox();
+	auto mat = ConstantColorMaterial::Create();
+	mat->color = glm::vec3(1, 0, 1);
+	wireCube->SetMaterial(mat);
 }
 
 Scene::~Scene()
@@ -190,6 +197,20 @@ void Scene::Render(const Viewport_ptr& viewport)
 			{
 				plr->Render(shared_from_this());
 			}
+		}
+	}
+
+	bool renderBoxes = false;
+	if (renderBoxes)
+	{
+		for (auto sh : objects)
+		{
+			auto bbox = sh->BboxWorldSpace();			
+			auto tmat = glm::translate(glm::mat4(1.f), bbox.p);
+			auto smat = glm::scale(tmat, bbox.d);
+			wireCube->worldTransform = smat;
+
+			wireCube->Render(shared_from_this());
 		}
 	}
 }

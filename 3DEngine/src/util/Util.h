@@ -6,6 +6,7 @@
 #include "SharedPointer.h"
 
 SHARED_PTR_CLASS_DECL(RenderMesh);
+SHARED_PTR_CLASS_DECL(WireCube);
 SHARED_PTR_CLASS_DECL(ShaderBase);
 
 namespace glimg
@@ -35,6 +36,7 @@ public:
 	static RenderMesh_ptr GetHorse();
 	static RenderMesh_ptr GetElephant();
 	static RenderMesh_ptr CreateBox();
+	static WireCube_ptr CreateWireBox();
 
 	static void Trim(std::string& str);
 

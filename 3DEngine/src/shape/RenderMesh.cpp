@@ -506,7 +506,7 @@ void RenderMesh::SetDrawingMode(DrawMode mode)
 	case RenderMesh::DrawMode::Triangle:
 		primitiveSize = 3;
 		break;
-	case RenderMesh::DrawMode::Line:
+	case RenderMesh::DrawMode::Lines:
 		primitiveSize = 2;
 		break;
 	case RenderMesh::DrawMode::Point:
