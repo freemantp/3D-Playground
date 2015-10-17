@@ -34,7 +34,3 @@ void DirectionalLight::UpdateShadow()
 		shadow->UpdateShadowMatrix(shared_from_this());
 }
 
-Shadow_ptr DirectionalLight::Shadow() const
-{
-	return shadow;
-}

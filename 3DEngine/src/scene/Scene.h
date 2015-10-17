@@ -8,6 +8,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "../util/SharedPointer.h"
+#include "../math/BoundingBox.h"
 #include "../light/LightModel.h"
 #include "../animation/TimeObserver.h"
 
@@ -42,6 +43,8 @@ public:
 	void AddLight(const SpotLight_ptr& light);
 	void SetLight(const DirectionalLight_ptr& light);
 	void SetLight(const AmbientLight_ptr& light);
+
+	AABBox BoundingBox() const;
 
 	virtual void TimeUpdate(long time);
 

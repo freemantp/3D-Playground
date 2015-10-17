@@ -33,11 +33,12 @@
     <ClInclude Include="src\light\LightModel.h" />
     <ClInclude Include="src\light\PointLight.h" />
     <ClInclude Include="src\light\Shadow.h" />
+    <ClInclude Include="src\light\ShadowCastingLight.h" />
     <ClInclude Include="src\light\ShadowUtil.h" />
     <ClInclude Include="src\light\SpotLight.h" />
     <ClInclude Include="src\materials\Material.h" />
     <ClInclude Include="src\math\HaltonSphere.h" />
-    <ClInclude Include="src\math\OBB.h" />
+    <ClInclude Include="src\math\BoundingBox.h" />
     <ClInclude Include="src\rendering\GeometryBuffer.h" />
     <ClInclude Include="src\rendering\Renderable.h" />
     <ClInclude Include="src\rendering\Renderer.h" />
@@ -96,11 +97,12 @@
     <ClCompile Include="src\light\LightModel.cpp" />
     <ClCompile Include="src\light\PointLight.cpp" />
     <ClCompile Include="src\light\Shadow.cpp" />
+    <ClCompile Include="src\light\ShadowCastingLight.cpp" />
     <ClCompile Include="src\light\ShadowUtil.cpp" />
     <ClCompile Include="src\light\SpotLight.cpp" />
     <ClCompile Include="src\materials\Material.cpp" />
     <ClCompile Include="src\math\HaltonSphere.cpp" />
-    <ClCompile Include="src\math\OBB.cpp" />
+    <ClCompile Include="src\math\BoundingBox.cpp" />
     <ClCompile Include="src\rendering\GeometryBuffer.cpp" />
     <ClCompile Include="src\rendering\Renderer.cpp" />
     <ClCompile Include="src\rendering\Viewport.cpp" />

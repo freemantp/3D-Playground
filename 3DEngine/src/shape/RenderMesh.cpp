@@ -98,6 +98,10 @@ void RenderMesh::InitFromRawMesh(const OpenGLRawMesh_ptr& rawMesh)
 			SetTangents(rawMesh->tangents);
 		else if (rawMesh->HasTexCoords())
  			Warn("No tangent data found, although texture coords are available");
+
+		if (!rawMesh->ComputeBoundingBox(bboxModelSpace))
+			Warn("Could not compute bounding box!");
+
 	}
 }
 

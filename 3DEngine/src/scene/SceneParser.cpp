@@ -26,6 +26,7 @@
 
 #include "../shape/RenderMesh.h"
 #include "../shape/Box.h"
+#include "../shape/Triangle.h"
 #include "../shape/Skybox.h"
 
 #include "../light/AmbientLight.h"
@@ -329,6 +330,10 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 			else if(type == "box")
 			{
 				shape = Box::Create();
+			}
+			else if (type == "triangle")
+			{
+				shape = Triangle::Create();
 			}
 			else 
 			{

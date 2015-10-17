@@ -2,6 +2,8 @@
 
 #include "RawMesh.h"
 
+#include "../math/BoundingBox.h"
+
 #include <unordered_map>
 
 WavefrontObjMaterial_ptr WavefrontObjMaterial::Create(std::string name)
@@ -442,4 +444,32 @@ bool OpenGLRawMesh::ComputeTangents()
 	}
 
 	return true;
+}
+
+bool OpenGLRawMesh::ComputeBoundingBox(AABBox& box)
+{
+	float min_inf = std::numeric_limits<float>::min();
+	float max_inf = std::numeric_limits<float>::max();
+
+	glm::vec3 lower_left(max_inf, max_inf, max_inf), upper_right(min_inf, min_inf, min_inf);
+
+	for (const glm::vec3& v : vertices)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			if (v[i] < lower_left[i])
+				lower_left[i] = v[i];
+			if (v[i] > upper_right[i])
+				upper_right[i] = v[i];
+		}
+	}
+
+	bool ok = true;
+	for (int i = 0; i < 3; i++)
+		ok &= (upper_right[i] != min_inf && lower_left[i] != max_inf);
+
+	if (ok)
+		box = OBBox(lower_left, upper_right);
+
+	return ok;
 }

@@ -123,6 +123,8 @@ void Box::Init() {
 	SetPositions(vertexData, index_data);
 	SetNormals(normalData);
 	SetTextureCoordinates(textureData);
+
+	bboxModelSpace.d = glm::vec3(side, side, side);
 }
 
 Box::Box() :RenderMesh()

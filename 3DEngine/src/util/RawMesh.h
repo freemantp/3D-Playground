@@ -10,6 +10,8 @@ SHARED_PTR_CLASS_DECL(OpenGLRawMesh);
 SHARED_PTR_CLASS_DECL(IndexedRawMesh);
 SHARED_PTR_CLASS_DECL(WavefrontObjMaterial);
 
+class AABBox;
+
 struct Tri
 {
 	typedef int index_t;
@@ -95,6 +97,8 @@ public:
 	bool ComputeNormals();
 
 	bool ComputeTangents();
+
+	bool ComputeBoundingBox(AABBox& box);
 
 	std::vector<int> triangleIndices;	
 };

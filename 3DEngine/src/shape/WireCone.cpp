@@ -38,6 +38,8 @@ void WireCone::Init() {
 	vertex_data[circle_segments] = glm::vec3(0, 0, 0);
 
 	SetPositions(vertex_data, index_data);
+
+	bboxModelSpace = AABBox(glm::vec3(-radius, -radius, 0), glm::vec3(radius, radius, height));
 }
 
 WireCone::WireCone(float opening_angle,float height) 

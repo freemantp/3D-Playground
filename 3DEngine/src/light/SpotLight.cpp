@@ -88,11 +88,6 @@ float SpotLight::Exponent() const
 	return exponent; 
 }
 
-Shadow_ptr SpotLight::Shadow() const
-{
-	return shadow;
-}
-
 void SpotLight::UpdateShadow()
 {
 	if (shadow)

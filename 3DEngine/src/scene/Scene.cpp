@@ -85,6 +85,14 @@ Scene::~Scene()
 void Scene::AddShape(const Shape_ptr& shape)
 {
 	objects.push_back(shape);
+
+	auto bb = BoundingBox();
+
+	for (auto sl : lightModel->spotLights)
+		sl->SetSceneBoundingBox(bb);
+
+	if (auto dl = lightModel->directionalLight)
+		dl->SetSceneBoundingBox(bb);
 }
 
 void Scene::SetSkybox(const Skybox_ptr& skybox)
@@ -228,11 +236,13 @@ void Scene::AddLight(const PointLight_ptr& light)
 void Scene::AddLight(const SpotLight_ptr& light)
 {
 	lightModel->spotLights.push_back(light);
+	light->SetSceneBoundingBox(BoundingBox());
 }
 
 void Scene::SetLight(const DirectionalLight_ptr& light)
 {
 	lightModel->directionalLight = light;
+	light->SetSceneBoundingBox(BoundingBox());
 }
 
 void Scene::SetLight(const AmbientLight_ptr& light)
@@ -249,4 +259,12 @@ void Scene::ConnectInputHandler(InputHandler& ih)
 		ih.AddMouseObserver(fpCamAdapter);
 		ih.AddKeyboardObserver(fpCamAdapter);
 	}
+}
+
+AABBox Scene::BoundingBox() const
+{
+	AABBox box;
+	for (auto obj : objects)
+		box += obj->BboxWorldSpace();
+	return box;
 }

@@ -5,6 +5,7 @@
 #include "../texture/DepthTexture.h"
 #include "../light/SpotLight.h"
 #include "../light/DirectionalLight.h"
+#include "../scene/Scene.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp> 
@@ -46,7 +47,7 @@ void Shadow::UpdateShadowMatrix(const DirectionalLight_cptr& dirLight)
 
 	nearPlane = 1.0f; 
 	farPlane = 100.5f;
-	float ortho_dim = 5.f;
+	float ortho_dim = 1.f;
 	glm::mat4 depthProjectionMatrix = glm::ortho(-ortho_dim, ortho_dim, -ortho_dim, ortho_dim, nearPlane, farPlane);
 
 	depthViewProjectionMatrix = depthProjectionMatrix * depthViewMatrix;

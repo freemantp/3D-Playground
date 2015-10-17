@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PointLight.h"
+#include "ShadowCastingLight.h"
 
 SHARED_PTR_CLASS_DECL(SpotLight);
 SHARED_PTR_CLASS_DECL(Shadow);
@@ -16,7 +17,7 @@ SHARED_PTR_CLASS_DECL(Shadow);
 *        dir
 *      
 */
-class SpotLight : public PointLight, public std::enable_shared_from_this<SpotLight>
+class SpotLight : public PointLight, public ShadowCastingLight, public std::enable_shared_from_this<SpotLight>
 {
 public:
 
@@ -36,13 +37,11 @@ public:
 	virtual void SetExponent(float exponent);
 	virtual float Exponent() const;
 
-	Shadow_ptr Shadow() const;
+	virtual void UpdateShadow() override;
 
 protected:
 
 	SpotLight(const glm::vec3& direction, float cutoffAngle, float exponent, bool castsShadow);
-
-	inline void UpdateShadow();
 
 	void UpdateVisMesh();
 	
@@ -50,8 +49,6 @@ protected:
 	glm::vec3 up;
 	float cutoffAngle;
 	float exponent;
-
-	Shadow_ptr shadow;
 
 };
 

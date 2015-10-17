@@ -7,18 +7,20 @@ Triangle::Triangle() : RenderMesh()
 
 }
 
-Triangle::~Triangle()
-{
-}
-
 void Triangle::Init()  {
 
-	RenderMesh::Init();
+	__super::Init();
+
+	float radius = 0.5f;
+
+	float ninety_deg = glm::radians(90.f);
+	float twoten_deg = glm::radians(210.f);
+	float threethree_deg = glm::radians(330.f);
 
 	std::vector<glm::vec3> positionData = {
-		glm::vec3(-0.8f, -0.8f, 0.0f),
-		glm::vec3(0.8f, -0.8f, 0.0f),
-		glm::vec3(0.0f, 0.8f, 0.0f) };
+		glm::vec3(cos(ninety_deg), sin(ninety_deg), 0.f) * radius,
+		glm::vec3(cos(twoten_deg), sin(twoten_deg), 0.f) * radius,
+		glm::vec3(cos(threethree_deg), sin(threethree_deg), 0.f) * radius };
 
 	std::vector<glm::vec3> normalData = {
 		glm::vec3(0.0f, 0.0f, 1.0f),
@@ -40,4 +42,5 @@ void Triangle::Init()  {
 	SetNormals(normalData);
 	SetColors(col);
 
+	bboxModelSpace = AABBox(positionData[0], -positionData[0]);
 }

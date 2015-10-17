@@ -4,7 +4,7 @@
 #include "../util/SharedPointer.h"
 #include "../rendering/Renderable.h"
 
-#include "../math/OBB.h"
+#include "../math/BoundingBox.h"
 
 
 //forward declarations
@@ -25,10 +25,12 @@ public:
 	void SetMaterial(const Material_ptr& material) { this->material = material; };
 
 	Material_ptr GetMaterial() const { return material; };
+
+	AABBox BboxWorldSpace() const;
 	
 	glm::mat4 worldTransform;
 
-	OBB boxModelSpace;
+	AABBox bboxModelSpace;
 
 protected:
 	Material_ptr material;

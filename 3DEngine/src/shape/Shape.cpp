@@ -11,3 +11,8 @@ Shape::~Shape()
 {
 }
 
+AABBox Shape::BboxWorldSpace() const
+{
+	return worldTransform * bboxModelSpace;
+}
+
