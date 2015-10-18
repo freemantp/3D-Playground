@@ -110,7 +110,9 @@ void SpotLight::UpdateVisMesh()
 	if (xz_plane_dir.x < 0)
 		yaw_angle = glm::two_pi<float>() - yaw_angle;
 
-	visMesh->worldTransform = glm::yawPitchRoll(yaw_angle, pitch_angle, 0.f);
-	visMesh->worldTransform[3] = position;
+	auto t = glm::yawPitchRoll(yaw_angle, pitch_angle, 0.f);
+	t[3] = position;
+	visMesh->SetWorldTransform(t);
+
 }
 

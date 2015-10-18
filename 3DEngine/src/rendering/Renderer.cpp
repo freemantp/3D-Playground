@@ -28,7 +28,7 @@ Renderer::~Renderer()
 void Renderer::SetScene(Scene_ptr scene)
 {
 	m_Scene = scene;
-	CreateDebugScene();
+	Create2DOverlayScene();
 }
 Scene_ptr Renderer::Scene()
 {
@@ -45,10 +45,10 @@ void Renderer::Render()
 		m_Scene->Render(m_Viewport);
 	}
 
-	if (m_ShowDebugElements && debugScene)
+	if (m_ShowDebugElements && overlay2Dscene)
 	{
 		glDisable(GL_DEPTH_TEST);
-		debugScene->Render(m_Viewport);
+		overlay2Dscene->Render(m_Viewport);
 		glEnable(GL_DEPTH_TEST);
 	}
 }
@@ -62,12 +62,12 @@ void Renderer::OnKey(const Input::Key key, const Input::Modifier mod, const glm:
 {
 	if (key == Input::Key::D)
 	{
-		auto& tm = TimeManager::GetInstance();
+		auto& tm = TimeManager::Instance();
 
 		if (!m_ShowDebugElements)			
-			tm.AddTimeObserver(debugScene);
+			tm.AddTimeObserver(overlay2Dscene);
 		else
-			tm.RemoveTimeObserver(debugScene);
+			tm.RemoveTimeObserver(overlay2Dscene);
 
 		m_ShowDebugElements = !m_ShowDebugElements;
 
@@ -75,12 +75,17 @@ void Renderer::OnKey(const Input::Key key, const Input::Modifier mod, const glm:
 		msg += " debug mode";
 		Debug(msg);
 	}
+	else if (key == Input::Key::B)
+	{
+		if (m_Scene)
+			m_Scene->SetRenderBoundingBoxes(!m_Scene->RenderBoundingBoxes());
+	}
 }
 
-void Renderer::CreateDebugScene()
+void Renderer::Create2DOverlayScene()
 {
 	if (m_Scene)
 	{
-		debugScene = DebugScene::Create(m_Scene);
+		overlay2Dscene = SceneOverlay2D::Create(m_Scene);
 	}
 }

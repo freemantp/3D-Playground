@@ -3,6 +3,7 @@
 
 
 Shape::Shape()
+	: boundingBoxDirty(true)
 { 
 
 }
@@ -11,8 +12,23 @@ Shape::~Shape()
 {
 }
 
-AABBox Shape::BboxWorldSpace() const
+AABBox Shape::BoundingBox() const
 {
-	return worldTransform * bboxModelSpace;
+	if (boundingBoxDirty)
+	{
+		cachedWorldBBox = (worldTransform * bboxModelSpace);
+		boundingBoxDirty = false;
+	}
+	return cachedWorldBBox;
 }
 
+void Shape::SetWorldTransform(const glm::mat4 & t)
+{
+	worldTransform = t;
+	boundingBoxDirty = true;
+}
+
+const glm::mat4 & Shape::WorldTransform() const
+{
+	return worldTransform;
+}

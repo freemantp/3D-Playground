@@ -10,7 +10,7 @@
 std::shared_ptr<T> T::Create() \
 { \
 	std::shared_ptr<T> ptr = std::shared_ptr<T>(new T()); \
-	if (auto sl = ShaderLibrary::GetInstance()) \
+	if (auto sl = ShaderLibrary::Instance()) \
 		sl->AddShader(ptr); \
 	return ptr; \
 }

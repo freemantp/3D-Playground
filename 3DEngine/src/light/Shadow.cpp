@@ -45,6 +45,9 @@ void Shadow::UpdateShadowMatrix(const DirectionalLight_cptr& dirLight)
 
 	glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(0,10,0), glm::vec3(0.0f), glm::vec3(1,0,1));
 
+	auto ll = dirLight->SceneBoundingBox().Minimum();
+	auto ur = dirLight->SceneBoundingBox().Maximum();
+
 	nearPlane = 1.0f; 
 	farPlane = 100.5f;
 	float ortho_dim = 1.f;

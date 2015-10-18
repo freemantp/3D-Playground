@@ -138,23 +138,26 @@ RenderMesh_ptr Util::LoadModel(const std::string& path, bool computeTangentsHint
 RenderMesh_ptr Util::GetDragon()
 {
 	RenderMesh_ptr model = Util::LoadModel("../data/models/dragon.obj");
-	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.85f,0));
-	model->worldTransform = glm::scale(model->worldTransform,glm::vec3(8,8,8));
+	glm::mat4 t = glm::translate(model->WorldTransform(),glm::vec3(0,-0.85f,0));
+	t = glm::scale(t,glm::vec3(8,8,8));
+	model->SetWorldTransform(t);
 	return model;
 }
 
 RenderMesh_ptr Util::GetHorse()
 {
 	RenderMesh_ptr model = Util::LoadModel("../data/models/horse.obj");
-	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.3f,0));
-	model->worldTransform = glm::rotate(model->worldTransform, glm::radians(270.0f), glm::vec3(0,1,0));
+	glm::mat4 t = glm::translate(model->WorldTransform(),glm::vec3(0,-0.3f,0));
+	t = glm::rotate(t, glm::radians(270.0f), glm::vec3(0,1,0));
+	model->SetWorldTransform(t);
 	return model;
 }
 
 RenderMesh_ptr Util::GetElephant()
 {
 	RenderMesh_ptr model = Util::LoadModel("../data/models/elephant.obj");
-	model->worldTransform = glm::translate(model->worldTransform,glm::vec3(0,-0.5f,0));
+	glm::mat4 t = glm::translate(model->WorldTransform(),glm::vec3(0,-0.5f,0));
+	model->SetWorldTransform(t);
 	return model;
 }
 

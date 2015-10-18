@@ -13,7 +13,7 @@ GlutInputHandler::GlutInputHandler()
 
 }
 
-GlutInputHandler& GlutInputHandler::GetInstance()
+GlutInputHandler& GlutInputHandler::Instance()
 {
 	return GlutInputHandler::instance;
 }

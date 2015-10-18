@@ -12,7 +12,7 @@ SHARED_PTR_CLASS_DECL(MaterialShader)
 class ShaderLibrary
 {
 public:	
-	static ShaderLibrary_ptr GetInstance();
+	static ShaderLibrary_ptr Instance();
 
 	MaterialShader_ptr ShaderLookup(const Material_cptr& material);
 	

@@ -39,8 +39,9 @@ Scene_ptr Scene::Create(const Camera_ptr& cam, bool has_frambufer)
 }
 
 Scene::Scene(const Camera_ptr& cam,bool has_frambufer)
-	: skybox(nullptr)
-	, shadowShader(ShadowMapShader::Create())
+	: shadowShader(ShadowMapShader::Create())
+	, renderLightRepresentation(true)
+	, renderBoundingBoxes(false)
 {
 	if (has_frambufer)
 		framebuffer = Framebuffer::Create();
@@ -63,7 +64,7 @@ Scene::Scene(const Camera_ptr& cam,bool has_frambufer)
 		fpCamAdapter.reset(new FirstPersonCameraAdapter(cam));
 	}
 
-	WindowEventHandler& winEventHandler = WindowEventHandler::GetInstance();
+	WindowEventHandler& winEventHandler = WindowEventHandler::Instance();
 	winEventHandler.AddViewportObserver(cam);
 
 	lightAnimParams[0].radiansPerInterval = glm::radians(0.5f);
@@ -133,7 +134,7 @@ void Scene::RenderShadowMaps()
 
 				for (Shape_ptr s : objects)
 				{
-					if (shadowShader->Use(shared_from_this(), s->worldTransform))
+					if (shadowShader->Use(shared_from_this(), s->WorldTransform()))
 					{
 						s->RenderShadowMap(shadowShader);
 					}
@@ -166,22 +167,19 @@ void Scene::Render(const Viewport_ptr& viewport)
 {		
 	RenderShadowMaps();
 	
-	//Render objects
-
 	viewport->Apply();
 
 	//Render skybox
-	if (skybox != nullptr)
+	if (skybox)
 		skybox->Render(shared_from_this());
 
+	//Render objects
 	for(Shape_ptr s : objects)
 	{
 		s->Render(shared_from_this());
 	}
 
-	bool renderLights = true;
-
-	if(renderLights)
+	if(renderLightRepresentation)
 	{
 		for (auto pl : lightModel->pointLights)
 		{
@@ -200,18 +198,22 @@ void Scene::Render(const Viewport_ptr& viewport)
 		}
 	}
 
-	bool renderBoxes = false;
-	if (renderBoxes)
+	if (renderBoundingBoxes)
 	{
+		//glDisable(GL_DEPTH_TEST);
+		//glDepthMask(GL_FALSE);
+
 		for (auto sh : objects)
 		{
-			auto bbox = sh->BboxWorldSpace();			
+			auto bbox = sh->BoundingBox();			
 			auto tmat = glm::translate(glm::mat4(1.f), bbox.p);
 			auto smat = glm::scale(tmat, bbox.d);
-			wireCube->worldTransform = smat;
-
+			wireCube->SetWorldTransform(smat);
 			wireCube->Render(shared_from_this());
 		}
+
+		//glDepthMask(GL_TRUE);
+		//glEnable(GL_DEPTH_TEST);
 	}
 }
 
@@ -286,6 +288,11 @@ AABBox Scene::BoundingBox() const
 {
 	AABBox box;
 	for (auto obj : objects)
-		box += obj->BboxWorldSpace();
+		box += obj->BoundingBox();
 	return box;
+}
+
+void Scene::SetRenderBoundingBoxes(bool enable)
+{
+	renderBoundingBoxes = enable;
 }

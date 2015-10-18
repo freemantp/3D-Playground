@@ -6,14 +6,13 @@
 class AABBox
 {
 public:
-
 	AABBox();
 
 	AABBox(const glm::vec3& lower, const glm::vec3& upper);
 
-	virtual glm::vec3 LowerLeft() const;
+	virtual glm::vec3 Minimum() const;
 
-	virtual glm::vec3 UpperRight() const;
+	virtual glm::vec3 Maximum() const;
 
 	/// Transforms the bbox and returns it; the current instance remains untouched
 	virtual AABBox Transform(const glm::mat4& t) const;
@@ -26,6 +25,8 @@ public:
 	inline void operator+=(const AABBox& rhs) { *this = HullBox(rhs); };
 
 	inline AABBox operator+(const AABBox& rhs) { return HullBox(rhs); }
+
+	enum Axis {X = 0,Y = 1,Z = 2};
 
 	glm::vec3 d;
 	glm::vec3 p;
@@ -45,9 +46,9 @@ public:
 
 	OBBox(const glm::vec3& lower, const glm::vec3& upper);
 
-	virtual glm::vec3 LowerLeft() const override;
+	virtual glm::vec3 Minimum() const override;
 
-	virtual glm::vec3 UpperRight() const override;
+	virtual glm::vec3 Maximum() const override;
 
 	glm::vec3 d;
 	glm::vec3 p;

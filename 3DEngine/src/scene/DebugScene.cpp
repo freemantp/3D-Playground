@@ -14,9 +14,12 @@
 
 #include <memory>
 
-DebugScene::DebugScene(Scene_ptr scene)
+SceneOverlay2D::SceneOverlay2D(Scene_ptr scene)
 : Scene(std::shared_ptr<OrthogonalCamera>(new OrthogonalCamera()),false)
 {
+	renderBoundingBoxes = false;
+	renderLightRepresentation = false;
+
 	if (scene)
 	{
 		auto dirLight = DirectionalLight::Create(false);
@@ -31,26 +34,27 @@ DebugScene::DebugScene(Scene_ptr scene)
 
 		auto add_shadowmap_box = [&](Shadow_ptr shadow)
 		{
-			if(auto dt = shadow->ShadowMap())
+			if(DepthTexture_ptr dt = shadow->ShadowMap())
 			{
 				auto dim = dt->Dimensions();
 
 				float height = width / dim.x * dim.y;
 
-				auto box = Util::CreateBox();
+				auto canvas_box = Util::CreateBox();
 				DepthMapMaterial_ptr mat = DepthMapMaterial::Create();
 				mat->depthTexture = dt;
 				mat->nearPlane = shadow->NearPlane();
 				mat->farPlane = shadow->FarPlane();
-				mat->perspective = shadow->Type() == Shadow::ProjectionType::Perspective;
+				mat->perspective = (shadow->Type() == Shadow::ProjectionType::Perspective);
 
-				box->SetMaterial(mat);
+				canvas_box->SetMaterial(mat);
 
-				box->worldTransform = glm::translate(glm::mat4(1), glm::vec3(current_x, height / 2 + spacing, 0));
-				box->worldTransform = glm::scale(box->worldTransform, glm::vec3(width, height, 1));
-				box->worldTransform = glm::rotate(box->worldTransform, -glm::half_pi<float>(), glm::vec3(0, 0, 1));
+				glm::mat4 t = glm::translate(glm::mat4(1), glm::vec3(current_x, height / 2 + spacing, 0));
+				t = glm::scale(t, glm::vec3(width, height, 1));
+				t = glm::rotate(t, -glm::half_pi<float>(), glm::vec3(0, 0, 1));
+				canvas_box->SetWorldTransform(t);
 
-				AddShape(box);
+				AddShape(canvas_box);
 
 				current_x += width + spacing;
 			}
@@ -67,11 +71,15 @@ DebugScene::DebugScene(Scene_ptr scene)
 }
 
 
-DebugScene::~DebugScene()
+SceneOverlay2D::~SceneOverlay2D()
 {
 }
 
-DebugScene_ptr DebugScene::Create(Scene_ptr scene)
+SceneOverlay2D_ptr SceneOverlay2D::Create(Scene_ptr scene)
 {
-	return DebugScene_ptr(new DebugScene(scene), [](DebugScene* d) {delete d;});
+	return SceneOverlay2D_ptr(new SceneOverlay2D(scene), [](SceneOverlay2D* d) {delete d;});
+}
+
+void SceneOverlay2D::TimeUpdate(long time)
+{
 }

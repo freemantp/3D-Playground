@@ -16,8 +16,6 @@ SHARED_PTR_CLASS_DECL(Material);
 class Shape : public Renderable
 {
 public:
-
-	Shape();
 	virtual ~Shape();
 
 	virtual void Init() = 0;
@@ -26,13 +24,22 @@ public:
 
 	Material_ptr GetMaterial() const { return material; };
 
-	AABBox BboxWorldSpace() const;
-	
-	glm::mat4 worldTransform;
+	void SetWorldTransform(const glm::mat4& t);
+	const glm::mat4& WorldTransform() const;
 
+	/// Returns the bounding box in world coordinates
+	AABBox BoundingBox() const;
+	
+protected:
+
+	Shape();
+
+	Material_ptr material;
 	AABBox bboxModelSpace;
 
-protected:
-	Material_ptr material;
+private:
+	glm::mat4 worldTransform;
+	mutable bool boundingBoxDirty;
+	mutable AABBox cachedWorldBBox;
 };
 

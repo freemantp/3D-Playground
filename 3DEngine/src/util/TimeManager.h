@@ -9,7 +9,7 @@ class TimeManager
 {
 public:
 
-	static TimeManager& GetInstance();
+	static TimeManager& Instance();
 	static void Tick();
 
 	virtual void AddTimeObserver(const TimeObserver_ptr& observer);

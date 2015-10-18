@@ -139,7 +139,7 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 {	
 	if (XMLElement* materialElement = materialsGroupElement->FirstChildElement("material"))
 	{
-		ShaderLibrary_ptr sl = ShaderLibrary::GetInstance();
+		ShaderLibrary_ptr sl = ShaderLibrary::Instance();
 
 		do
 		{
@@ -355,7 +355,7 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 			{
 				glm::mat4 tMatrix;
 				ParseTransforms(tMatrix,transformsElem);
-				shape->worldTransform = tMatrix;
+				shape->SetWorldTransform(tMatrix);
 			}
 
 			generated_scene->AddShape(shape);		

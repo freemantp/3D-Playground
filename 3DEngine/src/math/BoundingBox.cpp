@@ -15,31 +15,47 @@ AABBox::AABBox(const glm::vec3 & lower, const glm::vec3 & upper)
 	d = glm::abs(upper - p);
 }
 
-glm::vec3 AABBox::LowerLeft() const
+glm::vec3 AABBox::Minimum() const
 {
 	return p-d;
 }
 
-glm::vec3 AABBox::UpperRight() const
+glm::vec3 AABBox::Maximum() const
 {
 	return p+d;
 }
 
 AABBox AABBox::Transform(const glm::mat4 & t) const
 {
-	glm::vec4 ll4(LowerLeft(), 1.f);
-	glm::vec4 ur4(UpperRight(), 1.f);
-	return AABBox((t * ll4).xyz(), (t * ur4).xyz());
+	//See http://dev.theomader.com/transform-bounding-boxes/
+
+	glm::vec3 bmin = Minimum();
+	glm::vec3 bmax = Maximum();
+
+	glm::vec3 basis_v[3] = { t[X].xyz(),  t[Y].xyz(), t[Z].xyz() };
+	glm::vec3 transl = t[3].xyz();
+
+	glm::vec3 bvX_a = basis_v[X] * bmin[X];
+	glm::vec3 bvX_b = basis_v[X] * bmax[X];
+	glm::vec3 bvY_a = basis_v[Y] * bmin[Y];
+	glm::vec3 bvY_b = basis_v[Y] * bmax[Y];
+	glm::vec3 bvZ_a = basis_v[Z] * bmin[Z];
+	glm::vec3 bvZ_b = basis_v[Z] * bmax[Z];
+
+	return AABBox(
+		glm::min(bvX_a, bvX_b) + glm::min(bvY_a, bvY_b) + glm::min(bvZ_a, bvZ_b) + transl,
+		glm::max(bvX_a, bvX_b) + glm::max(bvY_a, bvY_b) + glm::max(bvZ_a, bvZ_b) + transl
+	);
 }
 
 AABBox AABBox::HullBox(const AABBox & other) const
 {
 	glm::vec3 ll, ur;
 
-	auto l_lower = LowerLeft();
-	auto r_lower = other.LowerLeft();
-	auto l_upper = UpperRight();
-	auto r_upper = other.UpperRight();
+	auto l_lower = Minimum();
+	auto r_lower = other.Minimum();
+	auto l_upper = Maximum();
+	auto r_upper = other.Maximum();
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -76,12 +92,12 @@ OBBox::OBBox(const glm::vec3 & lower, const glm::vec3 & upper)
 
 }
 
-glm::vec3 OBBox::LowerLeft() const
+glm::vec3 OBBox::Minimum() const
 {
 	return (R * -d) + p;
 }
 
-glm::vec3 OBBox::UpperRight() const
+glm::vec3 OBBox::Maximum() const
 {
 	return (R * d) + p;
 }

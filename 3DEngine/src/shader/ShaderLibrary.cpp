@@ -15,7 +15,7 @@ ShaderLibrary::ShaderLibrary() {}
 
 ShaderLibrary::~ShaderLibrary() {}
 
-ShaderLibrary_ptr ShaderLibrary::GetInstance()
+ShaderLibrary_ptr ShaderLibrary::Instance()
 {
 	if (!instance)
 	{

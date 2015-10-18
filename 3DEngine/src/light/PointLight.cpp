@@ -20,7 +20,7 @@ PointLight::PointLight()
 	ConstantColorMaterial_ptr mat = ConstantColorMaterial::Create();
 	mat->color = color;
 	visMesh->SetMaterial(mat);
-	visMesh->worldTransform = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
+	visMesh->SetWorldTransform(glm::scale(glm::mat4(1.0), glm::vec3(0.05f)));
 }
 
 
@@ -32,7 +32,9 @@ PointLight::~PointLight()
 void PointLight::SetPosition(const glm::vec4& pos)
 {
 	position = pos;
-	visMesh->worldTransform[3] = position;
+	glm::mat4 t = visMesh->WorldTransform();
+	t[3] = position;
+	visMesh->SetWorldTransform(t);
 }
 
 const glm::vec4& PointLight::Position() const

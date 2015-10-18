@@ -37,15 +37,18 @@ public:
 	void Render(const Viewport_ptr& viewport);
 
 	void AddShape(const Shape_ptr& shape);
-	void SetSkybox(const Skybox_ptr& skybox);
 	void AddMaterial(const ShaderBase* shape);
-	void SetCamera(const Camera_ptr& cam);
 	void AddLight(const PointLight_ptr& shape);
 	void AddLight(const SpotLight_ptr& light);
 	void SetLight(const DirectionalLight_ptr& light);
 	void SetLight(const AmbientLight_ptr& light);
+	void SetSkybox(const Skybox_ptr& skybox);
+	void SetCamera(const Camera_ptr& cam);
 
 	AABBox BoundingBox() const;
+
+	void SetRenderBoundingBoxes(bool enable);
+	bool RenderBoundingBoxes() const { return renderBoundingBoxes; };
 
 	virtual void TimeUpdate(long time);
 
@@ -55,7 +58,7 @@ public:
 	std::vector<const ShaderBase*> materials;
 	Skybox_ptr skybox;
 	std::string name;
-	WireCube_ptr wireCube;
+	
 	
 	class LightAnimationParam
 	{
@@ -81,7 +84,10 @@ protected:
 
 	ShadowMapShader_ptr shadowShader;
 	Framebuffer_ptr framebuffer;
+	WireCube_ptr wireCube;
 
+	bool renderLightRepresentation;
+	bool renderBoundingBoxes;
 };
 
 

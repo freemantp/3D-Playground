@@ -423,7 +423,7 @@ void RenderMesh::RenderShadowMap(const ShadowMapShader_ptr& shadow_shader) const
 
 void RenderMesh::Render(const Scene_ptr& scene) const
 {
-	ShaderLibrary_ptr sl = ShaderLibrary::GetInstance();
+	ShaderLibrary_ptr sl = ShaderLibrary::Instance();
 
 	//Render individual index groups if available
 	int numRanges = static_cast<int>(ranges.size());
@@ -450,7 +450,7 @@ void RenderMesh::Render(const Scene_ptr& scene) const
 
 					if (current_shader->SetMaterial(current_material))
 					{
-						if (current_shader->Use(scene, worldTransform))
+						if (current_shader->Use(scene, WorldTransform()))
 						{
 							Draw(i);
 							current_shader->UnUse();

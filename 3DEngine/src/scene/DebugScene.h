@@ -3,18 +3,20 @@
 #include "Scene.h"
 
 
-SHARED_PTR_CLASS_DECL(DebugScene);
+SHARED_PTR_CLASS_DECL(SceneOverlay2D);
 SHARED_PTR_CLASS_DECL(Camera);
 
-class DebugScene : public Scene
+class SceneOverlay2D : public Scene
 {
 public:
 
-	static DebugScene_ptr Create(Scene_ptr scene);
+	static SceneOverlay2D_ptr Create(Scene_ptr scene);
+
+	virtual void TimeUpdate(long time) override;
 
 protected:
 
-	DebugScene(Scene_ptr scene);
-	~DebugScene();
+	SceneOverlay2D(Scene_ptr scene);
+	~SceneOverlay2D();
 };
 

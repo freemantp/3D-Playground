@@ -10,7 +10,7 @@ TimeManager::TimeManager()
 {
 }
 
-TimeManager& TimeManager::GetInstance()
+TimeManager& TimeManager::Instance()
 {
 	return TimeManager::instance;
 }

@@ -31,12 +31,12 @@ protected:
 
 	virtual ~Renderer();
 
-	void CreateDebugScene();
+	void Create2DOverlayScene();
 
 	bool				m_ShowDebugElements;
 
 	Scene_ptr			m_Scene;
-	Scene_ptr			debugScene;
+	Scene_ptr			overlay2Dscene;
 	GeometryBuffer_ptr	m_gBuffer;
 	Viewport_ptr		m_Viewport;
 

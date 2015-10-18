@@ -104,7 +104,7 @@ bool Initialize()
 
 	auto data = Util::LoadTextFile(Config::SCENE_BASE_PATH + sceneName.c_str());
 
-	WindowEventHandler& winEventHandler = WindowEventHandler::GetInstance();
+	WindowEventHandler& winEventHandler = WindowEventHandler::Instance();
 	GlutInputHandlerFactory gihf;
 
 	renderer = Renderer::Create(viewport);
@@ -118,7 +118,7 @@ bool Initialize()
 
 		s->ConnectInputHandler(gihf.GetInputHandler());
 		renderer->SetScene(s);
-		TimeManager::GetInstance().AddTimeObserver(s);
+		TimeManager::Instance().AddTimeObserver(s);
 
 		string windowTitle = string(WINDOW_TITLE_PREFIX) + " - " + s->name;
 		glutSetWindowTitle(windowTitle.c_str());
