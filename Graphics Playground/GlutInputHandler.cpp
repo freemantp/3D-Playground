@@ -60,7 +60,7 @@ void GlutInputHandler::specialKey(int Key, int x, int y)
 
 void GlutInputHandler::handleDrag(const glm::vec2& position)
 {
-	for(auto  observer :  mouseObservers) 
+	for(auto& observer :  mouseObservers) 
 	{
 		observer->OnMouseDrag(position);
 	}
@@ -68,7 +68,7 @@ void GlutInputHandler::handleDrag(const glm::vec2& position)
 
 void GlutInputHandler::handleMove(const glm::vec2& position)
 {
-	for (auto observer : mouseObservers)
+	for(auto& observer : mouseObservers)
 	{
 		observer->OnMouseMove(position);
 	}
@@ -100,7 +100,7 @@ void GlutInputHandler::handleClick(int button, int state, const glm::vec2& posit
 
 void GlutInputHandler::handleWheel(int wheel, int direction, const glm::vec2& position)
 {
-	for (auto observer : mouseObservers)
+	for (auto& observer : mouseObservers)
 	{
 		observer->OnMouseWheel(direction > 0 ? Input::Direction::UP : Input::Direction::DOWN, position);
 	}
@@ -150,7 +150,7 @@ void GlutInputHandler::handleKey(unsigned char Key, const glm::vec2& position)
 	if (k == Input::Key::F)
 		glutFullScreenToggle();
 
-	for (auto observer : keyboardObservers)
+	for (auto& observer : keyboardObservers)
 	{
 		observer->OnKey(k, m, position);
 	}
@@ -170,7 +170,7 @@ void GlutInputHandler::handleSpecialKey(int Key,const glm::vec2& position)
 		default: return; break;
 	}
 
-	for (auto observer : keyboardObservers)
+	for (auto& observer : keyboardObservers)
 	{
 		observer->OnKey(k, m, position);
 	}

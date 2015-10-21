@@ -84,7 +84,7 @@ Scene::Scene(const Camera_ptr& cam,bool has_frambufer)
 
 Scene::~Scene()
 {
-	for(auto mat : materials)
+	for(auto& mat : materials)
 	{
 		delete mat;
 	}
@@ -96,10 +96,10 @@ void Scene::AddShape(const Shape_ptr& shape)
 
 	auto bb = BoundingBox();
 
-	for (auto sl : lightModel->spotLights)
+	for (auto& sl : lightModel->spotLights)
 		sl->SetSceneBoundingBox(bb);
 
-	if (auto dl = lightModel->directionalLight)
+	if (auto& dl = lightModel->directionalLight)
 		dl->SetSceneBoundingBox(bb);
 }
 
@@ -132,7 +132,7 @@ void Scene::RenderShadowMaps()
 
 				shadowShader->SetLightMatrix(smap->LightViewProjectionMatrix());
 
-				for (Shape_ptr s : objects)
+				for (Shape_ptr& s : objects)
 				{
 					if (shadowShader->Use(shared_from_this(), s->WorldTransform()))
 					{
@@ -142,7 +142,7 @@ void Scene::RenderShadowMaps()
 			};
 
 			//Generate shadow maps
-			for (auto sl : lightModel->spotLights)
+			for (auto& sl : lightModel->spotLights)
 			{
 				if (Shadow_ptr smap = sl->Shadow())
 					renderShadowMap(smap);
@@ -174,14 +174,14 @@ void Scene::Render(const Viewport_ptr& viewport)
 		skybox->Render(shared_from_this());
 
 	//Render objects
-	for(Shape_ptr s : objects)
+	for(Shape_ptr& s : objects)
 	{
 		s->Render(shared_from_this());
 	}
 
 	if(renderLightRepresentation)
 	{
-		for (auto pl : lightModel->pointLights)
+		for (auto& pl : lightModel->pointLights)
 		{
 			if (auto plr = pl->ModelRepresentation())
 			{
@@ -189,7 +189,7 @@ void Scene::Render(const Viewport_ptr& viewport)
 			}
 		}
 
-		for(auto sl : lightModel->spotLights)
+		for(auto& sl : lightModel->spotLights)
 		{
 			if (auto plr = sl->ModelRepresentation())
 			{
@@ -203,7 +203,7 @@ void Scene::Render(const Viewport_ptr& viewport)
 		//glDisable(GL_DEPTH_TEST);
 		//glDepthMask(GL_FALSE);
 
-		for (auto sh : objects)
+		for (auto& sh : objects)
 		{
 			auto bbox = sh->BoundingBox();			
 			auto tmat = glm::translate(glm::mat4(1.f), bbox.p);
@@ -237,6 +237,14 @@ void Scene::TimeUpdate(long time)
 		if (lightModel->spotLights[i]->Animated())
 			rotate_light(lightModel->spotLights[i], lightAnimParams[i].radiansPerInterval, lightAnimParams[i].rotationAxis);
 	}
+
+	//if (objects.size() > 0)
+	//{
+	//	glm::mat4 rot_t = glm::rotate(glm::mat4(1.0f), glm::radians(0.2f), glm::vec3(1,1,1));
+	//	auto ot = objects[0]->WorldTransform();
+	//	ot *= rot_t;
+	//	objects[0]->SetWorldTransform(ot);
+	//}
 
 	lightModel->UpdateUniformBuffer(activeCamera);
 }
@@ -287,7 +295,7 @@ void Scene::ConnectInputHandler(InputHandler& ih)
 AABBox Scene::BoundingBox() const
 {
 	AABBox box;
-	for (auto obj : objects)
+	for (auto& obj : objects)
 		box += obj->BoundingBox();
 	return box;
 }

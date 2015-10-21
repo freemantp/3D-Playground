@@ -53,7 +53,7 @@ void RenderMesh::InitFromRawMesh(const OpenGLRawMesh_ptr& rawMesh)
 		std::string base_path = Util::ExtractBaseFolder(rawMesh->meshPath);
 
 		// Mesh has material descriptors
-		for (WavefrontObjMaterial_ptr mat : rawMesh->materials)
+		for (WavefrontObjMaterial_ptr& mat : rawMesh->materials)
 		{
 			PhongMaterial_ptr pMaterial;
 			if (mat->HasTextures())
@@ -73,9 +73,9 @@ void RenderMesh::InitFromRawMesh(const OpenGLRawMesh_ptr& rawMesh)
 		}
 
 		// TODO: Refactor this (ugly, inefficient hack)
-		for(auto matName : rawMesh->groupMaterial)
+		for(auto& matName : rawMesh->groupMaterial)
 		{
-			for (Material_ptr mat : meshMaterials)
+			for (auto& mat : meshMaterials)
 			{
 				std::string mn = mat->Name();
 

@@ -33,7 +33,7 @@ void WindowEventHandler::HandleResize(int width, int height)
 	vp->Apply();
 	
 	//Notify observers
-	for (ViewportObserver_ptr vpo : viewportObservers)
+	for (ViewportObserver_ptr& vpo : viewportObservers)
 	{
 		vpo->ViewportChanged(vp);
 	}

@@ -39,7 +39,7 @@ void TimeManager::RemoveTimeObserver(const TimeObserver_ptr& observer)
 void TimeManager::HandleTick()
 {
 	size_t s = timeObservers.size();
-	for(auto cit : timeObservers) 
+	for(auto& cit : timeObservers)
 	{
 		if(auto tObserver = cit.lock())
 		{

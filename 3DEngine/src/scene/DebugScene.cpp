@@ -60,7 +60,7 @@ SceneOverlay2D::SceneOverlay2D(Scene_ptr scene)
 			}
 		};
 
-		for (auto sl : scene->lightModel->spotLights)
+		for (auto& sl : scene->lightModel->spotLights)
 		{
 			add_shadowmap_box(sl->Shadow());	
 		}

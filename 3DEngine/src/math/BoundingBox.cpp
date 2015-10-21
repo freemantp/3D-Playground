@@ -45,7 +45,7 @@ AABBox AABBox::Transform(const glm::mat4 & t) const
 	return AABBox(
 		glm::min(bvX_a, bvX_b) + glm::min(bvY_a, bvY_b) + glm::min(bvZ_a, bvZ_b) + transl,
 		glm::max(bvX_a, bvX_b) + glm::max(bvY_a, bvY_b) + glm::max(bvZ_a, bvZ_b) + transl
-	);
+		);
 }
 
 AABBox AABBox::HullBox(const AABBox & other) const
@@ -66,20 +66,10 @@ AABBox AABBox::HullBox(const AABBox & other) const
 	return AABBox(ll,ur);
 }
 
-//inline AABBox AABBox::operator+(const AABBox & rhs)
-//{
-//	return HullBox(rhs);
-//}
-
 inline void AABBox::operator*=(const glm::mat4 & rhs)
 {
 	*this = Transform(rhs);
 }
-
-//inline void AABBox::operator+=(const AABBox & rhs)
-//{
-//	*this = HullBox(rhs);
-//}
 
 OBBox::OBBox()
 {
