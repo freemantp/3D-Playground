@@ -21,12 +21,12 @@ public:
 	virtual AABBox HullBox(const AABBox& other) const;
 
 	inline void operator*=(const glm::mat4& rhs);
-	
+
 	inline void operator+=(const AABBox& rhs) { *this = HullBox(rhs); };
 
 	inline AABBox operator+(const AABBox& rhs) { return HullBox(rhs); }
 
-	enum Axis {X = 0,Y = 1,Z = 2};
+	enum Axis { X = 0, Y = 1, Z = 2 };
 
 	glm::vec3 d;
 	glm::vec3 p;

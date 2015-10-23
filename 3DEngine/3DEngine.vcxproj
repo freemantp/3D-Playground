@@ -37,6 +37,7 @@
     <ClInclude Include="src\light\ShadowUtil.h" />
     <ClInclude Include="src\light\SpotLight.h" />
     <ClInclude Include="src\materials\Material.h" />
+    <ClInclude Include="src\math\BoundingBoxUtil.h" />
     <ClInclude Include="src\math\HaltonSphere.h" />
     <ClInclude Include="src\math\BoundingBox.h" />
     <ClInclude Include="src\rendering\GeometryBuffer.h" />
@@ -102,6 +103,7 @@
     <ClCompile Include="src\light\ShadowUtil.cpp" />
     <ClCompile Include="src\light\SpotLight.cpp" />
     <ClCompile Include="src\materials\Material.cpp" />
+    <ClCompile Include="src\math\BoundingBoxUtil.cpp" />
     <ClCompile Include="src\math\HaltonSphere.cpp" />
     <ClCompile Include="src\math\BoundingBox.cpp" />
     <ClCompile Include="src\rendering\GeometryBuffer.cpp" />

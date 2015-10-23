@@ -6,6 +6,7 @@
 #include "../light/SpotLight.h"
 #include "../light/DirectionalLight.h"
 #include "../scene/Scene.h"
+#include "../math/BoundingBoxUtil.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp> 
@@ -43,12 +44,6 @@ void Shadow::UpdateShadowMatrix(const DirectionalLight_cptr& dirLight)
 {	
 	//glm::mat4 depthViewMatrix = glm::lookAt(-dirLight->Direction(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
-	glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(1,1,1), glm::vec3(0.0f), glm::vec3(1,0,0));
-
-	auto fit_plane = []() 
-	{
-		
-	};
 
 
 	auto ll = dirLight->SceneBoundingBox().Minimum();
@@ -57,7 +52,13 @@ void Shadow::UpdateShadowMatrix(const DirectionalLight_cptr& dirLight)
 	nearPlane = 1.0f; 
 	farPlane = 10.5f;
 	float ortho_dim = 1.f;
-	glm::mat4 depthProjectionMatrix = glm::ortho(-ortho_dim, ortho_dim, -ortho_dim, ortho_dim, nearPlane, farPlane);
+
+	glm::vec3 light_pos(1, 1, 1);
+	float left = -ortho_dim, right = ortho_dim, up = ortho_dim, down = -ortho_dim;
+	BoundingBoxUtil::DirectionalLightFrustrum(dirLight->SceneBoundingBox(), dirLight->Direction(),light_pos, left, right, up, down, nearPlane, farPlane);
+
+	glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(1, 1, 1), glm::vec3(0.0f), glm::vec3(1, 0, 0));
+	glm::mat4 depthProjectionMatrix = glm::ortho(left, right, down, up, nearPlane, farPlane);
 
 	depthViewProjectionMatrix = depthProjectionMatrix * depthViewMatrix;
 	shadowMat = biasMatrix * depthViewProjectionMatrix;
