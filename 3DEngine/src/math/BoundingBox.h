@@ -26,11 +26,18 @@ public:
 
 	inline AABBox operator+(const AABBox& rhs) { return HullBox(rhs); }
 
+	inline bool operator==(const AABBox& other) {
+		return d == other.d && p == other.p;
+	};	
+
+	inline bool operator!=(const AABBox& other) {
+		return !(*this == other);
+	}
+
 	enum Axis { X = 0, Y = 1, Z = 2 };
 
 	glm::vec3 d;
 	glm::vec3 p;
-	glm::mat3 R;
 };
 
 inline AABBox operator*(const glm::mat4& lhs, const AABBox& rhs) {
@@ -50,7 +57,6 @@ public:
 
 	virtual glm::vec3 Maximum() const override;
 
-	glm::vec3 d;
-	glm::vec3 p;
 	glm::mat3 R;
+
 };

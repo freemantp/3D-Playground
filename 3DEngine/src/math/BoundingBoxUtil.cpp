@@ -48,7 +48,7 @@ bool BoundingBoxUtil::DirectionalLightFrustrum(const AABBox & bbox, const glm::v
 
 		return true;
 	}
-	else if (num_corr == 2)
+	else if (num_corr == 3)
 	{
 		auto it = std::find(std::cbegin(has_comp), std::cend(has_comp), false);
 		int idx = static_cast<int>(std::distance(std::cbegin(has_comp), it));
