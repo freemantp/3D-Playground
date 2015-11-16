@@ -2,6 +2,7 @@
 
 #include "Shadow.h"
 
+#include "../camera/Frustum.h"
 #include "../texture/DepthTexture.h"
 #include "../light/SpotLight.h"
 #include "../light/DirectionalLight.h"
@@ -46,23 +47,39 @@ void Shadow::UpdateShadowMatrix(const DirectionalLight_cptr& dirLight)
 
 
 
-	auto ll = dirLight->SceneBoundingBox().Minimum();
-	auto ur = dirLight->SceneBoundingBox().Maximum();
+	//auto ll = dirLight->SceneBoundingBox().Minimum();
+	//auto ur = dirLight->SceneBoundingBox().Maximum();
 
-	nearPlane = 1.0f; 
-	farPlane = 10.5f;
-	float ortho_dim = 1.f;
+	//nearPlane = 1.0f; 
+	//farPlane = 10.5f;
+	//float ortho_dim = 1.f;
 
-	glm::vec3 light_pos(1, 1, 1);
-	float left = -ortho_dim, right = ortho_dim, up = ortho_dim, down = -ortho_dim;
-	BoundingBoxUtil::DirectionalLightFrustrum(dirLight->SceneBoundingBox(), dirLight->Direction(),light_pos, left, right, up, down, nearPlane, farPlane);
+	//glm::vec3 light_pos(1, 1, 1);
+	//float left = -ortho_dim, right = ortho_dim, up = ortho_dim, down = -ortho_dim;
 
-	glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(1, 1, 1), glm::vec3(0.0f), glm::vec3(1, 0, 0));
-	glm::mat4 depthProjectionMatrix = glm::ortho(left, right, down, up, nearPlane, farPlane);
+	//glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(1, 1, 1), glm::vec3(0.0f), glm::vec3(1, 0, 0));
+	//glm::mat4 depthProjectionMatrix = glm::ortho(left, right, down, up, nearPlane, farPlane);
 
-	depthViewProjectionMatrix = depthProjectionMatrix * depthViewMatrix;
-	shadowMat = biasMatrix * depthViewProjectionMatrix;
-	type = ProjectionType::Orthogonal;
+	//depthViewProjectionMatrix = depthProjectionMatrix * depthViewMatrix;
+	//shadowMat = biasMatrix * depthViewProjectionMatrix;
+	//type = ProjectionType::Orthogonal;
+	OrthogonalFrustum frustrum;
+	if(BoundingBoxUtil::DirectionalLightFrustum(dirLight->SceneBoundingBox(), dirLight->Direction(), frustrum))
+	{
+		//frustrum.localCoordSys = frustrum2.localCoordSys;
+
+		glm::vec3 target = frustrum.position + frustrum.localCoordSys[0];
+		glm::mat4 depthViewMatrix = glm::lookAt(frustrum.position , target, frustrum.localCoordSys[2]);
+
+		glm::mat4 depthProjectionMatrix = glm::ortho(
+			frustrum.left, frustrum.right, 
+			frustrum.down, frustrum.up, 
+			frustrum.nearPlane, frustrum.farPlane);
+
+		depthViewProjectionMatrix = depthProjectionMatrix * depthViewMatrix;
+		shadowMat = biasMatrix * depthViewProjectionMatrix;
+		type = ProjectionType::Orthogonal;
+	}
 }
 
 DepthTexture_ptr Shadow::ShadowMap() const

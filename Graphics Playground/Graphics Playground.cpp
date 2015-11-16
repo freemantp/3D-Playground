@@ -16,9 +16,6 @@
 #include "GlutInputHandler.h"
 #include "GlutInputHandlerFactory.h"
 
-#include <math/BoundingBox.h>
-#include <math/BoundingBoxUtil.h>
-
 using std::string;
 
 #define WINDOW_TITLE_PREFIX "OpenGL Playground"
@@ -45,17 +42,6 @@ string sceneName = "pc24.xml";
 
 int main(int argc, char* argv[])
 {
-	AABBox box;
-	
-
-	box.d = glm::vec3(1, 2,3);
-	glm::vec3 ldir(0, 1, 0);
-	glm::vec3 lpos;
-
-	float l, r, u, d, n, f;
-	BoundingBoxUtil::DirectionalLightFrustrum(box, ldir, lpos, l, r, u, d, n, f);
-
-	return 1;
 
 	if (argc == 2)
 	{

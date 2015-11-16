@@ -90,10 +90,8 @@ Scene::~Scene()
 	}
 }
 
-void Scene::AddShape(const Shape_ptr& shape)
+void Scene::UpdateLightBboxes()
 {
-	objects.push_back(shape);
-
 	auto bb = BoundingBox();
 
 	for (auto& sl : lightModel->spotLights)
@@ -101,6 +99,18 @@ void Scene::AddShape(const Shape_ptr& shape)
 
 	if (auto& dl = lightModel->directionalLight)
 		dl->SetSceneBoundingBox(bb);
+}
+
+void Scene::AddShape(const Shape_ptr& shape)
+{
+	objects.push_back(shape);
+	UpdateLightBboxes();
+}
+
+void Scene::AddShapes(const std::vector<Shape_ptr> shapes)
+{
+	std::copy(shapes.cbegin(), shapes.cend(), std::back_inserter(objects));
+	UpdateLightBboxes();
 }
 
 void Scene::SetSkybox(const Skybox_ptr& skybox)
@@ -206,6 +216,15 @@ void Scene::Render(const Viewport_ptr& viewport)
 		for (auto& sh : objects)
 		{
 			auto bbox = sh->BoundingBox();			
+			auto tmat = glm::translate(glm::mat4(1.f), bbox.p);
+			auto smat = glm::scale(tmat, bbox.d);
+			wireCube->SetWorldTransform(smat);
+			wireCube->Render(shared_from_this());
+		}
+
+		if(lightModel->directionalLight)
+		{
+			auto bbox = lightModel->directionalLight->SceneBoundingBox();
 			auto tmat = glm::translate(glm::mat4(1.f), bbox.p);
 			auto smat = glm::scale(tmat, bbox.d);
 			wireCube->SetWorldTransform(smat);

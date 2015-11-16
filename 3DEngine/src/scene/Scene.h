@@ -37,6 +37,7 @@ public:
 	void Render(const Viewport_ptr& viewport);
 
 	void AddShape(const Shape_ptr& shape);
+	void AddShapes(const std::vector<Shape_ptr> shapes);
 	void AddMaterial(const ShaderBase* shape);
 	void AddLight(const PointLight_ptr& shape);
 	void AddLight(const SpotLight_ptr& light);
@@ -78,6 +79,8 @@ protected:
 	virtual ~Scene();
 
 	void RenderShadowMaps();
+
+	void UpdateLightBboxes();
 
 	InspectionCameraAdapter_ptr inspectionCamAdapter;
 	FirstPersonCameraAdapter_ptr fpCamAdapter;

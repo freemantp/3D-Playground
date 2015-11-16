@@ -97,6 +97,13 @@ bool SceneParser::Parse(const std::string& xmlDocument)
 					return false;
 			}
 
+			//Objects
+			if (XMLElement* objectsElement = root->FirstChildElement("objects"))
+			{
+				if (!ParseObjects(objectsElement))
+					return false;
+			}
+
 			//Lights
 			XMLElement* lightsElement = root->FirstChildElement("lights");
 			if( lightsElement != nullptr)
@@ -110,13 +117,6 @@ bool SceneParser::Parse(const std::string& xmlDocument)
 			if( skyboxElement != nullptr)
 			{
 				if( ! ParseSkybox(skyboxElement) )
-					return false;
-			}
-
-			//Objects
-			if( XMLElement* objectsElement = root->FirstChildElement("objects"))
-			{
-				if( ! ParseObjects(objectsElement) )
 					return false;
 			}
 		}
@@ -295,6 +295,8 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 	//Parse children of 'objects'
 	if(XMLElement* objeElem = objects->FirstChildElement())
 	{
+		std::vector<Shape_ptr> shapes;
+
 		do
 		{
 			Material_ptr material;
@@ -358,9 +360,11 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 				shape->SetWorldTransform(tMatrix);
 			}
 
-			generated_scene->AddShape(shape);		
+			shapes.push_back(shape);
 		} 
 		while (objeElem = objeElem->NextSiblingElement());
+
+		generated_scene->AddShapes(shapes);
 	}
 	
 	return true;
@@ -511,9 +515,8 @@ bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 				GetColorVector3(lightElem->FirstChildElement("color"), color);
 				GetVector3(lightElem->FirstChildElement("direction"), direction);
 
-				DirectionalLight_ptr dirLight = DirectionalLight::Create();
+				DirectionalLight_ptr dirLight = DirectionalLight::Create(glm::normalize(direction));
 				dirLight->SetColor(color);
-				dirLight->SetDirection(glm::normalize(direction));
 				generated_scene->SetLight(dirLight);
 
 			}

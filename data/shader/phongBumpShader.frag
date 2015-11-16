@@ -210,7 +210,7 @@ void main()
 	{
 		vec3 dirDirection = sceneLights.DirectionalLight0.Direction;
 		vec3 dirColor = sceneLights.DirectionalLight0.Color;
-		shade(normal,ViewDirection, dirDirection,TexCoord,diffuse,specular);
+		shade(normal,ViewDirection,-dirDirection,TexCoord,diffuse,specular);
 
 		float shadow = getDirectionalLightShadow();
 

@@ -15,6 +15,7 @@
     <ClInclude Include="src\camera\Camera.h" />
     <ClInclude Include="src\camera\CameraAdapter.h" />
     <ClInclude Include="src\camera\FirstPersonCameraAdapter.h" />
+    <ClInclude Include="src\camera\Frustum.h" />
     <ClInclude Include="src\camera\InspectionCameraAdapter.h" />
     <ClInclude Include="src\camera\OrthogonalCamera.h" />
     <ClInclude Include="src\camera\PerspectiveCamera.h" />
@@ -88,6 +89,7 @@
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\camera\FirstPersonCameraAdapter.cpp" />
+    <ClCompile Include="src\camera\Frustum.cpp" />
     <ClCompile Include="src\camera\InspectionCameraAdapter.cpp" />
     <ClCompile Include="src\camera\OrthogonalCamera.cpp" />
     <ClCompile Include="src\camera\PerspectiveCamera.cpp" />

@@ -22,10 +22,7 @@ SceneOverlay2D::SceneOverlay2D(Scene_ptr scene)
 
 	if (scene)
 	{
-		auto dirLight = DirectionalLight::Create(false);
-		dirLight->SetDirection(glm::vec3(0, 0, -1));
-
-		lightModel->directionalLight = dirLight;
+		lightModel->directionalLight = DirectionalLight::Create(glm::vec3(0, 0, -1), false);
 
 		const int spacing = 50;
 		const float width = 400.f;

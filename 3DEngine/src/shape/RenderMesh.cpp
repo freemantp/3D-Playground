@@ -438,7 +438,7 @@ void RenderMesh::Render(const Scene_ptr& scene) const
 				? materialsNew[i]
 				: this->material;
 
-			if (current_material->IsTransparent() == transparent)
+			if (current_material && current_material->IsTransparent() == transparent)
 			{
 				if (MaterialShader_ptr current_shader = sl->ShaderLookup(current_material))
 				{

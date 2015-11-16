@@ -37,9 +37,6 @@ public:
 	void SetOrientation(const glm::vec3& pos, const glm::vec3& up);
 	void SetOrientation2(const glm::vec3& target, const glm::vec3& up);
 
-	void SetNearPlane(float near);
-	void SetFarPlane(float fov);
-
 	glm::mat4 viewMatrix;
 	glm::mat4 projectionMatrix;
 

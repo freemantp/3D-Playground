@@ -161,8 +161,7 @@ void main()
 	{
 		vec3 dirDirection = normalize(sceneLights.DirectionalLight0.Direction);
 		vec3 dirColor = sceneLights.DirectionalLight0.Color;		
-		shade(normal,ViewDirection,dirDirection,diffuse,specular);
-
+		shade(normal,ViewDirection,-dirDirection,diffuse,specular);
 		float shadow = getDirectionalLightShadow();
 
 		FragColor += shadow * vec4(dirColor * (albedo * diffuse + specular),0);

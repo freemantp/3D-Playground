@@ -32,7 +32,7 @@ namespace Test3DEngine
 			Assert::IsTrue(v1 == box.Maximum()), LINE_INFO();
 		}
 
-		TEST_METHOD(Hull)
+		TEST_METHOD(HullBox)
 		{
 			glm::vec3 v00(1, 2, 3);
 			glm::vec3 v01(4, 6, 8);
@@ -73,22 +73,60 @@ namespace Test3DEngine
 
 	TEST_CLASS(BoundingBoxUtilTests)
 	{
-		TEST_METHOD(DirectionalLightFrustrumOrtho)
+		TEST_METHOD(DirectionalLightFrustumOrtho)
 		{
 			AABBox box;
 			box.d = glm::vec3(1, 2, 3);
 			glm::vec3 ldir(0, -1, 0);
-			glm::vec3 lpos;
 
-			float l, r, u, d, n, f;
-			Assert::IsTrue(BoundingBoxUtil::DirectionalLightFrustrum(box, ldir, lpos, l, r, u, d, n, f),L"", LINE_INFO());
-			Assert::IsTrue(glm::vec3(0,2,0) == lpos), LINE_INFO();
-			Assert::AreEqual(0.f, n);
-			Assert::AreEqual(4.f, f);
-			Assert::AreEqual(-3.f, l);
-			Assert::AreEqual(3.f, r);
-			Assert::AreEqual(1.f, u);
-			Assert::AreEqual(-1.f, d);
+			OrthogonalFrustum Frustum;
+			Assert::IsTrue(BoundingBoxUtil::DirectionalLightFrustum(box, ldir, Frustum),L"", LINE_INFO());
+			Assert::IsTrue(glm::vec3(0,2,0) == Frustum.position), LINE_INFO();
+			Assert::AreEqual(0.f, Frustum.nearPlane);
+			Assert::AreEqual(4.f, Frustum.farPlane);
+			Assert::AreEqual(-3.f, Frustum.left);
+			Assert::AreEqual(3.f, Frustum.right);
+			Assert::AreEqual(1.f, Frustum.up);
+			Assert::AreEqual(-1.f, Frustum.down);
+		}
+
+		TEST_METHOD(DirectionalLightFrustumSkewed)
+		{
+			AABBox box;
+			box.d = glm::vec3(2, 2, 2);
+			glm::vec3 ldir(-1, -1, -1);
+
+			OrthogonalFrustum Frustum;
+			Assert::IsTrue(BoundingBoxUtil::DirectionalLightFrustum(box, ldir, Frustum), L"", LINE_INFO());
+			Assert::AreEqual(0.f, Frustum.nearPlane);
+			Assert::AreEqual(glm::length(box.d)*2.f, Frustum.farPlane);
+			Assert::IsTrue(-Frustum.right + Frustum.left < 1e-5);
+			Assert::IsTrue(-Frustum.up + Frustum.down < 1e-5);
+		}
+
+		TEST_METHOD(BasisFromDirection)
+		{
+			glm::vec3 dir(1.4,0,0);
+			glm::mat3 basis = BoundingBoxUtil::BasisFromDirection(dir);
+			Assert::IsTrue(glm::normalize(dir) == basis[0]), LINE_INFO();
+			Assert::IsTrue(glm::vec3(0, 1, 0) == basis[1]), LINE_INFO();
+			Assert::IsTrue(glm::vec3(0, 0, 1) == basis[2]), LINE_INFO();
+			Assert::AreEqual(1.f, glm::length(basis[0]), L"Basis vector not normalized", LINE_INFO());
+			Assert::AreEqual(1.f, glm::length(basis[1]), L"Basis vector not normalized", LINE_INFO());
+			Assert::AreEqual(1.f, glm::length(basis[2]), L"Basis vector not normalized", LINE_INFO());
+
+			dir = glm::vec3(2, 1, 2);
+			basis = BoundingBoxUtil::BasisFromDirection(dir);
+			Assert::IsTrue(glm::normalize(dir) == basis[0]), LINE_INFO();
+			Assert::IsTrue(glm::vec3( -0.235702261,0.942808986, -0.235702261) == basis[1]), LINE_INFO();
+
+			const float eps = 1e-7f; 
+			Assert::IsTrue(std::abs(glm::dot(basis[0], basis[1])) < eps, L"Basis vectors not normal", LINE_INFO());
+			Assert::IsTrue(std::abs(glm::dot(basis[1], basis[2])) < eps, L"Basis vectors not normal", LINE_INFO());
+			Assert::IsTrue(std::abs(glm::dot(basis[0], basis[2])) < eps, L"Basis vectors not normal", LINE_INFO());
+			Assert::IsTrue(std::abs(1 - glm::length(basis[0])) < eps, L"Basis vector not normalized", LINE_INFO());
+			Assert::IsTrue(std::abs(1 - glm::length(basis[1])) < eps, L"Basis vector not normalized", LINE_INFO());
+			Assert::IsTrue(std::abs(1 - glm::length(basis[2])) < eps, L"Basis vector not normalized", LINE_INFO());
 		}
 	};
 }
