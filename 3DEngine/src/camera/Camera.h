@@ -5,11 +5,22 @@
 
 #include <glm/glm.hpp>
 
-struct CameraFrame
+struct CameraFrame : public glm::mat3
 {
-	glm::vec3 up;
-	glm::vec3 viewDir;
-	glm::vec3 sideways;
+	glm::vec3& ViewDir() { return operator[](0); };
+	glm::vec3& Side() { return operator[](1); };
+	glm::vec3& Up() { return operator[](2); };
+	
+	const glm::vec3& ViewDir() const { return operator[](0); };
+	const glm::vec3& Side() const { return operator[](1); };
+	const glm::vec3& Up() const { return operator[](2); };
+
+	CameraFrame()
+	{
+		ViewDir() = glm::vec3(1, 0, 0);
+		Side() = glm::vec3(0, 0, 1);
+		Up() = glm::vec3(0, 1, 0);
+	};
 };
 
 class Camera : public ViewportObserver
@@ -26,16 +37,11 @@ public:
 	virtual void UpdateProjectionMatrix() = 0;
 
 	const glm::vec3& Position() const;
-	const glm::vec3& Target() const;
-	const CameraFrame& Frame() const;
+	CameraFrame& Frame();
 	float NearPlane() const;
 	float FarPlane() const;
 
 	void SetPosition(const glm::vec3& pos);
-	void SetTarget(const glm::vec3& target);
-	void SetUpVector(const glm::vec3& up);
-	void SetOrientation(const glm::vec3& pos, const glm::vec3& up);
-	void SetOrientation2(const glm::vec3& target, const glm::vec3& up);
 
 	glm::mat4 viewMatrix;
 	glm::mat4 projectionMatrix;
@@ -43,7 +49,6 @@ public:
 protected:
 
 	glm::vec3 position;
-	glm::vec3 target;
 	CameraFrame frame;
 	float nearP;
 	float farP;

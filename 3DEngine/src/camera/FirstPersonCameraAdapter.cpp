@@ -37,15 +37,15 @@ void FirstPersonCameraAdapter::OnKey(const Input::Key key, const Input::Modifier
 
 void FirstPersonCameraAdapter::Walk(float amount)
 {
-	vec3 dir = glm::normalize( cam->Target() - cam->Position() );
-	cam->SetPosition( cam->Position() + dir * amount );
+	//vec3 dir = glm::normalize( cam->Target() - cam->Position() );
+	//cam->SetPosition( cam->Position() + dir * amount );
 }
 
 void FirstPersonCameraAdapter::StepSidewards(float amount)
 {
-	vec3 step = cam->Frame().sideways * amount;
+	vec3 step = cam->Frame().Side() * amount;
 	cam->SetPosition( cam->Position() + step );
-	cam->SetTarget( cam->Target() + step );	
+	cam->UpdateViewMatrix();
 }
 
 void FirstPersonCameraAdapter::Turn(float degrees)
@@ -59,7 +59,7 @@ void FirstPersonCameraAdapter::OnMouseMove(const glm::vec2& position)
 	const float degreesPerPixelPitch = 0.2f;
 
 	const CameraFrame& frame = cam->Frame();
-	const vec3& target = cam->Target();
+	vec3 target;// = cam->Target();
 
 	glm::vec2 screenDelta = position - lastScreenPos;
 	float yaw = -screenDelta.x * degreesPerPixelYaw;
@@ -67,16 +67,13 @@ void FirstPersonCameraAdapter::OnMouseMove(const glm::vec2& position)
 
 	//Transformation: translate to origin, rotate about axis, translate back
 	glm::mat4 transformM = glm::translate(glm::mat4(1.0f),target);
-	transformM = glm::rotate(transformM, glm::radians(pitch) , frame.sideways);
-	transformM = glm::rotate(transformM, glm::radians(yaw), frame.up);
+	transformM = glm::rotate(transformM, glm::radians(pitch) , frame.Side());
+	transformM = glm::rotate(transformM, glm::radians(yaw), frame.Up());
 	transformM = glm::translate(transformM,-target);
 
 	//Transform camera position
-	glm::vec4 newDir = transformM * glm::vec4(frame.viewDir, 0.0f);
-	glm::vec4 newUp = transformM * glm::vec4( frame.up, 0.0f);
-
-	cam->SetOrientation2(cam->Position() + newDir.xyz,newUp.xyz);
-
+	glm::vec4 newDir = transformM * glm::vec4(frame.ViewDir(), 0.0f);
+	glm::vec4 newUp = transformM * glm::vec4( frame.Up(), 0.0f);
 	lastScreenPos = position;
 }
 

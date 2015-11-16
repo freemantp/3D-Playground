@@ -11,8 +11,6 @@ OrthogonalCamera::OrthogonalCamera()
 	: Camera(0.01f, 10.0f)
 {
 	position =  vec3(0.0f, 0.0f, 1.0f);
-	target =    vec3(0.0f, 0.0f, 0.0f);
-	frame.up =  vec3(0.0f, 1.0f, 0.0f);
 
 	UpdateViewMatrix();
 	UpdateProjectionMatrix();

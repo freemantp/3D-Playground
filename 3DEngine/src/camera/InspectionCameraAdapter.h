@@ -26,6 +26,7 @@ public:
 protected:
 
 	glm::vec2				lastScreenPos;
+	glm::vec3				orbitCenter;
 	Input::MouseButton		lastButton;
 	Input::Direction		lastClickDirection;
 

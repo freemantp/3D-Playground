@@ -456,8 +456,10 @@ bool SceneParser::ParseCamera(Camera_ptr& cam, tinyxml2::XMLElement* camElement)
 	success &= GetVector3( camElement->FirstChildElement("up"),up);
 
 	cam->SetPosition(pos);
-	cam->SetTarget(target);
-	cam->SetUpVector(up);
+	cam->Frame().ViewDir() = glm::normalize(target - pos);
+	cam->Frame().Up() = up;
+	cam->Frame().Side() = glm::normalize(glm::cross(cam->Frame().ViewDir(),up));
+	cam->UpdateViewMatrix();
 
 	return success;
 

@@ -16,6 +16,7 @@ using glm::vec4;
 
 InspectionCameraAdapter::InspectionCameraAdapter(const Camera_ptr& cam) 
 	: CameraAdapter(cam)
+	, orbitCenter(glm::vec3(0,0,0))
 {
 
 }
@@ -42,31 +43,37 @@ void InspectionCameraAdapter::OnMouseDrag(const glm::vec2& screen_pos)
 		if (lastButton == Input::MouseButton::LEFT)
 		{
 			const float pixel_rad_ratio = 0.004f;
-			const CameraFrame& frame = cam->Frame();
-			const vec3& target = cam->Target();
+			CameraFrame& frame = cam->Frame();
 
 			//Calculate axis of rotation
-			glm::vec3 rotation_axis = glm::normalize(-screen_delta.x * frame.up + -screen_delta.y * frame.sideways);
-
-			//Transformation: translate to origin, rotate about axis, translate back
-			glm::mat4 transform_mat = glm::translate(glm::mat4(1.0f), target);
-			transform_mat = glm::rotate(transform_mat, movement_len * pixel_rad_ratio, rotation_axis);
-			transform_mat = glm::translate(transform_mat, -target);
+			glm::vec3 rotation_axis = glm::normalize(-screen_delta.x * frame.Up() + -screen_delta.y * frame.Side());
+			glm::mat4 transform_mat = glm::rotate(glm::mat4(1.0f), movement_len * pixel_rad_ratio, rotation_axis);
 
 			//Transform camera position
-			glm::vec4 new_pos = transform_mat * glm::vec4(cam->Position(), 1.0f);
-			glm::vec4 new_up = transform_mat * glm::vec4(frame.up, 0.0f);
-			cam->SetOrientation(glm::vec3(new_pos.x, new_pos.y, new_pos.z), vec3(new_up.x, new_up.y, new_up.z));	
+			glm::vec3 new_pos = glm::vec3(transform_mat * glm::vec4(cam->Position(), 1.0f));
+			glm::vec3 new_up  = glm::vec3(transform_mat * glm::vec4(frame.Up(), 0.0f));
+			glm::vec3 new_dir = glm::vec3(transform_mat * glm::vec4(frame.ViewDir(), 0.0f));
+	
+			frame.Up() = new_up;
+			frame.ViewDir() = glm::normalize(orbitCenter-new_pos);
+			frame.Side() = glm::normalize(glm::cross(frame.ViewDir(), frame.Up()));
+			cam->SetPosition(new_pos);
+			cam->UpdateViewMatrix();
 		}
 		else if (lastButton == Input::MouseButton::RIGHT)
 		{
-			float dist = glm::length(cam->Target() - cam->Position());
+			float dist = glm::length(orbitCenter - cam->Position());
 			float pixel_length_ratio = 0.001f * dist;
 
-			glm::vec3 offset = cam->Frame().sideways * -screen_delta.x * pixel_length_ratio;
-			offset += cam->Frame().up * screen_delta.y * pixel_length_ratio;
-			cam->SetPosition(cam->Position() + offset);
-			cam->SetTarget(cam->Target() + offset);
+			glm::vec3 offset = cam->Frame().Side() * -screen_delta.x * pixel_length_ratio;
+			offset += cam->Frame().Up() * screen_delta.y * pixel_length_ratio;
+
+			glm::vec3 new_pos = cam->Position() + offset;
+			cam->SetPosition(new_pos);	
+
+			orbitCenter += offset;
+			cam->Frame().ViewDir() = glm::normalize(orbitCenter - new_pos);
+			cam->UpdateViewMatrix();
 		}
 
 		lastScreenPos = screen_pos;
@@ -83,7 +90,7 @@ void InspectionCameraAdapter::OnMouseClick(Input::MouseButton button, Input::Dir
 
 void InspectionCameraAdapter::OnMouseWheel(Input::Direction direction, const glm::vec2& screen_pos)
 {
-	vec3 dir = cam->Target() - cam->Position();
+	vec3 dir = orbitCenter - cam->Position();
 	bool up = direction == Input::Direction::UP;
 
 	float len = glm::length(dir);
@@ -91,8 +98,9 @@ void InspectionCameraAdapter::OnMouseWheel(Input::Direction direction, const glm
 	if(len <= cam->NearPlane() && up || len >= cam->FarPlane() && !up)
 		return;
 	
-	dir = glm::normalize(dir) * 0.2f * (up ? 1.0f : -1.0f);
+	dir = glm::normalize(dir) * 0.1f * (up ? 1.0f : -1.0f);
 	cam->SetPosition(cam->Position() + dir);
+	cam->UpdateViewMatrix();
 
 	lastScreenPos = screen_pos;
 }
