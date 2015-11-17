@@ -5,12 +5,13 @@
 
 class Camera;
 /**
-* \class InspectionCameraAdapter for GLUT
+* \class InspectionCameraAdapter
 * \brief Mouse adapter class that rotates around a reference point
 * \author Michael Morandi
 *
 * A mouse adapter class that rotates around a reference point by holding down
 * the left mouse button and dragging. The camera then rotates around its target point
+* holding down the right mouse button pans rhe view
 */
 class InspectionCameraAdapter : public CameraAdapter, public MouseObserver
 {

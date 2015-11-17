@@ -450,15 +450,17 @@ bool SceneParser::ParseCamera(Camera_ptr& cam, tinyxml2::XMLElement* camElement)
 		return false;
 	}
 
+	Frustum& frustrum = cam->CameraFrustum();
+
 	glm::vec3 pos, target, up;
 	success &= GetVector3( camElement->FirstChildElement("position"),pos);
 	success &= GetVector3( camElement->FirstChildElement("target"),target);
 	success &= GetVector3( camElement->FirstChildElement("up"),up);
 
-	cam->SetPosition(pos);
-	cam->Frame().ViewDir() = glm::normalize(target - pos);
-	cam->Frame().Up() = up;
-	cam->Frame().Side() = glm::normalize(glm::cross(cam->Frame().ViewDir(),up));
+	frustrum.position = pos;
+	frustrum.frame.ViewDir() = glm::normalize(target - frustrum.position);
+	frustrum.frame.Up() = up;
+	frustrum.frame.Side() = glm::normalize(glm::cross(frustrum.frame.ViewDir(),up));
 	cam->UpdateViewMatrix();
 
 	return success;

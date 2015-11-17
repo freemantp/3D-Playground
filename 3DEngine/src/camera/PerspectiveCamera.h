@@ -8,19 +8,18 @@ class PerspectiveCamera : public Camera
 {
 public:
 	PerspectiveCamera(float fov);
-	~PerspectiveCamera();
 
 	void SetFov(float fov);
 	void SetAspectRatio(float aspectRatio);
 
 	virtual void ViewportChanged(const Viewport_ptr& viewport) override;
 
+	virtual Frustum& CameraFrustum() override;
+
 protected:
 
 	virtual void UpdateProjectionMatrix();
 
-	float fov;
-	float aspectRatio;
-
+	PerspectiveFrustum frustum;
 };
 

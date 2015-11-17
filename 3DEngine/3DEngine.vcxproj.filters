@@ -298,6 +298,9 @@
     <ClInclude Include="src\math\BoundingBoxUtil.h">
       <Filter>Source Files\math</Filter>
     </ClInclude>
+    <ClInclude Include="src\camera\Frustum.h">
+      <Filter>Source Files\camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -479,6 +482,9 @@
     </ClCompile>
     <ClCompile Include="src\math\BoundingBoxUtil.cpp">
       <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera\Frustum.cpp">
+      <Filter>Source Files\camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -12,12 +12,12 @@ public:
 
 	virtual void ViewportChanged(const Viewport_ptr& viewport) override;
 
+	virtual Frustum& CameraFrustum() override;
+
 protected:
 
 	virtual void UpdateProjectionMatrix();
 
-	int width;
-	int height;
-
+	OrthogonalFrustum frustum;
 };
 

@@ -43,8 +43,9 @@ void FirstPersonCameraAdapter::Walk(float amount)
 
 void FirstPersonCameraAdapter::StepSidewards(float amount)
 {
-	vec3 step = cam->Frame().Side() * amount;
-	cam->SetPosition( cam->Position() + step );
+	auto& frustum = cam->CameraFrustum();
+	vec3 step = frustum.frame.Side() * amount;
+	frustum.position += step;
 	cam->UpdateViewMatrix();
 }
 
@@ -58,7 +59,7 @@ void FirstPersonCameraAdapter::OnMouseMove(const glm::vec2& position)
 	const float degreesPerPixelYaw = 0.5f;
 	const float degreesPerPixelPitch = 0.2f;
 
-	const CameraFrame& frame = cam->Frame();
+	auto& frustum = cam->CameraFrustum();
 	vec3 target;// = cam->Target();
 
 	glm::vec2 screenDelta = position - lastScreenPos;
@@ -67,13 +68,13 @@ void FirstPersonCameraAdapter::OnMouseMove(const glm::vec2& position)
 
 	//Transformation: translate to origin, rotate about axis, translate back
 	glm::mat4 transformM = glm::translate(glm::mat4(1.0f),target);
-	transformM = glm::rotate(transformM, glm::radians(pitch) , frame.Side());
-	transformM = glm::rotate(transformM, glm::radians(yaw), frame.Up());
+	transformM = glm::rotate(transformM, glm::radians(pitch) , frustum.frame.Side());
+	transformM = glm::rotate(transformM, glm::radians(yaw), frustum.frame.Up());
 	transformM = glm::translate(transformM,-target);
 
 	//Transform camera position
-	glm::vec4 newDir = transformM * glm::vec4(frame.ViewDir(), 0.0f);
-	glm::vec4 newUp = transformM * glm::vec4( frame.Up(), 0.0f);
+	glm::vec4 newDir = transformM * glm::vec4(frustum.frame.ViewDir(), 0.0f);
+	glm::vec4 newUp = transformM * glm::vec4(frustum.frame.Up(), 0.0f);
 	lastScreenPos = position;
 }
 

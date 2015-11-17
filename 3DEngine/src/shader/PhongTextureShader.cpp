@@ -45,7 +45,7 @@ bool PhongTextureShader::Use(const Scene_ptr& scene, const glm::mat4& modelTrans
 			sbm->texture->BindTexture(textureUnits[Evironment]);
 			SetUniform("EnvMap.Exists", static_cast<bool>(scene->skybox));
 			SetUniform("EnvMap.CubeTexture", textureUnits[Evironment]);
-			SetUniform("CameraPosWorld", scene->activeCamera->Position());
+			SetUniform("CameraPosWorld", scene->activeCamera->CameraFrustum().position);
 		}
 	}
 

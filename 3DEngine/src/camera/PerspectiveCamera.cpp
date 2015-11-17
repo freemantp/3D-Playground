@@ -8,39 +8,44 @@ using glm::vec4;
 using glm::vec3;
 
 PerspectiveCamera::PerspectiveCamera(float fov) 
-	: fov(fov)
-	, aspectRatio(1.0f)
-	, Camera(0.01f, 100.0f)
 {
-	position =  vec3(0.0f, 0.0f, 1.0f);
+	frustum.position =  vec3(0.0f, 0.0f, 1.0f);
+	frustum.nearPlane = 0.01f;
+	frustum.farPlane = 100.0f;
+	frustum.fov = fov;
+	frustum.aspectRatio = 1.f;
+
+	frustum.frame.ViewDir() = vec3(0.0f, 0.0f, -1.0f);
+	frustum.frame.Up() = vec3(0.0f, 1.0f, 0.0f);
+	frustum.frame.Side() = glm::cross(frustum.frame.ViewDir(), frustum.frame.Up());
 
 	UpdateViewMatrix();
 	UpdateProjectionMatrix();
 }
 
-PerspectiveCamera::~PerspectiveCamera()
-{
-
-}
-
 void PerspectiveCamera::UpdateProjectionMatrix()
 {
-	projectionMatrix  = glm::perspective(glm::radians(fov), aspectRatio, nearP, farP);
+	projectionMatrix = glm::perspective(glm::radians(frustum.fov), frustum.aspectRatio, frustum.nearPlane, frustum.farPlane);
 }
 
 void PerspectiveCamera::SetAspectRatio(float aspectRatio)
 {
-	this->aspectRatio = aspectRatio;
+	frustum.aspectRatio = aspectRatio;
 	UpdateProjectionMatrix();
 }
 
 void PerspectiveCamera::SetFov(float fov)
 {
-	this->fov = fov;
+	frustum.fov = fov;
 	UpdateProjectionMatrix();
 }
 
 void PerspectiveCamera::ViewportChanged(const Viewport_ptr& viewport)
 {
 	SetAspectRatio((float)viewport->width / viewport->height);
+}
+
+Frustum & PerspectiveCamera::CameraFrustum()
+{
+	return frustum;
 }
