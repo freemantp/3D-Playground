@@ -66,14 +66,14 @@ void Shadow::UpdateShadowMatrix(const DirectionalLight_cptr& dirLight)
 	OrthogonalFrustum frustrum;
 	if(BoundingBoxUtil::DirectionalLightFrustum(dirLight->SceneBoundingBox(), dirLight->Direction(), frustrum))
 	{
-		//frustrum.localCoordSys = frustrum2.localCoordSys;
+		//frustrum.frame = frustrum2.frame;
 
-		glm::vec3 target = frustrum.position + frustrum.localCoordSys[0];
-		glm::mat4 depthViewMatrix = glm::lookAt(frustrum.position , target, frustrum.localCoordSys[2]);
+		glm::vec3 target = frustrum.position + frustrum.frame[0];
+		glm::mat4 depthViewMatrix = glm::lookAt(frustrum.position , target, frustrum.frame[2]);
 
 		glm::mat4 depthProjectionMatrix = glm::ortho(
 			frustrum.left, frustrum.right, 
-			frustrum.down, frustrum.up, 
+			frustrum.bottom, frustrum.top, 
 			frustrum.nearPlane, frustrum.farPlane);
 
 		depthViewProjectionMatrix = depthProjectionMatrix * depthViewMatrix;

@@ -86,8 +86,8 @@ namespace Test3DEngine
 			Assert::AreEqual(4.f, Frustum.farPlane);
 			Assert::AreEqual(-3.f, Frustum.left);
 			Assert::AreEqual(3.f, Frustum.right);
-			Assert::AreEqual(1.f, Frustum.up);
-			Assert::AreEqual(-1.f, Frustum.down);
+			Assert::AreEqual(1.f, Frustum.top);
+			Assert::AreEqual(-1.f, Frustum.bottom);
 		}
 
 		TEST_METHOD(DirectionalLightFrustumSkewed)
@@ -101,7 +101,7 @@ namespace Test3DEngine
 			Assert::AreEqual(0.f, Frustum.nearPlane);
 			Assert::AreEqual(glm::length(box.d)*2.f, Frustum.farPlane);
 			Assert::IsTrue(-Frustum.right + Frustum.left < 1e-5);
-			Assert::IsTrue(-Frustum.up + Frustum.down < 1e-5);
+			Assert::IsTrue(-Frustum.top + Frustum.bottom < 1e-5);
 		}
 
 		TEST_METHOD(BasisFromDirection)
@@ -127,6 +127,64 @@ namespace Test3DEngine
 			Assert::IsTrue(std::abs(1 - glm::length(basis[0])) < eps, L"Basis vector not normalized", LINE_INFO());
 			Assert::IsTrue(std::abs(1 - glm::length(basis[1])) < eps, L"Basis vector not normalized", LINE_INFO());
 			Assert::IsTrue(std::abs(1 - glm::length(basis[2])) < eps, L"Basis vector not normalized", LINE_INFO());
+		}
+	};
+
+	TEST_CLASS(FrustumTest)
+	{
+		TEST_METHOD(OrthoFrustumCorners)
+		{
+			OrthogonalFrustum frust;
+			frust.left = 1;
+			frust.right = 7;
+			frust.top = 5;
+			frust.bottom = 2;
+			frust.nearPlane = 3;
+			frust.farPlane = 6;
+
+			//90 deg around y axis
+			auto rmat = glm::mat3(glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, 1, 0)));
+			frust.frame *= rmat;
+
+			float eps = 1e-6f;
+
+			auto corners = frust.CornerPoints();
+			Assert::IsTrue(glm::length(corners[0] - glm::vec3(-frust.nearPlane, frust.top, -frust.right)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[1] -glm::vec3(-frust.nearPlane, frust.top,  -frust.left)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[2] -glm::vec3(-frust.nearPlane, frust.bottom,  -frust.right)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[3] -glm::vec3(-frust.nearPlane, frust.bottom,  -frust.left)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[4] - glm::vec3(-frust.farPlane, frust.top, -frust.right)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[5] - glm::vec3(-frust.farPlane, frust.top, -frust.left)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[6] - glm::vec3(-frust.farPlane, frust.bottom, -frust.right)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[7] - glm::vec3(-frust.farPlane, frust.bottom, -frust.left)) < eps), LINE_INFO();
+		}
+
+		TEST_METHOD(PerspectiveFrustumCorners)
+		{
+			PerspectiveFrustum frust;
+			frust.nearPlane = 3;
+			frust.farPlane = 6;
+			frust.fovY = 60;
+			frust.aspectRatio = 0.5f;
+
+			float gk_y = sqrtf(3.f);
+			float gk_x = 3.f * (2.f - sqrtf(3.f));
+
+			//90 deg around y axis
+			auto rmat = glm::mat3(glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, 1, 0)));
+			frust.frame *= rmat;
+
+			float eps = 1e-6f;
+
+			auto corners = frust.CornerPoints();
+			Assert::IsTrue(glm::length(corners[0] - glm::vec3(-frust.nearPlane,  gk_y, -gk_x)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[1] - glm::vec3(-frust.nearPlane,  gk_y,  gk_x)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[2] - glm::vec3(-frust.nearPlane, -gk_y, -gk_x)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[3] - glm::vec3(-frust.nearPlane, -gk_y,  gk_x)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[4] - glm::vec3(-frust.farPlane, 2.f * gk_y,  2.f *-gk_x)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[5] - glm::vec3(-frust.farPlane, 2.f * gk_y,  2.f *gk_x)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[6] - glm::vec3(-frust.farPlane, 2.f * -gk_y, 2.f * -gk_x)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[7] - glm::vec3(-frust.farPlane, 2.f * -gk_y, 2.f * gk_x)) < eps), LINE_INFO();
 		}
 	};
 }

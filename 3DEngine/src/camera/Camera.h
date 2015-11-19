@@ -19,7 +19,7 @@ public:
 	virtual void UpdateProjectionMatrix() = 0;
 
 	virtual Frustum& CameraFrustum() = 0;
-
+		 
 	glm::mat4 viewMatrix;
 	glm::mat4 projectionMatrix;
 

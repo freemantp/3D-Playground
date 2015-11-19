@@ -2,13 +2,12 @@
 
 #include "BoundingBoxUtil.h"
 
-
 #include <algorithm>  
 #include <iterator> 
 
 #include <glm/gtx/orthonormalize.hpp>
 
-glm::mat3 BoundingBoxUtil::BasisFromDirection(const glm::vec3 & direction)
+CameraFrame BoundingBoxUtil::BasisFromDirection(const glm::vec3 & direction)
 {
 	auto directionNormalized = glm::normalize(direction);
 
@@ -31,7 +30,7 @@ glm::mat3 BoundingBoxUtil::BasisFromDirection(const glm::vec3 & direction)
 	sideVec0 = glm::orthonormalize(sideVec0, directionNormalized);
 
 	glm::vec3 sideVec1 = glm::cross(directionNormalized, sideVec0);
-	return glm::mat3(directionNormalized, sideVec0, sideVec1);
+	return CameraFrame(directionNormalized, sideVec0, sideVec1);
 }
 
 bool BoundingBoxUtil::DirectionalLightFrustum(const AABBox & bbox, const glm::vec3& lightDir, OrthogonalFrustum& frust)
@@ -70,17 +69,17 @@ bool BoundingBoxUtil::DirectionalLightFrustum(const AABBox & bbox, const glm::ve
 
 		frust.left = -bbox.d[axis1];
 		frust.right = bbox.d[axis1];
-		frust.up = bbox.d[axis2];
-		frust.down = -bbox.d[axis2];
+		frust.top = bbox.d[axis2];
+		frust.bottom = -bbox.d[axis2];
 
-		frust.localCoordSys[0] = lightDir;
+		frust.frame[0] = lightDir;
 		glm::vec3 basisv1(0);
 		basisv1[axis1] = 1;
 		glm::vec3 basisv2(0);
 		basisv2[axis2] = 1;
 
-		frust.localCoordSys[1] = basisv1;
-		frust.localCoordSys[2] = basisv2;
+		frust.frame[1] = basisv1;
+		frust.frame[2] = basisv2;
 
 		return true;
 	}
@@ -92,13 +91,13 @@ bool BoundingBoxUtil::DirectionalLightFrustum(const AABBox & bbox, const glm::ve
 		int axis2 = (axis0 + 2) % 3;
 
 		frust.position = get_corner(has_comp[0], has_comp[1], has_comp[2]); // position
-		frust.localCoordSys = BasisFromDirection(lightDirNormalized);
+		frust.frame = BasisFromDirection(lightDirNormalized);
 
 		auto project2plane = [&frust] (const glm::vec3& p, float& a, float& b)
 		{
 			glm::vec3 dv = p - frust.position;
-			a = glm::dot(dv, frust.localCoordSys[1]);
-			b = glm::dot(dv, frust.localCoordSys[2]);
+			a = glm::dot(dv, frust.frame[1]);
+			b = glm::dot(dv, frust.frame[2]);
 		};
 
 		float a_min = std::numeric_limits<float>::max();
@@ -135,8 +134,8 @@ bool BoundingBoxUtil::DirectionalLightFrustum(const AABBox & bbox, const glm::ve
 
 		frust.left = a_min;
 		frust.right = a_max;
-		frust.up = b_max;
-		frust.down = b_min;
+		frust.top = b_max;
+		frust.bottom = b_min;
 		frust.nearPlane = 0;
 		frust.farPlane = glm::length(bbox.d) * 2.f;
 
