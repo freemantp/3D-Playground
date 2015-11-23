@@ -301,6 +301,9 @@
     <ClInclude Include="src\camera\Frustum.h">
       <Filter>Source Files\camera</Filter>
     </ClInclude>
+    <ClInclude Include="src\camera\Frame.h">
+      <Filter>Source Files\camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">

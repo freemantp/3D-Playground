@@ -5,6 +5,7 @@
 
 SHARED_PTR_CLASS_DECL(ShadowCastingLight);
 SHARED_PTR_CLASS_DECL(Shadow);
+SHARED_PTR_CLASS_DECL(Camera);
 
 class ShadowCastingLight
 {
@@ -18,8 +19,11 @@ public:
 
 	const AABBox& SceneBoundingBox() const;
 
+	virtual void SetCamera(const Camera_cptr& cam);
+
 protected:	
 
+	Camera_cptr camera;
 	Shadow_ptr shadow;
 	AABBox sceneBbox;
 };

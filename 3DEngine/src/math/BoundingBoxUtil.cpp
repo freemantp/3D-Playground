@@ -4,10 +4,11 @@
 
 #include <algorithm>  
 #include <iterator> 
+#include <limits> 
 
 #include <glm/gtx/orthonormalize.hpp>
 
-CameraFrame BoundingBoxUtil::BasisFromDirection(const glm::vec3 & direction)
+CoordinateFrame BoundingBoxUtil::BasisFromDirection(const glm::vec3 & direction)
 {
 	auto directionNormalized = glm::normalize(direction);
 
@@ -30,7 +31,7 @@ CameraFrame BoundingBoxUtil::BasisFromDirection(const glm::vec3 & direction)
 	sideVec0 = glm::orthonormalize(sideVec0, directionNormalized);
 
 	glm::vec3 sideVec1 = glm::cross(directionNormalized, sideVec0);
-	return CameraFrame(directionNormalized, sideVec0, sideVec1);
+	return CoordinateFrame(directionNormalized, sideVec0, sideVec1);
 }
 
 bool BoundingBoxUtil::DirectionalLightFrustum(const AABBox & bbox, const glm::vec3& lightDir, OrthogonalFrustum& frust)
@@ -144,4 +145,30 @@ bool BoundingBoxUtil::DirectionalLightFrustum(const AABBox & bbox, const glm::ve
 	}
 
 	return false;
+}
+
+bool BoundingBoxUtil::DirectionalLightFrustum(const AABBox & box, const glm::vec3 & lightDir, const Frustum & camFrustum, OrthogonalFrustum & frustum)
+{
+	auto cam_points = camFrustum.CornerPoints();
+
+	glm::vec3 lightDirNormalized = glm::normalize(lightDir);
+	frustum.frame = BasisFromDirection(lightDirNormalized);
+
+	std::transform(cam_points.begin(), cam_points.end(), cam_points.begin(),
+		[&frustum,&camFrustum](const glm::vec3& v) { return frustum.frame * v; });
+
+	frustum.left = std::numeric_limits<glm::vec3::value_type>::max();
+	frustum.right = -std::numeric_limits<glm::vec3::value_type>::max();
+	frustum.top = -std::numeric_limits<glm::vec3::value_type>::max();
+	frustum.bottom = std::numeric_limits<glm::vec3::value_type>::max();
+
+	for (auto p : cam_points)
+	{
+		frustum.left = std::min(frustum.left , p[CoordinateFrame::SideAxis]);
+		frustum.right = std::max(frustum.left, p[CoordinateFrame::SideAxis]);
+		frustum.bottom = std::min(frustum.left, p[CoordinateFrame::UpAxis]);
+		frustum.top = std::max(frustum.left, p[CoordinateFrame::UpAxis]);
+	}
+
+	return true;
 }

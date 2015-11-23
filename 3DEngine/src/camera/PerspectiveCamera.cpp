@@ -49,3 +49,8 @@ Frustum & PerspectiveCamera::CameraFrustum()
 {
 	return frustum;
 }
+
+const Frustum & PerspectiveCamera::CameraFrustum() const
+{
+	return frustum;
+}

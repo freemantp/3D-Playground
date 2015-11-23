@@ -3,6 +3,8 @@
 #include "PointLight.h"
 #include "ShadowCastingLight.h"
 
+#include "../camera/Frame.h"
+
 SHARED_PTR_CLASS_DECL(SpotLight);
 SHARED_PTR_CLASS_DECL(Shadow);
 
@@ -23,12 +25,11 @@ public:
 
 	static SpotLight_ptr Create(const glm::vec3& direction, float cutoffAngle, float exponent, bool castsShadow = true);
 	
-	virtual const glm::vec3& GetDirection() const;
-	virtual const glm::vec3& GetUpVector() const;
 	virtual void SetDirection(const glm::vec3& dir);
 
-	virtual void SetUpDirection(const glm::vec3& dir);
 	virtual void SetPosition(const glm::vec4& pos) override;
+
+	const CoordinateFrame& Frame() const { return frame; };
 
 	virtual float CutoffAngle() const;
 
@@ -45,8 +46,8 @@ protected:
 
 	void UpdateVisMesh();
 	
-	glm::vec3 direction;
-	glm::vec3 up;
+	CoordinateFrame frame;
+
 	float cutoffAngle;
 	float exponent;
 

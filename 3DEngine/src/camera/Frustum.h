@@ -3,41 +3,23 @@
 #include <glm/glm.hpp>
 #include <array>
 
-struct CameraFrame : public glm::mat3
-{
-	glm::vec3& ViewDir() { return operator[](0); };
-	glm::vec3& Up() { return operator[](1); };
-	glm::vec3& Side() { return operator[](2); };	
-
-	const glm::vec3& ViewDir() const { return operator[](0); };
-	const glm::vec3& Up() const { return operator[](1); };
-	const glm::vec3& Side() const { return operator[](2); };	
-
-	CameraFrame()
-	{
-		//OpenGL convention
-		ViewDir() = glm::vec3(0, 0, -1);
-		Side() = glm::vec3(1, 0, 0);
-		Up() = glm::vec3(0, 1, 0);
-	};
-
-	CameraFrame(const glm::vec3& view, const glm::vec3& side, const glm::vec3& up)
-		: glm::mat3(view, side, up) {};
-};
+#include "Frame.h"
+	
 
 struct Frustum
 {
-	virtual std::array<glm::vec3, 8> CornerPoints() = 0;
+	/// Returns the corner points of a view frustum (just orientation, not position considered)
+	virtual std::array<glm::vec3, 8> CornerPoints() const = 0;
 
 	float nearPlane;
 	float farPlane;
 	glm::vec3 position;
-	CameraFrame frame;
+	CoordinateFrame frame;
 };
 
 struct OrthogonalFrustum : public Frustum
 {
-	virtual std::array<glm::vec3, 8> CornerPoints() override;
+	virtual std::array<glm::vec3, 8> CornerPoints() const override;
 
 	float left;
 	float right;
@@ -47,7 +29,7 @@ struct OrthogonalFrustum : public Frustum
 
 struct PerspectiveFrustum : public Frustum
 {
-	virtual std::array<glm::vec3, 8> CornerPoints() override;
+	virtual std::array<glm::vec3, 8> CornerPoints() const override;
 
 	float fovY; // in degrees
 	float aspectRatio;

@@ -16,6 +16,8 @@ public:
 
 	virtual Frustum& CameraFrustum() override;
 
+	virtual const Frustum& CameraFrustum() const override;
+
 protected:
 
 	virtual void UpdateProjectionMatrix();

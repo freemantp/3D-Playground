@@ -81,7 +81,7 @@ void LightModel::UpdateUniformBuffer(const Camera_cptr& cam)
 		lightsBuffer->SetElement(lightName.str() + "Position", cam->viewMatrix * sl->Position() );
 		lightsBuffer->SetElement(lightName.str() + "Color", sl->Color());
 
-		lightsBuffer->SetElement(lightName.str() + "Direction", directionTransformMatrix * sl->GetDirection());
+		lightsBuffer->SetElement(lightName.str() + "Direction", directionTransformMatrix * sl->Frame().ViewDir());
 		lightsBuffer->SetElement(lightName.str() + "CutoffAngle", sl->CutoffAngle());
 		lightsBuffer->SetElement(lightName.str() + "Exponent", sl->Exponent());
 

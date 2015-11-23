@@ -15,6 +15,7 @@
     <ClInclude Include="src\camera\Camera.h" />
     <ClInclude Include="src\camera\CameraAdapter.h" />
     <ClInclude Include="src\camera\FirstPersonCameraAdapter.h" />
+    <ClInclude Include="src\camera\Frame.h" />
     <ClInclude Include="src\camera\Frustum.h" />
     <ClInclude Include="src\camera\InspectionCameraAdapter.h" />
     <ClInclude Include="src\camera\OrthogonalCamera.h" />

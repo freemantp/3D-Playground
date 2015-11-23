@@ -17,3 +17,9 @@ const AABBox & ShadowCastingLight::SceneBoundingBox() const
 {
 	return sceneBbox;
 }
+
+void ShadowCastingLight::SetCamera(const Camera_cptr & cam)
+{
+	camera = cam;
+	UpdateShadow();
+}

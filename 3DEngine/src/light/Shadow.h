@@ -5,6 +5,7 @@
 SHARED_PTR_CLASS_DECL(DirectionalLight);
 SHARED_PTR_CLASS_DECL(SpotLight);
 SHARED_PTR_CLASS_DECL(Shadow);
+SHARED_PTR_CLASS_DECL(Camera);
 SHARED_PTR_CLASS_DECL(DepthTexture);
 
 #include <glm/glm.hpp>
@@ -27,7 +28,7 @@ public:
 	ProjectionType Type() const { return type; };
 
 	void UpdateShadowMatrix(const SpotLight_cptr& spotLight);
-	void UpdateShadowMatrix(const DirectionalLight_cptr& dirLight);
+	void UpdateShadowMatrix(const DirectionalLight_cptr& dirLight, const Camera_cptr& camera);
 
 protected:
 

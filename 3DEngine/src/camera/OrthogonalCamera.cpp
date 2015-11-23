@@ -45,3 +45,8 @@ Frustum & OrthogonalCamera::CameraFrustum()
 {
 	return frustum;
 }
+
+const Frustum & OrthogonalCamera::CameraFrustum() const
+{
+	return frustum;
+}

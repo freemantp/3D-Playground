@@ -152,14 +152,14 @@ namespace Test3DEngine
 			float eps = 1e-6f;
 
 			auto corners = frust.CornerPoints();
-			Assert::IsTrue(glm::length(corners[0] - p - glm::vec3(-frust.nearPlane, frust.top, -frust.right)) < eps), LINE_INFO();
-			Assert::IsTrue(glm::length(corners[1] - p - glm::vec3(-frust.nearPlane, frust.top,  -frust.left)) < eps), LINE_INFO();
-			Assert::IsTrue(glm::length(corners[2] - p - glm::vec3(-frust.nearPlane, frust.bottom,  -frust.right)) < eps), LINE_INFO();
-			Assert::IsTrue(glm::length(corners[3] - p - glm::vec3(-frust.nearPlane, frust.bottom,  -frust.left)) < eps), LINE_INFO();
-			Assert::IsTrue(glm::length(corners[4] - p - glm::vec3(-frust.farPlane, frust.top, -frust.right)) < eps), LINE_INFO();
-			Assert::IsTrue(glm::length(corners[5] - p - glm::vec3(-frust.farPlane, frust.top, -frust.left)) < eps), LINE_INFO();
-			Assert::IsTrue(glm::length(corners[6] - p - glm::vec3(-frust.farPlane, frust.bottom, -frust.right)) < eps), LINE_INFO();
-			Assert::IsTrue(glm::length(corners[7] - p - glm::vec3(-frust.farPlane, frust.bottom, -frust.left)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[0] - glm::vec3(-frust.nearPlane, frust.top, -frust.right)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[1] - glm::vec3(-frust.nearPlane, frust.top,  -frust.left)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[2] - glm::vec3(-frust.nearPlane, frust.bottom,  -frust.right)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[3] - glm::vec3(-frust.nearPlane, frust.bottom,  -frust.left)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[4] - glm::vec3(-frust.farPlane, frust.top, -frust.right)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[5] - glm::vec3(-frust.farPlane, frust.top, -frust.left)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[6] - glm::vec3(-frust.farPlane, frust.bottom, -frust.right)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[7] - glm::vec3(-frust.farPlane, frust.bottom, -frust.left)) < eps), LINE_INFO();
 		}
 
 		TEST_METHOD(PerspectiveFrustumCorners)
@@ -183,14 +183,14 @@ namespace Test3DEngine
 			float eps = 1e-6f;
 
 			auto corners = frust.CornerPoints();
-			Assert::IsTrue(glm::length(corners[0] - p - glm::vec3(-frust.nearPlane, gk_y, -gk_x)) < eps), LINE_INFO();
-			Assert::IsTrue(glm::length(corners[1] - p - glm::vec3(-frust.nearPlane, gk_y, gk_x)) < eps), LINE_INFO();
-			Assert::IsTrue(glm::length(corners[2] - p - glm::vec3(-frust.nearPlane, -gk_y, -gk_x)) < eps), LINE_INFO();
-			Assert::IsTrue(glm::length(corners[3] - p - glm::vec3(-frust.nearPlane, -gk_y, gk_x)) < eps), LINE_INFO();
-			Assert::IsTrue(glm::length(corners[4] - p - glm::vec3(-frust.farPlane, 2.f * gk_y, 2.f *-gk_x)) < eps), LINE_INFO();
-			Assert::IsTrue(glm::length(corners[5] - p - glm::vec3(-frust.farPlane, 2.f * gk_y, 2.f *gk_x)) < eps), LINE_INFO();
-			Assert::IsTrue(glm::length(corners[6] - p - glm::vec3(-frust.farPlane, 2.f * -gk_y, 2.f * -gk_x)) < eps), LINE_INFO();
-			Assert::IsTrue(glm::length(corners[7] - p - glm::vec3(-frust.farPlane, 2.f * -gk_y, 2.f * gk_x)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[0] - glm::vec3(-frust.nearPlane, gk_y, -gk_x)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[1] - glm::vec3(-frust.nearPlane, gk_y, gk_x)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[2] - glm::vec3(-frust.nearPlane, -gk_y, -gk_x)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[3] - glm::vec3(-frust.nearPlane, -gk_y, gk_x)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[4] - glm::vec3(-frust.farPlane, 2.f * gk_y, 2.f *-gk_x)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[5] - glm::vec3(-frust.farPlane, 2.f * gk_y, 2.f *gk_x)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[6] - glm::vec3(-frust.farPlane, 2.f * -gk_y, 2.f * -gk_x)) < eps), LINE_INFO();
+			Assert::IsTrue(glm::length(corners[7] - glm::vec3(-frust.farPlane, 2.f * -gk_y, 2.f * gk_x)) < eps), LINE_INFO();
 		}
 	};
 }

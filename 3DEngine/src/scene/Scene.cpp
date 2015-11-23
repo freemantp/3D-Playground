@@ -247,7 +247,7 @@ void Scene::TimeUpdate(long time)
 		glm::mat4 lightTransform1 = glm::rotate(glm::mat4(1.0f), radians, axis);
 		sl->SetPosition(lightTransform1 * sl->Position());
 
-		glm::vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform1))) * sl->GetDirection();
+		glm::vec3 newDir = glm::transpose(glm::inverse(glm::mat3(lightTransform1))) * sl->Frame().ViewDir();
 		sl->SetDirection(newDir);
 	};
 
@@ -292,7 +292,8 @@ void Scene::AddLight(const SpotLight_ptr& light)
 void Scene::SetLight(const DirectionalLight_ptr& light)
 {
 	lightModel->directionalLight = light;
-	light->SetSceneBoundingBox(BoundingBox());
+	lightModel->directionalLight->SetSceneBoundingBox(BoundingBox());
+	lightModel->directionalLight->SetCamera(activeCamera);
 }
 
 void Scene::SetLight(const AmbientLight_ptr& light)

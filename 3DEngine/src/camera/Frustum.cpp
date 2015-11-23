@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Frustum.h"
 
-std::array<glm::vec3, 8> PerspectiveFrustum::CornerPoints()
+std::array<glm::vec3, 8> PerspectiveFrustum::CornerPoints() const
 {
 	std::array<glm::vec3, 8> points;
 
@@ -24,12 +24,12 @@ std::array<glm::vec3, 8> PerspectiveFrustum::CornerPoints()
 	points[7] = glm::vec3(farPlane,	-far_up,	 -far_side);
 
 	std::transform(points.begin(), points.end(), points.begin(), 
-		[this](glm::vec3& v) { return (frame * v) + position; });
+		[this](glm::vec3& v) { return (frame * v); });
 
 	return points;
 }
 
-std::array<glm::vec3, 8> OrthogonalFrustum::CornerPoints()
+std::array<glm::vec3, 8> OrthogonalFrustum::CornerPoints() const
 {
 	std::array<glm::vec3, 8> points;
 
@@ -43,7 +43,7 @@ std::array<glm::vec3, 8> OrthogonalFrustum::CornerPoints()
 	points[7] = glm::vec3(farPlane,  bottom, left );
 
 	std::transform(points.begin(), points.end(), points.begin(),
-		[this](glm::vec3& v) { return (frame * v) + position; });
+		[this](glm::vec3& v) { return (frame * v); });
 
 	return points;
 }

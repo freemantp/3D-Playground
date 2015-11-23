@@ -31,7 +31,7 @@ void DirectionalLight::SetDirection(const glm::vec3& dir)
 
 void DirectionalLight::UpdateShadow()
 {
-	if (shadow)
-		shadow->UpdateShadowMatrix(shared_from_this());
+	if (shadow && camera)
+		shadow->UpdateShadowMatrix(shared_from_this(),camera);
 }
 
