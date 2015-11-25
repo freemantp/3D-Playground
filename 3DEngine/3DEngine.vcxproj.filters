@@ -304,6 +304,9 @@
     <ClInclude Include="src\camera\Frame.h">
       <Filter>Source Files\camera</Filter>
     </ClInclude>
+    <ClInclude Include="src\math\Ray.h">
+      <Filter>Source Files\math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">

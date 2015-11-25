@@ -32,6 +32,7 @@ void OrthogonalCamera::UpdateProjectionMatrix()
 {
 	projectionMatrix = glm::ortho(frustum.left, frustum.right, frustum.bottom, frustum.top,
 								  frustum.nearPlane, frustum.farPlane);
+	NotifyObservers();
 }
 
 void OrthogonalCamera::ViewportChanged(const Viewport_ptr& viewport)

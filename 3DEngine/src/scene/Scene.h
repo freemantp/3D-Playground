@@ -11,12 +11,12 @@
 #include "../math/BoundingBox.h"
 #include "../light/LightModel.h"
 #include "../animation/TimeObserver.h"
+#include "../camera/Camera.h"
 
 //fwd decls
 class ShaderBase;
 class InputHandler;
-
-SHARED_PTR_CLASS_DECL(Camera);	
+	
 SHARED_PTR_CLASS_DECL(Scene);
 SHARED_PTR_CLASS_DECL(Shape);
 SHARED_PTR_CLASS_DECL(Skybox);
@@ -28,7 +28,7 @@ SHARED_PTR_CLASS_DECL(Framebuffer);
 SHARED_PTR_CLASS_DECL(Viewport);
 SHARED_PTR_CLASS_DECL(AmbientLight)
 
-class Scene : public TimeObserver, public std::enable_shared_from_this<Scene>
+class Scene : public TimeObserver, public CameraObserver, public std::enable_shared_from_this<Scene>
 {
 public:		
 
@@ -81,6 +81,8 @@ protected:
 	void RenderShadowMaps();
 
 	void UpdateLightBboxes();
+
+	virtual void CameraChanged() override;
 
 	InspectionCameraAdapter_ptr inspectionCamAdapter;
 	FirstPersonCameraAdapter_ptr fpCamAdapter;

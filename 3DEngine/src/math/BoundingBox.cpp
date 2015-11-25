@@ -17,12 +17,12 @@ AABBox::AABBox(const glm::vec3 & lower, const glm::vec3 & upper)
 
 glm::vec3 AABBox::Minimum() const
 {
-	return p-d;
+	return p - d;
 }
 
 glm::vec3 AABBox::Maximum() const
 {
-	return p+d;
+	return p + d;
 }
 
 AABBox AABBox::Transform(const glm::mat4 & t) const
@@ -63,7 +63,40 @@ AABBox AABBox::HullBox(const AABBox & other) const
 		ur[i] = std::max(l_upper[i], r_upper[i]);
 	}
 
-	return AABBox(ll,ur);
+	return AABBox(ll, ur);
+}
+
+bool AABBox::Intersect(const Ray & r, float& tmin, float& tmax) const
+{
+	//See "An Efficient and Robust Ray–Box Intersection Algorithm" by Williams et. all
+	// http://www.cs.utah.edu/~awilliam/box/box.pdf
+
+	float tymin, tymax, tzmin, tzmax;
+
+	glm::vec3 parameters[2] = { Minimum(),Maximum() };
+
+	tmin = (parameters[r.sign[0]].x - r.origin.x) * r.inv_direction.x;
+	tmax = (parameters[1 - r.sign[0]].x - r.origin.x) * r.inv_direction.x;
+	tymin = (parameters[r.sign[1]].y - r.origin.y) * r.inv_direction.y;
+	tymax = (parameters[1 - r.sign[1]].y - r.origin.y) * r.inv_direction.y;
+
+	if ((tmin > tymax) || (tymin > tmax))
+		return false;
+	if (tymin > tmin)
+		tmin = tymin;
+	if (tymax < tmax)
+		tmax = tymax;
+
+	tzmin = (parameters[r.sign[2]].z - r.origin.z) * r.inv_direction.z;
+	tzmax = (parameters[1 - r.sign[2]].z - r.origin.z) * r.inv_direction.z;
+
+	if ((tmin > tzmax) || (tzmin > tmax))
+		return false;
+	if (tzmin > tmin)
+		tmin = tzmin;
+	if (tzmax < tmax)
+		tmax = tzmax;
+	return true;
 }
 
 inline void AABBox::operator*=(const glm::mat4 & rhs)
@@ -73,7 +106,7 @@ inline void AABBox::operator*=(const glm::mat4 & rhs)
 
 OBBox::OBBox()
 {
-	
+
 }
 
 OBBox::OBBox(const glm::vec3 & lower, const glm::vec3 & upper)

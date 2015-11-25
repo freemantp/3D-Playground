@@ -3,6 +3,8 @@
 #define GLM_SWIZZLE
 #include <glm/glm.hpp>
 
+#include "Ray.h"
+
 class AABBox
 {
 public:
@@ -19,6 +21,8 @@ public:
 
 	/// Creates the hull bounding box of this box an the passed box
 	virtual AABBox HullBox(const AABBox& other) const;
+
+	bool Intersect(const Ray &r, float& tmin, float& tmax) const;
 
 	inline void operator*=(const glm::mat4& rhs);
 

@@ -35,7 +35,9 @@ using std::vector;
 
 Scene_ptr Scene::Create(const Camera_ptr& cam, bool has_frambufer)
 {
-	return Scene_ptr(new Scene(cam, has_frambufer), [](Scene* p) {delete p; });
+	auto ptr =  Scene_ptr(new Scene(cam, has_frambufer), [](Scene* p) {delete p; });
+	cam->AddObserver(ptr);
+	return ptr;
 }
 
 Scene::Scene(const Camera_ptr& cam,bool has_frambufer)
@@ -46,7 +48,7 @@ Scene::Scene(const Camera_ptr& cam,bool has_frambufer)
 	if (has_frambufer)
 		framebuffer = Framebuffer::Create();
 
-	SetCamera(cam);
+	activeCamera = cam;
 
 	lightModel.reset(new LightModel());
 
@@ -276,6 +278,7 @@ void Scene::AddMaterial(const ShaderBase* material)
 void Scene::SetCamera(const Camera_ptr& cam)
 {
 	activeCamera = cam;
+	cam->AddObserver(shared_from_this());
 }
 
 void Scene::AddLight(const PointLight_ptr& light)
@@ -323,4 +326,9 @@ AABBox Scene::BoundingBox() const
 void Scene::SetRenderBoundingBoxes(bool enable)
 {
 	renderBoundingBoxes = enable;
+}
+
+void Scene::CameraChanged()
+{
+	lightModel->directionalLight->UpdateShadow();
 }

@@ -26,6 +26,7 @@ PerspectiveCamera::PerspectiveCamera(float fov)
 void PerspectiveCamera::UpdateProjectionMatrix()
 {
 	projectionMatrix = glm::perspective(glm::radians(frustum.fovY), frustum.aspectRatio, frustum.nearPlane, frustum.farPlane);
+	NotifyObservers();
 }
 
 void PerspectiveCamera::SetAspectRatio(float aspectRatio)
