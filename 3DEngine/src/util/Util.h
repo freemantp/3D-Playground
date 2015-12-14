@@ -36,7 +36,7 @@ public:
 	static RenderMesh_ptr GetHorse();
 	static RenderMesh_ptr GetElephant();
 	static RenderMesh_ptr CreateBox();
-	static WireCube_ptr CreateWireBox();
+	static RenderMesh_ptr CreateWireBox();
 
 	static void Trim(std::string& str);
 

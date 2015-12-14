@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Light.h"
+#include "../camera/Frustum.h"
 #include "ShadowCastingLight.h"
 
 SHARED_PTR_CLASS_DECL(Shadow);
@@ -17,11 +18,20 @@ public:
 
 	virtual void UpdateShadow() override;
 
+	Shape_ptr ModelRepresentation() const override;
+
+	void SetShadowFrustum(const OrthogonalFrustum& frust);
+
 protected:
 
 	DirectionalLight(const glm::vec3& direction,bool castsShadow);
 
+	void UpdateVisMesh();
+
+	OrthogonalFrustum shadowFrustum;
+
 	glm::vec3 direction;
+	Shape_ptr visMesh;
 
 };
 

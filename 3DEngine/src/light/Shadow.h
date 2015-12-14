@@ -28,7 +28,7 @@ public:
 	ProjectionType Type() const { return type; };
 
 	void UpdateShadowMatrix(const SpotLight_cptr& spotLight);
-	void UpdateShadowMatrix(const DirectionalLight_cptr& dirLight, const Camera_cptr& camera);
+	void UpdateShadowMatrix(const DirectionalLight_ptr& dirLight, const Camera_cptr& camera);
 
 protected:
 

@@ -89,7 +89,7 @@ protected:
 
 	ShadowMapShader_ptr shadowShader;
 	Framebuffer_ptr framebuffer;
-	WireCube_ptr wireCube;
+	Shape_ptr wireCube;
 
 	bool renderLightRepresentation;
 	bool renderBoundingBoxes;

@@ -168,7 +168,7 @@ RenderMesh_ptr Util::CreateBox()
 	return box;
 }
 
-WireCube_ptr Util::CreateWireBox()
+RenderMesh_ptr Util::CreateWireBox()
 {
 	WireCube_ptr box = WireCube::Create();
 	box->Init();

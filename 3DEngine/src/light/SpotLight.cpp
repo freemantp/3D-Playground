@@ -80,6 +80,8 @@ void SpotLight::UpdateShadow()
 
 void SpotLight::UpdateVisMesh()
 {
+	// TODO: use quaternions instead of euler angles here
+
 	const glm::vec3 z_vec(0, 0, 1);
 	float rot_angle = std::acos(glm::dot(frame.ViewDir(), z_vec));
 
@@ -87,7 +89,7 @@ void SpotLight::UpdateVisMesh()
 	xz_plane_dir.y = 0;
 	xz_plane_dir = glm::normalize(xz_plane_dir);
 
-	// How can a normalized vector not have length?? rounding? clamping is a workaround
+	// How can a normalized vector not have unit length?? rounding? clamping is a workaround
 	float pitch_angle = std::acos(glm::clamp(glm::dot(frame.ViewDir(), xz_plane_dir), -1.f, 1.f));
 	float yaw_angle = std::acos(glm::dot(xz_plane_dir, z_vec));
 

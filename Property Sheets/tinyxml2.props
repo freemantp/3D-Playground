@@ -4,7 +4,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <IncludePath>D:\Libraries\tinyxml2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Libraries\tinyxml2\bin\$(Platform)\$(Configuration);$(LibraryPath)</LibraryPath>
+    <LibraryPath>D:\Libraries\tinyxml2\bin\$(PlatformToolsetVersion)\$(Platform)\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>

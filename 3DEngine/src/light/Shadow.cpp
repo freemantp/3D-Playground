@@ -42,7 +42,7 @@ void Shadow::UpdateShadowMatrix(const SpotLight_cptr& sl)
 	type = ProjectionType::Perspective;
 }
 
-void Shadow::UpdateShadowMatrix(const DirectionalLight_cptr& dirLight, const Camera_cptr& camera)
+void Shadow::UpdateShadowMatrix(const DirectionalLight_ptr& dirLight, const Camera_cptr& camera)
 {	
 	if (camera)
 	{
@@ -60,6 +60,8 @@ void Shadow::UpdateShadowMatrix(const DirectionalLight_cptr& dirLight, const Cam
 			depthViewProjectionMatrix = depthProjectionMatrix * depthViewMatrix;
 			shadowMat = biasMatrix * depthViewProjectionMatrix;
 			type = ProjectionType::Orthogonal;
+
+			dirLight->SetShadowFrustum(shadow_frustrum);
 		}
 	}
 }

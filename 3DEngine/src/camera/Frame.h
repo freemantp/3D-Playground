@@ -14,14 +14,13 @@ struct CoordinateFrame : public glm::mat3
 	const glm::vec3& Up() const { return operator[](UpAxis); };
 	const glm::vec3& Side() const { return operator[](SideAxis); };
 
-
-	/// Creates an OpenGL  coordinate system (view diredction is along negative Z)
+	/// Creates an OpenGL  coordinate system (view direction is along negative Z)
 	CoordinateFrame()
 	{
 		//OpenGL convention
 		ViewDir() = glm::vec3(0, 0, -1);
-		Side() = glm::vec3(1, 0, 0);
 		Up() = glm::vec3(0, 1, 0);
+		Side() = glm::vec3(1, 0, 0);	
 	};
 
 	CoordinateFrame(const glm::vec3& view, const glm::vec3& side, const glm::vec3& up)

@@ -195,17 +195,25 @@ void Scene::Render(const Viewport_ptr& viewport)
 	{
 		for (auto& pl : lightModel->pointLights)
 		{
-			if (auto plr = pl->ModelRepresentation())
+			if (auto& plr = pl->ModelRepresentation())
 			{
-				plr->Render(shared_from_this());
+					plr->Render(shared_from_this());
 			}
 		}
 
 		for(auto& sl : lightModel->spotLights)
 		{
-			if (auto plr = sl->ModelRepresentation())
+			if (auto& plr = sl->ModelRepresentation())
 			{
 				plr->Render(shared_from_this());
+			}
+		}
+
+		if (lightModel->directionalLight)
+		{
+			if (auto& dlr = lightModel->directionalLight->ModelRepresentation())
+			{
+				dlr->Render(shared_from_this());
 			}
 		}
 	}
