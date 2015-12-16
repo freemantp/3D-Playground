@@ -129,5 +129,5 @@ void Box::Init() {
 
 Box::Box() :RenderMesh()
 {
-
+	name = "Box";
 }

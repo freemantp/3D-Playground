@@ -15,7 +15,6 @@ PointLight::PointLight()
 	, animated(false)
 {
 	visMesh = Util::CreateBox();
-	visMesh->Init();
 
 	ConstantColorMaterial_ptr mat = ConstantColorMaterial::Create();
 	mat->color = color;

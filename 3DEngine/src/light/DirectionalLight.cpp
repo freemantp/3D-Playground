@@ -25,13 +25,11 @@ DirectionalLight::DirectionalLight(const glm::vec3& direction, bool castsShadow)
 	this->direction = direction;
 
 	visMesh = Util::CreateWireBox();
-	visMesh->Init();
 
 	ConstantColorMaterial_ptr mat = ConstantColorMaterial::Create();
 	mat->color = color;
 	visMesh->SetMaterial(mat);
 	visMesh->SetWorldTransform(glm::scale(glm::mat4(1.0), glm::vec3(0.f)));
-
 }
 
 void DirectionalLight::UpdateVisMesh()

@@ -162,6 +162,7 @@ bool RenderMesh::SetPositions(const std::vector<glm::vec3>& positions, const std
 	}
 	else
 	{
+		ranges.clear();
 		ranges.push_back(std::pair<int, int>(0, (int)indices.size() / primitiveSize - 1));
 	}
 

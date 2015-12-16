@@ -7,6 +7,8 @@ void WireCube::Init() {
 
 	__super::Init();
 
+	name = "WireCube";
+
 	std::vector<glm::vec3> vertex_data;
 	std::vector<int> index_data;
 	
