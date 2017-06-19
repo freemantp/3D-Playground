@@ -51,6 +51,9 @@ public:
 	void SetRenderBoundingBoxes(bool enable);
 	bool RenderBoundingBoxes() const { return renderBoundingBoxes; };
 
+	void SetRenderLightRepresentation(bool enable);
+	bool RenderLightRepresentation() const { return renderLightRepresentation; };
+
 	virtual void TimeUpdate(long time);
 
 	Camera_ptr activeCamera;

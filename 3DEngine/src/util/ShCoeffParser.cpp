@@ -19,7 +19,7 @@ ShDiffuseShaderCoeffs_ptr ShCoeffParser::Parse(const std::string& coeffXmlDocume
 	ShDiffuseShaderCoeffs_ptr shCoeffs;
 	
 	tinyxml2::XMLDocument doc;
-	if(doc.Parse(coeffXmlDocument.c_str()) == tinyxml2::XML_NO_ERROR)
+	if(doc.Parse(coeffXmlDocument.c_str()) == tinyxml2::XML_SUCCESS)
 	{	
 		XMLElement* root = doc.RootElement();
 

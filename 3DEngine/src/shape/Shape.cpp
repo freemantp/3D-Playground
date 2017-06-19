@@ -8,6 +8,14 @@ Shape::Shape()
 
 }
 
+Shape::Shape(const Shape& rhs)
+	: Shape()
+{
+	worldTransform = rhs.worldTransform;
+	bboxModelSpace = rhs.bboxModelSpace;	
+	material = rhs.material;
+}
+
 Shape::~Shape()
 {
 }

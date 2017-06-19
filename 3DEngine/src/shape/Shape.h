@@ -24,21 +24,23 @@ public:
 
 	Material_ptr GetMaterial() const { return material; };
 
-	void SetWorldTransform(const glm::mat4& t);
+	virtual void SetWorldTransform(const glm::mat4& t);
 	const glm::mat4& WorldTransform() const;
 
 	/// Returns the bounding box in world coordinates
-	AABBox BoundingBox() const;
+	virtual AABBox BoundingBox() const;
 	
 protected:
 
 	Shape();
 
+	Shape(const Shape& rhs);
+
 	Material_ptr material;
 	AABBox bboxModelSpace;
-
-private:
 	glm::mat4 worldTransform;
+
+private:	
 	mutable bool boundingBoxDirty;
 	mutable AABBox cachedWorldBBox;
 };

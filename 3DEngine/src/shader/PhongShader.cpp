@@ -93,7 +93,7 @@ bool PhongShader::Use(const Scene_ptr& scene, const glm::mat4& modelTransform)
 		}
 	}
 
-	SetLightAndModel(scene);
+	SetLightAndModel(scene,1);
 
 	return ok;
 }
@@ -129,7 +129,7 @@ void PhongShader::SetLightAndModel(const Scene_ptr& scene, const unsigned int te
 		current_tex_unit++;
 	}
 
-	const size_t maxNumSpotLights = 4;
+	const size_t maxNumSpotLights = 8;
 	GLint spotlightShadowMaps[maxNumSpotLights];
 	std::iota(std::begin(spotlightShadowMaps), std::end(spotlightShadowMaps), current_tex_unit);
 	GLint dirLightShadowMap;

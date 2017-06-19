@@ -20,7 +20,7 @@ struct EnvironmentMap
 	samplerCube CubeTexture;
 };
 
-uniform sampler2DShadow ShadowMapArray[4];
+uniform sampler2DShadow ShadowMapArray[8];
 uniform sampler2DShadow ShadowMapDirectional;
 uniform sampler3D PCFDataOffsets;
 uniform sampler2D DitherMap;

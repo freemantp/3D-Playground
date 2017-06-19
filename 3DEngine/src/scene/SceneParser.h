@@ -13,7 +13,6 @@ SHARED_PTR_CLASS_DECL(Camera);
 SHARED_PTR_CLASS_DECL(Scene);
 SHARED_PTR_CLASS_DECL(Material);
 
-
 class SceneParser
 {
 public:

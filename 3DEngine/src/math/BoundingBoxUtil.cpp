@@ -170,5 +170,5 @@ bool BoundingBoxUtil::DirectionalLightFrustum(const AABBox & box, const glm::vec
 		frustum.top = std::max(frustum.left, p[CoordinateFrame::UpAxis]);
 	}
 
-	return true;
+	return false;
 }

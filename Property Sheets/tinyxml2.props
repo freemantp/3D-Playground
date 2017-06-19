@@ -3,8 +3,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>D:\Libraries\tinyxml2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Libraries\tinyxml2\bin\$(PlatformToolsetVersion)\$(Platform)\$(Configuration);$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Development\Libraries\tinyxml2;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Development\Libraries\tinyxml2\build\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>

@@ -25,6 +25,7 @@
 #include "../scene/Scene.h"
 
 #include "../shape/RenderMesh.h"
+#include "../shape/ShapeInstance.h"
 #include "../shape/Box.h"
 #include "../shape/Triangle.h"
 #include "../shape/Skybox.h"
@@ -57,7 +58,7 @@ bool SceneParser::Parse(const std::string& xmlDocument)
 	bool parseOk = true;
 	
 	tinyxml2::XMLDocument doc;
-	if(doc.Parse(xmlDocument.c_str()) == tinyxml2::XML_NO_ERROR)
+	if(doc.Parse(xmlDocument.c_str()) == tinyxml2::XML_SUCCESS)
 	{	
 		XMLElement* root = doc.RootElement();
 
@@ -296,11 +297,14 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 	if(XMLElement* objeElem = objects->FirstChildElement())
 	{
 		std::vector<Shape_ptr> shapes;
+		std::map<std::string, Shape_ptr> instanceableShapes;		
 
 		do
 		{
-			Material_ptr material;
-			
+			string type = objeElem->Name();
+			Shape_ptr shape;
+			Material_ptr material;			
+
 			if (const char* materialName = objeElem->Attribute("material"))
 			{
 				if (materials[materialName])
@@ -315,16 +319,11 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 				needs_tangents = tex_mat->bumpTexture && tex_mat->bumpBumpTexIsNormalMap;
 			}
 
-			string type = objeElem->Name();
-			Shape_ptr shape;
-
-			std::string modelPath = "../data/models/";
-
 			if(type == "mesh")
 			{
 				string file = objeElem->Attribute("file");
 
-				modelPath += file;
+				string modelPath = Config::MODELS_BASE_PATH + file;
 				shape = Util::LoadModel(modelPath, needs_tangents);
 				if (!shape)
 					return false;
@@ -337,30 +336,48 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 			{
 				shape = Triangle::Create();
 			}
+			else if (type == "instance")
+			{
+				if (const char* templName = objeElem->Attribute("template"))
+				{
+					auto template_shape = instanceableShapes[templName];
+					if (template_shape)					
+						shape = ShapeInstance::Create(template_shape);					
+				}
+			}
 			else 
 			{
 				Error("Object of type " + type + " not supported");
-				continue;
 			}
 
-			shape->Init();
-
-			//See if a material is specified, if yes override mtllib in case of mesh
-			if (shape->GetMaterial())			
-				Warn("The shape already has a material assigned, ignoring specified material");			
-			else			
-				shape->SetMaterial(material);
-			
-
-			// Parse transform node
-			if(XMLElement* transformsElem = objeElem->FirstChildElement("transform"))
+			if(shape)	
 			{
-				glm::mat4 tMatrix;
-				ParseTransforms(tMatrix,transformsElem);
-				shape->SetWorldTransform(tMatrix);
+				shape->Init();
+
+				//See if a material is specified, if yes mtllib overrides when dealing with a mesh
+				if (material && shape->GetMaterial())
+					Warn("The shape already has a material assigned, ignoring specified material");			
+				else			
+					shape->SetMaterial(material);			
+
+				// Parse transform node
+				if(XMLElement* transformsElem = objeElem->FirstChildElement("transform"))
+				{
+					glm::mat4 tMatrix;
+					ParseTransforms(tMatrix,transformsElem);
+					shape->SetWorldTransform(tMatrix);
+				}
+
+				bool instanceable = false;
+				if (GetBoolAttrib(objeElem, "instanceable", instanceable) && instanceable)
+				{
+					if (const char* templName = objeElem->Attribute("template"))				
+						instanceableShapes[templName] = shape;
+				}
+				else
+					shapes.push_back(shape);	
 			}
 
-			shapes.push_back(shape);
 		} 
 		while (objeElem = objeElem->NextSiblingElement());
 

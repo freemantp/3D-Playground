@@ -110,14 +110,14 @@ IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 
 			std::deque<glm::ivec3> vtx_queue;
 
-			bool vtx_read = false;
+			bool first_vtx_read = false;
 			glm::ivec3 first_vtx;
 			glm::ivec3 current_vtx(-1,-1,-1);
 			int comp = 0;
 
 			while (!str_stream.eof())
 			{
-				str_stream >> current_vtx[comp];
+				str_stream >> std::ws >> current_vtx[comp];
 				current_vtx[comp]--;
 
 				if (str_stream.peek() == '/')
@@ -133,20 +133,19 @@ IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 
 					comp += skip_comp;
 				}
-				else if (str_stream.eof() || str_stream.peek() == ' ')
+				else
 				{
-					str_stream.ignore();
+					str_stream >> std::ws;
+
 					comp = 0;
 
-					if (!vtx_read)
+					if (!first_vtx_read)
 					{
 						first_vtx = current_vtx;
-						vtx_read = true;
+						first_vtx_read = true;
 					}
-					else
-					{
-						vtx_queue.push_back(current_vtx);						
-					}
+					else					
+						vtx_queue.push_back(current_vtx);											
 
 					current_vtx = glm::ivec3(-1, -1, -1);
 
@@ -160,10 +159,6 @@ IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 
 						newMesh->faces.push_back(triangle);
 					}
-				}
-				else
-				{
-					str_stream.ignore();
 				}
 			}
 		}
@@ -207,92 +202,103 @@ IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 	return newMesh;
 }
 
+std::string& trim(std::string& str)
+{
+	str.erase(str.begin(), find_if(str.begin(), str.end(),
+		[](char& ch)->bool { return !isspace(ch); }));
+	str.erase(find_if(str.rbegin(), str.rend(),
+		[](char& ch)->bool { return !isspace(ch); }).base(), str.end());
+	return str;
+}
+
 bool ObjLoader::LoadMtllib(std::istream& istr, IndexedRawMesh_ptr newMesh)
 {
 	std::string line;
 
 	WavefrontObjMaterial_ptr mat;
-
+	
 	while ( istr.good() )
 	{
 		getline (istr,line);
+		trim(line);
+
+		auto num_chars = line.size();
+
 		if(line.substr(0,6) == "newmtl")
 		{
-			if(mat)
-			{
+			if(mat)			
 				newMesh->materials.push_back(mat);
-			}
-
+			
 			mat = WavefrontObjMaterial::Create(line.substr(7));
 		}
-		else if(mat)
+		else if(mat && num_chars > 0)
 		{
-			if(line.substr(0,2) == "Ka")
+			if(num_chars > 3 && line.substr(0,2) == "Ka")
 			{
 				std::istringstream s(line.substr(2));
 				vec3 v;
 				s >> mat->ambient.r; s >>  mat->ambient.g; s >>  mat->ambient.b;
 			}
-			else if(line.substr(0,2) == "Kd")
+			else if(num_chars > 3 && line.substr(0,2) == "Kd")
 			{
 				std::istringstream s(line.substr(2));
 				vec3 v;
 				s >> mat->diffuse.r; s >>  mat->diffuse.g; s >>  mat->diffuse.b;
 			}
-			else if(line.substr(0,2) == "Ks")
+			else if(num_chars > 3 && line.substr(0,2) == "Ks")
 			{
 				std::istringstream s(line.substr(2));
 				vec3 v;
 				s >> mat->specular.r; s >>  mat->specular.g; s >>  mat->specular.b;
 			}
-			else if(line.substr(0,1) == "d")
+			else if(num_chars > 2 && line.substr(0,1) == "d")
 			{
 				std::istringstream s(line.substr(1));
 				vec3 v;
 				s >> mat->opacity;
 			}
-			else if(line.substr(0,2) == "Ns")
+			else if(num_chars > 3 && line.substr(0,2) == "Ns")
 			{
 				std::istringstream s(line.substr(2));
 				vec3 v;
 				s >> mat->shininess;
 			}
-			else if(line.substr(0,5) == "illum")
+			else if(num_chars > 6 && line.substr(0,5) == "illum")
 			{
 				std::istringstream s(line.substr(5));
 				int illuminationModel;
 				s >> illuminationModel;
 				mat->specularEnabled = illuminationModel > 1;
 			}
-			else if(line.substr(0,6) == "map_Ka")
+			else if(num_chars > 7 && line.substr(0,6) == "map_Ka")
 			{
 				mat->ambientColorTexture = line.substr(7);
 			}
-			else if(line.substr(0,6) == "map_Kd")
+			else if(num_chars > 7 && line.substr(0,6) == "map_Kd")
 			{
 				mat->diffuseColorTexture = line.substr(7);
 			}
-			else if(line.substr(0,6) == "map_Ks")
+			else if(num_chars > 7 && line.substr(0,6) == "map_Ks")
 			{
 				mat->specularColorTexture = line.substr(7);
 			}
-			else if(line.substr(0,6) == "map_Ns")
+			else if(num_chars > 7 && line.substr(0,6) == "map_Ns")
 			{
 				mat->specularHightlightTexture = line.substr(7);
 			}
-			else if(line.substr(0,5) == "map_d")
+			else if(num_chars > 6 && line.substr(0,5) == "map_d")
 			{
 				mat->alphaMapTexture = line.substr(6);
 			}
-			else if(line.substr(0,8) == "map_bump")
+			else if(num_chars > 9 && line.substr(0,8) == "map_bump")
 			{
 				mat->bumpMapTexture = line.substr(7);
 			}
-			else if(line.substr(0,4) == "bump")
+			else if(num_chars > 5 && line.substr(0,4) == "bump")
 			{
 				mat->bumpMapTexture = line.substr(5);
 			}
-			else if(line.substr(0,4) == "disp")
+			else if(num_chars > 5 && line.substr(0,4) == "disp")
 			{
 				mat->displacementMapTexture = line.substr(5);
 			}

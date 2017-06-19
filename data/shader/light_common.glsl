@@ -30,7 +30,7 @@ struct SpotLight
 };
 
 // ----------------- uniforms -----------------
-const int numLights = 4;
+const int numLights = 8;
 
 layout (std140) uniform Lights
 {

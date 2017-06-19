@@ -307,6 +307,9 @@
     <ClInclude Include="src\math\Ray.h">
       <Filter>Source Files\math</Filter>
     </ClInclude>
+    <ClInclude Include="src\shape\ShapeInstance.h">
+      <Filter>Source Files\shapes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp">
@@ -492,6 +495,9 @@
     <ClCompile Include="src\camera\Frustum.cpp">
       <Filter>Source Files\camera</Filter>
     </ClCompile>
+    <ClCompile Include="src\shape\ShapeInstance.cpp">
+      <Filter>Source Files\shapes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\shader\phongShader.frag">
@@ -596,6 +602,9 @@
       <Filter>data\scenes</Filter>
     </Xml>
     <Xml Include="..\data\scenes\debug.xml">
+      <Filter>data\scenes</Filter>
+    </Xml>
+    <Xml Include="..\data\scenes\town.xml">
       <Filter>data\scenes</Filter>
     </Xml>
   </ItemGroup>

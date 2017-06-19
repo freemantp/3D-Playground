@@ -80,6 +80,11 @@ void Renderer::OnKey(const Input::Key key, const Input::Modifier mod, const glm:
 		if (m_Scene)
 			m_Scene->SetRenderBoundingBoxes(!m_Scene->RenderBoundingBoxes());
 	}
+	else if (key == Input::Key::L)
+	{
+		if (m_Scene)
+			m_Scene->SetRenderLightRepresentation(!m_Scene->RenderLightRepresentation());
+	}
 }
 
 void Renderer::Create2DOverlayScene()

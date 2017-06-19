@@ -4,6 +4,7 @@
 #include "../enums.h"
 #include <vector>
 #include <map>
+#include <array>
 #include <string>
 
 #include "../core/gl.h"
@@ -75,7 +76,7 @@ protected:
 	std::vector< std::pair<int,int> >		ranges;
 	std::vector<Material_ptr>				materialsNew;
 
-	bool									vtxAttribSet[6];
+	std::array<bool,6>						vtxAttribSet;
 	bool									initialized;
 };
 

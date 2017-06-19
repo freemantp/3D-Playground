@@ -42,7 +42,7 @@ Scene_ptr Scene::Create(const Camera_ptr& cam, bool has_frambufer)
 
 Scene::Scene(const Camera_ptr& cam,bool has_frambufer)
 	: shadowShader(ShadowMapShader::Create())
-	, renderLightRepresentation(true)
+	, renderLightRepresentation(false)
 	, renderBoundingBoxes(false)
 {
 	if (has_frambufer)
@@ -69,7 +69,7 @@ Scene::Scene(const Camera_ptr& cam,bool has_frambufer)
 	WindowEventHandler& winEventHandler = WindowEventHandler::Instance();
 	winEventHandler.AddViewportObserver(cam);
 
-	lightAnimParams[0].radiansPerInterval = glm::radians(0.5f);
+	lightAnimParams[0].radiansPerInterval = glm::radians(0.4f);
 	lightAnimParams[1].radiansPerInterval = glm::radians(0.7f);
 	lightAnimParams[2].radiansPerInterval = glm::radians(0.6f);
 
@@ -336,7 +336,13 @@ void Scene::SetRenderBoundingBoxes(bool enable)
 	renderBoundingBoxes = enable;
 }
 
+void Scene::SetRenderLightRepresentation(bool enable)
+{
+	renderLightRepresentation = enable;
+}
+
 void Scene::CameraChanged()
 {
-	lightModel->directionalLight->UpdateShadow();
+	if(lightModel->directionalLight)
+		lightModel->directionalLight->UpdateShadow();
 }

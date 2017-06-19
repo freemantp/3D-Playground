@@ -17,136 +17,305 @@
     </material>
   </materials>
 
+  <skybox cubeMapFile="cubeMap/grimmnight.jpg"/>
+  <!--<skybox cubeMapFile="cubeMap/stormydays.jpg"/>-->
+  <!--<skybox cubeMapFolder="cubeMap/desert" type="jpg"/>-->
+
   <lights>
-    <light type="spot" cutoff="45" exponent="30">
-      <position x="1.1" y="1.1" z="-2.625"/>
-      <direction x="0.0" y="0.0" z="1.0"/>
-      <color r="1.0" g="1.0" b="1.0"/>
+
+    <light type="ambient" >
+      <color r="0.1" g="0.1" b="0.1"/>
     </light>
 
-    <light type="spot" cutoff="45" exponent="30">
-      <position x="1.29" y="1.1" z="-2.625"/>
-      <direction x="0.0" y="0.0" z="1.0"/>
-      <color r="1.0" g="1.0" b="1.0"/>
+    <!-- Headlights -->
+    <light type="spot" cutoff="30" exponent="30" animated="false">
+      <position x="0.34" y="0.15" z="0.48"/>
+      <direction x="0.0" y="0.1" z="1"/>
+      <color r="2" g="2" b="2"/>
+    </light>
+    <light type="spot" cutoff="30" exponent="30" animated="false">
+      <position x="0.06" y="0.15" z="0.48"/>
+      <direction x="0.0" y="0.1" z="1"/>
+      <color r="2" g="2" b="2"/>
     </light>
 
-    <light type="point" cutoff="90" exponent="30">
-      <position x="0.0" y="10.0" z="0.0"/>
-      <direction x="0.0" y="0.0" z="1.0"/>
-      <color r="0.35" g="0.35" b="0.4"/>
+    <!-- Street lamps -->
+    <light type="spot" cutoff="60" exponent="30" animated="false">
+      <position x="0.72" y="0.68" z="0"/>
+      <direction x="0.0" y="-1.0" z="0.001"/>
+      <color r="0.93" g="0.89" b="0.7"/>
+    </light>
+    <light type="spot" cutoff="60" exponent="30" animated="false">
+      <position x="-0.72" y="0.68" z="0"/>
+      <direction x="0.0" y="-1.0" z="0.001"/>
+      <color r="0.93" g="0.89" b="0.7"/>
+    </light>
+    <light type="spot" cutoff="60" exponent="30" animated="false">
+      <position x="0.72" y="0.68" z="7"/>
+      <direction x="0.0" y="-1.0" z="0.001"/>
+      <color r="0.93" g="0.89" b="0.7"/>
+    </light>
+    <light type="spot" cutoff="60" exponent="30" animated="false">
+      <position x="-0.72" y="0.68" z="7"/>
+      <direction x="0.0" y="-1.0" z="0.001"/>
+      <color r="0.93" g="0.89" b="0.7"/>
+    </light>
+    <light type="spot" cutoff="60" exponent="30" animated="false">
+      <position x="0.72" y="0.68" z="-7"/>
+      <direction x="0.0" y="-1.0" z="0.001"/>
+      <color r="0.93" g="0.89" b="0.7"/>
+    </light>
+    <light type="spot" cutoff="60" exponent="30" animated="false">
+      <position x="-0.72" y="0.68" z="-7"/>
+      <direction x="0.0" y="-1.0" z="0.001"/>
+      <color r="0.93" g="0.89" b="0.7"/>
     </light>
 
   </lights>
 
-  <skybox cubeMapFile="cubeMap/stormydays.jpg"/>
-  <!--<skybox cubeMapFolder="cubeMap/desert" type="jpg"/>-->
-
   <objects>
 
-    <mesh file="GAZ M24 VOLGA/GAZ M24 VOLGA.obj" material="car">
+    <!--<mesh file="GAZ M24 VOLGA/GAZ M24 VOLGA.obj">
       <transform>
-        <translate x="0" y="0.24" z="0.0"/>
-        <scale x="0.00005" y="0.00005" z="0.00005"/>
+        <translate x="-0.2" y="0.16" z="7.0"/>
+        <scale x="0.000035" y="0.000035" z="0.000035"/>
+      </transform>
+    </mesh>-->
+
+    <mesh file="DodgeChallenger/CHALLENGER71.obj">
+      <transform>
+        <translate x="0.2" y="0" z="0.0"/>
+        <scale x="0.2" y="0.2" z="0.2"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
       </transform>
     </mesh>
 
-    <mesh file="rectangle.obj" material="road">
+    <mesh file="StreetLamp/StreetLamp.obj" instanceable="true" template="streetlamp"/>
+    <mesh file="rectangle.obj" material="road" instanceable="true" template="roadtile"/>
+
+    <!-- steet lamps -->
+    <instance template="streetlamp">
+      <transform>
+        <translate x="-1.1" y="0." z="0.0"/>
+        <scale x="0.05" y="0.05" z="0.05"/>
+      </transform>
+    </instance>
+    <instance template="streetlamp">
+      <transform>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <translate x="-1.1" y="0." z="0.0"/>
+        <scale x="0.05" y="0.05" z="0.05"/>
+      </transform>
+    </instance>
+    <instance template="streetlamp">
+      <transform>
+        <translate x="-1.1" y="0." z="7.0"/>
+        <scale x="0.05" y="0.05" z="0.05"/>
+      </transform>
+    </instance>
+    <instance template="streetlamp">
+      <transform>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <translate x="-1.1" y="0." z="-7.0"/>
+        <scale x="0.05" y="0.05" z="0.05"/>
+      </transform>
+    </instance>
+    <instance template="streetlamp">
+      <transform>
+        <translate x="-1.1" y="0." z="-7.0"/>
+        <scale x="0.05" y="0.05" z="0.05"/>
+      </transform>
+    </instance>
+    <instance template="streetlamp">
+      <transform>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <translate x="-1.1" y="0." z="7.0"/>
+        <scale x="0.05" y="0.05" z="0.05"/>
+      </transform>
+    </instance>
+
+    <!-- road tiles -->
+    <instance template="roadtile">
+      <transform>
+        <translate x="1.0" y="0.0" z="-7.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </instance>
+    <instance template="roadtile">
+      <transform>
+        <translate x="-1.0" y="0.0" z="-7.0"/>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </instance>
+    <instance template="roadtile">
       <transform>
         <translate x="1.0" y="0.0" z="-5.0"/>
         <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
       </transform>
-    </mesh>
-    <mesh file="rectangle.obj" material="road">
+    </instance>
+    <instance template="roadtile">
       <transform>
         <translate x="-1.0" y="0.0" z="-5.0"/>
         <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
         <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
       </transform>
-    </mesh>    
-    
-    <mesh file="rectangle.obj" material="road">
+    </instance>
+    <instance template="roadtile">
       <transform>
         <translate x="1.0" y="0.0" z="-3.0"/>
         <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
       </transform>
-    </mesh>
-    <mesh file="rectangle.obj" material="road">
+    </instance>
+    <instance template="roadtile">
       <transform>
         <translate x="-1.0" y="0.0" z="-3.0"/>
         <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
         <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
       </transform>
-    </mesh>    
-    
-    <mesh file="rectangle.obj" material="road">
+    </instance>
+    <instance template="roadtile">
       <transform>
         <translate x="1.0" y="0.0" z="-1.0"/>
         <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
       </transform>
-    </mesh>
-    <mesh file="rectangle.obj" material="road">
+    </instance>
+    <instance template="roadtile">
       <transform>
         <translate x="-1.0" y="0.0" z="-1.0"/>
         <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
         <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
       </transform>
-    </mesh>
-
-    <mesh file="rectangle.obj" material="road">
+    </instance>
+    <instance template="roadtile">
       <transform>
         <translate x="1.0" y="0.0" z="1.0"/>
         <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
       </transform>
-    </mesh>
-    <mesh file="rectangle.obj" material="road">
+    </instance>
+    <instance template="roadtile">
       <transform>
         <translate x="-1.0" y="0.0" z="1.0"/>
         <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
         <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
       </transform>
-    </mesh>
-
-    <mesh file="rectangle.obj" material="road">
+    </instance>
+    <instance template="roadtile">
       <transform>
         <translate x="1.0" y="0.0" z="3.0"/>
         <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
       </transform>
-    </mesh>
-    <mesh file="rectangle.obj" material="road">
+    </instance>
+    <instance template="roadtile">
       <transform>
         <translate x="-1.0" y="0.0" z="3.0"/>
         <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
         <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
       </transform>
-    </mesh>
-
-    <mesh file="rectangle.obj" material="road">
+    </instance>
+    <instance template="roadtile">
       <transform>
         <translate x="1.0" y="0.0" z="5.0"/>
         <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
       </transform>
-    </mesh>
-    <mesh file="rectangle.obj" material="road">
+    </instance>
+    <instance template="roadtile">
       <transform>
         <translate x="-1.0" y="0.0" z="5.0"/>
         <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
         <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
       </transform>
-    </mesh>
-
-    <mesh file="rectangle.obj" material="road">
+    </instance>
+    <instance template="roadtile">
       <transform>
-        <translate x="1.0" y="0.0" z="-3.0"/>
+        <translate x="1.0" y="0.0" z="7.0"/>
         <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
       </transform>
-    </mesh>
-    <mesh file="rectangle.obj" material="road">
+    </instance>
+    <instance template="roadtile">
       <transform>
-        <translate x="-1.0" y="0.0" z="-3.0"/>
+        <translate x="-1.0" y="0.0" z="7.0"/>
         <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
         <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
       </transform>
-    </mesh>
-
+    </instance>
+    <instance template="roadtile">
+      <transform>
+        <translate x="1.0" y="0.0" z="9.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </instance>
+    <instance template="roadtile">
+      <transform>
+        <translate x="-1.0" y="0.0" z="9.0"/>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </instance>
+    <instance template="roadtile">
+      <transform>
+        <translate x="1.0" y="0.0" z="11.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </instance>
+    <instance template="roadtile">
+      <transform>
+        <translate x="-1.0" y="0.0" z="11.0"/>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </instance>
+    <instance template="roadtile">
+      <transform>
+        <translate x="1.0" y="0.0" z="13.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </instance>
+    <instance template="roadtile">
+      <transform>
+        <translate x="-1.0" y="0.0" z="13.0"/>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </instance>
+    <instance template="roadtile">
+      <transform>
+        <translate x="1.0" y="0.0" z="15.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </instance>
+    <instance template="roadtile">
+      <transform>
+        <translate x="-1.0" y="0.0" z="15.0"/>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </instance>
+    <instance template="roadtile">
+      <transform>
+        <translate x="1.0" y="0.0" z="17.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </instance>
+    <instance template="roadtile">
+      <transform>
+        <translate x="-1.0" y="0.0" z="17.0"/>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </instance>
+    <instance template="roadtile">
+      <transform>
+        <translate x="1.0" y="0.0" z="19.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </instance>
+    <instance template="roadtile">
+      <transform>
+        <translate x="-1.0" y="0.0" z="19.0"/>
+        <rotate angle="180.0" x="0.0" y="1.0" z="0.0"/>
+        <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </instance>
   </objects>
 </scene>
