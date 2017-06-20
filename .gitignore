@@ -12,3 +12,5 @@ packages/
 3DEngine/Debug/
 Graphics Playground/Debug/
 *.opendb
+*.db
+.vs/
