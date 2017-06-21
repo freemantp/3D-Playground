@@ -45,21 +45,21 @@
   </lights>
 
  <objects>
-     <mesh file="horse.obj" material="glossy">
+     <!--<mesh file="horse.obj" material="glossy">
       <position x="0" y="0" z="0"/>
       <transform>
         <translate x="0.0" y="-0.3" z="0.0"/>
         <rotate angle="270.0" x="0.0" y="1.0" z="0.0"/>
       </transform>
-    </mesh>
+    </mesh>-->
     
-   <!--<mesh file="dragon.obj" material="glossy">
+   <mesh file="dragon.obj" material="glossy">
       <position x="0" y="0" z="0"/>
       <transform>
         <translate x="0.0" y="-0.75" z="0.0"/>
-        <scale x="10.0" y="10.0" z="10.0"/>
+        <scale x="5.0" y="5.0" z="5.0"/>
       </transform>
-    </mesh>-->
+    </mesh>
    
     <box material="dull">
       <transform>

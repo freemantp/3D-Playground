@@ -100,7 +100,7 @@ IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 			glm::vec2 v;
 			char* end_p1;
 			v.x = std::strtof(&line[3], &end_p1);
-			v.y = 1.f - std::strtof(end_p1, nullptr);
+			v.y = std::strtof(end_p1, nullptr);
 			newMesh->texCoords.push_back(v);
 		}
 		else if (line[0] == 'f' && line[1] == ' ')

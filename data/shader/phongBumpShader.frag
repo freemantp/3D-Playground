@@ -10,7 +10,7 @@ struct TextureMaterial
 	sampler2D BumpmapTex;
 	sampler2D SpecularTex;
 	bool BumpTexIsNormalMap;
-	bool HasSpecularMap;
+	bool HasSpecularMap;	
 	bool HasBumpMap;
 };
 

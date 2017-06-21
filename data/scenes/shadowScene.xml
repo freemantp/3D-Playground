@@ -29,19 +29,19 @@
   <lights>
 
     <light type="ambient" >
-      <color r="0.1" g="0.1" b="0.1"/>
+      <color r="0.3" g="0.3" b="0.3"/>
     </light>
 
-    <light type="directional">
+    <!--<light type="directional">
       <direction x="0.0" y="1.0" z="0.0"/>
       <color r="0.5" g="0.5" b="0.5"/>
-    </light>
+    </light>-->
     
-    <!--<light type="spot" cutoff="60" exponent="5" animated="true">
+    <light type="spot" cutoff="60" exponent="5" animated="true">
       <position x="1.0" y="0.5" z="1.0"/>
       <direction x="-1.0" y="-0.5" z="-1.0"/>
       <color r="1.0" g="1.0" b="1.0"/>
-    </light>-->
+    </light>
     
   </lights>
 
@@ -55,6 +55,14 @@
       </transform>
     </mesh>-->
 
+   <mesh file="DodgeChallenger/CHALLENGER71.obj">
+     <transform>
+       <translate x="0.00" y="0.01" z="0.0"/>
+       <scale x="0.2" y="0.2" z="0.2"/>
+       <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>             
+     </transform>
+   </mesh>
+
    <!--<mesh file="UH60/UH60.obj" material="glossy">
      <transform>
        <scale x="0.1" y="0.1" z="0.1"/>
@@ -63,17 +71,17 @@
      </transform>
    </mesh>-->
 
-   <mesh file="cow.obj" material="glossy">
+   <!--<mesh file="cow.obj" material="glossy">
      <transform>
        <scale x="0.1" y="0.1" z="0.1"/>
        <translate x="0.0" y="-1.4" z="0.0"/>
      </transform>
-   </mesh>
+   </mesh>-->
    
    <box material="dull">
      <transform>
-       <scale x="100.0" y="1" z="100.0"/>
-       <translate x="0.0" y="-1.0" z="0.0"/>
+       <scale x="500.0" y="1" z="500.0"/>
+       <translate x="0.0" y="-0.49" z="0.0"/>
      </transform>
    </box>
 

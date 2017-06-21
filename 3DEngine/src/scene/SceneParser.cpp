@@ -264,7 +264,7 @@ bool SceneParser::ParseSkybox(XMLElement* skyboxElem)
 {
 	CubeMapTexture_ptr texture;
 
-	const char* path = skyboxElem->Attribute("cubeMapFile");
+	const char* path;
 	if( path = skyboxElem->Attribute("cubeMapFile"))
 	{
 		//Single file cube map

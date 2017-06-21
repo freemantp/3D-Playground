@@ -569,6 +569,7 @@
     <None Include="..\data\shader\light_common.glsl">
       <Filter>data\shaders\phong</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\data\scenes\boxScene.xml">
