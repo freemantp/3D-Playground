@@ -66,12 +66,12 @@ CubeMapTexture::CubeMapTexture(const std::string& textureBasePath, const std::st
 void CubeMapTexture::LoadCubeTextures(const CubeMapTextureRawData& cubemaps)
 {
 	GLuint targets[] = {
-		GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+		GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
 		GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
 		GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
 		GL_TEXTURE_CUBE_MAP_POSITIVE_X,
-		GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
-		GL_TEXTURE_CUBE_MAP_NEGATIVE_Y
+		GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,		
+		GL_TEXTURE_CUBE_MAP_POSITIVE_Y
 	};
 
 	//Generate texture object and bind
@@ -121,20 +121,22 @@ bool CubeMapTexture::LoadCubemapImages(const std::string& texturePath, CubeMapTe
 					size_t bytePerPixel = cubeMap.bytesPerComponent * cubeMap.numComponents;
 
 					//Copy subimage pixel data
-					auto copyArea = [&image, &cubeMap, bytePerPixel](size_t x, size_t y, size_t w, size_t h, void* dst) 
+					auto copyArea = [&image, &cubeMap, bytePerPixel](size_t x, size_t y, size_t w, size_t height, void* dst) 
 					{
 						//todo: range checks
 						unsigned char* dst_ptr = static_cast<unsigned char*>(dst);
 						const unsigned char* src_ptr = static_cast<const unsigned char*>(image.GetImageData());
 						  
-						int lw = image.GetDimensions().width;
-						src_ptr += (x + lw * y) *bytePerPixel;
+						int lineWidth = image.GetDimensions().width;
+						src_ptr += (x + lineWidth * ( y + height - 1)) * bytePerPixel;
 
-						for (size_t line = y; line < y + h; line++)
+						for (size_t i = 0; i < height; i++)
 						{							
-							size_t bytesToCpy = w*bytePerPixel;
-							memcpy(dst_ptr, src_ptr, bytesToCpy);
-							src_ptr += lw*bytePerPixel;
+							size_t bytesToCpy = w*bytePerPixel;							
+							std::copy(src_ptr, src_ptr + bytesToCpy, dst_ptr);
+
+							// Y-axis is inverted due to OpenGL texture coord system
+							src_ptr -= lineWidth*bytePerPixel;
 							dst_ptr += bytesToCpy;
 						}
 					};

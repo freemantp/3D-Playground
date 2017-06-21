@@ -42,7 +42,7 @@
     </light>-->
   </lights>
 
-  <skybox cubeMapFile="cubeMap/sea.jpeg"/>
+  <skybox cubeMapFile="cubeMap/sea.jpg"/>
 
   <objects>
 
