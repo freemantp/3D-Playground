@@ -236,31 +236,26 @@ bool ObjLoader::LoadMtllib(std::istream& istr, IndexedRawMesh_ptr newMesh)
 			if(num_chars > 3 && line.substr(0,2) == "Ka")
 			{
 				std::istringstream s(line.substr(2));
-				vec3 v;
 				s >> mat->ambient.r; s >>  mat->ambient.g; s >>  mat->ambient.b;
 			}
 			else if(num_chars > 3 && line.substr(0,2) == "Kd")
 			{
 				std::istringstream s(line.substr(2));
-				vec3 v;
 				s >> mat->diffuse.r; s >>  mat->diffuse.g; s >>  mat->diffuse.b;
 			}
 			else if(num_chars > 3 && line.substr(0,2) == "Ks")
 			{
 				std::istringstream s(line.substr(2));
-				vec3 v;
 				s >> mat->specular.r; s >>  mat->specular.g; s >>  mat->specular.b;
 			}
 			else if(num_chars > 2 && line.substr(0,1) == "d")
 			{
 				std::istringstream s(line.substr(1));
-				vec3 v;
 				s >> mat->opacity;
 			}
 			else if(num_chars > 3 && line.substr(0,2) == "Ns")
 			{
 				std::istringstream s(line.substr(2));
-				vec3 v;
 				s >> mat->shininess;
 			}
 			else if(num_chars > 6 && line.substr(0,5) == "illum")

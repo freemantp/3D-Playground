@@ -6,7 +6,8 @@
 
 AABBox::AABBox()
 {
-
+	d = glm::vec3(0, 0, 0);
+	p = glm::vec3(0, 0, 0);
 }
 
 AABBox::AABBox(const glm::vec3 & lower, const glm::vec3 & upper)

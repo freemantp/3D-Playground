@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
 	}
 	else {
 		glutHideWindow();
-		getchar();
+		int r = getchar();
 		retCode = EXIT_FAILURE;
 	}
 

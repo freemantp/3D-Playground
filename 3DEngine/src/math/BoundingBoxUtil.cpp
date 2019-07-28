@@ -26,12 +26,12 @@ CoordinateFrame BoundingBoxUtil::BasisFromDirection(const glm::vec3 & direction)
 	}
 	assert(minDirIndex >= 0 && minDirIndex < 3);
 
-	glm::vec3 sideVec0;
+	glm::vec3 sideVec0(0,0,0);
 	sideVec0[minDirIndex] = 1;
 	sideVec0 = glm::orthonormalize(sideVec0, directionNormalized);
 
 	glm::vec3 sideVec1 = glm::cross(directionNormalized, sideVec0);
-	return CoordinateFrame(directionNormalized, sideVec0, sideVec1);
+	return CoordinateFrame(directionNormalized, sideVec1, sideVec0);
 }
 
 bool BoundingBoxUtil::DirectionalLightFrustum(const AABBox & bbox, const glm::vec3& lightDir, OrthogonalFrustum& frust)
