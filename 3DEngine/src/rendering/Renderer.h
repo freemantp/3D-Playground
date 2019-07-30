@@ -20,7 +20,7 @@ public:
 
 	virtual void ViewportChanged(const Viewport_ptr& viewport) override;
 
-	virtual void OnKey(const Input::Key key, const Input::Modifier mod, const glm::vec2& position) override;
+	virtual void OnKey(const Input::Key key, const Input::Modifier mod) override;
 
 	void SetScene(Scene_ptr scene);
 

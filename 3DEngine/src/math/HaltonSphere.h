@@ -1,9 +1,7 @@
 #pragma once;
 
-#include <glm/glm.hpp>
+#include <glm/fwd.hpp>
 #include <vector>
-#include <random>
-#include <glm/gtc/constants.hpp>
 
 /**
   See Sampling with Hammersley and Halton Points 

@@ -9,16 +9,17 @@ SHARED_PTR_CLASS_DECL(CubeMapTexture);
 class CubeMapTextureRawData
 {
 public:
-	int numComponents;
-	int bytesPerComponent;
-	int width;
-	int height;
+	size_t numComponents;
+	size_t bytesPerComponent;
+	GLsizei width;
+	GLsizei height;
 	const unsigned char* imageData[6];
 
 	CubeMapTextureRawData() 
 		: width(0), height(0)
 		, bytesPerComponent(0)
 		, numComponents(0)
+		, imageData()
 	{}
 
 };
@@ -37,7 +38,7 @@ protected:
 	void LoadCubeTextures(const CubeMapTextureRawData& cubemaps);
 
 	/// Loads a cube map image from a single file
-	static bool LoadCubemapImages(const std::string& texturePath, CubeMapTextureRawData& cubeMap);
+	bool LoadCubemapImages(const std::string& texturePath, CubeMapTextureRawData& cubeMap);
 
 	void InitTextureParams();
 

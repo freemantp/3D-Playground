@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../util/SharedPointer.h"
-#include <glm/glm.hpp>
+#include <glm/vec3.hpp>
 
 SHARED_PTR_CLASS_DECL(Material);
 SHARED_PTR_CLASS_DECL(IntrinsicColorMaterial);

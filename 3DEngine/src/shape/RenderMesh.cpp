@@ -466,7 +466,6 @@ void RenderMesh::Render(const Scene_ptr& scene) const
 					}
 					else
 						Error("Could not set material");
-
 				}
 				else
 				{
@@ -493,7 +492,7 @@ void RenderMesh::Draw(const size_t& group) const
 	glDrawRangeElements(static_cast<GLenum>(drawMode),
 		ranges[group].first,
 		ranges[group].second,
-		static_cast<GLsizei>(num_elems),
+		num_elems,
 		GL_UNSIGNED_INT, nullptr);
 
 }

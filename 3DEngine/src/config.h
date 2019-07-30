@@ -2,7 +2,7 @@
 
 #include <string>
 
-class Config {
+struct Config {
 
 public:
 	

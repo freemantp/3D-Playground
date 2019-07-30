@@ -8,7 +8,7 @@ SHARED_PTR_CLASS_DECL(Shadow);
 SHARED_PTR_CLASS_DECL(Camera);
 SHARED_PTR_CLASS_DECL(DepthTexture);
 
-#include <glm/glm.hpp>
+#include <glm/mat4x4.hpp>
 
 class Shadow
 {

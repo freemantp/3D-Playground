@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Frustum.h"
 
+#include <glm/glm.hpp>
+
 std::array<glm::vec3, 8> PerspectiveFrustum::CornerPoints() const
 {
 	std::array<glm::vec3, 8> points;

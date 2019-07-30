@@ -4,7 +4,9 @@
 
 #include <vector>
 #include <string>
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 
 SHARED_PTR_CLASS_DECL(OpenGLRawMesh);
 SHARED_PTR_CLASS_DECL(IndexedRawMesh);

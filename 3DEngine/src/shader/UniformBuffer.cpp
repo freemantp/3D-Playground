@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <glm/glm.hpp>
 
 #include "UniformBuffer.h"
 #include "GLSLProgram.h"

@@ -5,9 +5,5 @@
 
 #pragma once
 
-//#define GLM_FORCE_SWIZZLE GLM_FORCE_SWIZZLE_XYZW
-//#include <glm/glm.hpp>
-//#include "core/gl.h"
-
 // TODO: reference additional headers your program requires here
 #include "error.h"

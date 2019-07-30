@@ -18,28 +18,19 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GlutInputHandler.h">
+    <ClInclude Include="Graphics Playground.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GlutInputHandlerFactory.h">
+    <ClInclude Include="GlfwInputHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Graphics Playground.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GlutInputHandler.cpp">
+    <ClCompile Include="GlfwInputHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GlutInputHandlerFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>

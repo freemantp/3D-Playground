@@ -4,7 +4,7 @@
 #include <map>
 #include <vector>
 
-#include <glm/glm.hpp>
+#include <glm/fwd.hpp>
 
 #include "../util/SharedPointer.h"
 #include "../core/gl.h"

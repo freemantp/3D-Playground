@@ -1,8 +1,10 @@
 #include "stdafx.h"
 
-#include <ctime>
 
 #include "HaltonSphere.h"
+
+#include <ctime>
+#include <random>
 
 #include <glm/gtc/constants.hpp>
 #include <glm/gtx/euler_angles.hpp>

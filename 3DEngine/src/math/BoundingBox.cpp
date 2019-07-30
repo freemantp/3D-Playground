@@ -1,8 +1,14 @@
 #include "stdafx.h"
 
 #include "BoundingBox.h"
+#include "Ray.h"
 
 #include <algorithm>
+
+#include <glm/vec3.hpp>
+#include <glm/mat4x4.hpp>
+#include <glm/common.hpp>
+
 
 AABBox::AABBox()
 {

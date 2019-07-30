@@ -4,7 +4,6 @@
 #include "../error.h"
 #include "../util/Util.h"
 
-#include <glimg/glimg.h>
 
 Texture3D_ptr Texture3D::Create(int width, int height, int depth, Format format)
 {

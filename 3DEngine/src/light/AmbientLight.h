@@ -2,7 +2,7 @@
 
 #include "Light.h"
 
-#include <glm/glm.hpp>
+#include <glm/fwd.hpp>
 
 SHARED_PTR_CLASS_DECL(AmbientLight);
 

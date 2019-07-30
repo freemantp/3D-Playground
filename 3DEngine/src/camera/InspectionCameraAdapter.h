@@ -3,6 +3,9 @@
 #include "../input/MouseObserver.h"
 #include "CameraAdapter.h"
 
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+
 class Camera;
 /**
 * \class InspectionCameraAdapter

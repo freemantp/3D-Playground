@@ -4,8 +4,6 @@
 #include "../error.h"
 #include "../util/Util.h"
 
-#include <glimg/glimg.h>
-
 Texture2D_ptr Texture2D::Create(const std::string& texturePath)
 {
 	return Texture2D_ptr(new Texture2D(texturePath));
@@ -32,7 +30,7 @@ const glm::ivec2& Texture2D::Dimensions() const
 }
 
 Texture2D::Texture2D(GLuint texHandle)
-	: Texture(GL_TEXTURE_2D, texHandle, Format::Unknown)
+	: Texture(GL_TEXTURE_2D, texHandle, Format::RGB)
 {
 	if (GL_TRUE == glIsTexture(texHandle))
 	{
@@ -94,33 +92,14 @@ Texture2D::Texture2D(int width, int height, const void* data, Format format)
 }
 
 Texture2D::Texture2D(const std::string& texturePath)
-: Texture(GL_TEXTURE_2D, Format::Unknown)
+: Texture(GL_TEXTURE_2D, Format::RGB)
 {
-	if (std::unique_ptr<glimg::ImageSet> imageSet = Util::LoadImageFile(texturePath))
-	{
-		try
-		{
-			texObject = glimg::CreateTexture(imageSet.get(), 0);
+	texObject = Util::CreateTexture(texturePath);
 
-			glBindTexture(GL_TEXTURE_2D, texObject);
+	glBindTexture(GL_TEXTURE_2D, texObject);
 
-			SetParameters();
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-			glimg::Dimensions dim = imageSet->GetDimensions();
-
-			dimensions = glm::ivec2(dim.width, dim.height);
-		}
-		catch (glimg::TextureGenerationException &e)
-		{
-			//Texture2D creation failed.
-			Error("Texture2D could not be created: " + std::string(e.what()));
-		}
-	}
-	else
-	{
-		Error("Image could not be loaded");
-	}
+	SetParameters();
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Texture2D::SetParameters()

@@ -44,7 +44,7 @@ const glm::vec4& PointLight::Position() const
 void PointLight::SetColor(const vec3& color)
 {
 	Light::SetColor(color);
-	ConstantColorMaterial_ptr mat = std::dynamic_pointer_cast<ConstantColorMaterial>(visMesh->GetMaterial());
+	ConstantColorMaterial_ptr mat = std::dynamic_pointer_cast<ConstantColorMaterial>(visMesh->Material());
 	if (!mat)
 	{
 		mat = ConstantColorMaterial::Create();

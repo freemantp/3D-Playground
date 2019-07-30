@@ -18,10 +18,12 @@
 #include <ctime>
 #include <regex>
 #include <cctype>
-#include <functional> 
-#include <Windows.h>
+#include <functional>
 
-#include <glimg/glimg.h>
+#include "../core/gl.h"
+
+#include <SOIL2/SOIL2.h>
+
 #include <glm/gtc/matrix_transform.hpp>
 
 using std::string;
@@ -57,7 +59,7 @@ std::string Util::LoadTextFile(char* filename)
 	unsigned int i=0;
 	while (file.good())
 	{
-		shaderSource[i] = file.get();       // get character from file.
+		shaderSource[i] = file.get(); // get character from file.
 		if (!file.eof())
 			i++;
 	}
@@ -175,21 +177,6 @@ RenderMesh_ptr Util::CreateWireBox()
 	return box;
 }
 
-std::unique_ptr<glimg::ImageSet> Util::LoadImageFile(const std::string& texturePath)
-{
-	std::unique_ptr<glimg::ImageSet> imgSet;
-	try
-	{
-		imgSet.reset(glimg::loaders::stb::LoadFromFile(texturePath));
-	}
-	catch (glimg::loaders::stb::StbLoaderException& se)
-	{
-		Error("Loading of " + texturePath + " failed: " + se.what());
-	}
-
-	return imgSet;
-}
-
 std::string Util::ExtractBaseFolder(std::string path)
 {
        static std::regex rgx("(.*(/|\\\\))+");
@@ -217,11 +204,6 @@ bool Util::FileExists (const std::string& name) {
 	}   
 }
 
-void Util::Beep()
-{
-	::Beep( 440, 300 );
-}
-
 // trim from start
 static inline std::string &ltrim(std::string &s) {
         s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
@@ -234,8 +216,28 @@ static inline std::string &rtrim(std::string &s) {
         return s;
 }
 
-
 void Util::Trim(std::string& str)
 {
 	ltrim(rtrim(str));
+}
+
+unsigned int Util::CreateTexture(const std::string& texturePath)
+{
+	/* load an image file directly as a new OpenGL texture */
+	GLuint tex_2d = SOIL_load_OGL_texture
+	(
+		texturePath.c_str(),
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+	);
+
+	/* check for an error during the load process */
+	if (0 == tex_2d)
+	{
+		printf("SOIL loading error: '%s'\n", SOIL_last_result());
+	}
+
+	return tex_2d;
+
 }

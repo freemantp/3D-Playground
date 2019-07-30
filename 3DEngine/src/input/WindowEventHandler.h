@@ -10,16 +10,16 @@ class WindowEventHandler
 {
 public:
 	static WindowEventHandler& Instance();
-	static void resize(int width, int height);
+	static void Resize(int width, int height);
+	static void ViewportChanged(Viewport_ptr& viewport);
 
 	void AddViewportObserver(const ViewportObserver_ptr& observer);
-
 
 protected:
 
 	WindowEventHandler();
 
-	void HandleResize(int width, int height);
+	void OnViewportChanged(Viewport_ptr& viewport);
 
 	std::vector<ViewportObserver_ptr> viewportObservers;
 	static WindowEventHandler instance;

@@ -3,11 +3,13 @@
 #include "Scene.h"
 
 #include <vector>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "../util/Util.h"
 
 #include "../input/WindowEventHandler.h"
 
-#include "../input/InputHandlerFactory.h"
+#include "../input/InputHandler.h"
 #include "../camera/InspectionCameraAdapter.h"
 #include "../camera/FirstPersonCameraAdapter.h"
 
@@ -37,6 +39,12 @@ Scene_ptr Scene::Create(const Camera_ptr& cam, bool has_frambufer)
 {
 	auto ptr =  Scene_ptr(new Scene(cam, has_frambufer), [](Scene* p) {delete p; });
 	cam->AddObserver(ptr);
+
+	std::shared_ptr<EmergencyShape> emergencyScene = std::make_shared<EmergencyShape>();
+	emergencyScene->Init();
+
+	ptr->AddShape(emergencyScene);
+
 	return ptr;
 }
 
@@ -45,6 +53,7 @@ Scene::Scene(const Camera_ptr& cam,bool has_frambufer)
 	, renderLightRepresentation(false)
 	, renderBoundingBoxes(false)
 {
+
 	if (has_frambufer)
 		framebuffer = Framebuffer::Create();
 
@@ -86,10 +95,7 @@ Scene::Scene(const Camera_ptr& cam,bool has_frambufer)
 
 Scene::~Scene()
 {
-	for(auto& mat : materials)
-	{
-		delete mat;
-	}
+
 }
 
 void Scene::UpdateLightBboxes()
@@ -246,7 +252,7 @@ void Scene::Render(const Viewport_ptr& viewport)
 	}
 }
 
-void Scene::TimeUpdate(long time)
+void Scene::TimeUpdate(double time)
 {
 	//Animate lights
 	int numPLs = (int)lightModel->spotLights.size();
@@ -276,11 +282,6 @@ void Scene::TimeUpdate(long time)
 	//}
 
 	lightModel->UpdateUniformBuffer(activeCamera);
-}
-
-void Scene::AddMaterial(const ShaderBase* material)
-{
-	materials.push_back(material);
 }
 
 void Scene::SetCamera(const Camera_ptr& cam)

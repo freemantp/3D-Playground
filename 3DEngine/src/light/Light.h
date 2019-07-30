@@ -1,6 +1,6 @@
 #pragma once;
 
-#include <glm/glm.hpp>
+#include <glm/vec3.hpp>
 #include "../util/SharedPointer.h"
 
 SHARED_PTR_CLASS_DECL(Light);

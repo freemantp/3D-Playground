@@ -3,9 +3,9 @@
 #include "../util/SharedPointer.h"
 
 #include <string>
-#include <iostream>
+#include <iosfwd>
 #include <vector>
-#include <glm/glm.hpp>
+#include <glm/fwd.hpp>
 
 SHARED_PTR_CLASS_DECL(WavefrontObjMaterial);
 SHARED_PTR_CLASS_DECL(ObjLoader);

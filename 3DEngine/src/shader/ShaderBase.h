@@ -37,7 +37,7 @@ public:
 	/* \brief Returns the necessary vertex attribute info the shader uses */
 	virtual VertexAttributeInfo_ptr GetVertexAttributeInfo() const;
 
-	virtual bool Use(const Scene_ptr& cam, const glm::mat4& modelTransform);
+	virtual bool Use(const Scene_ptr& scene, const glm::mat4& modelTransform);
 
 	const std::string& GetName() const;
 

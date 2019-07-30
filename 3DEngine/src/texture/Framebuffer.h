@@ -17,7 +17,7 @@ class Framebuffer
 public:
 	SHARED_PTR_FACTORY(Framebuffer);
 
-	enum class Attachment : GLuint { Color = 0, Depth = 1, Stencil = 2 };
+	enum class Attachment : unsigned int { Color = 0, Depth = 1, Stencil = 2 };
 
 	/// Attaches the given texture to the specified buffer target, returns true on success
 	bool Attach(const Texture2D_ptr& texture, Attachment target);

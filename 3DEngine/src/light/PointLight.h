@@ -2,7 +2,7 @@
 
 #include "Light.h"
 
-#include <glm/glm.hpp>
+#include <glm/vec4.hpp>
 
 SHARED_PTR_CLASS_DECL(Shape)
 SHARED_PTR_CLASS_DECL(PointLight);

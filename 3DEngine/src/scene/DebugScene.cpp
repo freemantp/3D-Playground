@@ -13,6 +13,7 @@
 #include  "../texture/Texture2D.h"
 
 #include <memory>
+#include <glm/gtc/matrix_transform.hpp>
 
 SceneOverlay2D::SceneOverlay2D(Scene_ptr scene)
 : Scene(std::shared_ptr<OrthogonalCamera>(new OrthogonalCamera()),false)
@@ -77,6 +78,6 @@ SceneOverlay2D_ptr SceneOverlay2D::Create(Scene_ptr scene)
 	return SceneOverlay2D_ptr(new SceneOverlay2D(scene), [](SceneOverlay2D* d) {delete d;});
 }
 
-void SceneOverlay2D::TimeUpdate(long time)
+void SceneOverlay2D::TimeUpdate(double time)
 {
 }

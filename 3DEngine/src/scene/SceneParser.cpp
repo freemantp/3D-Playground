@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SceneParser.h"
 
+#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <string>
 
@@ -355,7 +356,7 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 				shape->Init();
 
 				//See if a material is specified, if yes mtllib overrides when dealing with a mesh
-				if (material && shape->GetMaterial())
+				if (material && shape->Material())
 					Warn("The shape already has a material assigned, ignoring specified material");			
 				else			
 					shape->SetMaterial(material);			

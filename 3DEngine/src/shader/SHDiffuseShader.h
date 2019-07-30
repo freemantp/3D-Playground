@@ -1,7 +1,6 @@
 #pragma once
 
 #include "MaterialShader.h"
-#include "../util/gettersetter.h"
 
 SHARED_PTR_CLASS_DECL(ShDiffuseShader)
 SHARED_PTR_CLASS_DECL(ShDiffuseShaderCoeffs)

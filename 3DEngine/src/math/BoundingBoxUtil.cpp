@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "BoundingBoxUtil.h"
+#include "BoundingBox.h"
 
 #include <algorithm>  
 #include <iterator> 

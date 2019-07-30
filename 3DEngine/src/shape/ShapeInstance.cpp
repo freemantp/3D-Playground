@@ -26,5 +26,5 @@ AABBox ShapeInstance::BoundingBox() const
 ShapeInstance::ShapeInstance(const Shape_ptr& shape)
 {
 	base_shape = shape;
-	SetMaterial(shape->GetMaterial());
+	SetMaterial(shape->Material());
 }

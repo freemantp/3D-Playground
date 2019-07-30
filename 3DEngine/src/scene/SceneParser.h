@@ -5,7 +5,7 @@
 #include <tinyxml2.h>
 #include <map>
 #include <string>
-#include <glm/glm.hpp>
+#include <glm/fwd.hpp>
 
 class InputHandlerFactory;
 

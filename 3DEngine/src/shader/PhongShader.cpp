@@ -84,7 +84,7 @@ bool PhongShader::Use(const Scene_ptr& scene, const glm::mat4& modelTransform)
 	{
 		const int skymap_tex_unit = 0;
 
-		if (auto sbm = std::dynamic_pointer_cast<SkyboxMaterial>(scene->skybox->GetMaterial()))
+		if (auto sbm = std::dynamic_pointer_cast<SkyboxMaterial>(scene->skybox->Material()))
 		{
 			sbm->texture->BindTexture(skymap_tex_unit);
 			SetUniform("EnvMap.Exists", static_cast<bool>(scene->skybox));
@@ -133,6 +133,7 @@ void PhongShader::SetLightAndModel(const Scene_ptr& scene, const unsigned int te
 	GLint spotlightShadowMaps[maxNumSpotLights];
 	std::iota(std::begin(spotlightShadowMaps), std::end(spotlightShadowMaps), current_tex_unit);
 	GLint dirLightShadowMap;
+	bool dirLightShadowMapPresent = false;
 
 	for (unsigned int i = 0; i < std::min(maxNumSpotLights, num_slights); i++)
 	{
@@ -143,6 +144,7 @@ void PhongShader::SetLightAndModel(const Scene_ptr& scene, const unsigned int te
 	if (auto dl = lightModel->directionalLight)
 	{
 		dirLightShadowMap = current_tex_unit;
+		dirLightShadowMapPresent = true;
 		dl->Shadow()->ShadowMap()->BindTexture(dirLightShadowMap);
 		current_tex_unit++;
 	}
@@ -181,7 +183,9 @@ void PhongShader::SetLightAndModel(const Scene_ptr& scene, const unsigned int te
 			}
 
 			SetUniformArray("ShadowMapArray", spotlightShadowMaps, 1, maxNumSpotLights);
-			SetUniform("ShadowMapDirectional", dirLightShadowMap);
+
+			if(dirLightShadowMapPresent)
+				SetUniform("ShadowMapDirectional", dirLightShadowMap);
 			
 		}
 	}

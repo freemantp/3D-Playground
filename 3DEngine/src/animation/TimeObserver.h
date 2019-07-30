@@ -8,5 +8,5 @@ class TimeObserver
 {
 public:
 
-	virtual void TimeUpdate(long time) = 0;
+	virtual void TimeUpdate(double time) = 0;
 };

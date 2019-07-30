@@ -12,7 +12,7 @@ public:
 
 	static SceneOverlay2D_ptr Create(Scene_ptr scene);
 
-	virtual void TimeUpdate(long time) override;
+	virtual void TimeUpdate(double time) override;
 
 protected:
 

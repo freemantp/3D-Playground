@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include <glm/fwd.hpp>
 #include "CameraAdapter.h"
 #include "../input/MouseObserver.h"
 #include "../input/KeyboardObserver.h"
@@ -17,7 +17,7 @@ public:
 	virtual void OnMouseDrag(const glm::vec2& position) override;
 	virtual void OnMouseClick(Input::MouseButton button, Input::Direction state, const  glm::vec2& position) override;
 	virtual void OnMouseWheel(Input::Direction direction, const glm::vec2& position) override;
-	virtual void OnKey(const Input::Key key, const Input::Modifier mod, const glm::vec2& position) override;
+	virtual void OnKey(const Input::Key key, const Input::Modifier mod) override;
 
 protected:
 

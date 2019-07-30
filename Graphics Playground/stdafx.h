@@ -4,11 +4,9 @@
 //
 
 #pragma once
-#include <glload/gl_4_3.h>
-#include <glm/glm.hpp>
-#include <GL/freeglut.h>	
+#include <glbinding/gl/gl.h>
+#include <glm/fwd.hpp>
+
 #include <cstdio>
 #include <tchar.h>
 #include "error.h"
-
-// TODO: reference additional headers your program requires here

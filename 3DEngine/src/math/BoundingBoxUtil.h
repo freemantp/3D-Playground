@@ -1,11 +1,10 @@
 #pragma once;
 
-#include "BoundingBox.h"
-#include "BoundingBoxUtil.h"
-
 #include "../camera/Frustum.h"
 
-#include <glm/glm.hpp>
+#include <glm/fwd.hpp>
+
+class AABBox;
 
 class BoundingBoxUtil
 {

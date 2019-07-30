@@ -3,7 +3,7 @@
 #include "Texture.h"
 
 #include <string>
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 
 SHARED_PTR_CLASS_DECL(Texture2D);
 

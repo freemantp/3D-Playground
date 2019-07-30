@@ -3,9 +3,9 @@
 #include <vector>
 #include <array>
 
-#define GLM_FORCE_SWIZZLE
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include <glm/fwd.hpp>
+
+#include "EmergencyShape.h"
 
 #include "../util/SharedPointer.h"
 #include "../math/BoundingBox.h"
@@ -38,7 +38,6 @@ public:
 
 	void AddShape(const Shape_ptr& shape);
 	void AddShapes(const std::vector<Shape_ptr> shapes);
-	void AddMaterial(const ShaderBase* shape);
 	void AddLight(const PointLight_ptr& shape);
 	void AddLight(const SpotLight_ptr& light);
 	void SetLight(const DirectionalLight_ptr& light);
@@ -54,12 +53,11 @@ public:
 	void SetRenderLightRepresentation(bool enable);
 	bool RenderLightRepresentation() const { return renderLightRepresentation; };
 
-	virtual void TimeUpdate(long time);
+	virtual void TimeUpdate(double time);
 
 	Camera_ptr activeCamera;
 	LightModel_ptr lightModel;
 	std::vector<Shape_ptr> objects;
-	std::vector<const ShaderBase*> materials;
 	Skybox_ptr skybox;
 	std::string name;
 	

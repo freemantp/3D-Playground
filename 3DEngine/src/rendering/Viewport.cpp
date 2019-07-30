@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Viewport.h"
+#include "../core/gl.h"
 
 
 Viewport_ptr Viewport::Create(int width, int height)

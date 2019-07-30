@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include <glm/fwd.hpp>
 
 namespace Input 
 {
@@ -12,5 +12,5 @@ class KeyboardObserver
 {
 public:
 
-	virtual void OnKey(const Input::Key key, const Input::Modifier mod, const glm::vec2& position) = 0;
+	virtual void OnKey(const Input::Key key, const Input::Modifier mod) = 0;
 };

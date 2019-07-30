@@ -1,6 +1,5 @@
 #include "stdafx.h"
 
-#define GLM_FORCE_SWIZZLE
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -22,7 +21,7 @@ FirstPersonCameraAdapter::~FirstPersonCameraAdapter(void)
 {
 }
 
-void FirstPersonCameraAdapter::OnKey(const Input::Key key, const Input::Modifier mod, const glm::vec2& position)
+void FirstPersonCameraAdapter::OnKey(const Input::Key key, const Input::Modifier mod)
 {
 	//std::cout << "Key " << key << " pressed" << std::endl;
 

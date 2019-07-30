@@ -58,7 +58,7 @@ void Renderer::ViewportChanged(const Viewport_ptr& viewport)
 	m_Viewport = viewport;
 }
 
-void Renderer::OnKey(const Input::Key key, const Input::Modifier mod, const glm::vec2& position)
+void Renderer::OnKey(const Input::Key key, const Input::Modifier mod)
 {
 	if (key == Input::Key::D)
 	{

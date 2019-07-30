@@ -2,7 +2,6 @@
 
 #include "ShaderBase.h"
 #include "MaterialShader.h"
-#include "../util/gettersetter.h"
 
 SHARED_PTR_CLASS_DECL(PhongShader)
 SHARED_PTR_CLASS_DECL(PhongMaterial)

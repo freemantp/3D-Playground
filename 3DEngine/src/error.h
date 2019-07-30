@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/gl.h"
+//#include "core/gl.h"
 
 #include <iostream>
 #include <string>
@@ -45,14 +45,14 @@ inline void Error(const std::string& errorMsg)
 
 inline void CheckOpenGlError(std::string file, int line) 
 {
-#if _DEBUG 
+#if _DEBUGS 
 	GLenum err = glGetError();
 	if(err != GL_NO_ERROR)
 	{
 		#ifdef Beep 
 		Util::Beep();
 		#endif
-		std::cerr << "ERROR [OpenGL]: " << err << " on "<<  file << ":" << line << std::endl;
+		std::cerr << "ERROR [OpenGL]: " << static_cast<unsigned int>(err) << " on "<<  file << ":" << line << std::endl;
 	}
 #endif
 }

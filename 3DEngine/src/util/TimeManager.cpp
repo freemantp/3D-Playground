@@ -36,19 +36,19 @@ void TimeManager::RemoveTimeObserver(const TimeObserver_ptr& observer)
 	}
 }
 
-void TimeManager::HandleTick()
+void TimeManager::HandleTick(double time)
 {
 	size_t s = timeObservers.size();
 	for(auto& cit : timeObservers)
 	{
 		if(auto tObserver = cit.lock())
 		{
-			tObserver->TimeUpdate(0);
+			tObserver->TimeUpdate(time);
 		}
 	}
 }
 
-void TimeManager::Tick()
+void TimeManager::Tick(double time)
 {
-	instance.HandleTick();
+	instance.HandleTick(time);
 }

@@ -5,8 +5,6 @@
 #include "../error.h"
 #include "../util/Util.h"
 
-#include <glimg/glimg.h>
-
 
 Texture::Texture(GLenum texTarget, Format format)
 : Texture(texTarget,0,format)

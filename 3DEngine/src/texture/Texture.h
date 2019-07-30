@@ -9,22 +9,21 @@ class Texture
 {
 public:
 
-	enum class Format : GLint  
+	enum class Format : unsigned int
 	{ 
-		RED = GL_RED,
-		RGB = GL_RGB8, 
-		RGBA = GL_RGBA8, 
-		RGBA32F = GL_RGBA32F, /// < 4 components, 32-bit floating point
-		Depth = GL_DEPTH_COMPONENT,
-		Unknown = -1,
+		RED = static_cast<unsigned int>(GL_RED),
+		RGB = static_cast<unsigned int>(GL_RGB8),
+		RGBA = static_cast<unsigned int>(GL_RGBA8),
+		RGBA32F = static_cast<unsigned int>(GL_RGBA32F), /// < 4 components, 32-bit floating point
+		Depth = static_cast<unsigned int>(GL_DEPTH_COMPONENT)
 	};
 
-	enum class TextureWrapMode : GLint
+	enum class TextureWrapMode : unsigned int
 	{
-		ClampToEdge = GL_CLAMP_TO_EDGE,
-		ClampToBorder = GL_CLAMP_TO_BORDER,
-		Repeat = GL_REPEAT,
-		MirroredRepeat = GL_MIRRORED_REPEAT,
+		ClampToEdge = static_cast<unsigned int>(GL_CLAMP_TO_EDGE),
+		ClampToBorder = static_cast<unsigned int>(GL_CLAMP_TO_BORDER),
+		Repeat = static_cast<unsigned int>(GL_REPEAT),
+		MirroredRepeat = static_cast<unsigned int>(GL_MIRRORED_REPEAT),
 	};
 
 	virtual ~Texture();

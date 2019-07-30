@@ -39,7 +39,12 @@ public:
 	bool IsInitialized() const { return initialized; };
 	bool MapVertexAttribute(GLSLShader::VertexAttribute attrib, GLuint channel) const;
 
-	enum class DrawMode : GLenum { Triangle = GL_TRIANGLES, Lines = GL_LINES, Point = GL_POINTS };
+	enum class DrawMode : unsigned int
+	{ 
+		Triangle = static_cast<unsigned int>(GL_TRIANGLES),
+		Lines = static_cast<unsigned int>(GL_LINES),
+		Point = static_cast<unsigned int>(GL_POINTS)
+	};
 
 	void SetDrawingMode(DrawMode mode);
 

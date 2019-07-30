@@ -2,7 +2,7 @@
 #include "WindowEventHandler.h"
 #include "ViewportObserver.h"
 #include "../rendering/Viewport.h"
-#include "../core/gl.h"
+
 
 WindowEventHandler WindowEventHandler::instance = WindowEventHandler();
 
@@ -21,20 +21,24 @@ void WindowEventHandler::AddViewportObserver(const ViewportObserver_ptr& observe
 	viewportObservers.push_back(observer);
 }
 
-void WindowEventHandler::resize(int width, int height)
+void WindowEventHandler::Resize(int width, int height)
 {
-	instance.HandleResize(width,height);
+	Viewport_ptr vp = Viewport::Create(width, height);
+	instance.OnViewportChanged(vp);
 }
 
-void WindowEventHandler::HandleResize(int width, int height)
+void WindowEventHandler::ViewportChanged(Viewport_ptr& viewport)
 {
-	//Update Viewport
-	Viewport_ptr vp = Viewport::Create(width, height);
-	vp->Apply();
-	
+	instance.OnViewportChanged(viewport);
+}
+
+void WindowEventHandler::OnViewportChanged(Viewport_ptr& viewport)
+{
+	viewport->Apply();
+
 	//Notify observers
 	for (ViewportObserver_ptr& vpo : viewportObservers)
 	{
-		vpo->ViewportChanged(vp);
+		vpo->ViewportChanged(viewport);
 	}
 }

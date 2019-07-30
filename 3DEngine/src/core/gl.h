@@ -1,3 +1,5 @@
 #pragma once
 
-#include <glload/gl_4_4.h>
+#include <glbinding/gl/gl.h>
+
+using namespace gl;

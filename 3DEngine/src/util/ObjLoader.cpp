@@ -11,6 +11,7 @@
 #include <sstream>
 #include <array>
 #include <deque>
+#include <glm/glm.hpp>
 
 using glm::vec2;
 using glm::vec3;

@@ -1,13 +1,12 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include <glm/mat4x4.hpp>
+
 #include "../util/SharedPointer.h"
 #include "../rendering/Renderable.h"
 
 #include "../math/BoundingBox.h"
 
-
-//forward declarations
 class Scene;
 
 SHARED_PTR_CLASS_DECL(Shape);
@@ -22,7 +21,7 @@ public:
 
 	void SetMaterial(const Material_ptr& material) { this->material = material; };
 
-	Material_ptr GetMaterial() const { return material; };
+	Material_ptr Material() const { return material; };
 
 	virtual void SetWorldTransform(const glm::mat4& t);
 	const glm::mat4& WorldTransform() const;

@@ -4,7 +4,7 @@
 #include "../util/Util.h"
 #include "../error.h"
 
-#include <glimg/glimg.h>
+#include <SOIL2/SOIL2.h>
 
 CubeMapTexture::CubeMapTexture(const std::string& cubeMapTexture)
 {	
@@ -35,37 +35,32 @@ CubeMapTexture::CubeMapTexture(const std::string& cubeMapTexture)
 
 CubeMapTexture::CubeMapTexture(const std::string& textureBasePath, const std::string& imageExtension)
 {
-	const char* suffixes[] = { "posy", "negx", "posz", "posx","negz", "negy" };
+	
+	auto getTextureFileName = [textureBasePath, imageExtension](int i) {
+		const char* suffixes[] = { "posy", "negx", "posz", "posx","negz", "negy" };
+		return textureBasePath + "/" + suffixes[i] + "." + imageExtension;
+	};
 
-	CubeMapTextureRawData cmtrd;
+	/* load 6 images into a new OpenGL cube map, forcing RGB */
+	texObject = SOIL_load_OGL_cubemap
+	(
+		getTextureFileName(0).c_str(),
+		getTextureFileName(1).c_str(),
+		getTextureFileName(2).c_str(),
+		getTextureFileName(3).c_str(),
+		getTextureFileName(4).c_str(),
+		getTextureFileName(5).c_str(),
+		SOIL_LOAD_RGB,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_MIPMAPS
+	);
 
-	std::unique_ptr<glimg::ImageSet> images[6];
-
-	for(int i=0; i < 6; i++)
-	{
-		std::string fileName = textureBasePath + "/" + suffixes[i] + "." + imageExtension;
-
-		if (images[i] = Util::LoadImageFile(fileName))
-		{
-			auto img = images[i]->GetImage(0);
-			auto dim = img.GetDimensions();
-			
-			cmtrd.width = dim.width;
-			cmtrd.height = dim.height;
-			cmtrd.numComponents = (img.GetFormat().Components() == glimg::FMT_COLOR_RGB ? 3 : 4);
-			cmtrd.bytesPerComponent = 1;
-			cmtrd.imageData[i] = static_cast<const unsigned char*>(img.GetImageData());
-		}
-		else
-			Error("Could not load texture: " + fileName);
-	}
-
-	LoadCubeTextures(cmtrd);
+	InitTextureParams();
 }
 
 void CubeMapTexture::LoadCubeTextures(const CubeMapTextureRawData& cubemaps)
 {
-	GLuint targets[] = {
+	GLenum targets[] = {
 		GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
 		GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
 		GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
@@ -78,7 +73,7 @@ void CubeMapTexture::LoadCubeTextures(const CubeMapTextureRawData& cubemaps)
 	glGenTextures(1, &texObject);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texObject);
 
-	GLint format = (cubemaps.numComponents == 3 ? GL_RGB : GL_RGBA);
+	GLenum format = (cubemaps.numComponents == 3 ? GL_RGB : GL_RGBA);
 
 	for (int i = 0; i < 6; i++)
 	{
@@ -90,105 +85,38 @@ void CubeMapTexture::LoadCubeTextures(const CubeMapTextureRawData& cubemaps)
 
 bool CubeMapTexture::LoadCubemapImages(const std::string& texturePath, CubeMapTextureRawData& cubeMap)
 {
-	if (auto imgSet = Util::LoadImageFile(texturePath))
+	/* load an image file directly as a new OpenGL texture */
+	texObject = SOIL_load_OGL_texture
+	(
+		texturePath.c_str(),
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+	);
+
+	/* check for an error during the load process */
+	if (0 == texObject)
 	{
-		if (imgSet->GetFaceCount() == 1)
-		{
-			auto image = imgSet->GetImage(0);
-			auto format = image.GetFormat();
-
-			if (format.Order() == glimg::ORDER_RGBA && format.LineAlign() == 1 && format.Depth() == glimg::BD_PER_COMP_8)
-			{
-				cubeMap.numComponents = 0;
-				switch (format.Components())
-				{
-				case glimg::FMT_COLOR_RGB:
-					cubeMap.numComponents = 3;
-					break;
-				case glimg::FMT_COLOR_RGBA:
-					cubeMap.numComponents = 4;
-					break;
-				}
-
-				if (cubeMap.numComponents > 0)
-				{
-					auto dim = image.GetDimensions();
-
-					cubeMap.width = dim.width / 4;
-					cubeMap.height = dim.height / 3;
-					cubeMap.bytesPerComponent = 1;
-
-					size_t bytePerPixel = cubeMap.bytesPerComponent * cubeMap.numComponents;
-
-					//Copy subimage pixel data
-					auto copyArea = [&image, &cubeMap, bytePerPixel](size_t x, size_t y, size_t w, size_t height, void* dst) 
-					{
-						//todo: range checks
-						unsigned char* dst_ptr = static_cast<unsigned char*>(dst);
-						const unsigned char* src_ptr = static_cast<const unsigned char*>(image.GetImageData());
-						  
-						int lineWidth = image.GetDimensions().width;
-						src_ptr += (x + lineWidth * ( y + height - 1)) * bytePerPixel;
-
-						for (size_t i = 0; i < height; i++)
-						{							
-							size_t bytesToCpy = w*bytePerPixel;							
-							std::copy(src_ptr, src_ptr + bytesToCpy, dst_ptr);
-
-							// Y-axis is inverted due to OpenGL texture coord system
-							src_ptr -= lineWidth*bytePerPixel;
-							dst_ptr += bytesToCpy;
-						}
-					};
-
-					int areas[6][4] = { 
-						{ cubeMap.width, 0, cubeMap.width, cubeMap.height },
-						{ 0, cubeMap.height, cubeMap.width, cubeMap.height },
-						{ 1 * cubeMap.width, cubeMap.height, cubeMap.width, cubeMap.height },
-						{ 2 * cubeMap.width, cubeMap.height, cubeMap.width, cubeMap.height },
-						{ 3 * cubeMap.width, cubeMap.height, cubeMap.width, cubeMap.height },
-						{ cubeMap.width, 2 * cubeMap.height, cubeMap.width, cubeMap.height },
-					};
-
-					for (int i = 0; i < 6; i++)
-					{
-						unsigned char* subimage = new unsigned char[cubeMap.width*cubeMap.height*bytePerPixel];
-						copyArea(areas[i][0], areas[i][1], areas[i][2], areas[i][3], subimage);
-						cubeMap.imageData[i] = subimage;
-					}
-
-					return true;
-				}
-			}
-			else
-			{
-				Error("Wrong image format");
-			}
-		}
+		printf("SOIL loading error: '%s'\n", SOIL_last_result());
+		return false;
 	}
-	else
-		Error("Could not load texture: " + texturePath);
 
-	return false;
-
-
-	return false;
+	return true;
 }
 
 void CubeMapTexture::InitTextureParams()
 {
-	glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 }
 
 CubeMapTexture::~CubeMapTexture()
 {
 	glDeleteTextures(1, &texObject);
 }
-
 
 void CubeMapTexture::BindTexture(int textureUnit)
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ShaderBase.h"
-#include <glm/glm.hpp>
+#include <glm/mat4x4.hpp>
 
 SHARED_PTR_CLASS_DECL(ShadowMapShader)
 SHARED_PTR_CLASS_DECL(SpotLight);

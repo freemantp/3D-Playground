@@ -10,7 +10,7 @@ class TimeManager
 public:
 
 	static TimeManager& Instance();
-	static void Tick();
+	static void Tick(double time);
 
 	virtual void AddTimeObserver(const TimeObserver_ptr& observer);
 
@@ -18,7 +18,7 @@ public:
 
 protected:
 
-	void HandleTick();
+	void HandleTick(double time);
 
 	std::vector<TimeObserver_wptr> timeObservers;
 	static TimeManager instance;

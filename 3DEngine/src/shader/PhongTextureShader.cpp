@@ -40,7 +40,7 @@ bool PhongTextureShader::Use(const Scene_ptr& scene, const glm::mat4& modelTrans
 
 	if (scene->skybox)
 	{
-		if (auto sbm = std::dynamic_pointer_cast<SkyboxMaterial>(scene->skybox->GetMaterial()))
+		if (auto sbm = std::dynamic_pointer_cast<SkyboxMaterial>(scene->skybox->Material()))
 		{
 			sbm->texture->BindTexture(textureUnits[Evironment]);
 			SetUniform("EnvMap.Exists", static_cast<bool>(scene->skybox));

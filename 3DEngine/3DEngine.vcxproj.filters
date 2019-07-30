@@ -163,13 +163,7 @@
     <ClInclude Include="src\util\SharedPointer.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\gettersetter.h">
-      <Filter>Source Files\util</Filter>
-    </ClInclude>
     <ClInclude Include="src\input\InputHandler.h">
-      <Filter>Source Files\input</Filter>
-    </ClInclude>
-    <ClInclude Include="src\input\InputHandlerFactory.h">
       <Filter>Source Files\input</Filter>
     </ClInclude>
     <ClInclude Include="src\stdafx.h">
@@ -309,6 +303,9 @@
     </ClInclude>
     <ClInclude Include="src\shape\ShapeInstance.h">
       <Filter>Source Files\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\EmergencyShape.h">
+      <Filter>Source Files\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -498,6 +495,15 @@
     <ClCompile Include="src\shape\ShapeInstance.cpp">
       <Filter>Source Files\shapes</Filter>
     </ClCompile>
+    <ClCompile Include="src\math\Ray.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera\Frame.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\EmergencyShape.cpp">
+      <Filter>Source Files\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\shader\phongShader.frag">
@@ -569,7 +575,6 @@
     <None Include="..\data\shader\light_common.glsl">
       <Filter>data\shaders\phong</Filter>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\data\scenes\boxScene.xml">

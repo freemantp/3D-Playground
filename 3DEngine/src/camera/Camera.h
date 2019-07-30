@@ -5,7 +5,7 @@
 
 #include "Frustum.h"
 
-#include <glm/glm.hpp>
+#include <glm/mat4x4.hpp>
 #include <vector>
 
 SHARED_PTR_CLASS_DECL(Camera);

@@ -24,7 +24,6 @@
     <ClInclude Include="src\enums.h" />
     <ClInclude Include="src\error.h" />
     <ClInclude Include="src\input\InputHandler.h" />
-    <ClInclude Include="src\input\InputHandlerFactory.h" />
     <ClInclude Include="src\input\KeyboardObserver.h" />
     <ClInclude Include="src\input\MouseObserver.h" />
     <ClInclude Include="src\input\ViewportObserver.h" />
@@ -48,6 +47,7 @@
     <ClInclude Include="src\rendering\Renderer.h" />
     <ClInclude Include="src\rendering\Viewport.h" />
     <ClInclude Include="src\scene\DebugScene.h" />
+    <ClInclude Include="src\scene\EmergencyShape.h" />
     <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="src\scene\SceneParser.h" />
     <ClInclude Include="src\shader\DepthMapShader.h" />
@@ -80,7 +80,6 @@
     <ClInclude Include="src\texture\Texture.h" />
     <ClInclude Include="src\texture\Texture2D.h" />
     <ClInclude Include="src\texture\Texture3D.h" />
-    <ClInclude Include="src\util\gettersetter.h" />
     <ClInclude Include="src\util\RawMesh.h" />
     <ClInclude Include="src\util\ObjLoader.h" />
     <ClInclude Include="src\util\SharedPointer.h" />
@@ -92,6 +91,7 @@
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\camera\FirstPersonCameraAdapter.cpp" />
+    <ClCompile Include="src\camera\Frame.cpp" />
     <ClCompile Include="src\camera\Frustum.cpp" />
     <ClCompile Include="src\camera\InspectionCameraAdapter.cpp" />
     <ClCompile Include="src\camera\OrthogonalCamera.cpp" />
@@ -111,10 +111,12 @@
     <ClCompile Include="src\math\BoundingBoxUtil.cpp" />
     <ClCompile Include="src\math\HaltonSphere.cpp" />
     <ClCompile Include="src\math\BoundingBox.cpp" />
+    <ClCompile Include="src\math\Ray.cpp" />
     <ClCompile Include="src\rendering\GeometryBuffer.cpp" />
     <ClCompile Include="src\rendering\Renderer.cpp" />
     <ClCompile Include="src\rendering\Viewport.cpp" />
     <ClCompile Include="src\scene\DebugScene.cpp" />
+    <ClCompile Include="src\scene\EmergencyShape.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\scene\SceneParser.cpp" />
     <ClCompile Include="src\shader\DepthMapShader.cpp" />
@@ -196,7 +198,6 @@
     <None Include="..\data\shader\skyboxShader.vert" />
     <None Include="..\data\shader\uniformBuffer.frag" />
     <None Include="..\data\shader\uniformBuffer.vert" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\data\scenes\boxScene.xml" />
@@ -255,13 +256,9 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\Property Sheets\GL SDK.props" />
-    <Import Project="..\Property Sheets\tinyxml2.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\Property Sheets\GL SDK.props" />
-    <Import Project="..\Property Sheets\tinyxml2.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
@@ -298,12 +295,5 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-    <Import Project="..\packages\glm.0.9.8.4\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.8.4\build\native\glm.targets')" />
   </ImportGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\glm.0.9.8.4\build\native\glm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glm.0.9.8.4\build\native\glm.targets'))" />
-  </Target>
 </Project>

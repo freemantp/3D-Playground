@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GLSLProgram.h"
 #include <string>
+#include <glm/glm.hpp>
 
 GLSLProgram::GLSLProgram() 
 	: programHandle(0)

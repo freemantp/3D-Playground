@@ -3,6 +3,7 @@
 
 
 #include <iostream>
+#include <glm/vec3.hpp>
 
 bool XmlUtils::GetVector3(tinyxml2::XMLElement* element, glm::vec3& vec)
 {

@@ -1,36 +1,39 @@
-#include "stdafx.h"
-#include <glload/gl_load.hpp>
-#include <ctime>
+#pragma once
+
+#pragma warning(disable: 4251) // See https://github.com/cginternals/glbinding/issues/141
+#include <glbinding/gl/gl.h>
+#include <glbinding/glbinding.h>
+#include <glbinding/gl/functions.h>
+#include <glbinding-aux/ContextInfo.h>
+#include <glbinding-aux/types_to_string.h>
+#include <glbinding-aux/debug.h>
+#pragma warning(default: 4251)
+
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+
+#include <iostream>
 #include <string>
 
 #include <rendering/Renderer.h>
 #include <rendering/Viewport.h>
-
+#include <input/WindowEventHandler.h>
 #include <scene/SceneParser.h>
 #include <scene/Scene.h>
-#include <util/Util.h>
 #include <util/TimeManager.h>
-#include <input/WindowEventHandler.h>
+#include <util/Util.h>
 #include <config.h>
+#include <error.h>
 
-#include "GlutInputHandler.h"
-#include "GlutInputHandlerFactory.h"
+#include "GlfwInputHandler.h"
 
 using std::string;
+using namespace gl;
+using namespace glbinding;
 
 #define WINDOW_TITLE_PREFIX "OpenGL Playground"
 
-Viewport_ptr viewport;
-
-int	WindowHandle = 0;
-
-bool Initialize();
-bool InitializeGlut(int, char*[]);
-void InitWindow();
-void RenderFunction();
-
-Renderer_ptr renderer;
-string sceneName = "pc24.xml";
+string sceneName = "debug.xml";
 //string sceneName = "headScene.xml";
 //string sceneName = "manyPlanes.xml";
 //string sceneName = "shadowScene.xml";
@@ -40,150 +43,149 @@ string sceneName = "pc24.xml";
 //string sceneName = "ogreScene.xml";
 //string sceneName = "debug.xml";
 
-int main(int argc, char* argv[])
-{
-	if (argc == 2)
-	{
-		sceneName = string(argv[1]);
-	}
-
-	int retCode = EXIT_SUCCESS;
-	if (Initialize())
-	{
-		glutMainLoop();
-	}
-	else {
-		glutHideWindow();
-		int r = getchar();
-		retCode = EXIT_FAILURE;
-	}
-
-	exit(retCode);
-}
-
 void initGL()
 {
-	glload::LoadTest tst = glload::LoadFunctions();
-	if (!tst)
-	{
-		//Problem: glewInit failed, something is seriously wrong.
-		std::cout << "glewInit failed, aborting." << std::endl;
-	}
+	glbinding::initialize(glfwGetProcAddress);
+	glbinding::aux::enableGetErrorCallback();
 
-	/* Use depth buffering for hidden surface elimination. */
+	// Use depth buffering for hidden surface elimination
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_MULTISAMPLE);
 
-	GLint  iMultiSample = 0;
-	GLint  iNumSamples = 0;
+	GLint iMultiSample = 0;
+	GLint iNumSamples = 0;
 	glGetIntegerv(GL_SAMPLE_BUFFERS, &iMultiSample);
 	glGetIntegerv(GL_SAMPLES, &iNumSamples);
 
 	std::cout << "MSAA: buffers= " << iMultiSample << ", samples = " << iNumSamples << std::endl;
-
 }
 
-bool Initialize()
+void error(int errnum, const char* errmsg)
 {
-	int glutArgc = 0;
-	char** glutArgv = nullptr;
+	std::cerr << errnum << ": " << errmsg << std::endl;
+}
 
-	viewport = Viewport::Create(1600, 900);
+GLFWwindow* InitializeWindow(Viewport_ptr& viewport, std::string& sceneName) 
+{	
+	glfwSetErrorCallback(error);
+	
+	/* Initialize the library */
+	if (!glfwInit())
+		return nullptr;
 
-	if (!InitializeGlut(glutArgc, glutArgv))
-		return false;
+	glfwDefaultWindowHints();
 
-	InitWindow();
+	string windowTitle = string(WINDOW_TITLE_PREFIX) + " - " + sceneName;
+
+	/* Create a windowed mode window and its OpenGL context */
+	GLFWwindow* window = glfwCreateWindow(viewport->width, viewport->height, windowTitle.c_str(), NULL, NULL);
+	if (!window)
+	{
+		glfwTerminate();
+		return nullptr;
+	}
+
+	/* Make the window's context current */
+	glfwMakeContextCurrent(window);
+
 	initGL();
 
-	fprintf(stdout, "INFO: OpenGL Version: %s\n", glGetString(GL_VERSION));
+	std::cout << std::endl
+		<< "OpenGL Version:  " << aux::ContextInfo::version() << std::endl
+		<< "OpenGL Vendor:   " << aux::ContextInfo::vendor() << std::endl
+		<< "OpenGL Renderer: " << aux::ContextInfo::renderer() << std::endl;
 
-	GLint num;
-	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &num);
+	return window;
+}
 
-	auto data = Util::LoadTextFile(Config::SCENE_BASE_PATH + sceneName.c_str());
+void Render(GLFWwindow* window, Renderer_ptr renderer) {
 
-	WindowEventHandler& winEventHandler = WindowEventHandler::Instance();
-	GlutInputHandlerFactory gihf;
-
-	renderer = Renderer::Create(viewport);
-	winEventHandler.AddViewportObserver(renderer);
-	gihf.GetInputHandler().AddKeyboardObserver(renderer);
-	
-	SceneParser sp;
-	if (sp.Parse(data))
+	/* Loop until the user closes the window */
+	while (!glfwWindowShouldClose(window))
 	{
-		auto s = sp.Scene();
+		/* Render here */
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		s->ConnectInputHandler(gihf.GetInputHandler());
-		renderer->SetScene(s);
-		TimeManager::Instance().AddTimeObserver(s);
+		renderer->Render();
 
-		string windowTitle = string(WINDOW_TITLE_PREFIX) + " - " + s->name;
-		glutSetWindowTitle(windowTitle.c_str());
+		/* Swap front and back buffers */
+		glfwSwapBuffers(window);
+
+		/* Poll for and process events */
+		glfwPollEvents();
+
+		TimeManager::Tick(glfwGetTime());
+	}
+}
+
+Scene_ptr LoadScene(std::string& sceneName) {
+
+	auto sceneData = Util::LoadTextFile(Config::SCENE_BASE_PATH + sceneName.c_str());
+
+	SceneParser sceneParser;
+	if (sceneParser.Parse(sceneData))
+	{
+		auto scene = sceneParser.Scene();
+		TimeManager::Instance().AddTimeObserver(scene);
+		return scene;
 	}
 	else
 	{
 		Error("Scene could not be loaded: " + sceneName);
-		return false;
+		return Scene_ptr();
 	}
-
-	return true;
 }
 
-bool InitializeGlut(int argc, char* argv[])
-{
-	glutInit(&argc, argv);
+void InitializeEvents(GLFWwindow* window, Renderer_ptr& renderer, Scene_ptr& scene) {
 
-	glutInitContextVersion(4, 6);
-	glutInitContextFlags(GLUT_CORE_PROFILE);
-	glutInitContextProfile(GLUT_CORE_PROFILE);
+	WindowEventHandler& winEventHandler = WindowEventHandler::Instance();
+	winEventHandler.AddViewportObserver(renderer);
 
-	glutSetOption(
-		GLUT_ACTION_ON_WINDOW_CLOSE,
-		GLUT_ACTION_GLUTMAINLOOP_RETURNS
-		);
+	GlfwInputHandler& inputHandler = GlfwInputHandler::Instance();
+	inputHandler.AddKeyboardObserver(renderer);
 
-	glutInitWindowSize(viewport->width, viewport->height);
+	scene->ConnectInputHandler(inputHandler);
 
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
+	glfwSetKeyCallback(window, GlfwInputHandler::key);
+	glfwSetMouseButtonCallback(window, GlfwInputHandler::click);
+	glfwSetCursorPosCallback(window, GlfwInputHandler::mouseMove);
+	glfwSetScrollCallback(window, GlfwInputHandler::wheel);
 
-	return true;
-}
-
-void InitWindow()
-{
-	WindowHandle = glutCreateWindow(WINDOW_TITLE_PREFIX);
-
-	if (WindowHandle < 1)
+	glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height)
 	{
-		Error("ERROR: Could not create a new rendering window");
-		exit(EXIT_FAILURE);
+		WindowEventHandler::Resize(width, height);
+	});
+
+}
+
+int main(int argc, char* argv[])
+{
+	if (argc == 2)
+		sceneName = string(argv[1]);
+
+	Viewport_ptr viewport = Viewport::Create(1600, 900);
+	Renderer_ptr renderer = Renderer::Create(viewport);
+	GLFWwindow* window = InitializeWindow(viewport, sceneName);
+
+	Scene_ptr scene = LoadScene(sceneName);
+	if(scene)
+	{ 
+		renderer->SetScene(scene);
+
+		if (window == nullptr) {
+			std::cerr << "Window initialization failed, exiting" << std::endl;
+			return -1;
+		}
+
+		InitializeEvents(window, renderer, scene);
+
+		WindowEventHandler::ViewportChanged(viewport);
+
+		Render(window, renderer);
 	}
 
-	glutReshapeFunc(WindowEventHandler::resize);
-	glutDisplayFunc(RenderFunction);
 
-	glutMouseFunc(GlutInputHandler::click);
-	glutMotionFunc(GlutInputHandler::drag);
-	glutPassiveMotionFunc(GlutInputHandler::mouseMove);
-	glutMouseWheelFunc(GlutInputHandler::wheel);
-	glutKeyboardFunc(GlutInputHandler::key);
-	glutSpecialFunc(GlutInputHandler::specialKey);
-	glutIdleFunc(TimeManager::Tick);
-
-	//atexit(Controller::glutAtExit);
-
-	glutReportErrors();
-
+	glfwTerminate();
+	return 0;
 }
 
-void RenderFunction()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	renderer->Render();
-
-	glutSwapBuffers();
-	glutPostRedisplay();
-}
