@@ -364,7 +364,7 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 				// Parse transform node
 				if(XMLElement* transformsElem = objeElem->FirstChildElement("transform"))
 				{
-					glm::mat4 tMatrix;
+					glm::mat4 tMatrix(1.f);
 					ParseTransforms(tMatrix,transformsElem);
 					shape->SetWorldTransform(tMatrix);
 				}
@@ -400,7 +400,7 @@ bool SceneParser::ParseTransforms(glm::mat4& tMatrix, tinyxml2::XMLElement* tran
 
 			if (type == "translate")
 			{
-				glm::vec3 transl;
+				glm::vec3 transl(1.0f);
 				if (GetVector3(transform, transl))
 				{
 					tMatrix = glm::translate(tMatrix, transl);
@@ -413,7 +413,7 @@ bool SceneParser::ParseTransforms(glm::mat4& tMatrix, tinyxml2::XMLElement* tran
 			}
 			else if (type == "rotate")
 			{
-				glm::vec3 axis;
+				glm::vec3 axis(1.0f);
 				float angle;
 				if (GetVector3(transform, axis) && GetFloatAttrib(transform, "angle", angle))
 				{
@@ -427,7 +427,7 @@ bool SceneParser::ParseTransforms(glm::mat4& tMatrix, tinyxml2::XMLElement* tran
 			}
 			else if (type == "scale")
 			{
-				glm::vec3 factors;
+				glm::vec3 factors(1.0f);
 				if (GetVector3(transform, factors))
 				{
 					tMatrix = glm::scale(tMatrix, factors);
@@ -544,7 +544,7 @@ bool SceneParser::ParseLights(tinyxml2::XMLElement* lightsGroupElement)
 			}
 			else if (lightType == "ambient")
 			{
-				glm::vec3 color;
+				glm::vec3 color(1.0f);
 				GetColorVector3(lightElem->FirstChildElement("color"), color);
 
 				AmbientLight_ptr ambLight = AmbientLight::Create();

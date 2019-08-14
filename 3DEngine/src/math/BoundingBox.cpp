@@ -112,12 +112,13 @@ inline void AABBox::operator*=(const glm::mat4 & rhs)
 }
 
 OBBox::OBBox()
+	: R(1.f)
 {
 
 }
 
 OBBox::OBBox(const glm::vec3 & lower, const glm::vec3 & upper)
-	: AABBox(lower, upper)
+	: AABBox(lower, upper), R(1.f)
 {
 
 }

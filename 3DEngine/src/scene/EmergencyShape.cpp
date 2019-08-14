@@ -5,6 +5,8 @@
 #include "../shader/MaterialShader.h"
 #include "../shader/ShaderLibrary.h"
 
+#include <glm/glm.hpp>
+
 void EmergencyShape::Render(const Scene_ptr& scene) const
 {
 	ShaderLibrary_ptr sl = ShaderLibrary::Instance();
@@ -13,6 +15,13 @@ void EmergencyShape::Render(const Scene_ptr& scene) const
 		current_shader->SetMaterial(material);
 		current_shader->Use(scene, glm::mat4(1.0f));
 
+		/* tell GL to only draw onto a pixel if the shape is closer to the viewer
+		than anything already drawn at that pixel */
+		glEnable(GL_DEPTH_TEST); /* enable depth-testing */
+								 /* with LESS depth-testing interprets a smaller depth value as meaning "closer" */
+		glDepthFunc(GL_LESS);
+
+		glCullFace(GL_FRONT);
 		glBindVertexArray(vao);
 		/* draw points 0-3 from the currently bound VAO with current in-use shader */
 		glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -28,27 +37,20 @@ void EmergencyShape::RenderShadowMap(const ShadowMapShader_ptr&) const
 
 void EmergencyShape::Init()
 {
-	ConstantColorMaterial_ptr material = ConstantColorMaterial::Create();
-	material->SetName("EmergencyMaterial");
-	material->color = glm::vec3(1, 1, 0);
-	SetMaterial(material);
-
 	GLuint vbo;
 
 	/* geometry to use. these are 3 xyz points (9 floats total) to make a triangle */
-	GLfloat points[] = { 0.0f, 0.5f, 0.0f, 0.5f, -0.5f, 0.0f, -0.5f, -0.5f, 0.0f };
-
-	/* tell GL to only draw onto a pixel if the shape is closer to the viewer
-	than anything already drawn at that pixel */
-	glEnable(GL_DEPTH_TEST); /* enable depth-testing */
-							 /* with LESS depth-testing interprets a smaller depth value as meaning "closer" */
-	glDepthFunc(GL_LESS);
+	std::vector<glm::vec3> vertexData = {
+		glm::vec3(0.0f, 0.5f, 0.0f),
+		glm::vec3(0.5f, -0.5f, 0.0f),
+		glm::vec3(-0.5f, -0.5f, 0.0f),
+	};
 
 	/* a vertex buffer object (VBO) is created here. this stores an array of
 	data on the graphics adapter's memory. in our case - the vertex points */
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), points, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 3* vertexData.size() * sizeof(GLfloat), vertexData.data(), GL_STATIC_DRAW);
 
 	/* the vertex array object (VAO) is a little descriptor that defines which
 	data from vertex buffer objects should be used as input variables to vertex

@@ -39,6 +39,8 @@ public:
 
 protected:
 
+	Camera();
+
 	void NotifyObservers();
 
 	std::vector<CameraObserver_ptr> observers;

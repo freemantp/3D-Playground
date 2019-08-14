@@ -4,6 +4,7 @@
 
 Shape::Shape()
 	: boundingBoxDirty(true)
+	, worldTransform(glm::mat4(1.f))
 { 
 
 }

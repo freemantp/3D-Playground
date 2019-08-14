@@ -2,6 +2,13 @@
 #include "Camera.h"
 #include <glm/gtc/matrix_transform.hpp>
 
+Camera::Camera()
+	: viewMatrix(glm::mat4(1.f))
+	, projectionMatrix(glm::mat4(1.f))
+{
+
+}
+
 glm::mat4 Camera::ViewProjectionTransform() const
 {
 	return projectionMatrix * viewMatrix;

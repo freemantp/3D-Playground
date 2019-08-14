@@ -11,6 +11,7 @@ ShadowMapShader_ptr ShadowMapShader::Create()
 
 ShadowMapShader::ShadowMapShader()
 	: ShaderBase("shadowMapShader")
+	, shadowMatrix(glm::mat4(1.f))
 {
 	hasMVM = false;
 	hasNM = false;

@@ -33,7 +33,9 @@ using namespace glbinding;
 
 #define WINDOW_TITLE_PREFIX "OpenGL Playground"
 
-string sceneName = "debug.xml";
+string sceneName = "simpleScene.xml";
+//string sceneName = "boxScene.xml";
+//string sceneName = "envHorse.xml";
 //string sceneName = "headScene.xml";
 //string sceneName = "manyPlanes.xml";
 //string sceneName = "shadowScene.xml";
@@ -42,6 +44,7 @@ string sceneName = "debug.xml";
 //string sceneName = "shScene.xml";
 //string sceneName = "ogreScene.xml";
 //string sceneName = "debug.xml";
+//string sceneName = "pc24.xml";
 
 void initGL()
 {
@@ -50,10 +53,10 @@ void initGL()
 
 	// Use depth buffering for hidden surface elimination
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_MULTISAMPLE);
 
 	GLint iMultiSample = 0;
 	GLint iNumSamples = 0;
+	glEnable(GL_MULTISAMPLE);
 	glGetIntegerv(GL_SAMPLE_BUFFERS, &iMultiSample);
 	glGetIntegerv(GL_SAMPLES, &iNumSamples);
 
@@ -74,6 +77,7 @@ GLFWwindow* InitializeWindow(Viewport_ptr& viewport, std::string& sceneName)
 		return nullptr;
 
 	glfwDefaultWindowHints();
+	glfwWindowHint(GLFW_SAMPLES, 4);
 
 	string windowTitle = string(WINDOW_TITLE_PREFIX) + " - " + sceneName;
 
