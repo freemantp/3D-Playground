@@ -1,28 +1,13 @@
 #pragma once
 
 #include <string>
+#include <vector>
+
 #include "../util/SharedPointer.h"
 #include "../core/gl.h"
 
 SHARED_PTR_CLASS_DECL(CubeMapTexture);
-
-class CubeMapTextureRawData
-{
-public:
-	size_t numComponents;
-	size_t bytesPerComponent;
-	GLsizei width;
-	GLsizei height;
-	const unsigned char* imageData[6];
-
-	CubeMapTextureRawData() 
-		: width(0), height(0)
-		, bytesPerComponent(0)
-		, numComponents(0)
-		, imageData()
-	{}
-
-};
+SHARED_PTR_CLASS_DECL(ImageData);
 
 class CubeMapTexture
 {
@@ -35,10 +20,7 @@ public:
 
 protected:
 
-	void LoadCubeTextures(const CubeMapTextureRawData& cubemaps);
-
-	/// Loads a cube map image from a single file
-	bool LoadCubemapImages(const std::string& texturePath, CubeMapTextureRawData& cubeMap);
+	void LoadImages(std::vector<ImageData_ptr>& images);
 
 	void InitTextureParams();
 

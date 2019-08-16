@@ -5,7 +5,7 @@
 
 WireCone_ptr WireCone::Create(float opening_angle, float height)
 {
-	return WireCone_ptr(new WireCone(opening_angle, height), [](WireCone* p) {delete p; });
+	return std::make_shared<WireCone>(opening_angle, height);
 }
 
 void WireCone::Init() {

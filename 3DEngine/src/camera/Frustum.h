@@ -8,6 +8,8 @@
 
 struct Frustum
 {
+	Frustum();
+
 	/// Returns the corner points of a view frustum (just orientation, not position considered)
 	virtual std::array<glm::vec3, 8> CornerPoints() const = 0;
 

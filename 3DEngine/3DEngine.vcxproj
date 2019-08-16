@@ -46,8 +46,7 @@
     <ClInclude Include="src\rendering\Renderable.h" />
     <ClInclude Include="src\rendering\Renderer.h" />
     <ClInclude Include="src\rendering\Viewport.h" />
-    <ClInclude Include="src\scene\DebugScene.h" />
-    <ClInclude Include="src\scene\EmergencyShape.h" />
+    <ClInclude Include="src\scene\SceneOverlay2D.h" />
     <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="src\scene\SceneParser.h" />
     <ClInclude Include="src\shader\DepthMapShader.h" />
@@ -77,6 +76,7 @@
     <ClInclude Include="src\texture\CubeMapTexture.h" />
     <ClInclude Include="src\texture\DepthTexture.h" />
     <ClInclude Include="src\texture\Framebuffer.h" />
+    <ClInclude Include="src\texture\ImageUtil.h" />
     <ClInclude Include="src\texture\Texture.h" />
     <ClInclude Include="src\texture\Texture2D.h" />
     <ClInclude Include="src\texture\Texture3D.h" />
@@ -115,8 +115,7 @@
     <ClCompile Include="src\rendering\GeometryBuffer.cpp" />
     <ClCompile Include="src\rendering\Renderer.cpp" />
     <ClCompile Include="src\rendering\Viewport.cpp" />
-    <ClCompile Include="src\scene\DebugScene.cpp" />
-    <ClCompile Include="src\scene\EmergencyShape.cpp" />
+    <ClCompile Include="src\scene\SceneOverlay2D.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\scene\SceneParser.cpp" />
     <ClCompile Include="src\shader\DepthMapShader.cpp" />
@@ -148,6 +147,7 @@
     <ClCompile Include="src\texture\CubeMapTexture.cpp" />
     <ClCompile Include="src\texture\DepthTexture.cpp" />
     <ClCompile Include="src\texture\Framebuffer.cpp" />
+    <ClCompile Include="src\texture\ImageUtil.cpp" />
     <ClCompile Include="src\texture\Texture.cpp" />
     <ClCompile Include="src\texture\Texture2D.cpp" />
     <ClCompile Include="src\texture\Texture3D.cpp" />
@@ -209,7 +209,7 @@
     <Xml Include="..\data\scenes\ogreScene.xml">
       <SubType>Designer</SubType>
     </Xml>
-    <Xml Include="..\data\scenes\pc24.xml">
+    <Xml Include="..\data\scenes\blackhawk.xml">
       <SubType>Designer</SubType>
     </Xml>
     <Xml Include="..\data\scenes\road.xml">
@@ -265,11 +265,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -278,12 +278,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

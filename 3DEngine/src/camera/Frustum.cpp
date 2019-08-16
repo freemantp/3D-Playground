@@ -49,3 +49,10 @@ std::array<glm::vec3, 8> OrthogonalFrustum::CornerPoints() const
 
 	return points;
 }
+
+Frustum::Frustum()
+	: nearPlane(1.f)
+	, farPlane(100.f)
+	, position(0,0,0)
+{
+}

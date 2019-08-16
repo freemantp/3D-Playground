@@ -16,6 +16,8 @@ public:
 
 	SHARED_PTR_FACTORY(Shadow);
 
+	Shadow();
+
 	enum class ProjectionType { Perspective, Orthogonal};
 
 	DepthTexture_ptr ShadowMap() const;
@@ -31,8 +33,6 @@ public:
 	void UpdateShadowMatrix(const DirectionalLight_ptr& dirLight, const Camera_cptr& camera);
 
 protected:
-
-	Shadow();
 
 	DepthTexture_ptr shadowMapTex;
 

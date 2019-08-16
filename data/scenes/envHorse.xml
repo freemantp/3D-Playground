@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<scene name="Road">
+<scene name="IBL Horse">
 
   <!-- Initial camera position -->
   <camera type="perspective" fov="70.0">

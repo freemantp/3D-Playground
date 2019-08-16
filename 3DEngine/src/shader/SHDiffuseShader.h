@@ -27,17 +27,15 @@ class ShDiffuseShader : public MaterialShader
 {
 public:
 
-	static ShDiffuseShader_ptr Create();
+	SHARED_PTR_FACTORY(ShDiffuseShader);
 
 	virtual ~ShDiffuseShader();
+
+	ShDiffuseShader();
 
 	virtual bool Use(const Scene_ptr& scene, const glm::mat4& modelTransform) override;
 
 	virtual bool SetMaterial(const Material_cptr& material) override;
-
-protected:
-
-	ShDiffuseShader();
 
 	ShDiffuseMaterial_cptr material;
 

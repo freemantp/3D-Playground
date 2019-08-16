@@ -24,6 +24,8 @@ class SpotLight : public PointLight, public ShadowCastingLight, public std::enab
 public:
 
 	static SpotLight_ptr Create(const glm::vec3& direction, float cutoffAngle, float exponent, bool castsShadow = true);
+
+	SpotLight(const glm::vec3& direction, float cutoffAngle, float exponent, bool castsShadow);
 	
 	virtual void SetDirection(const glm::vec3& dir);
 
@@ -41,8 +43,6 @@ public:
 	virtual void UpdateShadow() override;
 
 protected:
-
-	SpotLight(const glm::vec3& direction, float cutoffAngle, float exponent, bool castsShadow);
 
 	void UpdateVisMesh();
 	

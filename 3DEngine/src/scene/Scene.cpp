@@ -37,14 +37,8 @@ using std::vector;
 
 Scene_ptr Scene::Create(const Camera_ptr& cam, bool has_frambufer)
 {
-	auto ptr =  Scene_ptr(new Scene(cam, has_frambufer), [](Scene* p) {delete p; });
+	auto ptr = std::make_shared<Scene>(cam, has_frambufer);
 	cam->AddObserver(ptr);
-
-	std::shared_ptr<EmergencyShape> emergencyScene = std::make_shared<EmergencyShape>();
-	emergencyScene->Init();
-
-	ptr->AddShape(emergencyScene);
-
 	return ptr;
 }
 

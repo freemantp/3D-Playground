@@ -20,7 +20,7 @@ using namespace GLSLShader;
 
 RenderMesh_ptr RenderMesh::Create(const OpenGLRawMesh_ptr& mesh)
 {
-	return RenderMesh_ptr(new RenderMesh(mesh));
+	return std::make_shared<RenderMesh>(mesh);
 }
 
 RenderMesh::RenderMesh(const OpenGLRawMesh_ptr&  rawMesh)

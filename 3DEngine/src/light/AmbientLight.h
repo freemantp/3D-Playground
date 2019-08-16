@@ -13,7 +13,6 @@ public:
 	
 	SHARED_PTR_FACTORY(AmbientLight)
 
-protected:
 	AmbientLight();
 
 	virtual ~AmbientLight();

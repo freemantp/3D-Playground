@@ -14,6 +14,10 @@ class PointLight : public Light
 public:
 	
 	SHARED_PTR_FACTORY(PointLight);
+
+	PointLight();
+
+	virtual ~PointLight();
 	
 	virtual	const glm::vec4& Position() const;
 	virtual void SetPosition(const glm::vec4& pos);
@@ -23,11 +27,6 @@ public:
 	virtual void SetAnimated(bool animated);
 	virtual bool Animated() const;
 
-
-protected:
-	PointLight();
-
-	virtual ~PointLight();
 
 	bool animated;
 	glm::vec4 position;

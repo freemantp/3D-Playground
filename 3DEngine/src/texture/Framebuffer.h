@@ -17,6 +17,10 @@ class Framebuffer
 public:
 	SHARED_PTR_FACTORY(Framebuffer);
 
+	Framebuffer();
+
+	virtual ~Framebuffer();
+
 	enum class Attachment : unsigned int { Color = 0, Depth = 1, Stencil = 2 };
 
 	/// Attaches the given texture to the specified buffer target, returns true on success
@@ -45,9 +49,6 @@ public:
 	void Unbind();
 
 protected:
-	Framebuffer();
-
-	virtual ~Framebuffer();
 
 	GLuint CreateRenderBuffer(GLenum format);
 

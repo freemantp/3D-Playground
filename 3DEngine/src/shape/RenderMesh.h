@@ -23,6 +23,8 @@ public:
 
 	static RenderMesh_ptr Create(const OpenGLRawMesh_ptr&);
 
+	RenderMesh(const OpenGLRawMesh_ptr& rawMesh);
+
 	virtual void Render(const Scene_ptr& scene) const override;
 	virtual void RenderShadowMap(const ShadowMapShader_ptr&) const override;
 	virtual void Init() override; 
@@ -50,7 +52,6 @@ public:
 
 protected:
 
-	RenderMesh(const OpenGLRawMesh_ptr& rawMesh);
 	RenderMesh(DrawMode = DrawMode::Triangle);
 
 	void InitFromRawMesh(const OpenGLRawMesh_ptr& rawMesh);

@@ -23,12 +23,12 @@ GlfwInputHandler& GlfwInputHandler::Instance()
 	return GlfwInputHandler::instance;
 }
 
-void GlfwInputHandler::AddMouseObserver(const MouseObserver_ptr& observer)
+void GlfwInputHandler::AddMouseObserver(const MouseObserver_wptr& observer)
 {
 	mouseObservers.push_back(observer);
 }
 
-void GlfwInputHandler::AddKeyboardObserver(const KeyboardObserver_ptr& observer)
+void GlfwInputHandler::AddKeyboardObserver(const KeyboardObserver_wptr& observer)
 {
 	keyboardObservers.push_back(observer);
 }
@@ -60,17 +60,19 @@ void GlfwInputHandler::key(GLFWwindow* window, int key, int scancode, int action
 
 void GlfwInputHandler::handleDrag(const glm::vec2& position)
 {
-	for(auto& observer : mouseObservers) 
+	for(auto& obs : mouseObservers) 
 	{
-		observer->OnMouseDrag(position);
+		if(auto observer  = obs.lock())
+			observer->OnMouseDrag(position);
 	}
 }
 
 void GlfwInputHandler::handleMove(const glm::vec2& position)
 {
-	for(auto& observer : mouseObservers)
+	for(auto& obs : mouseObservers)
 	{
-		observer->OnMouseMove(position);
+		if (auto observer = obs.lock())
+			observer->OnMouseMove(position);
 	}
 
 	if (isDragging && position != lastCursorPos)
@@ -103,17 +105,19 @@ void GlfwInputHandler::handleClick(const glm::vec2& position, int button, int ac
 		return;
 	}
 
-	for(auto cit = mouseObservers.cbegin(); cit != mouseObservers.cend(); cit++)
+	for(auto& obs : mouseObservers)
 	{
-		(*cit)->OnMouseClick(mButton, buttonAction, position);
+		if(auto observer = obs.lock())
+			observer->OnMouseClick(mButton, buttonAction, position);
 	}
 }
 
 void GlfwInputHandler::handleWheel(const glm::vec2& position, const glm::vec2& offsets)
 {
-	for (auto& observer : mouseObservers)
+	for (auto& obs : mouseObservers)
 	{
-		observer->OnMouseWheel(offsets.y > 0 ? Input::Direction::UP : Input::Direction::DOWN, position);
+		if(auto observer = obs.lock())
+			observer->OnMouseWheel(offsets.y > 0 ? Input::Direction::UP : Input::Direction::DOWN, position);
 	}
 }
 
@@ -175,8 +179,9 @@ void GlfwInputHandler::handleKey(GLFWwindow* window, int key, int modifier)
 		//TODO: Toggle fullscreen GlfwFullScreenToggle();
 	}
 
-	for (auto& observer : keyboardObservers)
+	for (auto& obs : keyboardObservers)
 	{
-		observer->OnKey(k, m);
+		if(auto observer = obs.lock())
+			observer->OnKey(k, m);
 	}
 }

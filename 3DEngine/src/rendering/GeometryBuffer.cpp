@@ -4,7 +4,7 @@
 
 GeometryBuffer_ptr GeometryBuffer::Create(int width, int height)
 {
-	return GeometryBuffer_ptr(new GeometryBuffer(width,height));
+	return std::make_shared<GeometryBuffer>(width,height);
 }
 
 GeometryBuffer::GeometryBuffer(int width, int height)

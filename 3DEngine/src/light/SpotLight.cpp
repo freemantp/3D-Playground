@@ -12,7 +12,7 @@
 
 SpotLight_ptr SpotLight::Create(const glm::vec3& direction, float cutoffAngle, float exponent, bool castsShadow /*= true*/)
 {
-	return SpotLight_ptr(new SpotLight(direction, cutoffAngle, exponent, castsShadow));
+	return std::make_shared<SpotLight>(direction, cutoffAngle, exponent, castsShadow);
 }
 
 SpotLight::SpotLight(const glm::vec3& direction, float cutoffAngle, float exponent, bool castsShadow)

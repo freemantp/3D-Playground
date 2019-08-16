@@ -12,7 +12,11 @@ class PhongShader
 {
 public:
 
-	static PhongShader_ptr Create();
+	SHARED_PTR_FACTORY(PhongShader)
+
+	PhongShader();
+
+	virtual ~PhongShader();
 
 	virtual bool Use(const Scene_ptr& scene, const glm::mat4& modelTransform) override;
 
@@ -22,10 +26,7 @@ public:
 
 protected:
 
-	PhongShader();
 	PhongShader(const std::string& shaderName);
-
-	virtual ~PhongShader();
 
 	void SetLightAndModel(const Scene_ptr& scene, const unsigned int tex_unit_offset = 0);
 

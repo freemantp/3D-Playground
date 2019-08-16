@@ -11,7 +11,9 @@ class ShadowMapShader : public ShaderBase
 {
 public:
 
-	static ShadowMapShader_ptr Create();
+	SHARED_PTR_FACTORY(ShadowMapShader);
+
+	ShadowMapShader();
 
 	/// The view porjection matrix of a light source
 	void SetLightMatrix(const glm::mat4& mat);
@@ -23,7 +25,6 @@ public:
 
 
 protected:
-	ShadowMapShader();
 
 	virtual void UpdateTransforms(const Camera_ptr& cam, const glm::mat4& modelTransform) override;
 

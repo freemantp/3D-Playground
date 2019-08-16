@@ -12,7 +12,6 @@ public:
 
 	virtual void Init();
 
-protected:
 	Triangle();
 };
 

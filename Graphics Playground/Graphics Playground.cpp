@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Graphics Playground.h"
+
 #pragma warning(disable: 4251) // See https://github.com/cginternals/glbinding/issues/141
 #include <glbinding/gl/gl.h>
 #include <glbinding/glbinding.h>
@@ -14,10 +16,10 @@
 
 #include <iostream>
 #include <string>
+#include <cstdlib> 
 
-#include <rendering/Renderer.h>
-#include <rendering/Viewport.h>
 #include <input/WindowEventHandler.h>
+#include <shader/ShaderLibrary.h>
 #include <scene/SceneParser.h>
 #include <scene/Scene.h>
 #include <util/TimeManager.h>
@@ -31,22 +33,71 @@ using std::string;
 using namespace gl;
 using namespace glbinding;
 
-#define WINDOW_TITLE_PREFIX "OpenGL Playground"
+int main(int argc, char* argv[])
+{
 
-string sceneName = "simpleScene.xml";
-//string sceneName = "boxScene.xml";
-//string sceneName = "envHorse.xml";
-//string sceneName = "headScene.xml";
-//string sceneName = "manyPlanes.xml";
-//string sceneName = "shadowScene.xml";
-//string sceneName = "road.xml";
-//string sceneName = "simpleScene.xml";
-//string sceneName = "shScene.xml";
-//string sceneName = "ogreScene.xml";
-//string sceneName = "debug.xml";
-//string sceneName = "pc24.xml";
+	std::vector<std::string> scenes = {
+		"simpleScene.xml", //0
+		"boxScene.xml",    //1
+		"envHorse.xml",    //2
+		"headScene.xml",   //3
+		"manyPlanes.xml",  //4
+		"shadowScene.xml", //5
+		"road.xml",        //6
+		"simpleScene.xml", //7
+		"shScene.xml",     //8
+		"ogreScene.xml",   //9
+		"debug.xml",       //10
+		"blackhawk.xml",   //11
+		"headScene.xml"    //12
+	};
 
-void initGL()
+	std::string sceneName = scenes[1];
+
+	if (argc == 2)
+		sceneName = string(argv[1]);
+
+	atexit(glfwTerminate);
+
+	//Scoped shared pointers -> force cleanup of OpenGL resources
+	{
+		GraphicsPlayground pg;
+		if (pg.InitializeWindow())
+		{
+			if (pg.LoadScene(sceneName))
+			{
+				pg.Render();
+			}
+			else
+			{
+				Error("Scene could not be loaded: " + sceneName);
+				return -1;
+			}
+		}
+		else
+		{
+			Error("Window initialization failed, exiting");
+			return -1;
+		}
+	}
+
+	return 0;
+}
+
+GraphicsPlayground::GraphicsPlayground()
+	: window(nullptr)
+	, numMultisamples(4)
+{
+	viewport = Viewport::Create(1600, 900);
+	renderer = Renderer::Create(viewport);
+}
+
+GraphicsPlayground::~GraphicsPlayground()
+{
+	ShaderLibrary::Instance()->Reset();
+}
+
+void GraphicsPlayground::InitGL()
 {
 	glbinding::initialize(glfwGetProcAddress);
 	glbinding::aux::enableGetErrorCallback();
@@ -61,48 +112,42 @@ void initGL()
 	glGetIntegerv(GL_SAMPLES, &iNumSamples);
 
 	std::cout << "MSAA: buffers= " << iMultiSample << ", samples = " << iNumSamples << std::endl;
+
+		std::cout << std::endl
+		<< "OpenGL Version:  " << aux::ContextInfo::version() << std::endl
+		<< "OpenGL Vendor:   " << aux::ContextInfo::vendor() << std::endl
+		<< "OpenGL Renderer: " << aux::ContextInfo::renderer() << std::endl;
 }
 
-void error(int errnum, const char* errmsg)
-{
-	std::cerr << errnum << ": " << errmsg << std::endl;
-}
-
-GLFWwindow* InitializeWindow(Viewport_ptr& viewport, std::string& sceneName) 
+bool GraphicsPlayground::InitializeWindow()
 {	
-	glfwSetErrorCallback(error);
+	glfwSetErrorCallback([](int errnum, const char* errmsg) {
+		std::cerr << errnum << ": " << errmsg << std::endl; });
 	
 	/* Initialize the library */
 	if (!glfwInit())
 		return nullptr;
 
 	glfwDefaultWindowHints();
-	glfwWindowHint(GLFW_SAMPLES, 4);
-
-	string windowTitle = string(WINDOW_TITLE_PREFIX) + " - " + sceneName;
+	glfwWindowHint(GLFW_SAMPLES, numMultisamples);
 
 	/* Create a windowed mode window and its OpenGL context */
-	GLFWwindow* window = glfwCreateWindow(viewport->width, viewport->height, windowTitle.c_str(), NULL, NULL);
+	window = glfwCreateWindow(viewport->width, viewport->height, WINDOW_TITLE_PREFIX.c_str(), NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
-		return nullptr;
+		return false;
 	}
 
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
 
-	initGL();
-
-	std::cout << std::endl
-		<< "OpenGL Version:  " << aux::ContextInfo::version() << std::endl
-		<< "OpenGL Vendor:   " << aux::ContextInfo::vendor() << std::endl
-		<< "OpenGL Renderer: " << aux::ContextInfo::renderer() << std::endl;
+	InitGL();
 
 	return window;
 }
 
-void Render(GLFWwindow* window, Renderer_ptr renderer) {
+void GraphicsPlayground::Render() {
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -122,25 +167,29 @@ void Render(GLFWwindow* window, Renderer_ptr renderer) {
 	}
 }
 
-Scene_ptr LoadScene(std::string& sceneName) {
+bool GraphicsPlayground::LoadScene(std::string& sceneName) {
 
 	auto sceneData = Util::LoadTextFile(Config::SCENE_BASE_PATH + sceneName.c_str());
 
-	SceneParser sceneParser;
-	if (sceneParser.Parse(sceneData))
-	{
-		auto scene = sceneParser.Scene();
-		TimeManager::Instance().AddTimeObserver(scene);
-		return scene;
+	if (sceneData.length() > 0) {
+		SceneParser sceneParser;
+		if (sceneParser.Parse(sceneData))
+		{
+			auto scene = sceneParser.Scene();
+			TimeManager::Instance().AddTimeObserver(scene);
+
+			SetWindowTitle(scene->name);
+			InitializeEvents(scene);
+			renderer->SetScene(scene);
+			WindowEventHandler::ViewportChanged(viewport);
+			return true;
+		}
 	}
-	else
-	{
-		Error("Scene could not be loaded: " + sceneName);
-		return Scene_ptr();
-	}
+
+	return false;
 }
 
-void InitializeEvents(GLFWwindow* window, Renderer_ptr& renderer, Scene_ptr& scene) {
+void GraphicsPlayground::InitializeEvents(Scene_ptr& scene) {
 
 	WindowEventHandler& winEventHandler = WindowEventHandler::Instance();
 	winEventHandler.AddViewportObserver(renderer);
@@ -162,34 +211,10 @@ void InitializeEvents(GLFWwindow* window, Renderer_ptr& renderer, Scene_ptr& sce
 
 }
 
-int main(int argc, char* argv[])
+const std::string GraphicsPlayground::WINDOW_TITLE_PREFIX = "OpenGL Playground";
+
+void GraphicsPlayground::SetWindowTitle(const std::string title)
 {
-	if (argc == 2)
-		sceneName = string(argv[1]);
-
-	Viewport_ptr viewport = Viewport::Create(1600, 900);
-	Renderer_ptr renderer = Renderer::Create(viewport);
-	GLFWwindow* window = InitializeWindow(viewport, sceneName);
-
-	Scene_ptr scene = LoadScene(sceneName);
-	if(scene)
-	{ 
-		renderer->SetScene(scene);
-
-		if (window == nullptr) {
-			std::cerr << "Window initialization failed, exiting" << std::endl;
-			return -1;
-		}
-
-		InitializeEvents(window, renderer, scene);
-
-		WindowEventHandler::ViewportChanged(viewport);
-
-		Render(window, renderer);
-	}
-
-
-	glfwTerminate();
-	return 0;
+	string windowTitle = string(WINDOW_TITLE_PREFIX) + " - " + title;
+	glfwSetWindowTitle(window, windowTitle.c_str());
 }
-

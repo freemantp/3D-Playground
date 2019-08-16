@@ -10,7 +10,6 @@ public:
 
 	virtual void Init() override;
 
-protected:
 	WireCube();
 };
 

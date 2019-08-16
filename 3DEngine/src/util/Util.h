@@ -21,7 +21,6 @@ public:
 	static void PrintUniforms(const ShaderBase_ptr& shader);
 	static RenderMesh_ptr LoadModel(const std::string& path, bool computeTangents = false);
 
-	static unsigned int CreateTexture(const std::string& texturePath);
 	static std::string Util::ExtractBaseFolder(std::string path);
 	static std::string Util::ExtractFileName(std::string path);	
 	static bool FileExists(const std::string& name);

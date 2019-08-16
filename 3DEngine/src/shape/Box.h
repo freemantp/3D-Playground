@@ -10,7 +10,6 @@ public:
 
 	virtual void Init();
 
-protected:
 	Box();
 };
 

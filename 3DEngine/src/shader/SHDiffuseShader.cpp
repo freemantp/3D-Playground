@@ -11,11 +11,6 @@
 #include "UniformBuffer.h"
 #include "../config.h"
 
-ShDiffuseShader_ptr ShDiffuseShader::Create()
-{
-	return ShDiffuseShader_ptr(new ShDiffuseShader());
-}
-
 ShDiffuseShader::ShDiffuseShader()
 : MaterialShader("diffuseSH")
 {

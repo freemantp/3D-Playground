@@ -10,7 +10,6 @@
 #include "../shape/RenderMesh.h"
 
 #include "../shader/ShaderBase.h"
-#include "../shader/GLSLProgram.h"
 
 #include "../error.h"
 
@@ -21,8 +20,6 @@
 #include <functional>
 
 #include "../core/gl.h"
-
-#include <SOIL2/SOIL2.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -51,23 +48,28 @@ std::string Util::LoadTextFile(char* filename)
 	std::ifstream file;
 	file.open(filename, std::ios::in);
 
-	unsigned long len = GetFileLength(file);
+	if(file.is_open())
+		{
+		unsigned long len = GetFileLength(file);
 
-	std::string shaderSource(len, ' ');
+		std::string shaderSource(len, ' ');
 
-	shaderSource[len] = 0;
-	unsigned int i=0;
-	while (file.good())
-	{
-		shaderSource[i] = file.get(); // get character from file.
-		if (!file.eof())
-			i++;
+		shaderSource[len] = 0;
+		unsigned int i=0;
+		while (file.good())
+		{
+			shaderSource[i] = file.get(); // get character from file.
+			if (!file.eof())
+				i++;
+		}
+
+		file.close();
+
+		return std::move(std::string(shaderSource.begin(), shaderSource.begin()+i));
 	}
 
-	file.close();
-
-
-	return std::string(shaderSource.begin(), shaderSource.begin()+i);
+	return std::string();
+	
 }
 
 void Util::PrintStrings(const std::vector<string> strings)
@@ -219,25 +221,4 @@ static inline std::string &rtrim(std::string &s) {
 void Util::Trim(std::string& str)
 {
 	ltrim(rtrim(str));
-}
-
-unsigned int Util::CreateTexture(const std::string& texturePath)
-{
-	/* load an image file directly as a new OpenGL texture */
-	GLuint tex_2d = SOIL_load_OGL_texture
-	(
-		texturePath.c_str(),
-		SOIL_LOAD_AUTO,
-		SOIL_CREATE_NEW_ID,
-		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
-	);
-
-	/* check for an error during the load process */
-	if (0 == tex_2d)
-	{
-		printf("SOIL loading error: '%s'\n", SOIL_last_result());
-	}
-
-	return tex_2d;
-
 }

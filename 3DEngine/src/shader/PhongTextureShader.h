@@ -14,6 +14,10 @@ public:
 
 	SHARED_PTR_FACTORY(PhongTextureShader);
 
+	PhongTextureShader();
+
+	virtual ~PhongTextureShader();
+
 	virtual bool Use(const Scene_ptr& scene, const glm::mat4& modelTransform) override;
 
 	void UnUse() override;
@@ -23,10 +27,6 @@ public:
 	VertexAttributeInfo_ptr GetVertexAttributeInfo() const override;
 
 protected:
-
-	PhongTextureShader();
-
-	virtual ~PhongTextureShader();
 	
 	enum TextureType { Albedo = 0, BumpMap = 1, Specular = 2, Evironment = 3 };
 	static const int numTextures = 4;

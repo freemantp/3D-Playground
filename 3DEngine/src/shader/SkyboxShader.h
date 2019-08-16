@@ -12,15 +12,15 @@ public:
 	
 	SHARED_PTR_FACTORY(SkyboxShader);
 
+	SkyboxShader();
+
+	~SkyboxShader();
+
 	virtual bool Use(const Scene_ptr& scene, const glm::mat4& modelTransform) override;
 
 	virtual bool SetMaterial(const Material_cptr& material) override;
 
 protected:
-
-	SkyboxShader();
-
-	~SkyboxShader();
 
 	GLuint texUnit;
 	SkyboxMaterial_cptr material;

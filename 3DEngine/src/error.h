@@ -1,16 +1,8 @@
 #pragma once
 
-//#include "core/gl.h"
-
 #include <iostream>
 #include <string>
 #include <sstream>
-
-//#define Beep 1
-
-#ifdef Beep
-#include "util/Util.h"
-#endif
 
 inline void Info(const char* msg) 
 {
@@ -42,23 +34,6 @@ inline void Error(const std::string& errorMsg)
 	Util::Beep();
 	#endif
 }
-
-inline void CheckOpenGlError(std::string file, int line) 
-{
-#if _DEBUGS 
-	GLenum err = glGetError();
-	if(err != GL_NO_ERROR)
-	{
-		#ifdef Beep 
-		Util::Beep();
-		#endif
-		std::cerr << "ERROR [OpenGL]: " << static_cast<unsigned int>(err) << " on "<<  file << ":" << line << std::endl;
-	}
-#endif
-}
-//macro with file and line nr
-#define OpenGLErrorCheck() CheckOpenGlError(__FILE__,__LINE__)
-
 
 inline void Error(const std::string& errorMsg, int line) 
 {

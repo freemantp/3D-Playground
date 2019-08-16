@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "CppUnitTest.h"
 
 #include <math/BoundingBox.h>
@@ -100,8 +99,8 @@ namespace Test3DEngine
 			Assert::IsTrue(BoundingBoxUtil::DirectionalLightFrustum(box, ldir, Frustum), L"", LINE_INFO());
 			Assert::AreEqual(0.f, Frustum.nearPlane);
 			Assert::AreEqual(glm::length(box.d)*2.f, Frustum.farPlane);
-			Assert::IsTrue(-Frustum.right + Frustum.left < 1e-5);
-			Assert::IsTrue(-Frustum.top + Frustum.bottom < 1e-5);
+			Assert::IsTrue(-Frustum.right + Frustum.left < 1e-5f);
+			Assert::IsTrue(-Frustum.top + Frustum.bottom < 1e-5f);
 		}
 
 		TEST_METHOD(BasisFromDirection)

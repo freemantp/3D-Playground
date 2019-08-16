@@ -10,13 +10,12 @@ class SceneOverlay2D : public Scene
 {
 public:
 
+	SceneOverlay2D(Scene_ptr scene);
+
 	static SceneOverlay2D_ptr Create(Scene_ptr scene);
 
 	virtual void TimeUpdate(double time) override;
 
-protected:
-
-	SceneOverlay2D(Scene_ptr scene);
 	~SceneOverlay2D();
 };
 

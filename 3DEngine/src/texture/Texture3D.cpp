@@ -7,12 +7,12 @@
 
 Texture3D_ptr Texture3D::Create(int width, int height, int depth, Format format)
 {
-	return Texture3D_ptr(new Texture3D(width, height, depth, format, 0));
+	return std::make_shared<Texture3D>(width, height, depth, format, nullptr);
 }
 
 Texture3D_ptr Texture3D::Create(int width, int height, int depth, void* data, Format format)
 {
-	return Texture3D_ptr(new Texture3D(width, height, depth, format, data));
+	return  std::make_shared<Texture3D>(width, height, depth, format, data);
 }
 
 Texture3D::Texture3D(int width, int height, int depth, Format format, void* data)

@@ -4,7 +4,7 @@
 #include "GeometryBuffer.h"
 
 #include  "../scene/Scene.h"
-#include  "../scene/DebugScene.h"
+#include  "../scene/SceneOverlay2D.h"
 
 #include  "../util/TimeManager.h"
 
@@ -12,7 +12,7 @@
 
 Renderer_ptr Renderer::Create(const Viewport_ptr& viewport)
 {
-	return Renderer_ptr(new Renderer(viewport), [](Renderer* r) {delete r; });
+	return std::make_shared<Renderer>(viewport);
 }
 
 Renderer::Renderer(const Viewport_ptr& viewport)

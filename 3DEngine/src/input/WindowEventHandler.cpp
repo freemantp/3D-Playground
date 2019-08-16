@@ -16,7 +16,7 @@ WindowEventHandler& WindowEventHandler::Instance()
 	return instance;
 }
 
-void WindowEventHandler::AddViewportObserver(const ViewportObserver_ptr& observer)
+void WindowEventHandler::AddViewportObserver(const ViewportObserver_wptr& observer)
 {
 	viewportObservers.push_back(observer);
 }
@@ -37,8 +37,9 @@ void WindowEventHandler::OnViewportChanged(Viewport_ptr& viewport)
 	viewport->Apply();
 
 	//Notify observers
-	for (ViewportObserver_ptr& vpo : viewportObservers)
+	for (ViewportObserver_wptr& vpo : viewportObservers)
 	{
-		vpo->ViewportChanged(viewport);
+		if(auto vpObserver = vpo.lock()) 
+			vpObserver->ViewportChanged(viewport);
 	}
 }

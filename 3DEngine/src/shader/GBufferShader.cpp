@@ -1,11 +1,6 @@
 #include "stdafx.h"
 #include "GBufferShader.h"
 
-GBufferShader_ptr GBufferShader::Create()
-{
-	return GBufferShader_ptr(new GBufferShader());
-}
-
 GBufferShader::GBufferShader()
 	: ShaderBase("gBufferShader")
 {

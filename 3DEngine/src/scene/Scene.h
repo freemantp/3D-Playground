@@ -5,8 +5,6 @@
 
 #include <glm/fwd.hpp>
 
-#include "EmergencyShape.h"
-
 #include "../util/SharedPointer.h"
 #include "../math/BoundingBox.h"
 #include "../light/LightModel.h"
@@ -33,6 +31,10 @@ class Scene : public TimeObserver, public CameraObserver, public std::enable_sha
 public:		
 
 	static Scene_ptr Create(const Camera_ptr& cam, bool has_frambufer = true);
+
+	Scene(const Camera_ptr& cam, bool has_framebufer);
+
+	virtual ~Scene();
 
 	void Render(const Viewport_ptr& viewport);
 
@@ -74,10 +76,6 @@ public:
 	std::array<LightAnimationParam,3> lightAnimParams;
 
 protected:
-
-	Scene(const Camera_ptr& cam,bool has_framebufer);
-
-	virtual ~Scene();
 
 	void RenderShadowMaps();
 

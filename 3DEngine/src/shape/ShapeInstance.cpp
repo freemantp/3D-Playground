@@ -3,7 +3,7 @@
 
 ShapeInstance_ptr ShapeInstance::Create(const Shape_ptr & shape)
 {
-	return ShapeInstance_ptr(new ShapeInstance(shape));
+	return std::make_shared<ShapeInstance>(shape);
 }
 
 void ShapeInstance::Render(const Scene_ptr & scene) const

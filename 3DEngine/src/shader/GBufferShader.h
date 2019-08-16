@@ -8,12 +8,12 @@ class GBufferShader : public ShaderBase
 {
 public:
 
-	static GBufferShader_ptr Create();
+	SHARED_PTR_FACTORY(GBufferShader);
+
+	GBufferShader();
 	
 	virtual ~GBufferShader();
 	
-
-protected:
-	GBufferShader();
+	
 };
 

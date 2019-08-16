@@ -16,11 +16,6 @@
 #include <algorithm>   
 #include <numeric>
 
-PhongShader_ptr PhongShader::Create()
-{
-	return PhongShader_ptr(new PhongShader(), [](PhongShader* p) {delete p;});
-}
-
 PhongShader::PhongShader()
 : PhongShader("phongShader")
 {

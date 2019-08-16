@@ -18,9 +18,9 @@ public:
 
 	virtual bool SetMaterial(const Material_cptr& material) override;
 
-protected:
-
 	DepthMapShader();
+
+protected:
 
 	DepthMapMaterial_cptr material;
 

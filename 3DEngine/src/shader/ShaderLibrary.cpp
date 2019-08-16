@@ -19,7 +19,7 @@ ShaderLibrary_ptr ShaderLibrary::Instance()
 {
 	if (!instance)
 	{
-		instance = ShaderLibrary_ptr(new ShaderLibrary(), [](ShaderLibrary* p) { delete p; });
+		instance = std::make_shared<ShaderLibrary>();
 	}
 
 	return instance;
@@ -45,6 +45,11 @@ bool ShaderLibrary::AddShader(const Material_cptr& material)
 			return AddShader(material, DepthMapShader::Create());
 	}
 	return false;
+}
+
+void ShaderLibrary::Reset()
+{
+	instance.reset();
 }
 
 bool ShaderLibrary::AddShader(const Material_cptr& material, const MaterialShader_ptr& shader)

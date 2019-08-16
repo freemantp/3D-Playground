@@ -8,7 +8,7 @@
 
 WavefrontObjMaterial_ptr WavefrontObjMaterial::Create(std::string name)
 {
-	return WavefrontObjMaterial_ptr(new WavefrontObjMaterial(name));
+	return  std::make_shared<WavefrontObjMaterial>(name);
 }
 
 WavefrontObjMaterial::WavefrontObjMaterial(std::string theName)

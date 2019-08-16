@@ -14,13 +14,17 @@ class ShaderLibrary
 public:	
 	static ShaderLibrary_ptr Instance();
 
+	ShaderLibrary();
+
+	virtual ~ShaderLibrary();
+
 	MaterialShader_ptr ShaderLookup(const Material_cptr& material);
 	
 	bool AddShader(const Material_cptr& material);
+
+	static void Reset();
 	
 protected:
-
-	virtual ~ShaderLibrary();
 
 	bool AddShader(const Material_cptr& material, const MaterialShader_ptr& shader);
 
@@ -31,7 +35,6 @@ protected:
 	std::map<const std::type_info*, MaterialShader_ptr> materialShaderDictionary;
 	
 private:
-	ShaderLibrary();	
 	ShaderLibrary(const ShaderLibrary&);            
 	ShaderLibrary& operator=(const ShaderLibrary&);
 };

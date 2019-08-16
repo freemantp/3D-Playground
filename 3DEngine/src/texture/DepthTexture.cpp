@@ -3,7 +3,7 @@
 
 DepthTexture_ptr DepthTexture::Create(int width, int height)
 {
-	return DepthTexture_ptr(new DepthTexture(width, height, Texture2D::Format::Depth));
+	return std::make_shared<DepthTexture>(width, height, Texture2D::Format::Depth);
 }
 
 DepthTexture::DepthTexture(int width, int height, Format format)

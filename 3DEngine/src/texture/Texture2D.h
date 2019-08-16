@@ -17,6 +17,14 @@ public:
 
 	static Texture2D_ptr Create(int width, int height, const void* data, Format format = Format::RGBA);
 
+	Texture2D(const std::string& texturePath);
+
+	Texture2D(int width, int height, Format format);
+
+	Texture2D(int width, int height, const void* data, Format format);
+
+	Texture2D(GLuint texHandle);
+
 	/// Creates a new texture with the passed texture id
 	/// The OpenGL texture is deleted when this instance is destroyed
 	static Texture2D_ptr Texture2D::Create(GLuint textHandle);
@@ -26,14 +34,6 @@ public:
 	virtual bool SetData(void* data) override;
 
 protected:
-
-	Texture2D(const std::string& texturePath);
-
-	Texture2D(int width, int height, Format format);
-
-	Texture2D(int width, int height, const void* data, Format format );
-
-	Texture2D(GLuint texHandle);
 
 	void SetParameters();
 

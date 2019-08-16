@@ -4,11 +4,6 @@
 
 #include <glm/gtc/matrix_transform.hpp> 
 
-ShadowMapShader_ptr ShadowMapShader::Create()
-{
-	return ShadowMapShader_ptr(new ShadowMapShader());
-}
-
 ShadowMapShader::ShadowMapShader()
 	: ShaderBase("shadowMapShader")
 	, shadowMatrix(glm::mat4(1.f))

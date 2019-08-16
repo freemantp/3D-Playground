@@ -13,7 +13,7 @@ public:
 	static void Resize(int width, int height);
 	static void ViewportChanged(Viewport_ptr& viewport);
 
-	void AddViewportObserver(const ViewportObserver_ptr& observer);
+	void AddViewportObserver(const ViewportObserver_wptr& observer);
 
 protected:
 
@@ -21,7 +21,7 @@ protected:
 
 	void OnViewportChanged(Viewport_ptr& viewport);
 
-	std::vector<ViewportObserver_ptr> viewportObservers;
+	std::vector<ViewportObserver_wptr> viewportObservers;
 	static WindowEventHandler instance;
 };
 

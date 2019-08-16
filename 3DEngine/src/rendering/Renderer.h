@@ -16,7 +16,11 @@ public:
 
 	static Renderer_ptr Create(const Viewport_ptr& viewport);
 
+	Renderer(const Viewport_ptr& viewport);
+
 	void Render();
+
+	virtual ~Renderer();
 
 	virtual void ViewportChanged(const Viewport_ptr& viewport) override;
 
@@ -27,9 +31,7 @@ public:
 	Scene_ptr Scene();
 
 protected:
-	Renderer(const Viewport_ptr& viewport);
 
-	virtual ~Renderer();
 
 	void Create2DOverlayScene();
 

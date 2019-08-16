@@ -72,7 +72,7 @@ public:
 	virtual void InitFromWavefrontMaterial(const WavefrontObjMaterial_cptr& mat, const std::string& base_folder) override;
 
 protected:
-	TextureMaterial() { };
+	TextureMaterial();
 };
 
 class IntrinsicColorMaterial : public Material
@@ -112,6 +112,6 @@ public:
 	float farPlane;
 	bool perspective;
 protected:
-	DepthMapMaterial() : perspective(true) {};
+	DepthMapMaterial();
 };
 

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "DebugScene.h"
+#include "SceneOverlay2D.h"
 
 #include "../materials/Material.h"
 #include  "../util/Util.h"
@@ -75,7 +75,7 @@ SceneOverlay2D::~SceneOverlay2D()
 
 SceneOverlay2D_ptr SceneOverlay2D::Create(Scene_ptr scene)
 {
-	return SceneOverlay2D_ptr(new SceneOverlay2D(scene), [](SceneOverlay2D* d) {delete d;});
+	return std::make_shared<SceneOverlay2D>(scene);
 }
 
 void SceneOverlay2D::TimeUpdate(double time)

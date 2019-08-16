@@ -74,3 +74,15 @@ void TextureMaterial::InitFromWavefrontMaterial(const WavefrontObjMaterial_cptr&
 		specularTexture = Texture2D::Create(base_folder + mat->specularColorTexture);
 	}
 }
+
+TextureMaterial::TextureMaterial()
+	: bumpBumpTexIsNormalMap(false)
+{
+}
+
+DepthMapMaterial::DepthMapMaterial() 
+	: perspective(true)
+	, farPlane(0)
+	, nearPlane(0)
+{
+}

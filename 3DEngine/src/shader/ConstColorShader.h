@@ -16,8 +16,6 @@ public:
 
 	virtual bool SetMaterial(const Material_cptr& material) override;
 
-protected:
-
 	ConstColorShader();
 
 	ConstantColorMaterial_cptr material;

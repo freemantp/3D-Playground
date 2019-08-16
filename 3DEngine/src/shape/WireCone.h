@@ -8,12 +8,13 @@ class WireCone : public RenderMesh
 public:
 	static WireCone_ptr Create(float opening_angle, float height);
 
-	virtual void Init() override;
-
-protected:
 	WireCone(float opening_angle, float height);
 
 	~WireCone() {};
+
+	virtual void Init() override;
+
+protected:
 
 	float openingAngle;
 	float height;

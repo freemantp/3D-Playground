@@ -15,6 +15,8 @@ class GeometryBuffer
 public:
 
 	static GeometryBuffer_ptr Create(int width, int height);
+
+	GeometryBuffer(int width, int height);
 	
 	virtual ~GeometryBuffer();
 
@@ -26,7 +28,6 @@ public:
 
 
 protected:
-	GeometryBuffer(int width, int height);
 
 	enum TexTypes {Position, Normal};
 

@@ -19,8 +19,6 @@ public:
 	//typedef std::pair<GLSLShader::VertexAttribute, int> AttribChannel;
 	std::map<GLSLShader::VertexAttribute, int> mapping;
 
-
-protected:
 	VertexAttributeInfo() {};
 };
 

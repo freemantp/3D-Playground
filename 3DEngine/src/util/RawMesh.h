@@ -37,7 +37,6 @@ class WavefrontObjMaterial
 public:
 	static WavefrontObjMaterial_ptr Create(std::string name);
 	
-protected:
 	WavefrontObjMaterial(std::string name);
 public:
 
@@ -112,15 +111,14 @@ class IndexedRawMesh : public AbstractRawMesh
 {
 public:
 	SHARED_PTR_FACTORY(IndexedRawMesh);
+
+	IndexedRawMesh();
+
+	~IndexedRawMesh();
 	
 	OpenGLRawMesh_ptr ConvertToOpenGLMesh() const;
 
 	std::vector<Tri> faces;
-
-protected:
-	IndexedRawMesh();
-
-	~IndexedRawMesh();
 
 	bool ComputeNormals();
 

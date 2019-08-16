@@ -10,12 +10,11 @@ public:
 	
 	static Viewport_ptr Create(int width, int height);
 
+	Viewport(int width, int height);
+
 	void Apply();
 
 	virtual ~Viewport();
-
-protected:
-	Viewport(int width, int height);
 
 public:
 

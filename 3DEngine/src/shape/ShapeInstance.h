@@ -11,6 +11,8 @@ public:
 
 	static ShapeInstance_ptr Create(const Shape_ptr& shape);
 
+	ShapeInstance(const Shape_ptr& shape);
+
 	virtual void Init() override { } ;
 
 	virtual void Render(const Scene_ptr& scene) const override;
@@ -20,8 +22,6 @@ public:
 	virtual AABBox BoundingBox() const override;
 
 private:
-
-	ShapeInstance(const Shape_ptr& shape);
 	
 	Shape_ptr base_shape;	
 };

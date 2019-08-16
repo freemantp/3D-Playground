@@ -2,26 +2,28 @@
 #include "Texture2D.h"
 
 #include "../error.h"
-#include "../util/Util.h"
+#include "../texture/ImageUtil.h"
+
+#include <stdexcept>
 
 Texture2D_ptr Texture2D::Create(const std::string& texturePath)
 {
-	return Texture2D_ptr(new Texture2D(texturePath));
+	return std::make_shared<Texture2D>(texturePath);
 }
 
 Texture2D_ptr Texture2D::Create(int width, int height, Format format)
 {
-	return Texture2D_ptr(new Texture2D(width, height, format));
+	return std::make_shared<Texture2D>(width, height, format);
 }
 
 Texture2D_ptr Texture2D::Create(GLuint texHandle)
 {
-	return Texture2D_ptr(new Texture2D(texHandle));
+	return std::make_shared<Texture2D>(texHandle);
 }
 
 Texture2D_ptr Texture2D::Create(int width, int height, const void* data, Format format)
 {
-	return Texture2D_ptr(new Texture2D(width,height,data,format));
+	return std::make_shared<Texture2D>(width,height,data,format);
 }
 
 const glm::ivec2& Texture2D::Dimensions() const
@@ -94,12 +96,25 @@ Texture2D::Texture2D(int width, int height, const void* data, Format format)
 Texture2D::Texture2D(const std::string& texturePath)
 : Texture(GL_TEXTURE_2D, Format::RGB)
 {
-	texObject = Util::CreateTexture(texturePath);
+	if (ImageData_ptr imageData = ImageUtil::LoadImage(texturePath))
+	{
+		if (imageData->components == 4)
+			this->textureFormat = Format::RGBA;
 
-	glBindTexture(GL_TEXTURE_2D, texObject);
+		this->dimensions.x = imageData->width;
+		this->dimensions.y = imageData->height;
 
-	SetParameters();
-	glBindTexture(GL_TEXTURE_2D, 0);
+		glGenTextures(1, &texObject);
+		glBindTexture(GL_TEXTURE_2D, texObject);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageData->width, imageData->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData->pixelData.get());
+
+		SetParameters();
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+	else {
+		throw std::invalid_argument("Texture could not be loaded from the provided path");
+	}
 }
 
 void Texture2D::SetParameters()

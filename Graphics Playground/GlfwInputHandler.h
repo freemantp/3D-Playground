@@ -21,8 +21,8 @@ public:
 	
 	static void key(GLFWwindow* window, int key, int scancode, int action, int mods);
 
-	virtual void AddMouseObserver(const MouseObserver_ptr& observer);
-	virtual void AddKeyboardObserver(const KeyboardObserver_ptr& observer);
+	virtual void AddMouseObserver(const MouseObserver_wptr& observer);
+	virtual void AddKeyboardObserver(const KeyboardObserver_wptr& observer);
 
 protected:
 
@@ -34,8 +34,8 @@ protected:
 	void handleWheel(const glm::vec2& position, const glm::vec2& offsets);
 	void handleKey(GLFWwindow* window, int key, int modifier);
 
-	std::vector<MouseObserver_ptr> mouseObservers;
-	std::vector<KeyboardObserver_ptr> keyboardObservers;
+	std::vector<MouseObserver_wptr> mouseObservers;
+	std::vector<KeyboardObserver_wptr> keyboardObservers;
 	
 	bool isDragging;
 	glm::vec2 lastCursorPos;
