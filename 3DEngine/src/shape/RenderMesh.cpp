@@ -15,8 +15,11 @@
 #include "../error.h"
 
 #include <set>
+#include <filesystem>
 
 using namespace GLSLShader;
+
+namespace fs = std::filesystem;
 
 RenderMesh_ptr RenderMesh::Create(const OpenGLRawMesh_ptr& mesh)
 {
@@ -44,13 +47,13 @@ void RenderMesh::InitFromRawMesh(const OpenGLRawMesh_ptr& rawMesh)
 		if (!rawMesh->name.empty())
 			name = rawMesh->name;
 		else
-			name = Util::ExtractFileName(rawMesh->meshPath);
+			name = Util::ExtractFileName(rawMesh->meshPath).string();
 
 		SetPositions(rawMesh->vertices, rawMesh->triangleIndices, &rawMesh->groupRanges);
 
 		std::vector<PhongMaterial_ptr> meshMaterials;
 
-		std::string base_path = Util::ExtractBaseFolder(rawMesh->meshPath);
+		fs::path base_path = Util::ExtractBaseFolder(rawMesh->meshPath);
 
 		// Mesh has material descriptors
 		for (WavefrontObjMaterial_ptr& mat : rawMesh->materials)

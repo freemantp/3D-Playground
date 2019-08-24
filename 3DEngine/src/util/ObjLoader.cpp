@@ -7,6 +7,7 @@
 #include "../error.h"
 
 #include <fstream>
+#include <filesystem>
 #include <regex>
 #include <sstream>
 #include <array>
@@ -17,13 +18,14 @@ using glm::vec2;
 using glm::vec3;
 using glm::ivec3;
 
+namespace fs = std::filesystem;
 
-IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
+IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, const std::filesystem::path& path)
 {	
 	int lineCount = 0;
 
 	IndexedRawMesh_ptr newMesh = IndexedRawMesh::Create();
-	newMesh->meshPath = path;
+	newMesh->meshPath = path.string();
 
 	std::string groupName;	
 	std::string currentMtl;
@@ -165,7 +167,7 @@ IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 		}
 		else if(line.substr(0,7) == "mtllib ")
 		{			
-			std::string mtlFile =  Util::ExtractBaseFolder(currentFile) + line.substr(7);
+			fs::path mtlFile = Util::ExtractBaseFolder(currentFile) / fs::path(line.substr(7));
 
 			std::ifstream mtlFileStream(mtlFile);
 			if(mtlFileStream && LoadMtllib(mtlFileStream,newMesh))
@@ -190,7 +192,7 @@ IndexedRawMesh_ptr ObjLoader::LoadObj(std::istream& istr, std::string path)
 	create_group(groupName);
 
 	if (newMesh->name.empty())
-		newMesh->name = Util::ExtractFileName(newMesh->meshPath);
+		newMesh->name = Util::ExtractFileName(newMesh->meshPath).string();
 
 	std::cout << "Wavefront OBJ mesh loaded, f=" 
 		<< newMesh->faces.size() 
@@ -304,9 +306,9 @@ bool ObjLoader::LoadMtllib(std::istream& istr, IndexedRawMesh_ptr newMesh)
 	return newMesh->materials.size() > 0;
 }
 
-IndexedRawMesh_ptr ObjLoader::LoadObjFile(const std::string& path)
+IndexedRawMesh_ptr ObjLoader::LoadObjFile(const std::filesystem::path& path)
 {
-	currentFile = path;
+	currentFile = path.string();
 
 	std::ifstream myfile;
 	myfile.open(path);
@@ -316,11 +318,11 @@ IndexedRawMesh_ptr ObjLoader::LoadObjFile(const std::string& path)
 	std::string line;
 	if (myfile.is_open())
 	{
-		newMesh = LoadObj(myfile,path);
+		newMesh = LoadObj(myfile, path);
 		myfile.close();
 	}
 	else 
-		std::cerr << "Unable to open OBJ file: "  << path << std::endl;
+		std::cerr << "Unable to open OBJ file: "  << path.string() << std::endl;
 
 	return newMesh;
 }

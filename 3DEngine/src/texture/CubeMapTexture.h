@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <filesystem>
 
 #include "../util/SharedPointer.h"
 #include "../core/gl.h"
@@ -12,8 +13,8 @@ SHARED_PTR_CLASS_DECL(ImageData);
 class CubeMapTexture
 {
 public:
-	CubeMapTexture(const std::string& cubeMapFile);
-	CubeMapTexture(const std::string& textureBasePath, const std::string& imageExtension);
+	CubeMapTexture(const std::filesystem::path& cubeMapFile);
+	CubeMapTexture(const std::filesystem::path& textureBasePath, const std::string& imageExtension);
 	~CubeMapTexture();
 
 	void BindTexture(int textureUnit);

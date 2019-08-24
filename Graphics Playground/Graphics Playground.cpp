@@ -15,8 +15,9 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <filesystem>
 #include <string>
-#include <cstdlib> 
+#include <cstdlib>
 
 #include <input/WindowEventHandler.h>
 #include <shader/ShaderLibrary.h>
@@ -32,36 +33,38 @@
 using std::string;
 using namespace gl;
 using namespace glbinding;
+namespace fs = std::filesystem;
 
 int main(int argc, char* argv[])
 {
-
-	std::vector<std::string> scenes = {
-		"simpleScene.xml", //0
-		"boxScene.xml",    //1
-		"envHorse.xml",    //2
-		"headScene.xml",   //3
-		"manyPlanes.xml",  //4
-		"shadowScene.xml", //5
-		"road.xml",        //6
-		"simpleScene.xml", //7
-		"shScene.xml",     //8
-		"ogreScene.xml",   //9
-		"debug.xml",       //10
-		"blackhawk.xml",   //11
-		"headScene.xml"    //12
-	};
-
-	std::string sceneName = scenes[1];
-
-	if (argc == 2)
-		sceneName = string(argv[1]);
-
 	atexit(glfwTerminate);
 
 	//Scoped shared pointers -> force cleanup of OpenGL resources
 	{
 		GraphicsPlayground pg;
+
+		std::string sceneName;
+
+		if (argc == 2)
+			sceneName = string(argv[1]);
+		else {
+			auto sceneList = pg.FindScences();
+
+			unsigned int idCounter = 0;
+			for (const auto& entry : sceneList)
+				std::cout << idCounter++ << " - " << entry << std::endl;
+
+
+			while (sceneName.size() == 0) {
+				std::cout << "Scene to load (id): ";
+				unsigned int sceneIdx;
+				std::cin >> sceneIdx;
+
+				if (sceneIdx < sceneList.size())
+					sceneName = sceneList[sceneIdx];
+			}
+		}
+
 		if (pg.InitializeWindow())
 		{
 			if (pg.LoadScene(sceneName))
@@ -96,6 +99,20 @@ GraphicsPlayground::~GraphicsPlayground()
 {
 	ShaderLibrary::Instance()->Reset();
 }
+
+std::vector<std::string> GraphicsPlayground::FindScences() const
+{
+	std::vector<std::string> scenes;
+
+	for (const auto& entry : std::filesystem::directory_iterator(Config::SCENE_BASE_PATH))
+	{
+		if (entry.is_regular_file() && entry.path().extension().string().compare(".xml") == 0)
+			scenes.push_back(entry.path().filename().string());
+	}
+
+	return std::move(scenes);
+}
+
 
 void GraphicsPlayground::InitGL()
 {
@@ -169,7 +186,7 @@ void GraphicsPlayground::Render() {
 
 bool GraphicsPlayground::LoadScene(std::string& sceneName) {
 
-	auto sceneData = Util::LoadTextFile(Config::SCENE_BASE_PATH + sceneName.c_str());
+	auto sceneData = Util::LoadTextFile(Config::SCENE_BASE_PATH / fs::path(sceneName));
 
 	if (sceneData.length() > 0) {
 		SceneParser sceneParser;
@@ -218,3 +235,4 @@ void GraphicsPlayground::SetWindowTitle(const std::string title)
 	string windowTitle = string(WINDOW_TITLE_PREFIX) + " - " + title;
 	glfwSetWindowTitle(window, windowTitle.c_str());
 }
+

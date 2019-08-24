@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <string>
+#include <filesystem>
 
 #include "../shader/PhongShader.h"
 #include "../shader/PhongTextureShader.h"
@@ -43,6 +44,8 @@ using std::string;
 using std::vector;
 
 typedef std::pair<string,Material_ptr> ShaderKeyVal;
+
+namespace fs = std::filesystem;
 
 SceneParser::SceneParser()
 {
@@ -158,8 +161,8 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 				//Load textured version if available
 				if (subElem = materialElement->FirstChildElement("texture"))
 				{					
-					string texFile(subElem->Attribute("file"));
-					Texture2D_ptr albedoTex = Texture2D::Create(Config::TEXTURE_BASE_PATH + texFile);
+					fs::path texFile(subElem->Attribute("file"));
+					Texture2D_ptr albedoTex = Texture2D::Create(Config::TEXTURE_BASE_PATH / texFile);
 
 					TextureMaterial_ptr tm = TextureMaterial::Create();
 					tm->albedoTexture = albedoTex;
@@ -167,19 +170,18 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 					//bump mapping		
 					if (subElem = materialElement->FirstChildElement("bumpMap"))
 					{
-						string bumpMapFile(subElem->Attribute("file"));
+						fs::path bumpMapFile(subElem->Attribute("file"));
 						string type(subElem->Attribute("type"));
 
-						tm->bumpTexture = Texture2D::Create(Config::TEXTURE_BASE_PATH + bumpMapFile);
+						tm->bumpTexture = Texture2D::Create(Config::TEXTURE_BASE_PATH / bumpMapFile);
 						tm->bumpBumpTexIsNormalMap = (type == "normal");
 					}
 
 					//specular mapping				
 					if (subElem = materialElement->FirstChildElement("specularMap"))
 					{
-						string specMapFile(subElem->Attribute("file"));
-
-						tm->specularTexture = Texture2D::Create(Config::TEXTURE_BASE_PATH + specMapFile);
+						fs::path specMapFile(subElem->Attribute("file"));
+						tm->specularTexture = Texture2D::Create(Config::TEXTURE_BASE_PATH / specMapFile);
 					}
 
 					phongMat = tm;
@@ -232,7 +234,7 @@ bool SceneParser::ParseMaterials(XMLElement* materialsGroupElement)
 				{
 					if (auto shfile = subElem->Attribute("file"))
 					{
-						auto data = Util::LoadTextFile(Config::DATA_BASE_PATH + "sh/" + shfile);
+						auto data = Util::LoadTextFile(Config::DATA_BASE_PATH / fs::path("sh") / fs::path(shfile));
 						shMaterial->shCoeffs = ShCoeffParser::Parse(data);
 						material = shMaterial;
 						parse_ok = true;
@@ -269,13 +271,13 @@ bool SceneParser::ParseSkybox(XMLElement* skyboxElem)
 	if( path = skyboxElem->Attribute("cubeMapFile"))
 	{
 		//Single file cube map
-		texture.reset(new CubeMapTexture(Config::TEXTURE_BASE_PATH + path));
+		texture.reset(new CubeMapTexture(Config::TEXTURE_BASE_PATH / fs::path(path)));
 	}
 	else if( path = skyboxElem->Attribute("cubeMapFolder") )
 	{
 		//Cube map consisting of 6 files
 		string type = skyboxElem->Attribute("type");
-		texture.reset(new CubeMapTexture(Config::TEXTURE_BASE_PATH + path, type));
+		texture.reset(new CubeMapTexture(Config::TEXTURE_BASE_PATH / path, type));
 	}
 	else
 	{
@@ -322,9 +324,9 @@ bool SceneParser::ParseObjects(XMLElement* objects)
 
 			if(type == "mesh")
 			{
-				string file = objeElem->Attribute("file");
+				fs::path file = objeElem->Attribute("file");
 
-				string modelPath = Config::MODELS_BASE_PATH + file;
+				fs::path modelPath = Config::MODELS_BASE_PATH / file;
 				shape = Util::LoadModel(modelPath, needs_tangents);
 				if (!shape)
 					return false;

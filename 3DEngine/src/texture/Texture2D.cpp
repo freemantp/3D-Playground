@@ -6,7 +6,7 @@
 
 #include <stdexcept>
 
-Texture2D_ptr Texture2D::Create(const std::string& texturePath)
+Texture2D_ptr Texture2D::Create(const std::filesystem::path& texturePath)
 {
 	return std::make_shared<Texture2D>(texturePath);
 }
@@ -93,7 +93,7 @@ Texture2D::Texture2D(int width, int height, const void* data, Format format)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-Texture2D::Texture2D(const std::string& texturePath)
+Texture2D::Texture2D(const std::filesystem::path& texturePath)
 : Texture(GL_TEXTURE_2D, Format::RGB)
 {
 	if (ImageData_ptr imageData = ImageUtil::LoadImage(texturePath))

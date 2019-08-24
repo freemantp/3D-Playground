@@ -14,6 +14,7 @@
 #include "../error.h"
 
 #include <fstream>
+#include <filesystem>
 #include <ctime>
 #include <regex>
 #include <cctype>
@@ -25,6 +26,8 @@
 
 using std::string;
 using std::vector;
+
+namespace fs = std::filesystem;
 
 unsigned long Util::GetFileLength(std::ifstream& file)
 {
@@ -41,6 +44,11 @@ unsigned long Util::GetFileLength(std::ifstream& file)
 std::string Util::LoadTextFile(const std::string& s)
 {
 	return LoadTextFile((char*)s.c_str());
+}
+
+std::string Util::LoadTextFile(const std::filesystem::path& path)
+{
+	return LoadTextFile(path.string());
 }
 
 std::string Util::LoadTextFile(char* filename)
@@ -91,13 +99,13 @@ void Util::PrintUniforms(const ShaderBase_ptr& shader)
 	std::cout << std::endl;
 }
 
-RenderMesh_ptr Util::LoadModel(const std::string& path, bool computeTangentsHint /*= false*/)
+RenderMesh_ptr Util::LoadModel(const std::filesystem::path& path, bool computeTangentsHint /*= false*/)
 {
 	ObjLoader oj;
 	clock_t begin = clock();
 	
 	if(IndexedRawMesh_ptr rawMesh = oj.LoadObjFile(path))
-	{
+	{	
 		if(OpenGLRawMesh_ptr gl_raw_mesh = rawMesh->ConvertToOpenGLMesh())
 		{
 			if (!gl_raw_mesh->HasNormals())
@@ -179,20 +187,16 @@ RenderMesh_ptr Util::CreateWireBox()
 	return box;
 }
 
-std::string Util::ExtractBaseFolder(std::string path)
+fs::path Util::ExtractBaseFolder(std::string filePath)
 {
-       static std::regex rgx("(.*(/|\\\\))+");
-       std::smatch result;
-       std::regex_search(path, result, rgx);
-       return result[0];
+	fs::path pathToFile(filePath);
+	return pathToFile.parent_path();
 }
 
-std::string Util::ExtractFileName(std::string path)
+fs::path Util::ExtractFileName(std::string path)
 {
-	static std::regex rgx("(.*(/|\\\\))+([a-zA-Z0-9\\.]+)");
-	std::smatch result;
-	std::regex_search(path, result, rgx);
-	return result[result.size()-1];
+	fs::path pathToFile(path);
+	return pathToFile.filename();
 }
 
 bool Util::FileExists (const std::string& name) {
@@ -204,21 +208,4 @@ bool Util::FileExists (const std::string& name) {
 		f.close();
 		return false;
 	}   
-}
-
-// trim from start
-static inline std::string &ltrim(std::string &s) {
-        s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
-        return s;
-}
-
-// trim from end
-static inline std::string &rtrim(std::string &s) {
-        s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
-        return s;
-}
-
-void Util::Trim(std::string& str)
-{
-	ltrim(rtrim(str));
 }

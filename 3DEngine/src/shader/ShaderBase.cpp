@@ -6,7 +6,10 @@
 #include "../scene/Scene.h"
 #include "../config.h"
 
+#include <filesystem>
 #include <sstream>
+
+namespace fs = std::filesystem;
 
 ShaderBase::ShaderBase(const std::string& shaderName)
 	: hasMVP(true)
@@ -123,8 +126,8 @@ bool ShaderBase::LoadShader(const std::string& shaderName)
 {
 	Info("Loading shader " + shaderName );
 
-	std::string vertexShaderSource = Util::LoadTextFile( Config::SHADER_BASE_PATH + shaderName + ".vert");
-	std::string fragmentShaderSource = Util::LoadTextFile( Config::SHADER_BASE_PATH + shaderName + ".frag");
+	std::string vertexShaderSource = Util::LoadTextFile( Config::SHADER_BASE_PATH / fs::path(shaderName + ".vert"));
+	std::string fragmentShaderSource = Util::LoadTextFile( Config::SHADER_BASE_PATH  / fs::path(shaderName + ".frag"));
 
 	bool ok = HandleIncludes(vertexShaderSource);
 	ok &= HandleIncludes(fragmentShaderSource);
@@ -154,7 +157,7 @@ bool ShaderBase::HandleIncludes(std::string& shader_src)
 			{
 				std::string incl_file(line.begin() + incl_str.length(), line.end());
 
-				std::string incl_content = Util::LoadTextFile(Config::SHADER_BASE_PATH + incl_file);
+				std::string incl_content = Util::LoadTextFile(Config::SHADER_BASE_PATH / incl_file);
 
 				new_string << incl_content;
 				includes_found = true;

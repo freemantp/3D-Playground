@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <filesystem>
 
 #include "../util/SharedPointer.h"
 
@@ -28,11 +29,11 @@ class ImageUtil
 {
 public:
 		
-	static ImageData_ptr LoadImage(const std::string path);
+	static ImageData_ptr LoadImage(const std::filesystem::path path);
 
-	static std::vector<ImageData_ptr> LoadImages(const std::vector<std::string> paths);
+	static std::vector<ImageData_ptr> LoadImages(const std::vector<std::filesystem::path> paths);
 
-	static std::vector<ImageData_ptr> LoadCubeMapImages(const std::string path);
+	static std::vector<ImageData_ptr> LoadCubeMapImages(const std::filesystem::path path);
 
 private:
 

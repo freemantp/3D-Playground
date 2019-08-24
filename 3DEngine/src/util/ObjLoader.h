@@ -5,6 +5,7 @@
 #include <string>
 #include <iosfwd>
 #include <vector>
+#include <filesystem>
 #include <glm/fwd.hpp>
 
 SHARED_PTR_CLASS_DECL(WavefrontObjMaterial);
@@ -15,10 +16,10 @@ class ObjLoader
 {
 public:
 
-	IndexedRawMesh_ptr LoadObjFile(const std::string& path);
+	IndexedRawMesh_ptr LoadObjFile(const std::filesystem::path& path);
 
 protected:
-	IndexedRawMesh_ptr LoadObj(std::istream& istr, std::string path);
+	IndexedRawMesh_ptr LoadObj(std::istream& istr, const std::filesystem::path& path);
 	bool LoadMtllib(std::istream& istr, IndexedRawMesh_ptr newMesh);
 
 private:

@@ -6,6 +6,7 @@
 struct GLFWwindow;
 
 #include <string>
+#include <vector>
 
 class GraphicsPlayground {
 public:
@@ -25,6 +26,8 @@ public:
 	void InitializeEvents(Scene_ptr& scene);
 
 	void SetWindowTitle(const std::string title);
+
+	std::vector<std::string> FindScences() const;
 
 private:
 	GLFWwindow* window;

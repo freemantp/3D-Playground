@@ -9,7 +9,7 @@
 
 bool ImageUtil::initialized = false;
 
-ImageData_ptr ImageUtil::LoadImage(const std::string path)
+ImageData_ptr ImageUtil::LoadImage(const std::filesystem::path path)
 {
 	Initialize();
 
@@ -19,7 +19,7 @@ ImageData_ptr ImageUtil::LoadImage(const std::string path)
 
 	ImageData_ptr data;
 
-	if (ilLoadImage(path.c_str()) == IL_TRUE)
+	if (ilLoadImage(path.generic_string().c_str()) == IL_TRUE)
 	{
 		if (ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE) == IL_TRUE)
 		{
@@ -42,17 +42,17 @@ ImageData_ptr ImageUtil::LoadImage(const std::string path)
 			}		
 		}
 		else
-			Error("Could not convert texture: " + path);
+			Error("Could not convert texture: " + path.generic_string());
 
 		ilDeleteImage(imgId);
 	}
 	else
-		Error("Could not load texture: " + path);
+		Error("Could not load texture: " + path.generic_string());
 
 	return data;
 }
 
-std::vector<ImageData_ptr> ImageUtil::LoadImages(const std::vector<std::string> paths)
+std::vector<ImageData_ptr> ImageUtil::LoadImages(const std::vector<std::filesystem::path> paths)
 {
 	std::vector<ImageData_ptr> subImages(paths.size());
 	for (size_t i = 0; i < paths.size(); i++)
@@ -63,7 +63,7 @@ std::vector<ImageData_ptr> ImageUtil::LoadImages(const std::vector<std::string> 
 	return subImages;
 }
 
-std::vector<ImageData_ptr> ImageUtil::LoadCubeMapImages(const std::string path)
+std::vector<ImageData_ptr> ImageUtil::LoadCubeMapImages(const std::filesystem::path path)
 {
 	Initialize();
 
@@ -73,7 +73,7 @@ std::vector<ImageData_ptr> ImageUtil::LoadCubeMapImages(const std::string path)
 
 	std::vector<ImageData_ptr> subImages(6);
 
-	if (ilLoadImage(path.c_str()) == IL_TRUE)
+	if (ilLoadImage(path.generic_string().c_str()) == IL_TRUE)
 	{
 		if (ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE) == IL_TRUE)
 		{

@@ -4,32 +4,32 @@
 #include "../texture/ImageUtil.h"
 #include "../error.h"
 
+namespace fs = std::filesystem;
 
-CubeMapTexture::CubeMapTexture(const std::string& cubeMapTexturePath)
+CubeMapTexture::CubeMapTexture(const std::filesystem::path& cubeMapTexturePath)
 {	
 	std::vector<ImageData_ptr> images = ImageUtil::LoadCubeMapImages(cubeMapTexturePath);
 	LoadImages(images);
 }
 
-CubeMapTexture::CubeMapTexture(const std::string& textureBasePath, const std::string& imageExtension)
+CubeMapTexture::CubeMapTexture(const std::filesystem::path& textureBasePath, const std::string& imageExtension)
 {
 	
-	auto getTextureFileName = [textureBasePath, imageExtension](int i) {
+	auto getTextureFileName = [textureBasePath, imageExtension](int i) -> fs::path
+	{
 		const char* suffixes[] = { "posy", "negx", "posz", "posx","negz", "negy" };
-		return textureBasePath + "/" + suffixes[i] + "." + imageExtension;
+		return textureBasePath / suffixes[i] / fs::path("." + imageExtension);
 	};
 
-	std::vector<std::string> imagePaths = 
-	{ 
-		getTextureFileName(0).c_str(),
-		getTextureFileName(1).c_str(),
-		getTextureFileName(2).c_str(),
-		getTextureFileName(3).c_str(),
-		getTextureFileName(4).c_str(),
-		getTextureFileName(5).c_str(),
-	};
+	std::vector<ImageData_ptr> images = ImageUtil::LoadImages({
+		getTextureFileName(0),
+		getTextureFileName(1),
+		getTextureFileName(2),
+		getTextureFileName(3),
+		getTextureFileName(4),
+		getTextureFileName(5),
+		});
 
-	std::vector<ImageData_ptr> images = ImageUtil::LoadImages(imagePaths);
 	LoadImages(images);
 }
 

@@ -2,6 +2,7 @@
 
 #include "../util/SharedPointer.h"
 #include <glm/vec3.hpp>
+#include <filesystem>
 
 SHARED_PTR_CLASS_DECL(Material);
 SHARED_PTR_CLASS_DECL(IntrinsicColorMaterial);
@@ -46,7 +47,7 @@ class PhongMaterial : public Material
 public:
 	static PhongMaterial_ptr Create();
 
-	virtual void InitFromWavefrontMaterial(const WavefrontObjMaterial_cptr& mat, const std::string& base_folder);
+	virtual void InitFromWavefrontMaterial(const WavefrontObjMaterial_cptr& mat, const std::filesystem::path& base_folder);
 
 	glm::vec3 ambientReflection;
 	glm::vec3 diffuseReflection;
@@ -69,7 +70,7 @@ public:
 	Texture2D_ptr specularTexture;
 	bool bumpBumpTexIsNormalMap;
 
-	virtual void InitFromWavefrontMaterial(const WavefrontObjMaterial_cptr& mat, const std::string& base_folder) override;
+	virtual void InitFromWavefrontMaterial(const WavefrontObjMaterial_cptr& mat, const std::filesystem::path &base_folder) override;
 
 protected:
 	TextureMaterial();
