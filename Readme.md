@@ -1,8 +1,33 @@
 # 3D Playground
 
+3D Playground consists of a library component *3DEngine* which holds components to build a graphical 3D application and an executable *Graphics Playground* which creates a window, loads a scene and connects mouse and keyboard inputs. As the name suggests, this is a playground to experment with 3D rendering concepts.
+
+The engine relies modern OpenGL 4 approach with GLSL shaders to leverage features of modern graphics cards in order to achieve high realism while maintaining interactive frame rates.
+
 ## Features
-* Modern OpenGL rendering
-* Leverages C++ 11
+
+* Loading of complex scenes and different model / texture formats
+* Very basic animation capabilities
+* Multiple camera models
+* Bounding volume hierarchy
+* Mouse & keyboard interactivity
+* Platform independent
+* Leverages modern C++ 17 
+
+### Rendering features
+* Illumination from various light types (directional, spot, point, SH)
+* Shadow mapping with PCF
+* Multi-texturing
+* Environment mapping
+* Spherical Harmonics lighting
+
+## Impressions
+
+![Car9](https://user-images.githubusercontent.com/54601848/63808614-aa9c0980-c920-11e9-9471-32a5d2644bf6.png)
+
+![Dragon](https://user-images.githubusercontent.com/54601848/63808650-bd164300-c920-11e9-8a4b-53430ff71c24.png)
+
+![heli](https://user-images.githubusercontent.com/54601848/63808756-f5b61c80-c920-11e9-8495-e8752f49c64a.png)
 
 ## Prerequisites
 
