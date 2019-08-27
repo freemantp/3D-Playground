@@ -24,12 +24,13 @@ Install the dependencies with
 ```vcpkg install glload:x64-windows tinyxml2:x64-windows glm:x64-windows devil:x64-windows glfw3:x64-windows```
 
 
-
 ## Running the application
 
 Set the working dir to the root of the data folder and run:
 ```Graphics Playground.exe" [scene.xml]```
 
+## License
+This project is licensed under the [GNU Lesser General Public License version 3](https://opensource.org/licenses/LGPL-3.0). See LICENSE file in the project root
 
 ## Possible Improvements
 
