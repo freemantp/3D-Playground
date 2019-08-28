@@ -6,13 +6,14 @@ The engine relies modern OpenGL 4 approach with GLSL shaders to leverage feature
 
 ## Features
 
-* Loading of complex scenes and different model / texture formats
+* Loading of complex scenes and different model / image formats
 * Very basic animation capabilities
 * Multiple camera models
 * Bounding volume hierarchy
 * Mouse & keyboard interactivity
 * Platform independent
-* Leverages modern C++ 17 
+* Supports Wavefront Obj files
+* Leverages C++ 17 
 
 ### Rendering features
 * Illumination from various light types (directional, spot, point, SH)
@@ -31,7 +32,7 @@ The engine relies modern OpenGL 4 approach with GLSL shaders to leverage feature
 
 ## Prerequisites
 
-This project builds out of the box with [Microsoft Visual Studio Community Edition](https://visualstudio.microsoft.com). However it is possible to build it with different tools and for different platforms, since the code is platform-independent. See section 'Improvements'.
+This project builds out of the box with [Microsoft Visual Studio Community Edition](https://visualstudio.microsoft.com). However, it is possible to build it with different compilers and for different platforms, since the code is platform-independent. See section 'Improvements'.
 
 ### Dependencies 
 
@@ -47,7 +48,6 @@ These libraries are used in the project:
 
 Install the dependencies with 
 ```vcpkg install glload:x64-windows tinyxml2:x64-windows glm:x64-windows devil:x64-windows glfw3:x64-windows```
-
 
 ## Running the application
 
