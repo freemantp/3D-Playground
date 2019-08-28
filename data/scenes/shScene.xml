@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
-<scene name="Simple scene">
+<scene name="Spherical Harmonics">
 
   <!-- Initial camera position -->
   <camera type="perspective" fov="50.0">
-    <position x="3.0" y="0.0" z="0.0"/>
+    <position x="0.3" y="0.0" z="0.0"/>
     <target   x="0.0" y="0.0" z="0.0"/>
     <up       x="0.0" y="1.0" z="0.0"/>
   </camera>
 
   <materials>
-    <!-- shiny material -->
+
     <material name="diffuse" shader="diffuseSH">
       <shcoeffs file="grace.xml"/>
     </material>
@@ -18,20 +18,15 @@
   <skybox cubeMapFile="cubeMap/GraceCathedral.png"/>
 
   <objects>
-     <mesh file="elephant.obj" material="diffuse">
+
+     <mesh file="bunny.obj" material="diffuse">
       <position x="0" y="0" z="0"/>
       <transform>
-        <translate x="0.0" y="-0.3" z="0.0"/>
-        <!--<rotate angle="270.0" x="0.0" y="1.0" z="0.0"/>-->
+        <translate x="0.0" y="-0.1" z="0.0"/>
+        <rotate angle="90.0" x="0.0" y="1.0" z="0.0"/>
       </transform>
     </mesh>
    
-    <!--<box material="diffuse">
-      <transform>
-        <translate x="0.0" y="-0.3" z="0.0"/>   
-        <scale x="20.0" y="0.01" z="20.0"/>
-      </transform>
-    </box>-->
   </objects>
    
 </scene>

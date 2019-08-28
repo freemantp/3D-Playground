@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<scene name="Bunny with 3 spotlights">
+
+  <!-- Initial camera position -->
+  <camera type="perspective" fov="50.0">
+    <position x="0.0" y="0.0" z="2.0"/>
+    <target   x="0.0" y="0.0" z="0.0"/>
+    <up       x="0.0" y="1.0" z="0.0"/>
+  </camera>
+
+  <materials>
+    <!-- shiny material -->
+    <material name="glossy" shader="phong">
+      <ambientReflect r="0.0" g="0.0" b="0.0"/>
+      <diffuseReflect r="0.3" g="0.3" b="0.3"/>
+      <glossyReflect r="0.9" g="0.9" b="0.9"/>
+      <shininess value="90"/>
+    </material>
+    <!-- diffuse material -->
+    <material name="dull" shader="phong">
+      <ambientReflect r="0.0" g="0.00" b="0.0"/>
+      <diffuseReflect r="1.0" g="1.0" b="1.0"/>
+      <glossyReflect r="0.0" g="0.0" b="0.0"/>
+      <shininess value="90"/>
+      <options dither="true"/>
+    </material>
+  </materials>
+  
+  <lights>
+    <light type="spot" cutoff="30" exponent="5" animated="true">
+      <position x="1.0" y="0.5" z="1.0"/>
+      <direction x="-1.0" y="-0.5" z="-1.0"/>
+      <color r="1.2" g="0.0" b="0.0"/>
+    </light>
+    <light type="spot" cutoff="30" exponent="5" animated="true">
+      <position x="-1.0" y="1.0" z="0.0"/>
+      <direction x="1.0" y="-1.0" z="0.0"/>
+      <color r="0.0" g="0.0" b="1.2"/>
+    </light>
+    <light type="spot"  cutoff="30" exponent="5" animated="true">
+      <position x="0.0" y="0.5" z="1.0"/>
+       <direction x="0.0" y="0.0" z="-1.0"/>
+      <color r="0.0" g="1" b="0.0"/>
+    </light>
+  </lights>
+
+ <objects>
+     <mesh file="bunny.obj" material="glossy">
+      <position x="0" y="0" z="0"/>
+      <transform>
+        <translate x="0.0" y="-0.5" z="0.0"/>
+        <scale x="5" y="5" z="5"/>
+      </transform>
+    </mesh>
+   
+    <box material="dull">
+      <transform>
+        <translate x="0.0" y="-0.3" z="0.0"/>   
+        <scale x="100.0" y="0.01" z="100.0"/>
+      </transform>
+    </box>
+  </objects>
+   
+</scene>

@@ -15,11 +15,17 @@
       <specularMap file="road/road_specular.jpg"/>
       <shininess value="1"/>
     </material>
+
+    <material name="glossy" shader="phong">
+      <ambientReflect r="0.0" g="0.0" b="0.0"/>
+      <diffuseReflect r="0.3" g="0.3" b="0.3"/>
+      <glossyReflect r="0.9" g="0.9" b="0.9"/>
+      <shininess value="90"/>
+    </material>
+    
   </materials>
 
   <skybox cubeMapFile="cubeMap/grimmnight.jpg"/>
-  <!--<skybox cubeMapFile="cubeMap/stormydays.jpg"/>-->
-  <!--<skybox cubeMapFolder="cubeMap/desert" type="jpg"/>-->
 
   <lights>
 
@@ -75,18 +81,20 @@
 
   <objects>
 
-    <!--<mesh file="GAZ M24 VOLGA/GAZ M24 VOLGA.obj">
-      <transform>
-        <translate x="-0.2" y="0.16" z="7.0"/>
-        <scale x="0.000035" y="0.000035" z="0.000035"/>
-      </transform>
-    </mesh>-->
-
-    <mesh file="DodgeChallenger/CHALLENGER71.obj">
+    <!-- Download here: https://free3d.com/3d-model/dodge-challenger-1971-72998.html-->
+    <!--<mesh file="DodgeChallenger/CHALLENGER71.obj">
       <transform>
         <translate x="0.2" y="0" z="0.0"/>
         <scale x="0.2" y="0.2" z="0.2"/>
         <rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>
+      </transform>
+    </mesh>-->
+
+    <mesh file="bunny.obj" material="glossy">
+      <transform>
+        <translate x="0.0" y="-0.07" z="0"/>
+        <scale x="2" y="2" z="2"/>
+        <!--<rotate angle="-90.0" x="1.0" y="0.0" z="0.0"/>-->
       </transform>
     </mesh>
 

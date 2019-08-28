@@ -577,40 +577,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="..\data\scenes\boxScene.xml">
-      <Filter>data\scenes</Filter>
-    </Xml>
-    <Xml Include="..\data\scenes\headScene.xml">
-      <Filter>data\scenes</Filter>
-    </Xml>
-    <Xml Include="..\data\scenes\ogreScene.xml">
-      <Filter>data\scenes</Filter>
-    </Xml>
-    <Xml Include="..\data\scenes\simpleScene.xml">
-      <Filter>data\scenes</Filter>
-    </Xml>
-    <Xml Include="..\data\scenes\manyPlanes.xml">
-      <Filter>data\scenes</Filter>
-    </Xml>
     <Xml Include="..\data\scenes\road.xml">
-      <Filter>data\scenes</Filter>
-    </Xml>
-    <Xml Include="..\data\scenes\envHorse.xml">
       <Filter>data\scenes</Filter>
     </Xml>
     <Xml Include="..\data\scenes\shScene.xml">
       <Filter>data\scenes</Filter>
     </Xml>
-    <Xml Include="..\data\scenes\shadowScene.xml">
-      <Filter>data\scenes</Filter>
-    </Xml>
-    <Xml Include="..\data\scenes\debug.xml">
-      <Filter>data\scenes</Filter>
-    </Xml>
-    <Xml Include="..\data\scenes\town.xml">
-      <Filter>data\scenes</Filter>
-    </Xml>
     <Xml Include="..\data\scenes\blackhawk.xml">
+      <Filter>data\scenes</Filter>
+    </Xml>
+    <Xml Include="..\data\scenes\headScene.xml">
+      <Filter>data\scenes</Filter>
+    </Xml>
+    <Xml Include="..\data\scenes\spotlights.xml">
       <Filter>data\scenes</Filter>
     </Xml>
   </ItemGroup>

@@ -4,8 +4,6 @@ ipch
 *.opensdf
 *.sdf
 *.suo
-data/models
-data/texture
 Thumbs.db
 packages/
 .nuget/NuGet.exe
